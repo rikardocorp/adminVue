@@ -1,0 +1,149 @@
+<template>
+  <div class="app flex-row align-items-center">
+    <div class="progress-line" v-if="isLoading"></div>
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-md-8">
+          <div class="card-group mb-0">
+
+            <div class="card p-4">
+              <div class="card-body">
+                <h1>Login</h1>
+                <p class="text-muted">Sign In to your account</p>
+                <div class="alert alert-danger" v-if="error">
+                  <p>{{ error }}</p>
+                </div>
+                <div class="input-group mb-3">
+                  <span class="input-group-addon"><i class="icon-user"></i></span>
+                  <input type="text" class="form-control" placeholder="Username" v-model="credentials.username">
+                </div>
+                <div class="input-group mb-4">
+                  <span class="input-group-addon"><i class="icon-lock"></i></span>
+                  <input type="password" class="form-control" placeholder="Password" v-model="credentials.password" @keyup.enter="submit">
+                </div>
+                <div class="row">
+                  <div class="col-6">
+                    <button type="button" class="btn btn-primary px-4" @click="submit">Login</button>
+                  </div>
+                  <div class="col-6 text-right">
+                    <button type="button" class="btn btn-link px-0">Forgot password?</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card text-white bg-primary py-5 d-md-down-none" style="width:44%">
+              <div class="card-body text-center">
+                <div>
+                  <h2>Sign up</h2>
+                  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                  <button type="button" class="btn btn-primary active mt-3">Register Now!</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <notifications animation-type="velocity" group="foo" />
+  </div>
+</template>
+
+<script>
+  //  import auth from '../auth'
+//  import {mapActions} from 'vuex'
+
+  export default {
+    name: 'Login',
+    data () {
+      return {
+        credentials: {
+          username: '',
+          password: ''
+        },
+        error: ''
+      }
+    },
+    computed: {
+      isLoading () {
+        return this.$store.state.isLoading
+      },
+      notification () {
+        return this.$store.state.notification
+      }
+    },
+    methods: {
+      submit () {
+        console.log('Submit')
+        let credentials = {
+          username: this.credentials.username,
+          password: this.credentials.password
+        }
+        // We need to pass the component's this context
+        // to properly make use of http in the auth service
+        //        auth.login(this, credentials, '')
+        this.$store.dispatch('login', {credentials, redirect: '/'})
+        //        this.login(credentials)
+      },
+      login (creds) {
+        this.$http.post('http://174.138.48.60:8080/jmc/login', creds).then(response => {
+          // success callback
+          console.log(response)
+        }, response => {
+          // error callback
+          console.log(response)
+        })
+      }
+    },
+    watch: {
+      notification (newVal, oldVal) {
+        console.log('ISLOADING')
+        console.log(newVal)
+        console.log(newVal)
+        this.$notify({
+          group: 'foo',
+          title: 'Important message',
+          text: 'Hello user! This is a notification!'
+        })
+      }
+    }
+  }
+</script>
+
+<style>
+  .progress-line, .progress-line:before, .progress-line:after {
+    height: 3px;
+    width: 100%;
+    margin: 0;
+    position: absolute;
+    z-index: 1;
+    top: 0;
+
+  }
+  .progress-line {
+    background-color: #ef7b1f;
+    display: -webkit-flex;
+    display: flex;
+  }
+  .progress-line:before {
+    background-color: #21a8d8;
+    content: '';
+    -webkit-animation: running-progress 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    animation: running-progress 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  }
+  /*.progress-line:after {*/
+  /*background-color: rgb(33, 33, 32);*/
+  /*content: '';*/
+  /*-webkit-animation: running-progress 1s cubic-bezier(0.4, 0, 0.2, 1) infinite;*/
+  /*animation: running-progress 1s cubic-bezier(0.4, 0, 0.2, 1) infinite;*/
+  /*}*/
+  @-webkit-keyframes running-progress {
+    0% { margin-left: 0px; margin-right: 100%; }
+    50% { margin-left: 25%; margin-right: 0%; }
+    100% { margin-left: 100%; margin-right: 0; }
+  }
+  @keyframes running-progress {
+    0% { margin-left: 0px; margin-right: 100%; }
+    50% { margin-left: 25%; margin-right: 0%; }
+    100% { margin-left: 100%; margin-right: 0; }
+  }
+</style>

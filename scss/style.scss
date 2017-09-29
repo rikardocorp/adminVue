@@ -1,0 +1,279 @@
+/**
+ * CoreUI - Open Source Bootstrap Admin Template
+ * @version v1.0.0-alpha.6
+ * @link http://coreui.io
+ * Copyright (c) 2017 creativeLabs Łukasz Holeczek
+ * @license MIT
+ */
+// Override Boostrap variables
+//@import "bootstrap-variables";
+@import "core-variables";
+
+// Import Bootstrap source files
+@import "bootstrap/bootstrap";
+//@import "bootstrap/bootstrap-grid";
+//@import "bootstrap/bootstrap-reboot";
+
+// If you want you can import bootstrap scss files directly from node_modules or bower_components.
+// To do this please remove @import "bootstrap/bootstrap"; and uncomment proper line.
+
+// Import Bootstrap source files from node_modules
+// @import "node_modules/bootstrap/scss/bootstrap";
+
+// Import Bootstrap source files from bower_components
+// @import "bower_components/bootstrap/scss/bootstrap";
+
+// Import vendors styles
+@import "vendors/vendors";
+
+// Override core variables
+
+// Import core styles
+@import "core/core";
+
+// Custom styles
+@import "custom";
+
+//@import "animation";
+
+//html{
+//  header{
+//
+//  }
+//  .sidebar{
+//    background: orange;
+//  }
+//}
+
+@font-face {
+  font-family: CaviarDreams;
+  src: url("../static/fonts/caviar_dreams/CaviarDreams.ttf");
+}
+
+
+.card-columns {
+  @include media-breakpoint-only(xl) {
+    column-count: 5;
+  }
+  @include media-breakpoint-only(lg) {
+    column-count: 3;
+  }
+  @include media-breakpoint-only(md) {
+    column-count: 2;
+  }
+  @include media-breakpoint-only(sm) {
+    column-count: 1;
+  }
+}
+
+// Text color
+.color-primary, .text-primary{
+  color: $orange-dark
+}
+.text-orange{
+  color: $orange
+}
+.text-cream{
+  color: $cream
+}
+
+input::-webkit-input-placeholder{
+  color: #bcbcbb
+}
+
+.fa-spin-reverse {
+  -webkit-animation: fa-spin 2s infinite linear reverse;
+  animation: fa-spin 2s infinite linear reverse;
+}
+
+html{
+  .nav-dropdown.open{
+    .nav-dropdown-toggle{
+      background: $marron !important;
+    }
+  }
+
+  .multiselect__tags{
+    border-radius: 0.55rem;
+  }
+
+  .main{
+    margin-top: 30px;
+  }
+
+  .card{
+    box-shadow: #cccccc 4px 9px 8px -4px;
+    .card-header{
+      background: transparent;
+      font-size: 1.3rem;
+      font-weight: 200;
+      padding-bottom: 0;
+    }
+    input, textarea, select, .multiselect__tags, .multiselect__spinner{
+      background: #f4f3ef;
+      border-color: #e0e0e0;
+    }
+
+    .multiselect__option--highlight {
+      background: #ff9701;
+    }
+
+    .multiselect__spinner:after,
+    .multiselect__spinner:before{
+      border-color: #ef7b1f transparent transparent;
+    }
+  }
+
+  .page-item.active .page-link, .pagination-datatables li.active .page-link, .pagination li.active .page-link, .page-item.active .pagination-datatables li a, .pagination-datatables li .page-item.active a, .pagination-datatables li.active a, .page-item.active .pagination li a, .pagination li .page-item.active a, .pagination li.active a{
+    background-color: #212120;
+    border-color: #f4f3ef;
+  }
+
+  table{
+    th{
+      border: 0 !important;
+      border-top: 1px solid #c7c7c6 !important;
+    }
+  }
+
+  .wrapper .card .col-md-12{
+    overflow: auto;
+  }
+
+  @media (max-width: 991px){
+    .table-responsive {
+      display: table
+    }
+  }
+
+  @media (max-width: 574px){
+    .table-responsive {
+      display: block
+    }
+  }
+
+}
+
+
+html{
+  .module-sale{
+    max-width: 1100px;
+    min-height: 650px;
+    font-family: CaviarDreams;
+    background: white;
+    font-size: 1em;
+
+    .i-left{
+      //background: blue;
+    }
+
+    .i-right{
+      //background: yellow;
+    }
+
+    .header{
+      .i-left{
+        background: $orange-dark;
+        border-top-right-radius: 1.0rem !important;
+        border-bottom-right-radius: 1.0rem !important;
+        color: white;
+      }
+      .title{
+        font-size: 1.7rem;
+        text-align: right;
+      }
+    }
+
+    .body{
+      .title-line{
+        position: relative;
+        &:before{
+          width: 100%;
+          height: 8%;
+          background: $orange-dark;
+          content: '';
+          display: block;
+          position: absolute;
+          z-index: 2;
+          left: 0;
+          top: 36%;
+        }
+        p{
+          z-index: $zindex-modal-backdrop;
+        }
+      }
+
+      .i-left{
+        margin-top: 5rem !important;
+      }
+
+      .i-right{
+        .card{
+          width: 100%;
+        }
+      }
+
+      .card{
+        border: none;
+        text-align: center;
+        padding: 0;
+        .card-img{
+          width: 76%;
+          margin: 12%;
+        }
+
+        .card-text{
+          font-size: 0.8rem;
+        }
+
+        .card-body{
+          padding: 0.4rem;
+        }
+      }
+
+      i.fa{
+        color: #ef7b1f;
+        font-size: 2.1rem;
+      }
+
+    }
+
+    .footer{
+      background: #636363;
+    }
+  }
+
+  // Form ERROR
+  .form-group--error{
+    label{
+      color: red !important;
+    }
+
+    input.form-control, .multiselect__tags{
+      border: 1px solid red !important;
+    }
+  }
+}
+
+.input-group .form-control, .input-group-btn:not(:first-child) > .btn, .input-group-btn:not(:first-child) > .btn-group{
+  z-index: 0;
+}
+
+.input-group-addon i{
+  width: 100%;
+}
+
+// Transition
+
+.fade-enter-active, .fade-leave-active {
+  transition-property: opacity;
+  transition-duration: .25s;
+}
+
+.fade-enter-active {
+  transition-delay: .25s;
+}
+
+.fade-enter, .fade-leave-active {
+  opacity: 0
+}
