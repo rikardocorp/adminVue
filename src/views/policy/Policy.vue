@@ -27,7 +27,7 @@
 </template>
 
 <script>
-  import {DATA_POLICIES as nDATA} from '../../data/dataNames'
+  import {DATA as nDATA} from '../../data/dnInsurancePolicies'
   import Form from './forms/FormPolicy.vue'
   import Table from '../../components/xTable.vue'
 
@@ -62,6 +62,7 @@
           } else {
             this.items.splice(this.indexSelected, 1, newItem)
           }
+          this.getData()
         }
         this.initData()
       },

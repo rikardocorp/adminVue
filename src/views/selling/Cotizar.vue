@@ -45,7 +45,7 @@
       <!--<pre>{{items}}</pre>-->
     </div>
 
-
+    <pre>{{ item }}</pre>
     <!--<b-modal :title="modalDetails.title" :class="'modal-'+ownClass" v-model="showModal">-->
       <!--{{ modalDetails.data }}-->
       <!--<template slot="modal-footer">-->
@@ -57,7 +57,7 @@
 </template>
 <!--https://cdn.pixabay.com/photo/2017/09/04/22/16/grapes-2715711_1280.jpg-->
 <script>
-  import {DATA_COTIZAR as nDATA} from '../../data/dataNames'
+  import {DATA as nDATA} from '../../data/dnCotizar'
   import Form from './forms/FormCotizar.vue'
   import Table from '../../components/xTable.vue'
 

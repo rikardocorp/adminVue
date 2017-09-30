@@ -15,7 +15,8 @@
     <notifications group="foo"
                    position="top right"
                    animation-type="velocity"
-                   :speed="500" />
+                   :speed="500" :duration="2000">
+    </notifications>
   </div>
 </template>
 
@@ -50,15 +51,33 @@ export default {
   },
   watch: {
     notification (newVal, oldVal) {
-      console.log('ISLOADING')
+      console.log('NOTIFICATION')
       console.log(newVal)
       console.log(oldVal)
+      let type = ''
+      let content = newVal.content.data
+      if (content.success) {
+        type = 'success'
+      } else {
+        type = 'error'
+      }
+
       this.$notify({
         group: 'foo',
         title: 'Important message',
-        text: 'Hello user! This is a notification!'
+        text: content.message,
+        type: type
       })
     }
   }
 }
 </script>
+
+<style lang="scss">
+  .vue-notification {
+    border-radius: 0.55rem;
+    border-left: none;
+    box-shadow: 1px 1px 3px #3e3e3e;
+  }
+
+</style>

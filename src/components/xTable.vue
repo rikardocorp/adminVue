@@ -2,9 +2,7 @@
   <b-card header="Bootstrap Modals">
     <!-- Top table element-->
     <div slot="header" class="text-center">
-      <strong>
-        Tabla: <slot name="title"></slot>
-      </strong>
+        Tabla :<strong> <slot name="title"></slot></strong>
     </div>
     <div class="my-1 row">
       <!-- Top input table-->

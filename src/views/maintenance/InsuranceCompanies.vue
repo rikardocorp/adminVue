@@ -9,7 +9,9 @@
 
       <div class="row">
         <div class="col-12">
-          <app-table :fields="fields" :items="items" :btnOption="btnOption" @pickItem="pickItem"></app-table>
+          <app-table :fields="fields" :items="items" :btnOption="btnOption" @pickItem="pickItem">
+            <template slot="title">Lista de aseguradoras</template>
+          </app-table>
         </div><!--/.col-->
       </div><!--/.row-->
     </div>
@@ -25,7 +27,7 @@
 </template>
 
 <script>
-  import {DATA_ICOMPANIES as nDATA} from '../../data/dataNames'
+  import {DATA as nDATA} from '../../data/dnInsuranceCompanies'
   import Form from './forms/FormInsuranceCompanies.vue'
   import Table from '../../components/xTable.vue'
 

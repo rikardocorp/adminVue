@@ -10,8 +10,9 @@
       <div class="row">
         <div class="col-12">
           <app-table :fields="fields" :items="items" :btnOption="btnOption" @pickItem="pickItem" >
-            <template slot="expense" >sddsd</template>
-            <template slot="enabled" >wewe</template>
+            <template slot="title">Tipos de Seguros</template>
+            <!--<template slot="expense" >sddsd</template>-->
+            <!--<template slot="enabled" >wewe</template>-->
           </app-table>
         </div><!--/.col-->
       </div><!--/.row-->
@@ -28,7 +29,7 @@
 </template>
 
 <script>
-  import {DATA_INSURANCETYPES as nDATA} from '../../data/dataNames'
+  import {DATA as nDATA} from '../../data/dnInsuranceTypes'
   import Form from './forms/FormInsuranceTypes.vue'
   import Table from '../../components/xTable.vue'
 

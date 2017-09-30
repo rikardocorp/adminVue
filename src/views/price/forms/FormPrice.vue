@@ -9,88 +9,66 @@
         <p class="color-primary bold">{{ vehicle.vehicleBrand }} - {{ vehicle.vehicleModel}} - Cat. {{ vehicle.category }}</p>
       </strong>
     </div>
-    <b-form :id="'forms-'+ urlRest">
+    <b-form :id="name + urlRest">
 
-      <b-form-group v-for="(option, index) in optType" :key="index"
-                    feedback="feedback"
-                    :state="null"
-                    :label="option.title"
-                    :horizontal="horizontal" :label-cols="3" class="text-right">
+      <b-form-group v-for="(option, index) in optInput" :key="index"
+                    :class="{ 'form-group--error': $v.item[index]? $v.item[index].$error : false, 'text-right': true}"
+                    :label-cols="lCols"
+                    :label="option.label + ':'"
+                    :horizontal="horizontal">
 
-        <multiselect :close-on-select="true" :clear-on-select="false" :hide-selected="true" :preserve-search="false" :taggable="false"
-                     select-label=""
-                     :label="option.label" :track-by="option.label"
-                     :loading="!option.activate"
-                     :disabled="!option.activate"
+        <!-- INPUT -->
+        <b-form-input v-if="option.input==undefined || option.input=='input'"
+                      :disabled="isLoading" :type="option.type"
+                      v-model.trim="item[index]"
+                      @blur.native="$v.item[index]? $v.item[index].$touch(): false"
+                      :placeholder="option.placeholder+'..'"></b-form-input>
+
+        <!-- TEXTAREA -->
+        <b-form-textarea v-else-if="option.input=='textarea'"
+                         :disabled="isLoading"
+                         v-model.trim="item[index]"
+                         :placeholder="option.placeholder+'..'"
+                         @blur.native="$v.item[index]? $v.item[index].$touch(): false"
+                         :rows="3" :max-rows="6"></b-form-textarea>
+
+        <!-- MULTISELECT -->
+        <multiselect v-else-if="option.input=='multiselect'"
+                     :close-on-select="true" :clear-on-select="false" :hide-selected="true" :preserve-search="false" :taggable="false" select-label=""
                      :placeholder="option.placeholder"
-                     v-model="option.value"
-                     :options="option.options"
+                     :label="option.params.label" :track-by="option.params.label"
+                     :loading="!option.params.activate"
+                     :disabled="!option.params.activate || isLoading"
+                     v-model="option.params.value"
+                     :options="option.params.options"
                      @input="selectOption"
-                     @open="openSelect(option.key)">
+                     @blur.native="$v.item[index]? $v.item[index].$touch(): false"
+                     @open="openSelect(option.params.key)" >
         </multiselect>
-      </b-form-group>
 
-      <b-form-group class="text-right"
-                    label="Precio:"
-                    feedback="feedback"
-                    :state="null"
-                    :horizontal="horizontal">
-        <b-form-input :disabled="isLoading" :state="null" v-model.trim="item.price" placeholder="Ingrese el precio.."></b-form-input>
-      </b-form-group>
+        <!-- DATEPICKER -->
+        <datepicker v-else-if="option.input=='datepicker'"
+                    v-model="option.params.value" :format="option.params.format" language="es" :placeholder="option.placeholder"
+                    :clear-button="false" :bootstrapStyling="true" calendar-button-icon="fa fa-calendar"
+                    :disabled-picker="isLoading"
+                    :disabled="option.params.disabled"
+                    @input="selectDate"
+                    @opened="openSelect(option.params.key)"
+                    @blur.native="$v.item[index]? $v.item[index].$touch(): false"></datepicker>
 
-      <!--<b-forms-group class="text-right"-->
-                    <!--label="Precio:"-->
-                    <!--feedback="feedback"-->
-                    <!--:state="null"-->
-                    <!--:horizontal="horizontal">-->
-        <!--<b-forms-input :disabled="isLoading" :state="null" v-model.trim="item.validityDate" placeholder="Ingrese el precio.."></b-forms-input>-->
-      <!--</b-forms-group>-->
-
-      <!--<b-forms-group class="text-right"-->
-                    <!--label="Fecha Valida:"-->
-                    <!--feedback="feedback"-->
-                    <!--:state="null"-->
-                    <!--:horizontal="horizontal">-->
-
-        <!--<calendar :value="value"-->
-                  <!--:disabled-days-of-week="disabled"-->
-                  <!--:format="format" :clear-button="clear"-->
-                  <!--:placeholder="placeholder" :width="'100%'"></calendar>-->
-
-      <!--</b-forms-group>-->
-
-      <!--<b-forms-group class="text-right"-->
-                    <!--label="Fecha Valida:"-->
-                    <!--feedback="feedback"-->
-                    <!--:state="null"-->
-                    <!--:horizontal="horizontal">-->
-
-        <!--<datepicker v-model="date" min="25/09/2017" max="29/09/2017"></datepicker>-->
-      <!--</b-forms-group>-->
-
-      <b-form-group class="text-right"
-                    label="Fecha Valida:"
-                    feedback="feedback"
-                    :state="null"
-                    :horizontal="horizontal">
-
-        <datepicker v-model="calendar.localDate" :format="calendar.format" language="es" :placeholder="calendar.placeholder"
-                     :clear-button="false"
-                     :bootstrapStyling="true"
-                     calendar-button-icon="fa fa-calendar"
-                     :disabled-picker="isLoading"
-                     :disabled="calendar.disabled" @input="selectedDate"></datepicker>
+        <!-- ERROR MESSAGE-->
+        <form-error :data="$v.item[index]? $v.item[index] : {} "></form-error>
       </b-form-group>
 
       <div slot="footer">
         <b-form-group :horizontal="horizontal">
           <template v-if="!update">
-            <b-button @click="insertData" :disabled="isLoading" type="submit" size="sm" variant="primary"><i class="fa fa-dot-circle-o"></i> Submit</b-button>
-            <b-button @click="resetForm('forms-' + urlRest)" :disabled="isLoading" size="sm" variant="danger"><i class="fa fa-ban"></i> Reset</b-button>
+            <b-button @click.prevent="processData('INSERT')" :disabled="isLoading" type="submit" size="sm" variant="primary"><i class="fa fa-dot-circle-o"></i> Submit</b-button>
+            <b-button @click="resetForm(name + urlRest)" :disabled="isLoading" size="sm" variant="danger"><i class="fa fa-ban"></i> Reset</b-button>
           </template>
 
           <template v-if="update">
-            <b-button @click="updateData" :disabled="isLoading" size="sm" variant="primary"><i class="fa fa-dot-circle-o"></i> Update</b-button>
+            <b-button @click.prevent="processData('UPDATE')" :disabled="isLoading" size="sm" variant="primary"><i class="fa fa-dot-circle-o"></i> Update</b-button>
             <b-button @click="addRow()" :disabled="isLoading" type="reset" size="sm" variant="danger"><i class="fa fa-ban"></i> Cancel</b-button>
           </template>
         </b-form-group>
@@ -98,8 +76,6 @@
 
       <p>{{ item }}</p>
       <p>{{ vehicle }}</p>
-      <p>{{ optType['region'].value }}</p>
-      <button @click.stop="optType['region'].value = { id: '040000', name: 'Arequipa' }" >lugar</button>
 
     </b-form>
 
@@ -110,78 +86,30 @@
 <script>
   import Multiselect from 'vue-multiselect'
   import Datepicker from 'vuejs-datepicker'
+  import FormError from '../../../components/FormError.vue'
+  import {DATA_FORM as dataForm} from '../../../data/dnInsurancePrices'
   //  import Clock from '../../../components/Clock.vue'
   import Mixin from '../../../mixins'
   export default {
     props: ['urlRest', 'item', 'vehicle', 'update', 'horizontal'],
     mixins: [Mixin],
     components: {
-      Multiselect: Multiselect,
-      Datepicker: Datepicker
+      Multiselect,
+      Datepicker,
+      FormError
     },
     data () {
       return {
-        calendar: {
-          localDate: '',
-          disabled: {
-            to: new Date(2017, 8, 19),
-            from: new Date(2019, 6, 1)
-          },
-          format: 'dd/MM/yyyy',
-          placeholder: 'Ingrese una fecha valida..'
-        },
-        optType: {
-          'region': {
-            title: 'Ciudad:',
-            url: 'regions',
-            key: 'regionId',
-            value: '',
-            options: [],
-            label: 'name',
-            activate: false,
-            placeholder: 'CIUDAD',
-            icon: 'fa-map-marker',
-            loadData: true
-          },
-          'insurancecompanies': {
-            title: 'Aseguradora:',
-            url: 'insurancecompanies',
-            key: 'insuranceCompanyId',
-            value: '',
-            options: [],
-            label: 'name',
-            activate: false,
-            placeholder: 'ASEGURADORA',
-            icon: 'fa-bookmark',
-            loadData: true
-          },
-          'insurancetypes': {
-            title: 'Tipo seguro:',
-            url: 'insurancetypes',
-            key: 'insuranceTypeId',
-            value: '',
-            options: [],
-            label: 'name',
-            activate: false,
-            placeholder: 'TIPO SEGURO',
-            icon: 'fa-car',
-            loadData: true
-          },
-          'usetypes': {
-            title: 'Tipo uso:',
-            url: 'usetypes',
-            key: 'useTypeId',
-            value: '',
-            options: [],
-            label: 'name',
-            activate: false,
-            placeholder: 'TIPO DE USO',
-            icon: 'fa-id-card-o',
-            loadData: true
-          }
-        },
-        selectedKey: ''
+        name: 'form-',
+        lCols: 4,
+        optInput: dataForm.input,
+        selectedKey: '',
+        multiselectKeys: [],
+        datepickerKeys: []
       }
+    },
+    validations () {
+      return dataForm.validate
     },
     computed: {
       isLoading () {
@@ -189,7 +117,7 @@
       }
     },
     methods: {
-      selectedDate (pickDate) {
+      selectDate (pickDate) {
         console.log('pickDate')
         console.log(pickDate)
         let newDate = ''
@@ -198,86 +126,93 @@
           console.log(newDate)
           console.log(this.tranformFormatToDate(newDate, '/'))
         }
-        this.item.validityDate = newDate
+        let key = this.selectedKey
+        this.item[key] = newDate
       },
       selectOption (selectedOption) {
+        console.log(selectedOption)
         let key = this.selectedKey
         this.item[key] = selectedOption === null ? '' : selectedOption.id
       },
       openSelect (id) {
+        console.log('AAAAAAA ' + id)
         this.selectedKey = id
       },
       addRow (newItem) {
         this.$emit('emit_addRow', newItem)
       },
-      insertData () {
-        let self = this.$store.dispatch('dispatchHTTP', {type: 'INSERT', url: this.urlRest, data: this.item})
-        self.then((data) => {
-          console.log('INSERT')
-          console.log(data)
-          if (data.status) {
-            this.addRow(data.content)
-            this.resetForm('forms-' + this.urlRest)
-          }
-        })
+      processData (action) {
+        let invalid = this.$v.item.$invalid
+        let url = !this.item.id ? this.urlRest : this.urlRest + '/' + this.item.id
+        if (!invalid) {
+          let self = this.$store.dispatch('dispatchHTTP', {type: action, url: url, data: this.item})
+          self.then((data) => {
+            if (data.status) {
+              console.log('DATA-CONTENT ' + action)
+              console.log(data.content)
+              this.addRow(data.content)
+              this.resetForm(this.name + this.urlRest)
+            }
+          })
+        } else {
+          this.$v.item.$touch()
+        }
       },
-      updateData () {
-        let self = this.$store.dispatch('dispatchHTTP', {type: 'UPDATE', url: this.urlRest + '/' + this.item.id, data: this.item})
-        self.then((data) => {
-          console.log('UPDATE')
-          console.log(data.content)
-          if (data.status) {
-            this.addRow(data.content)
-            this.resetForm('forms-' + this.urlRest)
-          }
-        })
-      },
-      getTypes (urlRest, key) {
+      getOption (urlRest, index) {
         let self = this.$store.dispatch('dispatchHTTP', {type: 'GET', url: urlRest})
         self.then((data) => {
           if (data.status) {
-            console.log('OPTIONS:')
-            console.log(data.content)
-            console.log(key)
-            console.log(this.optType[key])
-            console.log('-------')
-            this.optType[key].options = data.content
-            this.optType[key].activate = true
-            console.log(this.optType[key].options)
+            this.optInput[index].params.options = data.content
+            this.optInput[index].params.activate = true
           }
         })
       },
       setMultiSelect () {
         let vm = this
-        this.$lodash.forEach(this.optType, function (value, key) {
-          let options = vm.optType[key].options
-          let idKey = vm.optType[key].key
+        this.$lodash.forEach(this.multiselectKeys, function (key) {
+          let options = vm.optInput[key].params.options
+          let idKey = vm.optInput[key].params.key
           let optionPick = vm.$lodash.filter(options, {'id': vm.item[idKey]})
-          if (optionPick.length >= 0) {
-            vm.optType[key].value = optionPick[0]
+          if (optionPick.length > 0) {
+            vm.optInput[key].params.value = optionPick[0]
           } else {
-            vm.optType[key].value = ''
+            vm.optInput[key].params.value = ''
           }
-
-          console.log(idKey)
-          console.log(options)
-          console.log(optionPick)
+        })
+      },
+      setDatepicker () {
+        let vm = this
+        this.$lodash.forEach(this.datepickerKeys, function (key) {
+          let optionPick = vm.item[key]
+          if (optionPick !== '') {
+            let toDay = vm.$moment(optionPick, 'DD/MM/YYYY')
+            vm.optInput[key].params.value = toDay.format()
+          } else {
+            vm.optInput[key].params.value = ''
+          }
         })
       },
       resetMultiSelect () {
         let vm = this
-        this.$lodash.forEach(this.optType, function (value, key) {
-          vm.optType[key].value = ''
+        this.$lodash.forEach(this.multiselectKeys, function (key) {
+          vm.optInput[key].params.value = ''
         })
       },
-      returnMain () {
-        this.resetForm('forms-' + this.urlRest)
-        this.$emit('returnMain', false)
+      resetDatepicker () {
+        let vm = this
+        this.$lodash.forEach(this.datepickerKeys, function (key) {
+          vm.optInput[key].params.value = ''
+        })
       },
       resetForm (formId) {
         document.getElementById(formId).reset()
-        this.calendar.localDate = ''
+        this.resetDatepicker()
         this.resetMultiSelect()
+        this.$v.item.$reset()
+      },
+      returnMain () {
+        this.resetForm(this.name + this.urlRest)
+        this.$emit('returnMain', false)
       }
     },
     watch: {
@@ -289,39 +224,34 @@
         if (this.update) {
           console.log('WATCH item update')
           this.setMultiSelect()
-          console.log(newVal)
-          let toDay = this.$moment(newVal.validityDate, 'DD/MM/YYYY')
-          this.calendar.localDate = toDay.format()
+          this.setDatepicker()
         } else {
           console.log('WATCH item reset')
-          this.resetForm('forms-' + this.urlRest)
+          this.resetForm(this.name + this.urlRest)
         }
       }
     },
     created () {
       let vm = this
-      this.$lodash.forEach(this.optType, function (value, key) {
-        if (vm.optType[key].loadData) {
-          vm.getTypes(value.url, key)
-        } else {
-          vm.optType[key].activate = true
+      this.$lodash.forEach(this.optInput, function (value, key) {
+        if (vm.optInput[key].input === 'multiselect') {
+          vm.multiselectKeys.push(key)
+          if (vm.optInput[key].params.loadData) {
+            vm.getOption(value.params.url, key)
+          } else {
+            vm.optInput[key].params.activate = true
+          }
+        } else if (vm.optInput[key].input === 'datepicker') {
+          vm.datepickerKeys.push(key)
+          let date = vm.$store.getters.getDateTime.date
+          let toDay = vm.$moment(date, 'DD/MM/YYYY').add(1, 'days')
+          let day = toDay.get('date')
+          let month = toDay.get('month')
+          let year = toDay.get('year')
+          value.params.disabled.to = new Date(year, month, day)
+          value.params.disabled.from = new Date(year + 1, month, day)
         }
       })
-
-      console.log('TIEMPO:::::')
-      console.log(this.$store.getters.getDateTime)
-      console.log('MOMENT:::::')
-
-      let date = this.$store.getters.getDateTime.date
-      let toDay = this.$moment(date, 'DD/MM/YYYY').add(1, 'days')
-      let day = toDay.get('date')
-      let month = toDay.get('month')
-      let year = toDay.get('year')
-      console.log(toDay.format())
-      console.log(day, month, year)
-//      this.calendar.disabled.to = new Date(year, month, day)
-//      this.calendar.disabled.from = new Date(year + 1, month, day)
-      // this.calendar.localDate = toDay.format()
     }
   }
 </script>

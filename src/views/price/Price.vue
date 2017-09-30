@@ -44,6 +44,8 @@
       </transition-group>
     </div>
 
+    <pre>{{ item }}</pre>
+
     <b-modal :title="modalDetails.title" :class="'modal-'+ownClass" v-model="showModal">
       {{ modalDetails.data }}
       <template slot="modal-footer">
@@ -55,7 +57,8 @@
 </template>
 
 <script>
-  import {DATA_VEHICLETYPE as nDATA, DATA_INSURANCEPRICES as PriceData} from '../../data/dataNames'
+  import {DATA_VEHICLETYPE as nDATA} from '../../data/dataNames'
+  import {DATA as PriceData} from '../../data/dnInsurancePrices'
   import Form from './forms/FormPrice.vue'
   import vehicleTable from './table/TableVehicleType.vue'
   import Table from '../../components/xTable.vue'
@@ -100,6 +103,7 @@
           } else {
             this.items.splice(this.indexSelected, 1, newItem)
           }
+          this.getData()
         }
         this.initData()
       },

@@ -1,29 +1,9 @@
 <template>
   <b-card>
     <div slot="header" class="text-center">
-      <strong>Registrar</strong> Contratante
+      <strong>Registrar</strong> Ventas
     </div>
     <b-form :id="name + urlRest">
-
-      <b-form-group v-for="(option, index) in optType" :key="index"
-                    :class="{ 'form-group--error': $v.optType[index].$error, 'text-right': true}"
-                    :label="option.title"
-                    :horizontal="horizontal" :label-cols="lCols">
-
-        <multiselect :close-on-select="true" :clear-on-select="false" :hide-selected="true" :preserve-search="false" :taggable="false"
-                     select-label=""
-                     :label="option.label" :track-by="option.label"
-                     :loading="!option.activate"
-                     :disabled="!option.activate"
-                     :placeholder="option.placeholder"
-                     v-model="option.value"
-                     :options="option.options"
-                     @input="selectOption"
-                     @blur.native="$v.optType[index].value.$touch()"
-                     @open="openSelect(option.key)" >
-        </multiselect>
-        <form-error :data="$v.optType[index].value"></form-error>
-      </b-form-group>
 
       <b-form-group v-for="(option, index) in optInput" :key="index"
                     :class="{ 'form-group--error': $v.item[index]? $v.item[index].$error : false, 'text-right': true}"
@@ -31,15 +11,38 @@
                     :label="option.label + ':'"
                     :horizontal="horizontal">
 
-        <b-form-input v-if="option.input==undefined || option.input=='input'" :disabled="isLoading" :type="option.type" v-model.trim="item[index]" @blur.native="$v.item[index]? $v.item[index].$touch(): false" :placeholder="option.placeholder+'..'"></b-form-input>
+        <!-- INPUT -->
+        <b-form-input v-if="option.input==undefined || option.input=='input'"
+                      :disabled="isLoading" :type="option.type"
+                      v-model.trim="item[index]"
+                      @blur.native="$v.item[index]? $v.item[index].$touch(): false"
+                      :placeholder="option.placeholder+'..'"></b-form-input>
+
+        <!-- TEXTAREA -->
         <b-form-textarea v-else-if="option.input=='textarea'"
                          :disabled="isLoading"
                          v-model.trim="item[index]"
                          :placeholder="option.placeholder+'..'"
+                         @blur.native="$v.item[index]? $v.item[index].$touch(): false"
                          :rows="3" :max-rows="6"></b-form-textarea>
+
+        <!-- MULTISELECT -->
+        <multiselect v-else-if="option.input=='multiselect'"
+                     :close-on-select="true" :clear-on-select="false" :hide-selected="true" :preserve-search="false" :taggable="false" select-label=""
+                     :placeholder="option.placeholder"
+                     :label="option.params.label" :track-by="option.params.label"
+                     :loading="!option.params.activate"
+                     :disabled="!option.params.activate || isLoading"
+                     v-model="option.params.value"
+                     :options="option.params.options"
+                     @input="selectOption"
+                     @blur.native="$v.item[index]? $v.item[index].$touch(): false"
+                     @open="openSelect(option.params.key)" >
+        </multiselect>
+        <!--:options="getOption(option.params.url,index)"-->
+        <!-- ERROR MESSAGE-->
         <form-error :data="$v.item[index]? $v.item[index] : {} "></form-error>
       </b-form-group>
-
 
       <b-form-group class="text-right" :label-cols="lCols"
                     label="Estado"
@@ -53,7 +56,7 @@
         <b-form-input :disabled="isLoading" type="number" v-model.trim="item.active" placeholder="Venta activa?.."></b-form-input>
       </b-form-group>
 
-      <pre>$v: {{ $v }}</pre>
+      <!--<pre>$v: {{ $v }}</pre>-->
 
       <div slot="footer">
         <b-form-group :horizontal="horizontal" :label-cols="lCols">
@@ -79,10 +82,9 @@
 <script>
   import Multiselect from 'vue-multiselect'
   import FormError from '../../../components/FormError.vue'
-  import {DATA_SALE as nDATA} from '../../../data/Sale'
-  import { required, minLength, maxLength, between, numeric } from 'vuelidate/lib/validators'
+  import {DATA_FORM as dataForm} from '../../../data/dnSales'
   export default {
-    props: ['urlRest', 'item', 'update', 'horizontal', 'validate'],
+    props: ['urlRest', 'item', 'update', 'horizontal'],
     components: {
       Multiselect,
       FormError
@@ -90,117 +92,14 @@
     data () {
       return {
         name: 'form-',
-        optType: {
-          'insurancepolicies': {
-            title: 'Polizas:',
-            url: 'insurancepolicies/mypolicies?sold=0',
-            key: 'insurancePolicyId',
-            value: '',
-            options: [],
-            label: 'number',
-            activate: false,
-            placeholder: 'Numero de Poliza',
-            icon: 'fa-car',
-            loadData: true
-          },
-          'purchasers': {
-            title: 'Cotratante:',
-            url: 'purchasers',
-            key: 'purchaserId',
-            value: '',
-            options: [],
-            label: 'razonSocial',
-            activate: false,
-            placeholder: 'Contratante',
-            icon: 'fa-car',
-            loadData: true
-          },
-          'vehicles': {
-            title: 'Vehiculo:',
-            url: 'vehicles',
-            key: 'vehicleId',
-            value: '',
-            options: [],
-            label: 'licensePlate',
-            activate: false,
-            placeholder: 'Vehiculo',
-            icon: 'fa-car',
-            loadData: true
-          },
-          'regions': {
-            title: 'Ciudad:',
-            url: 'regions',
-            key: 'regionId',
-            value: '',
-            options: [],
-            label: 'name',
-            activate: false,
-            placeholder: 'Ciudad',
-            icon: 'fa-car',
-            loadData: true
-          }
-
-        },
-        optInput: {
-          seatNumber: {
-            label: 'Asientos',
-            placeholder: 'Numero de asientos',
-            type: 'number'
-          },
-          date: {
-            label: 'Fecha',
-            placeholder: 'Fecha de la venta',
-            type: 'text'
-          },
-          amount: {
-            label: 'Monto',
-            placeholder: 'Costo de la venta',
-            type: 'number'
-          },
-          discount: {
-            label: 'Descuento',
-            placeholder: 'Ingrese descuento',
-            type: 'number'
-          },
-          currency: {
-            label: 'Moneda',
-            placeholder: 'Tipo de moneda',
-            type: 'number'
-          },
-          invoiceNumber: {
-            label: 'Factura',
-            placeholder: 'Comprobante de pago',
-            type: 'text',
-            input: 'input'
-          },
-          observation: {
-            label: 'Observacion',
-            placeholder: 'Ingrese alguna observacion',
-            type: 'text',
-            input: 'textarea'
-          }
-        },
+        optInput: dataForm.input,
         lCols: 4,
-        selectedKey: ''
+        selectedKey: '',
+        multiselectKeys: []
       }
     },
     validations () {
-      return nDATA.validate
-//      item: {
-//        seatNumber: {
-//          required,
-//          numeric,
-//          between: between(2, 100)
-//        },
-//        date: {
-//          required
-//        },
-//        amount: {
-//          required,
-//          numeric
-//        }
-//      },
-//      validationGroup: ['item', 'optType']
+      return dataForm.validate
     },
     computed: {
       isLoading () {
@@ -219,7 +118,7 @@
         this.$emit('emit_addRow', newItem)
       },
       processData (action) {
-        let invalid = this.$v.validationGroup.$invalid
+        let invalid = this.$v.item.$invalid
         let url = !this.item.id ? this.urlRest : this.urlRest + '/' + this.item.id
         if (!invalid) {
           let self = this.$store.dispatch('dispatchHTTP', {type: action, url: url, data: this.item})
@@ -232,42 +131,45 @@
             }
           })
         } else {
-          this.$v.validationGroup.$touch()
+          this.$v.item.$touch()
+          alert('ERROR')
         }
       },
-      getTypes (urlRest, key) {
+      getOption (urlRest, index) {
         let self = this.$store.dispatch('dispatchHTTP', {type: 'GET', url: urlRest})
         self.then((data) => {
           if (data.status) {
-            this.optType[key].options = data.content
-            this.optType[key].activate = true
-            console.log(this.optType[key].options)
+            this.optInput[index].params.options = data.content
+            this.optInput[index].params.activate = true
+            console.log('OPTIONSSSSSSSSSSSSS')
+            console.log(this.optInput[index].params.options)
+            console.log('-------------------')
           }
         })
       },
       setMultiSelect () {
         let vm = this
-        this.$lodash.forEach(this.optType, function (value, key) {
-          let options = vm.optType[key].options
-          let idKey = vm.optType[key].key
+        this.$lodash.forEach(this.multiselectKeys, function (key) {
+          let options = vm.optInput[key].params.options
+          let idKey = vm.optInput[key].params.key
           let optionPick = vm.$lodash.filter(options, {'id': vm.item[idKey]})
-          if (optionPick.length >= 0) {
-            vm.optType[key].value = optionPick[0]
+          if (optionPick.length > 0) {
+            vm.optInput[key].params.value = optionPick[0]
           } else {
-            vm.optType[key].value = ''
+            vm.optInput[key].params.value = ''
           }
         })
       },
       resetMultiSelect () {
         let vm = this
-        this.$lodash.forEach(this.optType, function (value, key) {
-          vm.optType[key].value = ''
+        this.$lodash.forEach(this.multiselectKeys, function (key) {
+          vm.optInput[key].params.value = ''
         })
       },
       resetForm (formId) {
         document.getElementById(formId).reset()
         this.resetMultiSelect()
-        this.$v.validationGroup.$reset()
+        this.$v.item.$reset()
       }
     },
     watch: {
@@ -283,11 +185,14 @@
     },
     created () {
       let vm = this
-      this.$lodash.forEach(this.optType, function (value, key) {
-        if (vm.optType[key].loadData) {
-          vm.getTypes(value.url, key)
-        } else {
-          vm.optType[key].activate = true
+      this.$lodash.forEach(this.optInput, function (value, key) {
+        if (vm.optInput[key].input === 'multiselect') {
+          vm.multiselectKeys.push(key)
+          if (vm.optInput[key].params.loadData) {
+            vm.getOption(value.params.url, key)
+          } else {
+            vm.optInput[key].params.activate = true
+          }
         }
       })
     }

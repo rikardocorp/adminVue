@@ -1,44 +1,49 @@
 <template>
   <b-card>
-    <span class="btn-tool-left input-group-addon bg-primary" @click="resetForm('forms-'+ urlRest)" title="Reset">
+    <span class="btn-tool-left input-group-addon bg-primary" @click="resetForm(name + urlRest)" title="Reset">
       <i class="fa fa-eraser" aria-hidden="true"></i>
     </span>
     <div slot="header" class="text-center">
       <strong>Cotizar</strong> Seguros
     </div>
 
-    <b-form :id="'forms-'+ urlRest">
-      <b-form-group v-for="(option, index) in optType" :key="index"
-                    feedback="feedback"
-                    :state="null"
-                    :horizontal="horizontal" :label-cols="2" class="text-center">
+    <b-form :id="name + urlRest">
+
+      <b-form-group v-for="(option, index) in optInput" :key="index"
+                    :class="{ 'form-group--error': $v.item[index]? $v.item[index].$error : false, 'text-center': true}"
+                    :label-cols="lCols"
+                    :label="option.label + ':'"
+                    :horizontal="horizontal">
         <template slot="label">
           <span>
-            <i :class="'fa ' + option.icon" aria-hidden="true"></i>
+            <i :class="'fa ' + option.params.icon" aria-hidden="true"></i>
           </span>
         </template>
-        <multiselect v-if="option.placeholder=='MARCA'" :close-on-select="true" :clear-on-select="false" :hide-selected="true" :preserve-search="false" :taggable="false"
-                     select-label=""
-                     :label="option.label" :track-by="option.label"
-                     :loading="!option.activate"
-                     :disabled="!option.activate"
+
+        <!-- INPUT -->
+        <b-form-input v-if="option.input==undefined || option.input=='input'"
+                      :disabled="isLoading" :type="option.type"
+                      v-model.trim="item[index]"
+                      @blur.native="$v.item[index]? $v.item[index].$touch(): false"
+                      :placeholder="option.placeholder+'..'"></b-form-input>
+
+        <!-- MULTISELECT -->
+        <multiselect v-else-if="option.input=='multiselect'"
+                     :close-on-select="true" :clear-on-select="false" :hide-selected="true" :preserve-search="false" :taggable="false" select-label=""
                      :placeholder="option.placeholder"
-                     v-model="option.value"
-                     :options="option.options"
-                     @select="dispatchAction">
+                     :label="option.params.label" :track-by="option.params.label"
+                     :loading="!option.params.activate"
+                     :disabled="!option.params.activate || isLoading"
+                     v-model="option.params.value"
+                     :options="option.params.options"
+                     @input="selectOption"
+                     @blur.native="$v.item[index]? $v.item[index].$touch(): false"
+                     @open="openSelect(option.params.key)" >
         </multiselect>
 
-        <multiselect v-else :close-on-select="true" :clear-on-select="false" :hide-selected="true" :preserve-search="false" :taggable="false"
-                     select-label=""
-                     :label="option.label" :track-by="option.label"
-                     :loading="!option.activate"
-                     :disabled="!option.activate"
-                     :placeholder="option.placeholder"
-                     v-model="option.value"
-                     :options="option.options">
-        </multiselect>
+        <!-- ERROR MESSAGE-->
+        <form-error :data="$v.item[index]? $v.item[index] : {} "></form-error>
       </b-form-group>
-
 
       <div slot="footer">
         <b-form-group :horizontal="true" :label-cols="2">
@@ -56,13 +61,18 @@
 
 <script>
   import Multiselect from 'vue-multiselect'
+  import FormError from '../../../components/FormError.vue'
+  import {DATA_FORM as dataForm} from '../../../data/dnCotizar'
   export default {
     props: ['value', 'item', 'horizontal', 'urlRest'],
     components: {
-      Multiselect: Multiselect
+      Multiselect,
+      FormError
     },
     data () {
       return {
+        name: 'form-',
+        lCols: 2,
         isSearch: false,
         localValue: {},
         optType: {
@@ -114,8 +124,14 @@
             icon: 'fa-id-card-o',
             loadData: true
           }
-        }
+        },
+        optInput: dataForm.input,
+        selectedKey: '',
+        multiselectKeys: [],
       }
+    },
+    validations () {
+      return dataForm.validate
     },
     computed: {
       isLoading () {
@@ -123,39 +139,36 @@
       }
     },
     methods: {
-      nameWithLang ({ name, language }) {
-        return `${name} — [${language}]`
+      selectOption (selectedOption) {
+        console.log(selectedOption)
+        let key = this.selectedKey
+        let keyValue = this.optInput[key].params.keyValue
+        this.item[key] = selectedOption === null ? '' : selectedOption[keyValue]
+
+        // GET OPTIONS MODEL CAR
+        if (key === 'brand') {
+          let vehicleBrand = this.item[key]
+          let url = this.optInput['model'].params.url + vehicleBrand
+          this.getOption(url, 'model')
+        }
       },
-      getTypes (urlRest, key) {
+      openSelect (id) {
+        console.log('AAAAAAA ' + id)
+        this.selectedKey = id
+      },
+      getOption (urlRest, index) {
         let self = this.$store.dispatch('dispatchHTTP', {type: 'GET', url: urlRest})
         self.then((data) => {
           if (data.status) {
-            this.optType[key].options = data.content
-            this.optType[key].activate = true
+            this.optInput[index].params.options = data.content
+            this.optInput[index].params.activate = true
           }
         })
       },
-      dispatchAction (selectedOption, id) {
-        let vehicleBrand = selectedOption.vehicleBrand
-        let url = 'vehicletypes/filter?type=1&vehicleBrand=' + vehicleBrand
-        console.log(url)
-        this.getTypes(url, 'modelo')
-        console.log(selectedOption)
-      },
       cotizar () {
-        let item = {}
-        let idKey = ''
-        let keyValue = ''
-        let vm = this
-        this.$lodash.forEach(this.optType, function (value, key) {
-          idKey = vm.optType[key].key
-          keyValue = vm.optType[key].keyValue
-          item[idKey] = vm.optType[key].value[keyValue]
-        })
-
         this.isSearch = true
         this.$emit('isSearching', true)
-        let myUrl = 'insuranceprices/cotizar?regionId=' + item['regionId'] + '&useTypeId=' + item['useTypeId'] + '&brand=' + item['brand'] + '&model=' + item['model']
+        let myUrl = 'insuranceprices/cotizar?regionId=' + this.item['regionId'] + '&useTypeId=' + this.item['useTypeId'] + '&brand=' + this.item['brand'] + '&model=' + this.item['model']
         let self = this.$store.dispatch('dispatchHTTP', {type: 'GET', url: myUrl})
         self.then((data) => {
           if (data.status) {
@@ -168,37 +181,35 @@
           this.$emit('isSearching', false)
         })
         console.log(myUrl)
-        console.log(item)
       },
       emitResult (items) {
         this.$emit('input', items)
       },
       resetMultiSelect () {
         let vm = this
-        this.$lodash.forEach(this.optType, function (value, key) {
-          vm.optType[key].value = ''
+        this.$lodash.forEach(this.multiselectKeys, function (key) {
+          vm.optInput[key].params.value = ''
         })
       },
       resetForm (formId) {
         document.getElementById(formId).reset()
         this.resetMultiSelect()
         this.emitResult([])
+        this.$v.item.$reset()
       }
-    },
-    watch: {
-
     },
     created () {
       let vm = this
-      this.$lodash.forEach(this.optType, function (value, key) {
-        if (vm.optType[key].loadData) {
-          vm.getTypes(value.url, key)
-        } else {
-          vm.optType[key].activate = true
+      this.$lodash.forEach(this.optInput, function (value, key) {
+        if (vm.optInput[key].input === 'multiselect') {
+          vm.multiselectKeys.push(key)
+          if (vm.optInput[key].params.loadData) {
+            vm.getOption(value.params.url, key)
+          } else {
+            vm.optInput[key].params.activate = true
+          }
         }
       })
-      console.log('ITEMSSSSSS')
-      console.log(this.value)
     }
   }
 </script>

@@ -3,7 +3,7 @@
     <div class="animated fadeIn">
       <div class="row d-flex justify-content-center">
         <div class="col-md-6">
-          <app-form :item="item" :validate="validate" :update="update" :urlRest="urlRest" :horizontal="true" @emit_addRow="addRow"></app-form>
+          <app-form :item="item" :update="update" :urlRest="urlRest" :horizontal="true" @emit_addRow="addRow"></app-form>
         </div>
       </div>
 
@@ -27,7 +27,7 @@
 </template>
 
 <script>
-  import {DATA_SALE as nDATA} from '../../data/Sale'
+  import {DATA as nDATA} from '../../data/dnSales'
   import Form from './forms/FormPolicySold.vue'
   import Table from '../../components/xTable.vue'
 
@@ -42,7 +42,6 @@
         urlRest: nDATA.name,
         item: JSON.parse(JSON.stringify(nDATA.post)),
         fields: JSON.parse(JSON.stringify(nDATA.fieldsTable)),
-        validate: JSON.parse(JSON.stringify(nDATA.validate)),
         items: [],
         update: false,
         indexSelected: null,

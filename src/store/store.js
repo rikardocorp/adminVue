@@ -14,7 +14,7 @@ export default new Vuex.Store({
     isLoadingModal: false,
     notification: {
       count: 0,
-      data: ''
+      content: ''
     },
     fullscreen: false
   },
@@ -32,7 +32,7 @@ export default new Vuex.Store({
       console.log('PUSH NOTIFICATION')
       let data = {
         count: state.notification.count + 1,
-        data: value
+        content: value
       }
       Vue.set(state, 'notification', data)
     },
@@ -41,11 +41,12 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    dispatchHTTP: ({commit, state}, { type, url, data, notify = {success: true, error: true} }) => {
+    dispatchHTTP: ({commit, state}, { type, url, data, notify = {success: false, error: false} }) => {
       console.log(type, url, data, notify)
       commit('switchLoading', true)
       let inquiry = ''
       let message = {}
+      let keyStatus = ''
       let promise = new Promise((resolve, reject) => {
         let result = {
           status: false,
@@ -54,15 +55,23 @@ export default new Vuex.Store({
         switch (type) {
           case 'GET':
             inquiry = Vue.http.get(url)
+            notify.success = false
+            notify.error = true
             break
           case 'INSERT':
             inquiry = Vue.http.post(url, data)
+            notify.success = false
+            notify.error = true
             break
           case 'UPDATE':
             inquiry = Vue.http.patch(url, data)
+            notify.success = true
+            notify.error = true
             break
           case 'DELETE':
             inquiry = Vue.http.delete(url)
+            notify.success = true
+            notify.error = true
             break
           case 'FILE':
             notify = {success: false, error: false}
@@ -78,9 +87,11 @@ export default new Vuex.Store({
         // SUCCSESS
         inquiry.then(response => {
           console.log('SUCCESSSSSSSSS')
-          message.status = true
-          message.data = {statusText: response.statusText, status: response.status, data: response.data.message}
-          if (notify.success) {
+          console.log(response)
+          message.data = {message: response.data.message, status: response.status, success: response.data.success}
+
+          keyStatus = response.data.success ? 'success' : 'error'
+          if (notify[keyStatus]) {
             commit('pushNotification', message)
           }
           result.status = true
@@ -91,8 +102,9 @@ export default new Vuex.Store({
         // ERROR
         inquiry.catch(error => {
           console.log('ERRRRRORRRRRR')
+          console.log(error)
           message.status = false
-          message.data = {statusText: error.statusText, status: error.status, data: error.data.message}
+          message.data = {message: 'Ocurrio un problema inesperado, intenta nuevamente', status: error.status, success: false}
           if (notify.error) {
             commit('pushNotification', message)
           }
