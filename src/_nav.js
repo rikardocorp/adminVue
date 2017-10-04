@@ -18,11 +18,11 @@ export default {
       url: '/mantenimiento',
       icon: 'icon-puzzle',
       children: [
-        {
-          name: 'Ciudad',
-          url: '/mantenimiento/ciudad',
-          icon: 'icon-puzzle'
-        },
+        // {
+        //   name: 'Ciudad',
+        //   url: '/mantenimiento/ciudad',
+        //   icon: 'icon-puzzle'
+        // },
         {
           name: 'Tipos de Uso',
           url: '/mantenimiento/tipo-uso',
@@ -51,24 +51,24 @@ export default {
       ]
     },
     {
-      name: 'Venta Poliza',
+      name: 'Vehiculos',
       url: '/venta',
       icon: 'fa fa-gears',
       children: [
-        {
-          name: 'Nueva venta',
-          url: '/venta/nueva-venta',
-          icon: 'fa fa-map-marker',
-          badge: {
-            variant: 'primary',
-            text: 'NEW'
-          }
-        },
-        {
-          name: 'Registro Cliente',
-          url: '/venta/clientes',
-          icon: 'fa fa-map-marker'
-        },
+        // {
+        //   name: 'Nueva venta',
+        //   url: '/venta/nueva-venta',
+        //   icon: 'fa fa-map-marker',
+        //   badge: {
+        //     variant: 'primary',
+        //     text: 'NEW'
+        //   }
+        // },
+        // {
+        //   name: 'Registro Cliente',
+        //   url: '/venta/clientes',
+        //   icon: 'fa fa-map-marker'
+        // },
         {
           name: 'Registro Vehiculo',
           url: '/venta/vehiculos',
@@ -79,23 +79,32 @@ export default {
           url: '/venta/contratantes',
           icon: 'fa fa-map-marker'
         },
-        {
-          name: 'Contratos',
-          url: '/venta/contratos',
-          icon: 'fa fa-map-marker'
-        }
+        // {
+        //   name: 'Contratos',
+        //   url: '/venta/contratos',
+        //   icon: 'fa fa-map-marker'
+        // }
       ]
     },
     {
       title: true,
-      name: 'Precio Poliza'
+      name: 'POLIZA'
     },
     {
       name: 'Polizas',
-      url: '/asignacion-poliza',
+      url: '/insertar-poliza',
       icon: 'fa fa-money',
       badge: {
         variant: 'danger',
+        text: 'NEW'
+      }
+    },
+    {
+      name: 'Asignacion',
+      url: '/asignar-poliza',
+      icon: 'fa fa-money',
+      badge: {
+        variant: 'success',
         text: 'NEW'
       }
     },
@@ -110,7 +119,7 @@ export default {
     },
     {
       title: true,
-      name: 'Ventas'
+      name: 'VENTAS'
     },
     // {
     //   name: 'Venta Poliza',

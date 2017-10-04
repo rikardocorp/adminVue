@@ -18,7 +18,7 @@
         <div key="div2" v-show="switchPrices">
 
           <div class="row d-flex justify-content-center">
-            <div class="col-md-7">
+            <div class="col-md-6">
               <app-form :item="item"
                         :vehicle="itemVT"
                         :update="update"
@@ -44,7 +44,7 @@
       </transition-group>
     </div>
 
-    <pre>{{ item }}</pre>
+    <!--<pre>{{ item }}</pre>-->
 
     <b-modal :title="modalDetails.title" :class="'modal-'+ownClass" v-model="showModal">
       {{ modalDetails.data }}

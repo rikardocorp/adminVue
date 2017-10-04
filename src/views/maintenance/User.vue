@@ -7,7 +7,7 @@
         </div>
       </div>
 
-      <pre>{{ item }}</pre>
+      <!--<pre>{{ item }}</pre>-->
 
       <div class="row">
         <div class="col-12">

@@ -85,9 +85,9 @@ const actions = {
   getDataUser: ({commit, state}) => {
     console.log('IDENTITY')
     let inquiry = Vue.http.get(state.DATAUSER_URL).then(response => {
-      let data = response.data.data
       console.log('response: IDENTITY')
       console.log(response)
+      let data = response.data.data
       localStorage.setItem('username', data.username)
       localStorage.setItem('date', data.date)
       localStorage.setItem('time', data.time)

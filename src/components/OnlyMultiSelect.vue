@@ -1,45 +1,44 @@
 <template>
   <div style="width: 100%;">
-    <multiselect :hideSelected="false"
-                 :multiple="true"
-                 :close-on-select="false"
-                 :ClearOnSelect="false"
-                 :preserve-search="false"
-                 :internal-search="false"
-                 @search-change="searchOption"
-                 :loading="(disabled || localDisabled)"
-                 select-label=""
+    <multiselect :hideSelected="false" :multiple="true" :close-on-select="false" :ClearOnSelect="false"
+                 :preserve-search="false" :internal-search="false" select-label=""
+                 :loading="localIsloading"
                  :disabled="disabled || localDisabled"
-                 @input="emitValue" @select="pickOption"
-                 @open="openSelect" @remove="removeTag"
-                 :max="this.optType.length"
+                 :max="this.optionList.length"
                  :placeholder="placeholder"
                  v-model="localValue"
                  :max-height="maxHeight"
-                 :options="options">
+                 :options="options"
+                 @select="pickOption"
+                 @remove="removeOption"
+                 @search-change="searchOption"
+                 @input="emitValue">
+
+      <!--@open="openSelect" @remove="removeTag"-->
+      <!--@search-change="searchOption"-->
 
       <template slot="tag" scope="props"><span :class="props.option.color">{{ props.option[keySearch] }}</span></template>
       <template slot="option" scope="props"><span class="option__small">{{ props.option[keySearch] }}</span></template>
       <template slot="maxElements" scope="props">Departamento-Provincia-Distrito</template>
     </multiselect>
     <!--<pre class="text-left">{{ selectValue }}</pre>-->
-    <!--<p>DPD: {{value}}</p>-->
-    <!--<p>LOCAL DPD: {{localValue}}</p>-->
+    <!--<pre>DPD: {{value}}</pre>-->
+    <!--<pre>LOCAL DPD: {{localValue}}</pre>-->
+    <!--<pre class="language-json"><code>{{ localValue  }}</code></pre>-->
+
   </div>
 
-  <!--<pre class="language-json"><code>{{ value  }}</code></pre>-->
 </template>
 
 <script>
   import Multiselect from 'vue-multiselect'
   export default {
-    props: ['value', 'optionStack', 'disabled', 'placeholderDefault', 'maxHeight'],
+    props: ['value', 'optionList', 'disabled', 'placeholderDefault', 'maxHeight'],
     components: {
       Multiselect: Multiselect
     },
     data () {
       return {
-        optType: this.optionStack,
         localValue: [],
         options: [],
         optionsAux: [],
@@ -47,61 +46,42 @@
         cen: 0,
         placeholder: '',
         keySearch: '',
+        localIsloading: true,
         localDisabled: true,
         countLoad: 0,
         selectValue: ''
       }
     },
     methods: {
-      searchOption (query) {
-        let keySearch = this.keySearch
-        console.log(keySearch)
-        this.options = this.$lodash.filter(this.optionsAux, function (item) {
-          return item[keySearch].toLowerCase().indexOf(query.toLowerCase()) > -1
-        })
+      async getTypes (index) {
+        let url = this.optionList[index].url
+        let self = await this.$store.dispatch('dispatchHTTP', {type: 'GET', url: url})
+        if (!self.status) return false
+        this.countLoad++
+        this.optionList[index].options = self.content
       },
-      loadLocalValue () {
-        let vm = this
-        let count = 0
-        vm.localValue = []
-        vm.localDisabled = false
-        if (Array.isArray(this.value) && (this.value.length == this.optType.length)) {
-          for (let i = 0; i < this.value.length; i++) {
-            let optionType = vm.optType[i]
-            let optionPick = vm.$lodash.filter(optionType.options, {'id': this.value[i]})
-            // Verificamos que existe el item
-            if (optionPick.length) {
-              count++
-              optionType.pickID = this.value[i]
-              optionPick[0]['color'] = optionType.colorClass
-              vm.localValue.push(optionPick[0])
-            } else {
-              break
-            }
-          }
-          this.indexSelect = count
-          if (count < this.optType.length) {
-            this.setOptions(this.indexSelect)
-          }
-        }
+      initOption () {
+        this.indexSelect = 0
+        let optionIndex = this.optionList[this.indexSelect]
+        this.keySearch = optionIndex.keySearch
+        this.options = optionIndex.options
+        this.optionsAux = optionIndex.options
+        // indexSelect = 0
       },
       pickOption (selectedOption) {
-        this.localDisabled = true
-        let vm = this
-        let optionType = vm.optType[vm.indexSelect]
-        optionType.pickID = selectedOption.id
-        let optionPick = vm.$lodash.filter(optionType.options, {'id': selectedOption.id})
-        optionPick[0]['color'] = optionType.colorClass
-
+        let optionIndex = this.optionList[this.indexSelect]
+        optionIndex.pickID = JSON.parse(JSON.stringify(selectedOption))
+        let optionPick = this.$lodash.filter(optionIndex.options, selectedOption)
+        optionPick[0]['color'] = optionIndex.colorClass
         this.indexSelect++
-        if (this.indexSelect < this.optType.length) {
-          this.setOptions(this.indexSelect)
-        }
+        if (this.indexSelect < this.optionList.length) this.setOptions(this.indexSelect)
       },
-      removeTag (removedOption) {
-        this.localDisabled = true
+      removeOption (removedOption) {
         if (this.indexSelect > 0) {
           this.indexSelect--
+          let optionIndex = this.optionList[this.indexSelect]
+          let optionPick = this.$lodash.filter(optionIndex.options, removedOption)
+          this.$delete(optionPick[0], 'color')
           this.setOptions(this.indexSelect)
         }
       },
@@ -109,95 +89,66 @@
         let opt
         let query = {}
         for (let i = 0; i < indexSelect; i++) {
-          opt = this.optType[i]
+          opt = this.optionList[i]
           query[opt.id] = opt.pickID
         }
-
-        console.log(query)
-        let optionType = this.optType[indexSelect]
-        this.options = this.$lodash.filter(optionType.options, query)
+        let optionIndex = this.optionList[indexSelect]
+        this.options = this.$lodash.filter(optionIndex.options, query)
         this.optionsAux = this.options
-        console.log('OPCIONES BUSCAR ' + optionType)
-        console.log(this.options)
-        this.placeholder = optionType.placeholder
-        this.keySearch = optionType.keySearch
+
+        this.placeholder = optionIndex.placeholder
+        this.keySearch = optionIndex.keySearch
       },
-      openSelect () {
-        if (this.indexSelect == -1) {
-          this.indexSelect++
-          let optionType = this.optType[this.indexSelect]
-          this.options = optionType.options
-          this.optionsAux = this.options
-          this.placeholder = optionType.placeholder
-          this.keySearch = optionType.keySearch
-        }
+      searchOption (query) {
+        let keySearch = this.keySearch
+        console.log(keySearch)
+        console.log(this.optionsAux)
+        this.options = this.$lodash.filter(this.optionsAux, function (item) {
+          return item[keySearch].toLowerCase().indexOf(query.toLowerCase()) > -1
+        })
       },
       emitValue (selectValue) {
-        console.log('AAAAABBBCCCC')
-        console.log(selectValue)
+        let localValue = JSON.parse(JSON.stringify(selectValue))
         this.selectValue = selectValue
-        if (selectValue.length == this.optType.length) {
+        if (localValue.length === this.optionList.length) {
           let eValue = []
-          for (let i = 0; i < this.optType.length; i++) {
-            eValue.push(selectValue[i].id)
+          for (let i = 0; i < this.optionList.length; i++) {
+            this.$delete(localValue[i], 'color')
+            eValue.push(localValue[i])
           }
           this.$emit('input', eValue)
           this.placeholder = ''
         }
-        this.localDisabled = false
       },
-      getTypes (index) {
-        let url = this.optType[index].url
-        let self = this.$store.dispatch('dispatchHTTP', {type: 'GET', url: url})
-        self.then((data) => {
-          if (data.status) {
-            console.log(data.content)
-            let optionPick = this.$lodash.filter(data.content, {'id': '230101'})
-
-            console.log('CIUDAD ' + url)
-            console.log(optionPick)
-            this.countLoad++
-            this.optType[index].options = data.content
-          }
+      loadInitValue () {
+        if (!Array.isArray(this.value)) return false
+        let optionIndex = ''
+        let localValue = JSON.parse(JSON.stringify(this.value))
+        let vm = this
+        localValue.forEach(function (value, index) {
+          optionIndex = vm.optionList[index]
+          vm.pickOption(value)
+          value['color'] = optionIndex.colorClass
+          vm.localValue.push(value)
         })
       }
     },
     watch: {
-      countLoad () {
-        if (this.countLoad == this.optType.length) {
-          this.loadLocalValue()
-        }
-      },
-      value (newVal) {
-        console.log('WATCH DPD')
-        if (this.countLoad == this.optType.length && (this.optType.length + 1 == newVal.length || newVal == '')) {
-          if (newVal != '') {
-            this.value.splice(0, 1)
-            this.loadLocalValue()
-          } else {
-            this.localValue = []
-            this.indexSelect = -1
-          }
+      countLoad (newVal, oldVal) {
+        if (newVal === this.optionList.length) {
+          this.localIsloading = false
+          this.localDisabled = false
+          this.initOption()
+          this.loadInitValue()
         }
       }
     },
-    mounted () {
+    created () {
       let vm = this
-      this.$lodash.forEach(this.optType, function (value, key) {
+      this.optionList.forEach(function (value, key) {
         vm.getTypes(key)
       })
       this.placeholder = this.placeholderDefault
     }
   }
 </script>
-
-<style scoped="">
-  .badge{
-    font-size: 87%;
-    font-weight: 600;
-    margin-left: 3px;
-    border-radius: 0.3rem;
-    padding: 0.25em;
-    margin-bottom: 8px;
-  }
-</style>

@@ -58,7 +58,7 @@
         feedback="feedback"
         :state="null"
         :horizontal="horizontal">
-        <only-multi-select v-model="DPD" :optionStack="optType" :disabled="isLoading" :placeholderDefault="'Departamento-Provincia-Distrito'"></only-multi-select>
+        <only-multi-select v-model="DPD" :optionList="optType" :disabled="isLoading" :placeholderDefault="'Departamento-Provincia-Distrito'"></only-multi-select>
       </b-form-group>
 
       <b-form-group class="text-right" :label-cols="lCols"
@@ -112,33 +112,68 @@
         DPD: '', //[ "230000", "230400", "230404" ],
         localItem: {},
         defaultItem: {},
+//        optType: [
+//          {
+//            url: 'regions',
+//            options: [],
+//            pickID: null,
+//            id: 'regionId',
+//            colorClass: 'badge badge-danger',
+//            placeholder: 'Departamento',
+//            keySearch: 'name'
+//          },
+//          {
+//            url: 'provinces',
+//            options: [],
+//            pickID: null,
+//            id: 'provinceId',
+//            colorClass: 'badge badge-success',
+//            placeholder: 'Provincia',
+//            keySearch: 'name'
+//          },
+//          {
+//            url: 'cities',
+//            options: [],
+//            pickID: null,
+//            id: 'citieId',
+//            colorClass: 'badge badge-info text-white',
+//            placeholder: 'Distrito',
+//            keySearch: 'name'
+//          }
+//        ],
         optType: [
           {
             url: 'regions',
             options: [],
             pickID: null,
-            id: 'regionId',
+            id: 'region',
+            keySearch: 'name',
             colorClass: 'badge badge-danger',
             placeholder: 'Departamento',
-            keySearch: 'name'
+
+            backId: 'name'
           },
           {
             url: 'provinces',
             options: [],
             pickID: null,
-            id: 'provinceId',
+            id: 'province',
+            keySearch: 'name',
             colorClass: 'badge badge-success',
             placeholder: 'Provincia',
-            keySearch: 'name'
+
+            backId: 'name'
           },
           {
             url: 'cities',
             options: [],
             pickID: null,
-            id: 'citieId',
+            id: 'city',
+            keySearch: 'name',
             colorClass: 'badge badge-info text-white',
             placeholder: 'Distrito',
-            keySearch: 'name'
+
+            backId: 'name'
           }
         ],
         titleRazonSocial: 'Nombre Completo',

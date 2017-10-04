@@ -39,11 +39,10 @@
                      :label="option.params.label" :track-by="option.params.label"
                      :loading="!option.params.activate"
                      :disabled="!option.params.activate || isLoading"
-                     v-model="option.params.value"
+                     v-model="item[index]"
                      :options="option.params.options"
-                     @input="selectOption"
-                     @blur.native="$v.item[index]? $v.item[index].$touch(): false"
-                     @open="openSelect(option.params.key)" >
+
+                     @blur.native="$v.item[index]? $v.item[index].$touch(): false">
         </multiselect>
 
         <!-- DATEPICKER -->
@@ -61,7 +60,7 @@
       </b-form-group>
 
       <div slot="footer">
-        <b-form-group :horizontal="horizontal">
+        <b-form-group :horizontal="horizontal" :label-cols="lCols">
           <template v-if="!update">
             <b-button @click.prevent="processData('INSERT')" :disabled="isLoading" type="submit" size="sm" variant="primary"><i class="fa fa-dot-circle-o"></i> Submit</b-button>
             <b-button @click="resetForm(name + urlRest)" :disabled="isLoading" size="sm" variant="danger"><i class="fa fa-ban"></i> Reset</b-button>
@@ -74,8 +73,8 @@
         </b-form-group>
       </div>
 
-      <p>{{ item }}</p>
-      <p>{{ vehicle }}</p>
+      <!--<pre>{{ item }}</pre>-->
+      <!--<pre>{{ vehicle }}</pre>-->
 
     </b-form>
 
@@ -152,6 +151,9 @@
               console.log(data.content)
               this.addRow(data.content)
               this.resetForm(this.name + this.urlRest)
+            } else {
+              console.log('ERRORRR')
+              console.log(data)
             }
           })
         } else {
@@ -220,7 +222,7 @@
         console.log('WATCH item')
         console.log(newVal)
         console.log(oldVal)
-        this.item.vehicleTypeId = this.vehicle.id
+        this.item.vehicleType = this.vehicle
         if (this.update) {
           console.log('WATCH item update')
           this.setMultiSelect()

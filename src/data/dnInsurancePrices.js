@@ -5,11 +5,11 @@ export const DATA = {
   post: {
     name: '',
     price: '',
-    vehicleTypeId: '',
-    insuranceCompanyId: '',
-    insuranceTypeId: '',
-    regionId: '',
-    useTypeId: '',
+    vehicleType: '',
+    insuranceCompany: '',
+    insuranceType: '',
+    region: '',
+    useType: '',
     validityDate: ''
   },
   fieldsTable: {
@@ -26,7 +26,7 @@ export const DATA = {
 
 export const DATA_FORM = {
   input: {
-    regionId: {
+    region: {
       label: 'Departamento',
       placeholder: 'Departamento',
       type: 'text',
@@ -41,7 +41,7 @@ export const DATA_FORM = {
         value: ''
       }
     },
-    insuranceCompanyId: {
+    insuranceCompany: {
       label: 'Aseguradoras',
       placeholder: 'Compañia de Seguro',
       type: 'text',
@@ -56,7 +56,7 @@ export const DATA_FORM = {
         value: ''
       }
     },
-    insuranceTypeId: {
+    insuranceType: {
       label: 'Tipo seguro',
       placeholder: 'Tipo de seguro',
       type: 'text',
@@ -71,14 +71,14 @@ export const DATA_FORM = {
         value: ''
       }
     },
-    useTypeId: {
+    useType: {
       label: 'Tipo uso',
       placeholder: 'Tipo de uso',
       type: 'text',
       input: 'multiselect',
       params: {
         url: 'usetypes',
-        key: 'useTypeId',
+        key: 'useType',
         label: 'name',
         options: [],
         activate: false,
@@ -109,16 +109,16 @@ export const DATA_FORM = {
   },
   validate: {
     item: {
-      regionId: {
+      region: {
         required
       },
-      insuranceCompanyId: {
+      insuranceCompany: {
         required
       },
-      insuranceTypeId: {
+      insuranceType: {
         required
       },
-      useTypeId: {
+      useType: {
         required
       },
       price: {

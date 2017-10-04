@@ -60,7 +60,7 @@ export default new Vuex.Store({
             break
           case 'INSERT':
             inquiry = Vue.http.post(url, data)
-            notify.success = false
+            notify.success = true
             notify.error = true
             break
           case 'UPDATE':
@@ -88,13 +88,14 @@ export default new Vuex.Store({
         inquiry.then(response => {
           console.log('SUCCESSSSSSSSS')
           console.log(response)
-          message.data = {message: response.data.message, status: response.status, success: response.data.success}
+          message.status = response.data.success
+          message.data = {message: response.data.message, status: response.status, success: response.data.success, url: response.url}
 
           keyStatus = response.data.success ? 'success' : 'error'
           if (notify[keyStatus]) {
             commit('pushNotification', message)
           }
-          result.status = true
+          result.status = response.data.success
           result.content = response.body.data
           resolve(result)
         })
@@ -104,7 +105,7 @@ export default new Vuex.Store({
           console.log('ERRRRRORRRRRR')
           console.log(error)
           message.status = false
-          message.data = {message: 'Ocurrio un problema inesperado, intenta nuevamente', status: error.status, success: false}
+          message.data = {message: 'Ocurrio un problema inesperado, intenta nuevamente', status: error.status, success: false, url: error.url}
           if (notify.error) {
             commit('pushNotification', message)
           }

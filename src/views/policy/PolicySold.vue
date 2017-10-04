@@ -1,11 +1,11 @@
 <template>
   <div class="wrapper">
     <div class="animated fadeIn">
-      <div class="row d-flex justify-content-center">
-        <div class="col-md-6">
-          <app-form :item="item" :update="update" :urlRest="urlRest" :horizontal="true" @emit_addRow="addRow"></app-form>
-        </div>
-      </div>
+      <!--<div class="row d-flex justify-content-center">-->
+        <!--<div class="col-md-6">-->
+          <!--<app-form :item="item" :update="update" :urlRest="urlRest" :horizontal="true" @emit_addRow="addRow"></app-form>-->
+        <!--</div>-->
+      <!--</div>-->
 
       <div class="row">
         <div class="col-12">
@@ -13,7 +13,7 @@
         </div><!--/.col-->
       </div><!--/.row-->
     </div>
-    <pre>{{ item }}</pre>
+    <!--<pre>{{ item }}</pre>-->
     <button @click="update=!update">UPDATE</button>
 
     <b-modal :title="modalDetails.title" :class="'modal-'+ownClass" v-model="showModal" :no-close-on-esc="true" :no-close-on-backdrop="true">

@@ -4,7 +4,7 @@
            class="switch-input"
            :value="value"
            :checked="isChecked"
-           @change="handleChange">
+           @change="handleChange" :disabled="disabled">
     <template v-if="isOn">
       <span class="switch-label" :data-on="on" :data-off="off"></span>
     </template>
@@ -54,6 +54,9 @@ export default {
     size: {
       type: String,
       default: null
+    },
+    disabled: {
+      default: false
     }
   },
   computed: {

@@ -15,7 +15,7 @@
     <notifications group="foo"
                    position="top right"
                    animation-type="velocity"
-                   :speed="500" :duration="2000">
+                   :speed="500" :duration="3000">
     </notifications>
   </div>
 </template>
@@ -56,10 +56,12 @@ export default {
       console.log(oldVal)
       let type = ''
       let content = newVal.content.data
-      if (content.success) {
+      if (content.success === true) {
         type = 'success'
-      } else {
+      } else if (content.success === false) {
         type = 'error'
+      } else if (content.success === null) {
+        type = 'warn'
       }
 
       this.$notify({

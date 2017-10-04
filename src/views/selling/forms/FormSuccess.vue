@@ -3,7 +3,10 @@
   <div class="col-md-8 m-auto pt-3 pb-4 myPoliza">
 
     <div class="title text-center h3 mb-3 text-primary">
-      Seguro {{ data.pickPolice.item.insuranceTypeName }}
+      Venta Registrada
+    </div>
+    <div class="title text-center mb-3">
+      Poliza #{{  data.sale.item.insurancePolicy ? data.sale.item.insurancePolicy.number : '???'  }}
     </div>
 
     <div class="d-flex justify-content-center mb-3">
@@ -13,36 +16,17 @@
       </div>
     </div>
 
-    <b-form-group class="text-right"
-                  label="Contratante:"
-                  :horizontal="horizontal" :label-cols="lCols">
-      <p class="p-icon"><i class="fa fa-user text-primary"></i></p>
-      <p class="p-text">{{ data.purchaser.item.razonSocial }}</p>
-    </b-form-group>
-
-    <b-form-group class="text-right"
-                  label="Numero Poliza:"
-                  :horizontal="horizontal" :label-cols="lCols">
-      <p class="p-icon"><i class="fa fa-hashtag text-primary"></i></p>
-      <p class="p-text">{{ data.sale.item.insurancePolicy ? data.sale.item.insurancePolicy.number : '???' }}</p>
-    </b-form-group>
-
-    <b-form-group class="text-right"
-                  label="Fecha:"
-                  :horizontal="horizontal" :label-cols="lCols">
-      <p class="p-icon"><i class="fa fa-calendar-check-o text-primary"></i></p>
-      <p class="p-text">{{ nowDate }} {{ nowTime }}</p>
-    </b-form-group>
-
-    <b-form-group class="text-right"
-                  label="Vehiculo:"
-                  :horizontal="horizontal" :label-cols="lCols">
-      <p class="p-icon"><i class="fa fa-car text-primary"></i></p>
-      <p class="p-text">{{ data.vehicle.item.licensePlate }}</p>
-    </b-form-group>
-
     <div class="title text-center mb-1 mt-4" style="color: #2ca710;">
-      <span class="fa-1x">Total: s/.</span> <span class="h2">{{ data.pickPolice.item.price | currency }}</span>
+      <span class="fa-1x">Total: s/.</span> <span class="h4">{{ data.pickPolice.item.price | currency }}</span>
+    </div>
+
+    <div class="row mt-3" :label-sr-only="true">
+      <div class="col-6 text-right pr-0">
+        <b-button :pressed="false" variant="outline-primary" class="mr-1 my-3">IMPRIMIR</b-button>
+      </div>
+      <div class="col-6 text-left pl-0">
+        <b-button :pressed="false" variant="outline-primary" class="ml-1 my-3">PAGOS</b-button>
+      </div>
     </div>
 
   </div>

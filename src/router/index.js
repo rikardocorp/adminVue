@@ -32,6 +32,7 @@ import Price from '../views/price/Price.vue'
 
 // Policy
 import Policy from '../views/policy/Policy.vue'
+import Policy_assign from '../views/policy/PolicyAssign.vue'
 import PolicySold from '../views/policy/PolicySold.vue'
 
 Vue.use(Router)
@@ -126,9 +127,14 @@ export default new Router({
           ]
         },
         {
-          path: 'asignacion-poliza',
+          path: 'insertar-poliza',
           name: 'Asignacion Poliza',
           component: Policy
+        },
+        {
+          path: 'asignar-poliza',
+          name: 'Asignar Poliza',
+          component: Policy_assign
         },
         {
           path: 'precio-poliza',
@@ -142,7 +148,7 @@ export default new Router({
         },
         {
           path: 'cotizar-admin',
-          name: 'Cotizacion Admin',
+          name: 'cotizar',
           component: Cotizar
         },
         {

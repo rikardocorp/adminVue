@@ -64,7 +64,7 @@
   import FormError from '../../../components/FormError.vue'
   import {DATA_FORM as dataForm} from '../../../data/dnCotizar'
   export default {
-    props: ['value', 'item', 'horizontal', 'urlRest'],
+    props: ['value', 'item', 'pickObject', 'horizontal', 'urlRest'],
     components: {
       Multiselect,
       FormError
@@ -144,6 +144,7 @@
         let key = this.selectedKey
         let keyValue = this.optInput[key].params.keyValue
         this.item[key] = selectedOption === null ? '' : selectedOption[keyValue]
+        this.pickObject[this.optInput[key].params.objectKey] = selectedOption
 
         // GET OPTIONS MODEL CAR
         if (key === 'brand') {
@@ -189,6 +190,7 @@
         let vm = this
         this.$lodash.forEach(this.multiselectKeys, function (key) {
           vm.optInput[key].params.value = ''
+          vm.item[key] = ''
         })
       },
       resetForm (formId) {

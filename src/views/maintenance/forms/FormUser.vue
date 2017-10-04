@@ -64,28 +64,28 @@
       <div class="row">
         <div class="col-xs-6 col-md-6">
           <b-form-group class="text-right"
-            label="Gastos:"
-            feedback="feedback"
-            :state="null"
-            :horizontal="horizontal"
-            :labelCols="5">
+                        label="Gastos:"
+                        feedback="feedback"
+                        :state="null"
+                        :horizontal="horizontal"
+                        :label-cols="lCols">
             <c-switch type="text" variant="warning" on="On" off="Off" :pill="true" v-model="item.expense"/>
           </b-form-group>
         </div>
         <div class="col-xs-6 col-md-6">
           <b-form-group class="text-right"
-            label="Activo:"
-            feedback="feedback"
-            :state="null"
-            :horizontal="horizontal"
-            :labelCols="5">
+                        label="Activo:"
+                        feedback="feedback"
+                        :state="null"
+                        :horizontal="horizontal"
+                        :label-cols="lCols">
             <c-switch type="text" variant="warning" on="On" off="Off" :pill="true" v-model="item.enabled"/>
           </b-form-group>
         </div>
       </div>
 
       <div slot="footer">
-        <b-form-group :horizontal="horizontal">
+        <b-form-group :horizontal="horizontal" :label-cols="lCols">
           <template v-if="!update">
             <b-button @click="insertData" :disabled="isLoading" type="submit" size="sm" variant="primary"><i class="fa fa-dot-circle-o"></i> Submit</b-button>
             <b-button :disabled="isLoading" type="reset" size="sm" variant="danger"><i class="fa fa-ban"></i> Reset</b-button>

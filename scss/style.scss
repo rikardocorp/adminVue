@@ -277,3 +277,173 @@ html{
 .fade-enter, .fade-leave-active {
   opacity: 0
 }
+
+// Ticket de poliza
+.ticket {
+  $red: #e84c3d;
+  $grey: white;
+  $greyWhite: #f4f3ef;
+  $black: #343434;
+  $orange: orange;
+
+  &.cardWrap {
+    color: #fff;
+    font-family: sans-serif;
+  }
+
+  .card-ticket {
+    background: $grey;
+    height: 11em;
+    float: left;
+    position: relative;
+  }
+
+  .xcontent{
+    display: block;
+    position: absolute;
+    width: 100%;
+    padding-left: 4em;
+    padding-right: 0.5em;
+  }
+
+  .cardCenter {
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+    padding: 0;
+    width: 14.5em;
+    div.xtitle {
+      background: $orange;
+      padding: 0.8em 0.4em 0.8em 0.6em;
+      height: 3.1em;
+    }
+
+    &.dashed {
+      border-right: .18em dashed $greyWhite;
+      border-top-left-radius: 8px;
+      border-bottom-left-radius: 8px;
+      &:before,
+      &:after {
+        content: "";
+        position: absolute;
+        display: block;
+        width: .9em;
+        height: .9em;
+        background: $greyWhite;
+        border-radius: 50%;
+        right: -.5em;
+      }
+      &:before {
+        top: -.4em;
+      }
+      &:after {
+        bottom: -.4em;
+      }
+    }
+  }
+
+  .cardRight {
+    width: 6.5em;
+    padding: 0;
+    border-left: .18em dashed $greyWhite;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+    &:before,
+    &:after {
+      content: "";
+      position: absolute;
+      display: block;
+      width: .9em;
+      height: .9em;
+      background: $greyWhite;
+      border-radius: 50%;
+      left: -.5em;
+    }
+    &:before {
+      top: -.4em;
+    }
+    &:after {
+      bottom: -.4em;
+    }
+
+    div.xtitle {
+      background: $orange;
+      padding: 0;
+      padding: 0.8em 0.4em 0.8em 0.6em;
+      height: 3.1em;
+
+      button{
+        padding: 0 1.3em;
+        background: white;
+        position: absolute;
+        left: 1.4em;
+        top: -0.3em;
+      }
+    }
+  }
+
+  .cardLeft {
+    background: none;
+    padding: 0;
+    width: 2.8em;
+    .avatar {
+      top: 33%;
+      z-index: 1;
+    }
+  }
+
+  h1 {
+    font-size: 1.1em;
+    margin-top: 0;
+    span {
+      font-weight: normal;
+    }
+  }
+
+  .title, .name, .seat, .time {
+    text-transform: uppercase;
+    font-weight: normal;
+    h2 {
+      font-size: .9em;
+      color: #525252;
+      margin: 0;
+      &.big {
+        font-size: 1.5em;
+      }
+    }
+    span {
+      font-size: .7em;
+      color: #a2aeae;
+    }
+  }
+
+  .title {
+    margin: 1em 0 0 0;
+  }
+
+  .name, .seat {
+    margin: .7em 0 0 0;
+  }
+
+  .time {
+    margin: .7em 0 0 1em;
+  }
+
+  .seat, .time {
+    float: left;
+  }
+
+  .number {
+    text-align: center;
+    text-transform: uppercase;
+    h3 {
+      color: $red;
+      margin: .9em 0 0 0;
+      font-size: 2.5em;
+
+    }
+    span {
+      display: block;
+      color: #a2aeae;
+    }
+  }
+}

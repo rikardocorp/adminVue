@@ -1,11 +1,11 @@
 <template>
   <b-card>
-    <div slot="header">
-      <strong>Registrar</strong> Polizas
+    <div slot="header" class="text-center">
+      <strong>Registrar</strong> Vehiculos
     </div>
     <b-form>
       <b-form-group
-        label="Placa del auto:"
+        label="Placa del auto:" :label-cols="lCols"
         feedback="feedback"
         :state="null"
         :horizontal="horizontal">
@@ -13,7 +13,7 @@
       </b-form-group>
 
       <b-form-group
-        label="Año de fabricación:"
+        label="Año de fabricación:" :label-cols="lCols"
         feedback="feedback"
         :state="null"
         :horizontal="horizontal">
@@ -21,7 +21,7 @@
       </b-form-group>
 
       <b-form-group
-        label="Cantidad de Asientos:"
+        label="Cantidad de Asientos:" :label-cols="lCols"
         feedback="feedback"
         :state="null"
         :horizontal="horizontal">
@@ -29,7 +29,7 @@
       </b-form-group>
 
       <b-form-group
-        label="Color del Auto:"
+        label="Color del Auto:" :label-cols="lCols"
         feedback="feedback"
         :state="null"
         :horizontal="horizontal">
@@ -37,7 +37,7 @@
       </b-form-group>
 
       <b-form-group
-        label="Tipo de Uso:"
+        label="Tipo de Uso:" :label-cols="lCols"
         feedback="feedback"
         :state="null"
         :horizontal="horizontal">
@@ -46,7 +46,7 @@
       </b-form-group>
 
       <b-form-group
-        label="Numero de motor:"
+        label="Numero de motor:" :label-cols="lCols"
         feedback="feedback"
         :state="null"
         :horizontal="horizontal">
@@ -54,7 +54,7 @@
       </b-form-group>
 
       <b-form-group
-        label="Tipo de vehiculo:"
+        label="Tipo de vehiculo:" :label-cols="lCols"
         feedback="feedback"
         :state="null"
         :horizontal="horizontal">
@@ -62,23 +62,26 @@
       </b-form-group>
 
       <b-form-group
-        label="Dueño:"
+        label="Dueño:" :label-cols="lCols"
         feedback="feedback"
         :state="null"
         :horizontal="horizontal">
         <b-form-select value-field="id" text-field="razonSocial" :disabled="isLoading || !optType['webusers'].activate" v-model="item.webUserId" :options="optType['webusers'].options" class="mb-3"></b-form-select>
       </b-form-group>
 
-      <div slot="footer">
-        <template v-if="!update">
-          <b-button @click="insertData" :disabled="isLoading" type="submit" size="sm" variant="primary"><i class="fa fa-dot-circle-o"></i> Submit</b-button>
-          <b-button :disabled="isLoading" type="reset" size="sm" variant="danger"><i class="fa fa-ban"></i> Reset</b-button>
-        </template>
 
-        <template v-if="update">
-          <b-button @click="updateData" :disabled="isLoading" size="sm" variant="primary"><i class="fa fa-dot-circle-o"></i> Update</b-button>
-          <b-button @click="addRow()" :disabled="isLoading" type="reset" size="sm" variant="danger"><i class="fa fa-ban"></i> Cancel</b-button>
-        </template>
+      <div slot="footer">
+        <b-form-group :horizontal="horizontal" :label-cols="lCols">
+          <template v-if="!update">
+            <b-button @click="insertData" :disabled="isLoading" type="submit" size="sm" variant="primary"><i class="fa fa-dot-circle-o"></i> Submit</b-button>
+            <b-button :disabled="isLoading" type="reset" size="sm" variant="danger"><i class="fa fa-ban"></i> Reset</b-button>
+          </template>
+
+          <template v-if="update">
+            <b-button @click="updateData" :disabled="isLoading" size="sm" variant="primary"><i class="fa fa-dot-circle-o"></i> Update</b-button>
+            <b-button @click="addRow()" :disabled="isLoading" type="reset" size="sm" variant="danger"><i class="fa fa-ban"></i> Cancel</b-button>
+          </template>
+        </b-form-group>
       </div>
 
     </b-form>
@@ -91,6 +94,7 @@
     props: ['urlRest', 'item', 'update', 'horizontal'],
     data () {
       return {
+        lCols: 5,
         optType: {
           'usetypes': {
             options: [{ id: '', name: 'Please select some item' }],
@@ -161,6 +165,11 @@
   }
 </script>
 
-<style>
+<style lang="scss">
+  form {
+    label {
+      text-align: right;
+    }
+  }
 
 </style>

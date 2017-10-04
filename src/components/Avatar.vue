@@ -137,7 +137,7 @@
 
         const initialBackgroundAndFontStyle = {
           border: this.border ? this.sizeBorder + this.sizeUnid + ' solid' : 'none',
-          borderColor: this.isImage ? this.colorBorder.default : this.colorBorder,
+          borderColor: (this.isImage && (this.colorBorder === this.colorBorder.default)) ? this.colorBorder.default : this.colorBorder,
           backgroundColor: this.background,
           font: (this.sizeUnid === 'px') ? Math.floor(this.size / 2.5) + this.sizeUnid + '/100' + this.sizeUnid + ' Helvetica, Arial, sans-serif'
             : 1 + this.sizeUnid + '/100' + this.sizeUnid + ' Helvetica, Arial, sans-serif',
