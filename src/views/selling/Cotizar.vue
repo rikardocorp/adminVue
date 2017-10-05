@@ -21,28 +21,10 @@
             </span>
           </div>
 
-          <!--<div v-if="items.length" class="card-insurance row">-->
-            <!--<div v-for="x in items" :key="x.id" class="item-insurance col-sm-6 col-md-6 col-lg-4 col-xl-4" >-->
-              <!--<div class="row">-->
-                <!--<div class="col-5 item-img d-flex align-items-center">-->
-                  <!--<div>-->
-                    <!--<img class="align-middle w-100 " :src="'static/img/company/' + x.insuranceCompanyId + '.png'" :alt="altError(x.insuranceCompanyName)"  @error="imageLoadOnError(x)">-->
-                    <!--<p v-if="x.error">rikardocorp</p>-->
-                  <!--</div>-->
-                <!--</div>-->
-                <!--<div class="col-7 item-content">-->
-                  <!--<b-card :title="x.insuranceCompanyName" :sub-title="x.insuranceTypeId + '-' + x.validityDate" class="h-100">-->
-                    <!--<p class="card-text item-price"><span>S/.</span> {{ x.price | currency }}</p>-->
-                    <!--<b-link href="#" class="card-link" @click="pickInsurance(x)">Seleccionar >></b-link>-->
-                  <!--</b-card>-->
-                <!--</div>-->
-              <!--</div>-->
-            <!--</div>-->
-          <!--</div>-->
           <div v-if="items.length" class="card-insurance row d-flex justify-content-center">
             <div v-for="x in items" :key="x.id"  class="ticket cardWrap m-3 hvr-bounce-in">
               <div class="card-ticket cardLeft">
-                <avatar username="Jane Doe" :rounded="true" :size="6.4" sizeUnid="em"
+                <avatar :username="x.insuranceCompanyName" :rounded="true" :size="6.4" sizeUnid="em"
                         :src="'/static/img/company/' + x.insuranceCompanyId + '.png'"
                         :border="true" colorBorder="#f4f3ef" color="#ecedef"
                         backgroundColor="orange" :sizeBorder="0.5"></avatar>

@@ -14,7 +14,7 @@ export const DATA = {
     phone: {label: 'Telefono', 'class': 'text-center'},
     address: {label: 'Dirección', 'class': 'text-center'},
     email: {label: 'Email', 'class': 'text-center'},
-    actions: {label: '', thStyle: 'width:75px'}
+    actions: {label: '', 'class': 'text-center', thStyle: 'width:115px'}
   }
 }
 

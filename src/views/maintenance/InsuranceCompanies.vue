@@ -18,6 +18,7 @@
 
     <b-modal :title="modalDetails.title" :class="'modal-'+ownClass" v-model="showModal">
       {{ modalDetails.data }}
+      <upload-image :item="itemPick" :path="path" :multiple="false"></upload-image>
       <template slot="modal-footer">
         <b-button @click="showModal = !showModal">Cancel</b-button>
         <b-button @click="deleteData" :variant="ownClass">OK</b-button>
@@ -30,34 +31,43 @@
   import {DATA as nDATA} from '../../data/dnInsuranceCompanies'
   import Form from './forms/FormInsuranceCompanies.vue'
   import Table from '../../components/xTable.vue'
+  import UploadImage from '../../components/UploadImage.vue'
 
   export default {
     name: 'useType',
     components: {
       appForm: Form,
-      appTable: Table
+      appTable: Table,
+      UploadImage
     },
     data: function () {
       return {
         urlRest: nDATA.name,
         item: JSON.parse(JSON.stringify(nDATA.post)),
-        fields: JSON.parse(JSON.stringify(nDATA.fieldsTable)),
+        fields: nDATA.fieldsTable,
         items: [],
         update: false,
         indexSelected: null,
-        btnOption: {editOpc: 'info', deleteOpc: 'danger'},
+        btnOption: {
+          editOpc: 'info',
+          deleteOpc: 'danger',
+          uploadOpc: 'success'
+        },
 
         // Modal
         modalDetails: { title: 'Eliminar Registro', data: 'Esta seguro de eliminar esto?' },
         showModal: false,
         action: '',
-        ownClass: ''
+        ownClass: '',
+        // Upload
+        itemPick: {}
       }
     },
     methods: {
       addRow (newItem = '') {
         if (newItem) {
           if (!this.update) {
+            alert('insert')
             this.items.unshift(newItem)
           } else {
             this.items.splice(this.indexSelected, 1, newItem)
@@ -94,10 +104,20 @@
       },
       pickItem (item, type) {
         this.initData()
+        this.itemPick = item
         this.indexSelected = this.$lodash.findIndex(this.items, item)
         console.log('INDEX SELECT')
+        console.log(item)
         console.log(this.indexSelected)
         console.log(this.items)
+
+        if (type === this.btnOption.uploadOpc) {
+          // this.item = {...this.item, ...item}
+          // this.update = true
+          this.ownClass = type
+          this.toggleDialog()
+          // alert(item)
+        }
 
         if (type === this.btnOption.editOpc) {
           this.item = {...this.item, ...item}
@@ -113,6 +133,9 @@
     computed: {
       isLoading () {
         return this.$store.state.isLoading
+      },
+      path () {
+        return this.$store.state.Login.IMAGES_URL
       }
     },
     mounted () {
@@ -121,6 +144,5 @@
   }
 </script>
 
-<style>
-
+<style lang="scss">
 </style>

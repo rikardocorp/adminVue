@@ -13,13 +13,23 @@ export const DATA = {
     // username: ''
   },
   fieldsTable: {
-    number: {label: 'Numero', sortable: true, 'class': 'text-center'},
-    // validityStart: {label: 'Nombre', sortable: true, 'class': 'text-center'},
-    validityEnd: {label: 'Fecha Valida', sortable: true, 'class': 'text-center'},
-    // insuranceCompanyId: {label: 'Aseguradora', sortable: true, 'class': 'text-center'},
-    // userId: {label: 'Usuario Venta', sortable: true, 'class': 'text-center'},
-    // insuranceCompany: {label: 'Aseguradora', sortable: true, 'class': 'text-center'},
-    // username: {label: 'Usuario Venta', sortable: true, 'class': 'text-center'},
+    number: {
+      label: 'Numero',
+      sortable: true,
+      'class': 'text-center',
+    },
+    insuranceCompany: {
+      label: 'Aseguradora',
+      sortable: true,
+      class: 'text-center',
+      formatter: (value) => { return value.name }
+    },
+    user: {
+      label: 'Usuario Venta',
+      sortable: true,
+      class: 'text-center',
+      formatter: (value) => { return value.firstName + ' ' + value.lastName }
+    },
     actions: {label: '', thStyle: 'width:75px'}
   }
 }

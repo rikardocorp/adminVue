@@ -2,7 +2,7 @@
   <b-card header="Bootstrap Modals">
     <!-- Top table element-->
     <div slot="header" class="text-center">
-        Tabla :<strong> <slot name="title"></slot></strong>
+      Tabla :<strong> <slot name="title"></slot></strong>
     </div>
     <div class="my-1 row">
       <!-- Top input table-->
@@ -28,14 +28,11 @@
                    :filter="filter"
                    :sort-by.sync="sortBy"
                    :sort-desc.sync="sortDesc"
-                   @filtered="onFiltered"
-          >
+                   @filtered="onFiltered">
+
             <slot></slot>
             <template slot="actions" scope="row">
               <!-- We use click.stop here to prevent a 'row-clicked' event from also happening -->
-              <b-button v-if="btnOption.uploadOpc" :disabled="isLoading" size="sm" variant="success" @click.stop="pickItem(row.item, btnOption.uploadOpc)">
-                <i class="fa fa-picture-o" aria-hidden="false"></i>
-              </b-button>
               <b-button v-if="btnOption.editOpc" :disabled="isLoading" size="sm" variant="primary" @click.stop="pickItem(row.item, btnOption.editOpc)">
                 <i class="fa fa-pencil" aria-hidden="false"></i>
               </b-button>

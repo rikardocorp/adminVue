@@ -152,3 +152,16 @@
     }
   }
 </script>
+
+<style lang="scss" scoped="">
+  .multiselect__tags-wrap{
+    span{
+      padding: 0.4em;
+      margin-left: 0.2em;
+      border-radius: 0.55em;
+      &:first-child{
+        margin-left: 0;
+      }
+    }
+  }
+</style>

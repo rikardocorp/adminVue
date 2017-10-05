@@ -113,8 +113,6 @@
             keySearch: 'name',
             colorClass: 'badge badge-danger',
             placeholder: 'Departamento',
-
-            backId: 'name'
           },
           {
             url: 'provinces',
@@ -124,8 +122,6 @@
             keySearch: 'name',
             colorClass: 'badge badge-success',
             placeholder: 'Provincia',
-
-            backId: 'name'
           },
           {
             url: 'cities',
@@ -135,8 +131,6 @@
             keySearch: 'name',
             colorClass: 'badge badge-info text-white',
             placeholder: 'Distrito',
-
-            backId: 'name'
           }
         ],
         optInput: _purchaser.input,

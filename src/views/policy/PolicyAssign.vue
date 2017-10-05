@@ -4,9 +4,15 @@
       <div class="row d-flex justify-content-center">
         <div class="col-md-6">
           <!--<app-form v-model="items" :item="item" :pickObject="pickObject" :horizontal="true" :urlRest="urlRest" @isSearching="isSearching"></app-form>-->
-          <app-form></app-form>
+          <!--<app-form></app-form>-->
         </div>
       </div>
+
+      <div class="row">
+        <div class="col-12">
+          <only-table :fields="fields" :items="itemsTable" :btnOption="btnOption" @pickItem="pickItem" ></only-table>
+        </div><!--/.col-->
+      </div><!--/.row-->
 
       <!--<div class="container-fluid">-->
         <!--<button @click="selectedAll">Select All</button>-->
@@ -66,26 +72,31 @@
 <script>
   import {DATA as nDATA} from '../../data/dnInsurancePolicies'
   import Form from './forms/FormPolicyAssign.vue'
-//  import Table from '../../components/xTable.vue'
+  import OnlyTable from '../../components/OnlyTable.vue'
   import Avatar from '../../components/Avatar.vue'
 
   export default {
     name: 'webUser',
     components: {
       appForm: Form,
-      Avatar
+      Avatar,
+      OnlyTable
     },
     data: function () {
       return {
+
+        fields: nDATA.fieldsTable,
+        itemsTable: [],
+        btnOption: {editOpc: 'info', deleteOpc: 'danger'},
+
+        // pick policy
         urlRest: nDATA.name,
         item: JSON.parse(JSON.stringify(nDATA.post)),
         items: [],
         update: false,
         isSearch: false,
-
-        // ISOTOPE
         selected: null,
-        selectedList: {},
+        selectedList: {}
       }
     },
     computed: {
@@ -94,6 +105,29 @@
       }
     },
     methods: {
+      getData () {
+        let self = this.$store.dispatch('dispatchHTTP', {type: 'GET', url: this.urlRest})
+        self.then((data) => {
+          this.itemsTable = data.status ? data.content : []
+        })
+      },
+      pickItem (item, type) {
+        this.initData()
+        this.indexSelected = this.$lodash.findIndex(this.items, item)
+        console.log('INDEX SELECT')
+        console.log(this.update)
+        if (type === this.btnOption.editOpc) {
+          console.log('INDEX update')
+          this.item = {...this.item, ...item}
+          this.update = true
+        }
+
+        if (type === this.btnOption.deleteOpc) {
+          this.ownClass = type
+          this.toggleDialog()
+        }
+      },
+
       selectedAll (value = true) {
         let policy = ''
         let vm = this
@@ -141,6 +175,9 @@
     },
     created () {
       this.getAll()
+    },
+    mounted () {
+      this.getData()
     }
   }
 </script>

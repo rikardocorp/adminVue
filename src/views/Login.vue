@@ -85,7 +85,8 @@
         //        this.login(credentials)
       },
       login (creds) {
-        this.$http.post('http://174.138.48.60:8080/jmc/login', creds).then(response => {
+        let urlLogin = this.$store.state.Login.LOGIN_URL
+        this.$http.post(urlLogin, creds).then(response => {
           // success callback
           console.log(response)
         }, response => {

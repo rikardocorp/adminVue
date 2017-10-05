@@ -31,7 +31,7 @@
       </b-form-group>
 
       <div slot="footer">
-        <b-form-group :horizontal="horizontal">
+        <b-form-group :horizontal="horizontal" :label-cols="lCols">
           <template v-if="!update">
             <b-button @click.prevent="processData('INSERT')" :disabled="isLoading" type="submit" size="sm" variant="primary"><i class="fa fa-dot-circle-o"></i> Submit</b-button>
             <b-button @click="resetForm(name + urlRest)" :disabled="isLoading" size="sm" variant="danger"><i class="fa fa-ban"></i> Reset</b-button>

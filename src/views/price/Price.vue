@@ -75,13 +75,13 @@
         switchPrices: false,
         urlRest: PriceData.name,
         item: JSON.parse(JSON.stringify(PriceData.post)),
-        fields: JSON.parse(JSON.stringify(PriceData.fieldsTable)),
+        fields: PriceData.fieldsTable,
         items: [],
 
         // vehicle type
         urlRestVT: nDATA.name,
         itemVT: JSON.parse(JSON.stringify(nDATA.post)),
-        fieldsVT: JSON.parse(JSON.stringify(nDATA.fieldsTable)),
+        fieldsVT: nDATA.fieldsTable,
         itemsVT: [],
 
         update: false,
@@ -103,7 +103,7 @@
           } else {
             this.items.splice(this.indexSelected, 1, newItem)
           }
-          this.getData()
+          //this.getData()
         }
         this.initData()
       },
@@ -128,6 +128,7 @@
         let model = item.vehicleModel
         let thisUrl = 'insuranceprices/filter?vehicleTypeId=' + item.id
         // let thisUrl = 'insuranceprices'
+        console.log('URL TIPO VEHICULO')
         console.log(thisUrl)
         let self = this.$store.dispatch('dispatchHTTP', {type: 'GET', url: thisUrl})
         self.then((data) => {
@@ -169,6 +170,7 @@
         }
       },
       pickItemVehicle (item, type) {
+        alert('ssss')
         this.initData()
         this.getDataInsurancePrices(item)
         this.itemVT = {...this.itemVT, ...item}

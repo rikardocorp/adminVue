@@ -7,6 +7,7 @@ const state = {
   LOGIN_URL: '',
   SIGNUP_URL: '',
   DATAUSER_URL: '',
+  IMAGES_URL: 'EEEEE',
   user: {
     isLogged: false
   }
@@ -37,6 +38,8 @@ const mutations = {
     state.LOGIN_URL = payload.LOGIN_URL
     state.SIGNUP_URL = payload.SIGNUP_URL
     state.DATAUSER_URL = payload.DATAUSER_URL
+    state.IMAGES_URL = payload.IMAGES_URL
+    console.log(state.IMAGES_URL)
   },
   changeAuth: (state, value) => {
     Vue.set(state.user, 'isLogged', value)

@@ -53,7 +53,8 @@ const URL_LOG = {
   API_URL: API_URL,
   LOGIN_URL: API_URL + 'login',
   SIGNUP_URL: API_URL + 'users',
-  DATAUSER_URL: API_URL + 'rest/v1/identity'
+  DATAUSER_URL: API_URL + 'rest/v1/identity',
+  IMAGES_URL: API_URL + 'files'
 }
 store.commit('initLogin', URL_LOG)
 
