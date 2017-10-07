@@ -1,7 +1,7 @@
 <template>
   <b-card>
     <div slot="header" class="text-center">
-      <strong>Usuarios</strong> del Sistema
+      <strong>Locales</strong> de Venta
     </div>
     <b-form :id="name + urlRest">
 
@@ -26,33 +26,14 @@
                          @blur.native="$v.item[index]? $v.item[index].$touch(): false"
                          :rows="3" :max-rows="6"></b-form-textarea>
 
+        <!-- ONLYMULTISELECT -->
+        <only-multi-select v-if="option.input=='onlyMultiSelect'"
+                           :maxHeight="200" v-model="DPD" :optionList="option.params"
+                           :disabled="isLoading"
+                           :placeholderDefault="option.placeholder"></only-multi-select>
+
         <!-- ERROR MESSAGE-->
         <form-error :data="$v.item[index]? $v.item[index] : {} "></form-error>
-      </b-form-group>
-
-      <!-- roles -->
-      <b-form-group class="text-right" :label-cols="lCols"
-        label="ROLES:"
-        feedback="feedback"
-        :state="null"
-        :horizontal="horizontal">
-        <b-form-select value-field="id" :disabled="isLoading || !optType['roles'].activate" v-model="item.role" :options="optType['roles'].options"></b-form-select>
-      </b-form-group>
-
-      <b-form-group class="text-right" :label-cols="lCols"
-                    label="Gastos:"
-                    feedback="feedback"
-                    :state="null"
-                    :horizontal="horizontal">
-        <c-switch type="text" variant="warning" on="On" off="Off" :pill="true" v-model="item.expense" class="switch-left" size="lg"/>
-      </b-form-group>
-
-      <b-form-group class="text-right" :label-cols="lCols"
-                    label="Activo:"
-                    feedback="feedback"
-                    :state="null"
-                    :horizontal="horizontal">
-        <c-switch type="text" variant="warning" on="On" off="Off" :pill="true" v-model="item.enabled" class="switch-left" size="lg"/>
       </b-form-group>
 
       <div slot="footer">
@@ -77,26 +58,23 @@
 
 <script>
   import cSwitch from '../../../components/Switch'
-  import {DATA_FORM as dataForm} from '../../../data/dnUser'
+  import {DATA_FORM as dataForm} from '../../../data/dnStores'
   import FormError from '../../../components/FormError.vue'
+  import OnlyMultiSelect from '../../../components/OnlyMultiSelect.vue'
 
   export default {
     props: ['urlRest', 'item', 'update', 'horizontal'],
     components: {
       cSwitch: cSwitch,
-      FormError
+      FormError,
+      OnlyMultiSelect
     },
     data () {
       return {
+        DPD: '',
         name: 'form-',
         lCols: 4,
-        optInput: dataForm.input,
-        optType: {
-          'roles': {
-            options: ['Please select some item'],
-            activate: false
-          }
-        }
+        optInput: dataForm.input
       }
     },
     validations () {
@@ -145,6 +123,16 @@
             this.optType[urlRest].activate = true
           }
         })
+      }
+    },
+    watch: {
+      DPD (newVal, oldVal) {
+        localStorage.setItem('location', JSON.stringify(newVal))
+        if (Array.isArray(newVal)) {
+          this.item.region = newVal[0]
+          this.item.province = newVal[1]
+          this.item.city = newVal[2]
+        }
       }
     },
     created () {

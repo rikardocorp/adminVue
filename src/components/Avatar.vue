@@ -1,4 +1,5 @@
 <template>
+  <div>
     <div class="avatar" v-bind:style="localStyle">
       <span v-if="!hasImage" v-bind:style="localStyleSpan">
         <slot name="content">
@@ -6,6 +7,7 @@
         </slot>
       </span>
     </div>
+  </div>
 </template>
 
 <script type="text/babel">
@@ -35,6 +37,10 @@
       },
       src: {
         type: String
+      },
+      localSrc: {
+        type: Boolean,
+        default: true
       },
       rounded: {
         type: Boolean,
@@ -119,15 +125,17 @@
       },
 
       style () {
-        const style = {
+        console.log('Style')
+        let style = {
           width: this.size + this.sizeUnid,
           height: this.size + this.sizeUnid,
           borderRadius: (this.rounded) ? '50%' : 0,
           textAlign: 'center',
           verticalAlign: 'middle'
         }
+        console.log(style)
 
-        const imgBackgroundAndFontStyle = {
+        let imgBackgroundAndFontStyle = {
           border: this.border ? this.sizeBorder + this.sizeUnid + ' solid' : 'none',
           borderColor: this.colorBorder,
           background: 'url(' + this.src + ') no-repeat',
@@ -135,7 +143,7 @@
           backgroundOrigin: 'content-box'
         }
 
-        const initialBackgroundAndFontStyle = {
+        let initialBackgroundAndFontStyle = {
           border: this.border ? this.sizeBorder + this.sizeUnid + ' solid' : 'none',
           borderColor: (this.isImage && (this.colorBorder === this.colorBorder.default)) ? this.colorBorder.default : this.colorBorder,
           backgroundColor: this.background,
@@ -148,23 +156,17 @@
 
         if (this.isImage) {
           this.existImage(this.src).then((result) => {
-            const backgroundAndFontStyle = (result) ? imgBackgroundAndFontStyle : initialBackgroundAndFontStyle
+            let backgroundAndFontStyle = (result) ? imgBackgroundAndFontStyle : initialBackgroundAndFontStyle
             Object.assign(style, backgroundAndFontStyle)
             this.hasImage = result
             this.localStyle = style
           })
         } else {
-          const backgroundAndFontStyle = initialBackgroundAndFontStyle
+          let backgroundAndFontStyle = initialBackgroundAndFontStyle
           Object.assign(style, backgroundAndFontStyle)
           this.hasImage = false
           this.localStyle = style
         }
-
-//        if (this.border) {
-//          const localBorder = {
-//
-//          }
-//        }
 
         this.localStyleSpan = {
           fontSize: Math.floor(this.size / 2.5) + this.sizeUnid
@@ -177,39 +179,47 @@
 
       lightenColor (hex, amt) {
         // From https://css-tricks.com/snippets/javascript/lighten-darken-color/
-        var usePound = false
+        let usePound = false
 
         if (hex[0] === '#') {
           hex = hex.slice(1)
           usePound = true
         }
 
-        var num = parseInt(hex, 16)
-        var r = (num >> 16) + amt
+        let num = parseInt(hex, 16)
+        let r = (num >> 16) + amt
 
         if (r > 255) r = 255
         else if (r < 0) r = 0
 
-        var b = ((num >> 8) & 0x00FF) + amt
+        let b = ((num >> 8) & 0x00FF) + amt
 
         if (b > 255) b = 255
         else if (b < 0) b = 0
 
-        var g = (num & 0x0000FF) + amt
+        let g = (num & 0x0000FF) + amt
 
         if (g > 255) g = 255
         else if (g < 0) g = 0
 
         return (usePound ? '#' : '') + (g | (b << 8) | (r << 16)).toString(16)
       },
-      existImage (srcImage, local = true) {
-        let url = local ? window.location.origin + srcImage : srcImage
+      existImage (srcImage) {
+        let url = this.localSrc ? window.location.origin + srcImage : srcImage
         let self = this.$store.dispatch('dispatchHTTP', {type: 'FILE', url: url})
         return self.then((data) => {
           return true
         }).catch((data) => {
           return false
         })
+      }
+    },
+    watch: {
+      src (newVal) {
+//        alert(newVal)
+//        document.getElementById('local-avatar').removeAttribute('style')
+//        this.hasImage = true
+//        this.style()
       }
     }
   }
@@ -220,17 +230,7 @@
 
   }
 
-  .avatar2:after {
-    content: "";
-    height: 112%;
-    left: -6%;
-    top: -6%;
-    width: 112%;
-    position: absolute;
-    transition: all 0.3s ease 0s;
-    -webkit-transition: all 0.3s ease 0s;
-    z-index: 0;
-    border-radius: 50%;
-    border: 10px solid orange;
-  }
+  /*.avatar{*/
+    /*position: absolute;*/
+  /*}*/
 </style>

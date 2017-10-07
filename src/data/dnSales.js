@@ -1,4 +1,3 @@
-
 import { required, minLength, maxLength, between, numeric } from 'vuelidate/lib/validators'
 
 // ./policy/PolicySold.vue

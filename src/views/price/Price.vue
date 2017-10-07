@@ -10,7 +10,11 @@
         <!-- VEHICLES TYPES -->
         <div key="div1" class="row" v-show="!switchPrices">
           <div class="col-12">
-            <vehicle-table :fields="fieldsVT" :items="itemsVT" :btnOption="btnOption" @pickItemVehicle="pickItemVehicle" ></vehicle-table>
+            <app-table :fields="fieldsVT" :items="itemsVT" :btnOption="btnOptionVT" @pickItem="pickItem">
+                <span slot="title" class="">
+                  Tipos de Vehiculos
+                </span>
+            </app-table>
           </div><!--/.col-->
         </div><!--/.row-->
 
@@ -32,7 +36,7 @@
           <div class="row">
             <div class="col-12">
               <app-table :fields="fields" :items="items" :btnOption="btnOption" @pickItem="pickItem">
-                <span slot="title" class="color-primary">
+                <span slot="title" class="">
                   {{ itemVT.vehicleBrand }} - {{ itemVT.vehicleModel}} - Cat. {{ itemVT.category }}
                 </span>
               </app-table>
@@ -46,11 +50,11 @@
 
     <!--<pre>{{ item }}</pre>-->
 
-    <b-modal :title="modalDetails.title" :class="'modal-'+ownClass" v-model="showModal">
-      {{ modalDetails.data }}
+    <b-modal :title="optionPick.title" :class="'modal-'+optionPick.variant" v-model="showModal">
+      <div v-if="optionPick.name === btnOption.deleteOpc.name">{{ optionPick.content }}</div>
       <template slot="modal-footer">
         <b-button @click="showModal = !showModal">Cancel</b-button>
-        <b-button @click="deleteData" :variant="ownClass">OK</b-button>
+        <b-button v-if="optionPick.name === btnOption.deleteOpc.name" @click="deleteData" :variant="optionPick.variant">OK</b-button>
       </template>
     </b-modal>
   </div>
@@ -60,14 +64,12 @@
   import {DATA_VEHICLETYPE as nDATA} from '../../data/dataNames'
   import {DATA as PriceData} from '../../data/dnInsurancePrices'
   import Form from './forms/FormPrice.vue'
-  import vehicleTable from './table/TableVehicleType.vue'
   import Table from '../../components/xTable.vue'
 
   export default {
     name: 'useType',
     components: {
       appForm: Form,
-      vehicleTable: vehicleTable,
       appTable: Table
     },
     data: function () {
@@ -77,22 +79,42 @@
         item: JSON.parse(JSON.stringify(PriceData.post)),
         fields: PriceData.fieldsTable,
         items: [],
+        btnOption: {
+          editOpc: {
+            name: 'edit',
+            variant: 'primary',
+            selected: false,
+            icon: 'fa fa-pencil'
+          },
+          deleteOpc: {
+            name: 'delete',
+            title: 'Eliminar registro',
+            content: 'Esta seguro de eliminar esto?',
+            variant: 'danger',
+            selected: false,
+            icon: 'fa fa-trash'
+          }
+        },
 
         // vehicle type
         urlRestVT: nDATA.name,
         itemVT: JSON.parse(JSON.stringify(nDATA.post)),
         fieldsVT: nDATA.fieldsTable,
         itemsVT: [],
+        btnOptionVT: {
+          plusOpc: {
+            name: 'plus',
+            variant: 'primary',
+            selected: false,
+            icon: 'fa fa-plus'
+          }
+        },
 
         update: false,
         indexSelected: null,
-        btnOption: {editOpc: 'info', deleteOpc: 'danger'},
-
-        // Modal
-        modalDetails: { title: 'Eliminar Registro', data: 'Esta seguro de eliminar esto?' },
-        showModal: false,
-        action: '',
-        ownClass: ''
+        itemPick: {},
+        optionPick: {},
+        showModal: false
       }
     },
     methods: {
@@ -152,29 +174,24 @@
       toggleDialog: function () {
         this.showModal = !this.showModal
       },
-      pickItem (item, type) {
+      pickItem (item, option) {
         this.initData()
+        this.itemPick = item
+        this.optionPick = option
         this.indexSelected = this.$lodash.findIndex(this.items, item)
-        console.log('INDEX SELECT')
-        console.log(this.indexSelected)
-        console.log(this.items)
 
-        if (type === this.btnOption.editOpc) {
+        if (option.name === this.btnOption.editOpc.name) {
           this.item = {...this.item, ...item}
           this.update = true
-        }
-
-        if (type === this.btnOption.deleteOpc) {
-          this.ownClass = type
+          this.$scrollTo('body')
+        } else if (option.name === this.btnOption.deleteOpc.name) {
           this.toggleDialog()
+        } else if (option.name === this.btnOptionVT.plusOpc.name) {
+          this.initData()
+          this.getDataInsurancePrices(item)
+          this.itemVT = {...this.itemVT, ...item}
+          this.switchPrices = true
         }
-      },
-      pickItemVehicle (item, type) {
-        alert('ssss')
-        this.initData()
-        this.getDataInsurancePrices(item)
-        this.itemVT = {...this.itemVT, ...item}
-        this.switchPrices = true
       },
       returnMain (a) {
         this.initData()

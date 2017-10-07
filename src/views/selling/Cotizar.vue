@@ -203,4 +203,9 @@
 </script>
 
 <style lang="scss">
+  .card-insurance {
+    .avatar {
+      position: absolute;
+    }
+  }
 </style>

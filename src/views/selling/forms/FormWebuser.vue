@@ -1,14 +1,21 @@
 <template>
   <b-form :id="'forms-'+ urlRest" class="col-md-8 m-auto pt-3 pb-4">
-    <div class="d-flex justify-content-center mb-2">
+    <div class="d-flex justify-content-center mb-2 mySwitch">
       <c-switch type="text"
                 variant="warning"
                 on="DNI" off="RUC"
                 :disabled="isLoading || restricted"
-                class="switch-lg"
+                class="switch-lg mr-1"
                 :pill="true"
                 @change="dniRUC"
                 v-model="item.typeDocument"/>
+
+      <c-switch type="text"
+                variant="warning"
+                on="Email" off="off"
+                :disabled="isLoading || restricted"
+                class="switch-lg ml-1"
+                :pill="true"/>
     </div>
 
 
@@ -36,7 +43,16 @@
           <b-btn :disabled="isLoading || restricted" variant="primary" @click="searchUser"><i class="fa fa-search"></i></b-btn>
         </b-input-group-button>
 
-        <only-multi-select v-if="option.input=='onlyMultiSelect'"
+        <b-form-input v-if="option.input=='input-dni'"
+                      :disabled="isLoading || restricted" :type="option.type"
+                      v-model.trim="item[_index]"
+                      @blur.once.native="searchDNI"
+                      :placeholder="option.placeholder+'..'"></b-form-input>
+        <b-input-group-button v-if="option.input=='input-dni'">
+          <b-btn :disabled="isLoading || restricted" variant="primary" @click="searchDNI"><i class="fa fa-search"></i></b-btn>
+        </b-input-group-button>
+
+        <only-multi-select v-if="option.input=='onlyMultiSelect'" class="special_radius"
                            :maxHeight="200" v-model="DPD" :optionList="optType"
                            :disabled="isLoading || restricted"
                            :placeholderDefault="option.placeholder"></only-multi-select>
@@ -49,14 +65,14 @@
 
 
     <div class="mt-4">
-      <div v-if="owner==null" class="media owner-card" style="font-size: 0.6em;">
-        <div class="d-flex align-self-center mr-3 rounded-circle">
-          <i class="fa fa-question d-flex align-items-center m-auto fa-3x text-secondary"></i>
-        </div>
-        <div class="media-body">
-          <p class="text-secondary fa-2x text-center pt-2">Vehiculo sin propietario</p>
-        </div>
-      </div>
+      <!--<div v-if="owner==null" class="media owner-card" style="font-size: 0.6em;">-->
+        <!--<div class="d-flex align-self-center mr-3 rounded-circle">-->
+          <!--<i class="fa fa-question d-flex align-items-center m-auto fa-3x text-secondary"></i>-->
+        <!--</div>-->
+        <!--<div class="media-body">-->
+          <!--<p class="text-secondary fa-2x text-center pt-2">Vehiculo sin propietario</p>-->
+        <!--</div>-->
+      <!--</div>-->
 
       <transition appear mode="out-in" name="custom-classes-transition" enter-active-class="animated pulse">
         <div key="div" v-if="owner==true" class="media owner-card" style="border-color: #ef7b21;">
@@ -102,8 +118,6 @@
     data () {
       return {
         DPD: '',
-        localItem: {},
-        defaultItem: {},
         optType: [
           {
             url: 'regions',
@@ -181,6 +195,9 @@
           this.optInput.dniRuc.label = 'RUC'
         }
       },
+      searchDNI () {
+        alert('12')
+      },
       searchUser () {
         console.log('CONSULTA USER by Email?')
         let email = this.item.email
@@ -207,13 +224,6 @@
             }
           })
         }
-      },
-      resetForm (formId) {
-        console.log('RESET INN')
-        document.getElementById(formId).reset()
-        this.localItem = {}
-        this.localItem = {...this.localItem, ...this.defaultItem}
-        this.DPD = ''
       }
     },
     created () {
@@ -229,6 +239,18 @@
   .special_radius{
     .multiselect__tags{
       border-radius: 0 0.55em 0.55em 0 !important;
+    }
+  }
+
+  .mySwitch{
+    label {
+      /*width: 72px !important;*/
+      /*span.switch-handle{*/
+        /*left: 45px !important;*/
+      /*}*/
+      /*span.switch-label:after{*/
+        /*width: 60% !important;*/
+      /*}*/
     }
   }
 </style>

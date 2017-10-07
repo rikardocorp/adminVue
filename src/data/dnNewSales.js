@@ -16,7 +16,8 @@ export const DATA_VEHICLE = {
       label: 'Placa',
       placeholder: 'Ingrese su placa',
       type: 'text',
-      icon: 'fa fa-hashtag'
+      icon: 'fa fa-hashtag',
+      input: 'input-search'
     },
     engineNumber: {
       label: 'Nro. Serie',
@@ -96,24 +97,25 @@ export const DATA_PURCHASER = {
     typeDocument: 1
   },
   input: {
-    razonSocial: {
-      label: 'Nombre:',
-      placeholder: 'Ingrese su nombre',
-      type: 'text',
-      icon: 'fa fa-user-o'
-    },
-    dniRuc: {
-      label: 'DNI',
-      placeholder: 'Ingrese su Dni o Ruc',
-      type: 'number',
-      icon: 'fa fa-address-card-o'
-    },
     email: {
       label: 'Email',
       placeholder: 'Ingrese su email',
       type: 'text',
       icon: 'fa fa-envelope-o',
       input: 'input-email'
+    },
+    dniRuc: {
+      label: 'DNI',
+      placeholder: 'Ingrese su Dni o Ruc',
+      type: 'number',
+      icon: 'fa fa-address-card-o',
+      input: 'input-dni'
+    },
+    razonSocial: {
+      label: 'Nombre:',
+      placeholder: 'Ingrese su nombre',
+      type: 'text',
+      icon: 'fa fa-user-o'
     },
     address: {
       label: 'Dirección',

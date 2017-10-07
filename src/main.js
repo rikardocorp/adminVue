@@ -12,16 +12,29 @@ import store from './store/store'
 import lodash from 'lodash'
 import moment from 'moment'
 import VueFormWizard from 'vue-form-wizard'
+import VueScrollTo from 'vue-scrollto'
 
 Vue.prototype.$lodash = lodash
 Vue.prototype.$moment = moment
 moment.locale('es')
 
 Vue.use(Vuelidate)
+// Vue.use(VueScrollTo)
 Vue.use(BootstrapVue)
 Vue.use(VueRosource)
 Vue.use(VueFormWizard)
 Vue.use(Notifications, { velocity })
+Vue.use(VueScrollTo, {
+  container: 'body',
+  duration: 500,
+  easing: 'ease',
+  offset: 0,
+  cancelable: true,
+  onDone: false,
+  onCancel: false,
+  x: false,
+  y: true
+})
 
 // Guard Login
 router.afterEach((to, from) => {
@@ -33,7 +46,7 @@ router.afterEach((to, from) => {
       store.commit('setAuthHeader')
     } else {
       console.log('NO EXISTE')
-      router.push('/login')
+      // router.push('/login')
     }
   } else {
     store.dispatch('getDataUser')

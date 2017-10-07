@@ -5,7 +5,8 @@
       <Sidebar :navItems="nav"/>
       <main class="main">
         <!--<breadcrumb :list="list"/>-->
-        <div class="container-fluid">
+        <div class="container-fluid newStyle">
+        <!--<div class="container-fluid">-->
           <router-view></router-view>
         </div>
       </main>

@@ -18,7 +18,9 @@
                            @on-change="onchange"
                            color="#ef7b21" errorColor="#e84c3d"
                            class="bg-white"
-                           :start-index="index" title="Modulo de Venta de Seguros">
+                           :start-index="index"
+                           :title="'MODULO DE VENTA - ' + data.pickPolice.item.insuranceCompanyName"
+                           :subtitle="'Seguro ' + data.pickPolice.item.insuranceTypeName">
                 <tab-content title="Automovil" icon="fa fa-car" :before-change="stage0">
 
                   <form-vehicle :item="data.vehicle.item"

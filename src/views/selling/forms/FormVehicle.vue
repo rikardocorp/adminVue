@@ -9,14 +9,26 @@
                   :horizontal="horizontal">
 
       <!-- INPUT -->
-      <b-input-group>
+      <b-input-group v-if="option.input==undefined || option.input=='input'">
         <b-input-group-addon class="bg-primary"><i :class="'fa ' + option.icon  "></i></b-input-group-addon>
-        <b-form-input v-if="option.input==undefined || option.input=='input'"
-                      :disabled="isLoading || restricted" :type="option.type"
+        <b-form-input :disabled="isLoading || restricted" :type="option.type"
                       v-model.trim="item[_index]"
                       @blur.native="$v.item[_index]? $v.item[_index].$touch(): false"
                       :placeholder="option.placeholder+'..'"></b-form-input>
       </b-input-group>
+
+      <!-- INPUT-SEARCH -->
+      <b-input-group v-if="option.input=='input-search'">
+        <b-input-group-addon class="bg-primary"><i :class="'fa ' + option.icon  "></i></b-input-group-addon>
+        <b-form-input :disabled="isLoading || restricted" :type="option.type"
+                      v-model.trim="item[_index]"
+                      @blur.once.native="searchPlate"
+                      :placeholder="option.placeholder+'..'"></b-form-input>
+        <b-input-group-button>
+          <b-btn :disabled="isLoading || restricted" variant="primary" @click="searchPlate"><i class="fa fa-search"></i></b-btn>
+        </b-input-group-button>
+      </b-input-group>
+
       <!-- ERROR MESSAGE-->
       <form-error :data="$v.item[_index]? $v.item[_index] : {} "></form-error>
     </b-form-group>
@@ -61,18 +73,35 @@
       return _vehicle.validate
     },
     methods: {
-      existImage (src, local = true) {
-        let url = local ? window.location.origin + src : src
-        let self = this.$store.dispatch('dispatchHTTP', {type: 'FILE', url: url})
-        return self.then((data) => {
-          console.log('TEST IMG')
-          console.log(data)
-          return true
-        }).catch((data) => {
-          console.log('TEST IMG ERRROR')
-          console.log(data)
-          return false
-        })
+      searchPlate () {
+        console.log('CONSULTA PLACA?')
+        let plate = this.item.licensePlate
+        if (plate !== '') {
+          let url = 'vehicles/filter?licensePlate=' + plate + '&strict=1'
+          let self = this.$store.dispatch('dispatchHTTP', {type: 'GET', url: url})
+          self.then((data) => {
+            console.log(data)
+            if (data.status) {
+              console.log(data.content)
+              if (data.content.length > 0) {
+                this.owner = true
+                this.$set(this.item, 'manufacturingYear', data.content[0].manufacturingYear)
+                this.$set(this.item, 'seatNumber', data.content[0].seatNumber)
+                this.$set(this.item, 'engineNumber', data.content[0].engineNumber)
+//                this.$set(this.item, 'manufacturingYear', data.content.manufacturingYear)
+//                this.$emit('connection', this.name, data.content)
+                console.log('Tiene duseño')
+              } else {
+                console.log('No tiene duseño')
+                this.owner = false
+                this.$emit('connection', this.name, null)
+              }
+            } else {
+              console.log('Error: ' + url)
+              console.log(data.content)
+            }
+          })
+        }
       }
     },
     watch: {
@@ -80,19 +109,10 @@
         this.$emit('connection', 'isValid', newVal)
       },
       dispatch () {
-//        alert(this.isInvalid + ' ffweffw')
         console.log('VALIDAAAAAAAAA')
         console.log(this.isInvalid + ' ffweffw')
         this.$v.item.$touch()
       }
-    },
-    created () {
-      console.log('PRUEBA RRRCORP')
-      console.log(this['options'])
-      this.existImage('/static/img/avatars/5.jpg').then((result) => {
-        console.log('TEST IMG')
-        console.log(result)
-      })
     }
   }
 </script>

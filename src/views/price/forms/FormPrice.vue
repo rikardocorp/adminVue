@@ -4,11 +4,9 @@
       <i class="fa fa-arrow-left" aria-hidden="true"></i>
     </span>
     <div slot="header" class="text-center">
-      Registrar Precios
-      <strong>
-        <p class="color-primary bold">{{ vehicle.vehicleBrand }} - {{ vehicle.vehicleModel}} - Cat. {{ vehicle.category }}</p>
-      </strong>
+      <strong>Registrar Precios</strong>
     </div>
+    <p class="color-primary bold h5 text-center">{{ vehicle.vehicleBrand }} - {{ vehicle.vehicleModel}} - Cat. {{ vehicle.category }}</p>
     <b-form :id="name + urlRest">
 
       <b-form-group v-for="(option, index) in optInput" :key="index"
@@ -51,7 +49,7 @@
                     :clear-button="false" :bootstrapStyling="true" calendar-button-icon="fa fa-calendar"
                     :disabled-picker="isLoading"
                     :disabled="option.params.disabled"
-                    @input="selectDate"
+                    @input="selectDate" calendar-class="myDatepicker-style" wrapper-class="myDatepicker-content"
                     @opened="openSelect(option.params.key)"
                     @blur.native="$v.item[index]? $v.item[index].$touch(): false"></datepicker>
 

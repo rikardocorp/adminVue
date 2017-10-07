@@ -16,6 +16,7 @@ import VehicleType from '../views/maintenance/VehicleType.vue'
 import InsuranceType from '../views/maintenance/InsuranceTypes.vue'
 import User from '../views/maintenance/User.vue'
 import Aseguradoras from '../views/maintenance/InsuranceCompanies.vue'
+import Store from '../views/maintenance/Store.vue'
 
 // Views Sale
 import NewSale from '../views/sale/NewSale.vue'
@@ -67,6 +68,16 @@ export default new Router({
               component: City
             },
             {
+              path: 'aseguradoras',
+              name: 'Aseguradoras',
+              component: Aseguradoras
+            },
+            {
+              path: 'locales',
+              name: 'Locales',
+              component: Store
+            },
+            {
               path: 'tipo-uso',
               name: 'Tipos de Uso',
               component: UseType
@@ -85,11 +96,6 @@ export default new Router({
               path: 'usuarios',
               name: 'Usuarios',
               component: User
-            },
-            {
-              path: 'aseguradoras',
-              name: 'Aseguradoras',
-              component: Aseguradoras
             }
           ]
         },

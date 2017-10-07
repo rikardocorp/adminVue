@@ -32,15 +32,8 @@
           >
             <slot></slot>
             <template slot="actions" scope="row">
-              <!-- We use click.stop here to prevent a 'row-clicked' event from also happening -->
-              <b-button v-if="btnOption.uploadOpc" :disabled="isLoading" size="sm" variant="success" @click.stop="pickItem(row.item, btnOption.uploadOpc)">
-                <i class="fa fa-picture-o" aria-hidden="false"></i>
-              </b-button>
-              <b-button v-if="btnOption.editOpc" :disabled="isLoading" size="sm" variant="primary" @click.stop="pickItem(row.item, btnOption.editOpc)">
-                <i class="fa fa-pencil" aria-hidden="false"></i>
-              </b-button>
-              <b-button v-if="btnOption.deleteOpc" :disabled="isLoading" size="sm" variant="danger" @click.stop="pickItem(row.item, btnOption.deleteOpc)">
-                <i class="fa fa-trash" aria-hidden="false"></i>
+              <b-button v-for="btn in btnOption" :key="btn.name"  :variant="btn.variant" @click.stop="pickItem(row.item, btn)" size="sm" :disabled="isLoading">
+                <i :class="btn.icon" aria-hidden="false"></i>
               </b-button>
             </template>
           </b-table>
@@ -78,8 +71,8 @@
         this.totalRows = filteredItems.length
         this.currentPage = 1
       },
-      pickItem (item, type) {
-        this.$emit('pickItem', item, type)
+      pickItem (item, option) {
+        this.$emit('pickItem', item, option)
       },
     },
     watch: {
@@ -97,6 +90,18 @@
   }
 </script>
 
-<style>
+<style lang="scss" scoped="">
+  button.btn-sm {
+    margin-left: 0.2em;
+    &:first-child {
+      margin-left: 0;
+    }
+  }
 
+  .upload-file {
+    img {
+      max-height: 250px;
+      max-width: 250px;
+    }
+  }
 </style>

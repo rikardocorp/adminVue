@@ -156,6 +156,93 @@ html{
 
 
 html{
+  .newStyle{
+    .card:not(.exception){
+      //border: 1px solid #ef7b1f;
+      .card-header{
+        background: #ffa501;
+        color: white;
+        border-radius: 0.5rem 0.5rem 0 0;
+        padding-bottom: 0.3em;
+        padding-top: 0.3em;
+      }
+    }
+
+  }
+
+  // Datepicker styles
+  $colorLight: #ffa501;
+  $colorDark: #ef7b21;
+  $color: $colorDark;
+  $dayHeader: #f1f1f1;
+  $bRadius: 0.55em;
+  $colorsky: #63c1de;
+  .myDatepicker-content{
+    .myDatepicker-style{
+      width: 100%;
+      border-radius: $bRadius;
+      border: 1px solid #e0e0e0;
+      header{
+        border: none !important;
+        span.up, > span{
+          color: $color;
+        }
+        span.prev, span.next{
+          border-radius: $bRadius;
+        }
+        span.prev:after{
+          border-right: 10px solid $color;
+        }
+        span.next:after{
+          border-left: 10px solid $color;
+        }
+      }
+      .day-header{
+        background: $dayHeader;
+        border-top: 1px solid #ffffff;
+        border-bottom: 1px solid #ffffff;
+        color: #999999;
+        margin-bottom: 2px;
+        &:hover{
+          background: $dayHeader !important;
+        }
+      }
+
+      .cell:not(.blank):not(.disabled).day:hover,
+      .cell:not(.blank):not(.disabled).month:hover,
+      .cell:not(.blank):not(.disabled).year:hover,
+      .cell.day.selected,
+      .cell.month.selected,
+      .cell.year.selected{
+        border-radius: $bRadius;
+        background: $color;
+        border: 2px solid #ffffff;
+        color: white;
+      }
+      .cell.day.today:not(.highlighted){
+        border-radius: $bRadius;
+        background: #ffffff;
+        border: 1px solid $color;
+        color: $color;
+      }
+      .cell.day.highlighted:not(.selected){
+        background: white;
+        color: $color;
+        font-weight: 500;
+        border-radius: $bRadius;
+        &.highlight-start,
+        &.highlight-end{
+          /*color: $colorsky*/
+          border-radius: $bRadius;
+          background: $color;
+          border: 2px solid #ffffff;
+          color: white;
+        }
+      }
+    }
+  }
+
+
   .module-sale{
     max-width: 1100px;
     min-height: 650px;

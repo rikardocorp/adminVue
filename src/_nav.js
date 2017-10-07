@@ -24,6 +24,16 @@ export default {
         //   icon: 'icon-puzzle'
         // },
         {
+          name: 'Aseguradoras',
+          url: '/mantenimiento/aseguradoras',
+          icon: 'icon-puzzle'
+        },
+        {
+          name: 'Locales',
+          url: '/mantenimiento/locales',
+          icon: 'icon-puzzle'
+        },
+        {
           name: 'Tipos de Uso',
           url: '/mantenimiento/tipo-uso',
           icon: 'icon-puzzle'
@@ -41,11 +51,6 @@ export default {
         {
           name: 'Usuarios',
           url: '/mantenimiento/usuarios',
-          icon: 'icon-puzzle'
-        },
-        {
-          name: 'Aseguradoras',
-          url: '/mantenimiento/aseguradoras',
           icon: 'icon-puzzle'
         }
       ]

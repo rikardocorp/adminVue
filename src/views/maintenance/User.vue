@@ -7,30 +7,30 @@
         </div>
       </div>
 
-      <!--<pre>{{ item }}</pre>-->
-
       <div class="row">
         <div class="col-12">
           <app-table :fields="fields" :items="items" :btnOption="btnOption" @pickItem="pickItem" >
-            <template slot="expense" >sddsd</template>
-            <template slot="enabled" >wewe</template>
+            <template slot="title">Lista de Usuarios del Sistema</template>
           </app-table>
         </div><!--/.col-->
       </div><!--/.row-->
     </div>
 
-    <b-modal :title="modalDetails.title" :class="'modal-'+ownClass" v-model="showModal">
-      {{ modalDetails.data }}
+    <b-modal :title="optionPick.title" :class="'modal-'+optionPick.variant" v-model="showModal">
+      <div v-if="optionPick.name === btnOption.deleteOpc.name">{{ optionPick.content }}</div>
+      <div v-if="optionPick.name === btnOption.uploadOpc.name" class="upload-content">
+        <h4 class="text-center text-uppercase">{{ itemPick.name }}</h4>
+      </div>
       <template slot="modal-footer">
         <b-button @click="showModal = !showModal">Cancel</b-button>
-        <b-button @click="deleteData" :variant="ownClass">OK</b-button>
+        <b-button v-if="optionPick.name === btnOption.deleteOpc.name" @click="deleteData" :variant="optionPick.variant">OK</b-button>
       </template>
     </b-modal>
   </div>
 </template>
 
 <script>
-  import {DATA_USER as nDATA} from '../../data/dataNames'
+  import {DATA as nDATA} from '../../data/dnUser'
   import Form from './forms/FormUser.vue'
   import Table from '../../components/xTable.vue'
 
@@ -44,17 +44,37 @@
       return {
         urlRest: nDATA.name,
         item: JSON.parse(JSON.stringify(nDATA.post)),
-        fields: JSON.parse(JSON.stringify(nDATA.fieldsTable)),
+        fields: nDATA.fieldsTable,
         items: [],
         update: false,
         indexSelected: null,
-        btnOption: {editOpc: 'info', deleteOpc: 'danger'},
-
-        // Modal
-        modalDetails: { title: 'Eliminar Registro', data: 'Esta seguro de eliminar esto?' },
-        showModal: false,
-        action: '',
-        ownClass: ''
+        btnOption: {
+          uploadOpc: {
+            name: 'upload',
+            title: 'Subir una Imagen',
+            content: '',
+            variant: 'success',
+            selected: false,
+            icon: 'fa fa-picture-o'
+          },
+          editOpc: {
+            name: 'edit',
+            variant: 'primary',
+            selected: false,
+            icon: 'fa fa-pencil'
+          },
+          deleteOpc: {
+            name: 'delete',
+            title: 'Eliminar registro',
+            content: 'Esta seguro de eliminar esto?',
+            variant: 'danger',
+            selected: false,
+            icon: 'fa fa-trash'
+          }
+        },
+        itemPick: {},
+        optionPick: {},
+        showModal: false
       }
     },
     methods: {
@@ -95,20 +115,17 @@
       toggleDialog: function () {
         this.showModal = !this.showModal
       },
-      pickItem (item, type) {
+      pickItem (item, option) {
         this.initData()
+        this.itemPick = item
+        this.optionPick = option
         this.indexSelected = this.$lodash.findIndex(this.items, item)
-        console.log('INDEX SELECT')
-        console.log(this.indexSelected)
-        console.log(this.items)
 
-        if (type === this.btnOption.editOpc) {
+        if (option.name === this.btnOption.editOpc.name) {
           this.item = {...this.item, ...item}
           this.update = true
-        }
-
-        if (type === this.btnOption.deleteOpc) {
-          this.ownClass = type
+          this.$scrollTo('body')
+        } else {
           this.toggleDialog()
         }
       }
@@ -124,6 +141,6 @@
   }
 </script>
 
-<style>
+<style lang="scss">
 
 </style>

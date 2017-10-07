@@ -1,5 +1,5 @@
 <template>
-  <b-card>
+  <b-card class="exception">
     <span class="btn-tool-left input-group-addon bg-primary" @click="resetForm(name + urlRest)" title="Reset">
       <i class="fa fa-eraser" aria-hidden="true"></i>
     </span>

@@ -3,41 +3,40 @@
     <!--<img src="http://174.138.48.60:8080/jmc/files/21767981_1592715177418629_3628223620344681669_n.jpg" alt="">-->
     <!--<pre>{{ path }}</pre>-->
     <form enctype="multipart/form-data" novalidate v-if="isInitial || isSaving">
-      <h1>Upload images</h1>
       <div class="dropbox">
         <input type="file" :multiple="multiple" :name="uploadFieldName" :disabled="isSaving"
                @change="filesChange($event.target.name, $event.target.files); fileCount = $event.target.files.length"
-                class="input-file">
+               class="input-file">
         <p v-if="isInitial">
-          Drag your file(s) here to begin<br> or click to browse
+          Arrastra tu imagen aquí para comenzar<br> o haz clic para buscar la imagen <br>
+          <i class="fa fa-picture-o fa-4x pt-3" aria-hidden="true"></i> <br>
+          <span class="text-italic">* Se recomienda cargar una imagen cuadrada y menor a 1MB de tamaño</span>
         </p>
         <p v-if="isSaving">
-          Uploading {{ fileCount }} files...
+          Cargando una imagen...
         </p>
       </div>
     </form>
-
     <!--SUCCESS-->
     <div v-if="isSuccess">
-      <h2>Uploaded {{ uploadedFiles.length }} file(s) successfully.</h2>
-      <p>
-        <a href="javascript:void(0)" @click="reset()">Upload again</a>
+      <p class="message">Se ha cargado la imagen exitosamente.</p>
+      <p class="text-center">
+        <a href="javascript:void(0)" @click.prevent="reset()">Cargar otra imagen</a>
       </p>
-      <ul class="list-unstyled">
-        <li v-for="item in uploadedFiles">
-          <img :src="path + '/' +item.image" class="img-responsive img-thumbnail" :alt="item.name">
-        </li>
-      </ul>
+      <!--<ul class="list-unstyled">-->
+        <!--<li v-for="item in uploadedFiles">-->
+          <!--<img :src="path + '/' +item.image" class="img-responsive img-thumbnail" :alt="item.name">-->
+        <!--</li>-->
+      <!--</ul>-->
     </div>
     <!--FAILED-->
     <div v-if="isFailed">
-      <h2>Uploaded failed.</h2>
-      <p>
-        <a href="javascript:void(0)" @click="reset()">Try again</a>
+      <p class="message">Carga Fallida.</p>
+      <p class="text-center">
+        <a href="javascript:void(0)" @click="reset()">Volver a intentar</a>
       </p>
       <pre>{{ uploadError }}</pre>
     </div>
-    <pre>{{ item }}</pre>
   </div>
 </template>
 
@@ -93,7 +92,8 @@
           .then(this.wait(1500))
           .then(x => {
             if (x.status) {
-              this.uploadedFiles = [].concat(x.content)
+              this.$emit('emitCallback', x.content)
+              // this.uploadedFiles = [].concat(x.content)
               this.currentStatus = STATUS_SUCCESS
             } else {
               this.uploadError = x.content
@@ -107,7 +107,6 @@
       },
       filesChange (fieldName, fileList) {
         // handle file changes
-        alert('Change')
         const formData = new FormData()
 
         if (!fileList.length) return
@@ -127,19 +126,24 @@
         }
       }
     },
+    watch: {
+      item (newVal, oldVal) {
+        this.reset()
+      }
+    },
     mounted () {
       this.reset()
     }
   }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped="">
   .dropbox {
     outline: 2px dashed grey; /* the dash box */
     outline-offset: -10px;
     background: lightcyan;
     color: dimgray;
-    padding: 10px 10px;
+    padding: 0 20px;
     min-height: 200px; /* minimum height */
     position: relative;
     cursor: pointer;
@@ -160,6 +164,25 @@
   .dropbox p {
     font-size: 1.2em;
     text-align: center;
-    padding: 50px 0;
+    padding: 30px 0;
+    line-height: 1.4;
+  }
+
+  .upload-file{
+    p.message{
+      color: #4ebc75;
+      text-align: center;
+      font-size: 1.5em;
+    }
+
+    form {
+      .text-italic {
+        font-size: 0.8em;
+        color: #4ebc75;
+        font-style: italic;
+        padding: 15px 60px 0;
+        display: block;
+      }
+    }
   }
 </style>
