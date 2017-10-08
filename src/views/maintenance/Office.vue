@@ -7,6 +7,7 @@
         </div>
       </div>
 
+      <!--<pre>{{ item }}</pre>-->
       <div class="row">
         <div class="col-12">
           <app-table :fields="fields" :items="items" :btnOption="btnOption" @pickItem="pickItem" >
@@ -18,9 +19,6 @@
 
     <b-modal :title="optionPick.title" :class="'modal-'+optionPick.variant" v-model="showModal">
       <div v-if="optionPick.name === btnOption.deleteOpc.name">{{ optionPick.content }}</div>
-      <div v-if="optionPick.name === btnOption.uploadOpc.name" class="upload-content">
-        <h4 class="text-center text-uppercase">{{ itemPick.name }}</h4>
-      </div>
       <template slot="modal-footer">
         <b-button @click="showModal = !showModal">Cancel</b-button>
         <b-button v-if="optionPick.name === btnOption.deleteOpc.name" @click="deleteData" :variant="optionPick.variant">OK</b-button>
@@ -30,8 +28,8 @@
 </template>
 
 <script>
-  import {DATA as nDATA} from '../../data/dnStores'
-  import Form from './forms/FormStore.vue'
+  import {DATA as nDATA} from '../../data/dnOffices'
+  import Form from './forms/FormOffice.vue'
   import Table from '../../components/xTable.vue'
 
   export default {
@@ -49,14 +47,6 @@
         update: false,
         indexSelected: null,
         btnOption: {
-          uploadOpc: {
-            name: 'upload',
-            title: 'Subir una Imagen',
-            content: '',
-            variant: 'success',
-            selected: false,
-            icon: 'fa fa-picture-o'
-          },
           editOpc: {
             name: 'edit',
             variant: 'primary',

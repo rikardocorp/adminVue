@@ -109,6 +109,7 @@ export const DATA_FORM_USER = {
         options: [],
         activate: false,
         loadData: true,
+        localData: 'regions',
         value: ''
       }
     },
@@ -120,10 +121,11 @@ export const DATA_FORM_USER = {
       params: {
         url: 'roles',
         key: 'role',
-        label: '',
+        label: 'name',
         options: [],
         activate: false,
-        loadData: false,
+        loadData: true,
+        localData: 'roles',
         value: ''
       }
     },

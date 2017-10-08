@@ -1,15 +1,21 @@
 import Vue from 'vue'
 import router from '../../router'
-import * as types from '../types'
+// import * as types from '../types'
 
 const state = {
   API_URL: '',
   LOGIN_URL: '',
   SIGNUP_URL: '',
   DATAUSER_URL: '',
-  IMAGES_URL: 'EEEEE',
+  IMAGES_URL: '',
   user: {
     isLogged: false
+  },
+  LOAD_TABLE: {
+    regions: {url: 'regions', data: []},
+    provinces: {url: 'provinces', data: []},
+    cities: {url: 'cities', data: []},
+    roles: {url: 'roles', data: []}
   }
 }
 
@@ -58,6 +64,9 @@ const mutations = {
     // localStorage.clear()
     Vue.set(state.user, 'isLogged', false)
     router.push('/login')
+  },
+  setLoadTable: (state, value) => {
+    Vue.set(state.LOAD_TABLE[value.key], 'data', value.data)
   }
 }
 
@@ -70,8 +79,9 @@ const actions = {
       let authKey = response.data.Authorization
       localStorage.setItem('authorization', authKey)
       commit('setAuthHeader')
-      // dispatch('getDataUser')
+      dispatch('getDataUser')
       commit('switchLoading', false)
+      // dispatch('initDataTables')
       if (payload.redirect) {
         router.push(payload.redirect)
       }
@@ -100,7 +110,31 @@ const actions = {
       console.log(error)
       commit('logout')
     })
-  }
+  },
+  // initDataTables: ({commit, state}) => {
+  //   let value = ''
+  //   let promises = []
+  //   let p = ''
+  //   Object.keys(state.LOAD_TABLE).forEach(function (key) {
+  //     value = state.LOAD_TABLE[key]
+  //     commit('switchLoading', true)
+  //     p = new Promise((resolve, reject) => {
+  //       Vue.http.get(value.url).then(response => {
+  //         commit('switchLoading', false)
+  //         if (!response.data.success) return false
+  //         commit('setLoadTable', {key: key, data: response.data.data})
+  //         resolve()
+  //       }).catch(error => {
+  //         console.log('ERROR: LOAD-DATATABLE')
+  //         console.log(error)
+  //         commit('switchLoading', false)
+  //         reject(error)
+  //       })
+  //     })
+  //     promises.push(p)
+  //   })
+  //   return Promise.all(promises)
+  // }
 }
 
 export default {

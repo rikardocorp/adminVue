@@ -144,7 +144,7 @@
       resetMultiSelect () {
         let vm = this
         this.$lodash.forEach(this.multiselectKeys, function (key) {
-          vm.optInput[key].params.value = ''
+          vm.item[key] = ''
         })
       },
       resetForm (formId) {

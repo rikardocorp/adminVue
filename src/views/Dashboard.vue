@@ -1,6 +1,7 @@
 <template>
   <div class="animated fadeIn">
     <div class="row">
+      <!--<pre>{{ $store.state.Login.LOAD_TABLE.regions }}</pre>-->
       <div class="col-sm-6 col-lg-3">
         <b-card class="bg-primary" :no-block="true">
           <div class="card-body pb-0">

@@ -54,6 +54,7 @@
         </b-form-group>
       </div>
     </b-form>
+    <!--<pre>{{ optInput }}</pre>-->
 
   </b-card>
 
@@ -158,8 +159,10 @@
         this.selectedKey = id
       },
       getOption (urlRest, index) {
-        let self = this.$store.dispatch('dispatchHTTP', {type: 'GET', url: urlRest})
+        let self = this.$store.dispatch('dispatchHTTP', {type: 'LOAD_TABLE', url: urlRest, data: {key: this.optInput[index].params.localData}})
         self.then((data) => {
+          console.log('DATA en COTIZAR')
+          console.log(data)
           if (data.status) {
             this.optInput[index].params.options = data.content
             this.optInput[index].params.activate = true

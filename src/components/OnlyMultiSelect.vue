@@ -22,10 +22,10 @@
       <template slot="maxElements" scope="props">Departamento-Provincia-Distrito</template>
     </multiselect>
     <!--<pre class="text-left">{{ selectValue }}</pre>-->
-    <!--<pre>DPD: {{value}}</pre>-->
+    <!--<pre class="text-left">DPD: {{value}}</pre>-->
+    <!--<button @click.prevent="resetSelect">reset</button>-->
+    <!--<button @click.prevent="loadInitValue(value)">Init</button>-->
     <!--<pre>LOCAL DPD: {{localValue}}</pre>-->
-    <!--<pre class="language-json"><code>{{ localValue  }}</code></pre>-->
-
   </div>
 
 </template>
@@ -43,19 +43,19 @@
         options: [],
         optionsAux: [],
         indexSelect: -1,
-        cen: 0,
         placeholder: '',
         keySearch: '',
         localIsloading: true,
         localDisabled: true,
         countLoad: 0,
-        selectValue: ''
+        selectValue: '',
+        centinela: true
       }
     },
     methods: {
       async getTypes (index) {
         let url = this.optionList[index].url
-        let self = await this.$store.dispatch('dispatchHTTP', {type: 'GET', url: url})
+        let self = await this.$store.dispatch('dispatchHTTP', {type: 'LOAD_TABLE', url: url, data: {key: this.optionList[index].localData}})
         if (!self.status) return false
         this.countLoad++
         this.optionList[index].options = self.content
@@ -66,9 +66,9 @@
         this.keySearch = optionIndex.keySearch
         this.options = optionIndex.options
         this.optionsAux = optionIndex.options
-        // indexSelect = 0
       },
       pickOption (selectedOption) {
+        this.centinela = false
         let optionIndex = this.optionList[this.indexSelect]
         optionIndex.pickID = JSON.parse(JSON.stringify(selectedOption))
         let optionPick = this.$lodash.filter(optionIndex.options, selectedOption)
@@ -91,11 +91,11 @@
         for (let i = 0; i < indexSelect; i++) {
           opt = this.optionList[i]
           query[opt.id] = opt.pickID
+          this.$delete(query[opt.id], 'color')
         }
         let optionIndex = this.optionList[indexSelect]
         this.options = this.$lodash.filter(optionIndex.options, query)
         this.optionsAux = this.options
-
         this.placeholder = optionIndex.placeholder
         this.keySearch = optionIndex.keySearch
       },
@@ -108,22 +108,21 @@
         })
       },
       emitValue (selectValue) {
+        this.centinela = false
         let localValue = JSON.parse(JSON.stringify(selectValue))
         this.selectValue = selectValue
-        if (localValue.length === this.optionList.length) {
-          let eValue = []
-          for (let i = 0; i < this.optionList.length; i++) {
-            this.$delete(localValue[i], 'color')
-            eValue.push(localValue[i])
-          }
-          this.$emit('input', eValue)
-          this.placeholder = ''
+        let eValue = []
+        for (let i = 0; i < localValue.length; i++) {
+          this.$delete(localValue[i], 'color')
+          eValue.push(localValue[i])
         }
+        this.$emit('input', eValue)
       },
-      loadInitValue () {
-        if (!Array.isArray(this.value)) return false
+      loadInitValue (initValue) {
+        if (!Array.isArray(initValue)) return false
+        this.resetSelect()
         let optionIndex = ''
-        let localValue = JSON.parse(JSON.stringify(this.value))
+        let localValue = JSON.parse(JSON.stringify(initValue))
         let vm = this
         localValue.forEach(function (value, index) {
           optionIndex = vm.optionList[index]
@@ -131,6 +130,14 @@
           value['color'] = optionIndex.colorClass
           vm.localValue.push(value)
         })
+      },
+      resetSelect () {
+        this.placeholder = this.placeholderDefault
+        this.localIsloading = false
+        this.localDisabled = false
+        this.initOption()
+        this.localValue = []
+        this.setOptions(this.indexSelect)
       }
     },
     watch: {
@@ -139,8 +146,14 @@
           this.localIsloading = false
           this.localDisabled = false
           this.initOption()
-          this.loadInitValue()
+          this.loadInitValue(this.value)
         }
+      },
+      value (newVal, oldVal) {
+        if (this.centinela) {
+          this.loadInitValue(newVal)
+        }
+        this.centinela = true
       }
     },
     created () {

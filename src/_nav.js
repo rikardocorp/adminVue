@@ -29,8 +29,13 @@ export default {
           icon: 'icon-puzzle'
         },
         {
-          name: 'Locales',
-          url: '/mantenimiento/locales',
+          name: 'Oficinas',
+          url: '/mantenimiento/oficinas',
+          icon: 'icon-puzzle'
+        },
+        {
+          name: 'Usuarios',
+          url: '/mantenimiento/usuarios',
           icon: 'icon-puzzle'
         },
         {
@@ -46,11 +51,6 @@ export default {
         {
           name: 'Tipos de Vehiculo',
           url: '/mantenimiento/tipo-vehiculo',
-          icon: 'icon-puzzle'
-        },
-        {
-          name: 'Usuarios',
-          url: '/mantenimiento/usuarios',
           icon: 'icon-puzzle'
         }
       ]

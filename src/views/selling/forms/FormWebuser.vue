@@ -53,7 +53,7 @@
         </b-input-group-button>
 
         <only-multi-select v-if="option.input=='onlyMultiSelect'" class="special_radius"
-                           :maxHeight="200" v-model="DPD" :optionList="optType"
+                           :maxHeight="200" v-model="localidad" :optionList="option.params"
                            :disabled="isLoading || restricted"
                            :placeholderDefault="option.placeholder"></only-multi-select>
 
@@ -117,36 +117,7 @@
     },
     data () {
       return {
-        DPD: '',
-        optType: [
-          {
-            url: 'regions',
-            options: [],
-            pickID: null,
-            id: 'region',
-            keySearch: 'name',
-            colorClass: 'badge badge-danger',
-            placeholder: 'Departamento',
-          },
-          {
-            url: 'provinces',
-            options: [],
-            pickID: null,
-            id: 'province',
-            keySearch: 'name',
-            colorClass: 'badge badge-success',
-            placeholder: 'Provincia',
-          },
-          {
-            url: 'cities',
-            options: [],
-            pickID: null,
-            id: 'city',
-            keySearch: 'name',
-            colorClass: 'badge badge-info text-white',
-            placeholder: 'Distrito',
-          }
-        ],
+        localidad: [],
         optInput: _purchaser.input,
         titleRazonSocial: 'Nombre',
         titledniRuc: 'DNI',
@@ -171,17 +142,16 @@
         this.$emit('connection', 'isValid', newVal)
       },
       dispatch () {
-//        alert(this.isInvalid + ' ffweffw')
         console.log('VALIDAAAAAAAAA')
         console.log(this.isInvalid + ' ffweffw')
         this.$v.item.$touch()
       },
-      DPD (newVal, oldVal) {
+      localidad (newVal, oldVal) {
         localStorage.setItem('location', JSON.stringify(newVal))
         if (Array.isArray(newVal)) {
-          this.item.departamento = newVal[0].name
-          this.item.provincia = newVal[1].name
-          this.item.distrito = newVal[2].name
+          this.item.departamento = newVal[0] ? newVal[0].name : ''
+          this.item.provincia = newVal[1] ? newVal[1].name : ''
+          this.item.distrito = newVal[2] ? newVal[2].name : ''
         }
       }
     },
@@ -229,7 +199,7 @@
     created () {
       console.log(JSON.parse(localStorage.getItem('location')))
       let purchaser = JSON.parse(localStorage.getItem('purchaser'))
-      if (purchaser) this.DPD = JSON.parse(localStorage.getItem('location'))
+      if (purchaser) this.localidad = JSON.parse(localStorage.getItem('location'))
       this.dniRUC()
     }
   }

@@ -45,6 +45,10 @@
           url: {
             value: 'Solo Urls',
             params: []
+          },
+          sameAsPassword: {
+            value: 'La contraseña debe ser identica',
+            params: []
           }
         },
         localData: {}
@@ -65,7 +69,7 @@
       let params = []
       let newText = ''
       for (let [key, value] of Object.entries(this.data)) {
-        if (key[0] != '$') {
+        if (key[0] !== '$') {
           newText = this.text[key].value
           params = this.text[key].params
           console.log('Total Params ' + params.length)

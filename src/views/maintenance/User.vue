@@ -18,27 +18,45 @@
 
     <b-modal :title="optionPick.title" :class="'modal-'+optionPick.variant" v-model="showModal">
       <div v-if="optionPick.name === btnOption.deleteOpc.name">{{ optionPick.content }}</div>
-      <div v-if="optionPick.name === btnOption.uploadOpc.name" class="upload-content">
+      <div v-if="optionPick.name === btnOption.changeKey.name" class="upload-content">
         <h4 class="text-center text-uppercase">{{ itemPick.name }}</h4>
+        <b-form-group v-for="(option, index) in optInput" :key="index"
+                      :class="{ 'form-group--error': $v.itemPass[index]? $v.itemPass[index].$error : false, 'text-right': true}"
+                      :label-cols="4"
+                      :label="option.label + ':'"
+                      :horizontal="true">
+
+          <!-- INPUT -->
+          <b-form-input v-if="option.input==undefined || option.input=='input'"
+                        :disabled="isLoading" :type="option.type"
+                        v-model.trim="itemPass[index]"
+                        @blur.native="$v.itemPass[index]? $v.itemPass[index].$touch(): false"
+                        :placeholder="option.placeholder+'..'"></b-form-input>
+          <form-error :data="$v.itemPass[index] ? $v.itemPass[index] : {} "></form-error>
+        </b-form-group>
+
       </div>
       <template slot="modal-footer">
         <b-button @click="showModal = !showModal">Cancel</b-button>
         <b-button v-if="optionPick.name === btnOption.deleteOpc.name" @click="deleteData" :variant="optionPick.variant">OK</b-button>
+        <b-button v-if="optionPick.name === btnOption.changeKey.name" @click="changePassword" :variant="optionPick.variant">Cambiar</b-button>
       </template>
     </b-modal>
   </div>
 </template>
 
 <script>
-  import {DATA as nDATA} from '../../data/dnUser'
+  import {DATA as nDATA, DATA_FORM_PASSWORD as dataFormPass} from '../../data/dnUser'
   import Form from './forms/FormUser.vue'
   import Table from '../../components/xTable.vue'
+  import FormError from '../../components/FormError.vue'
 
   export default {
-    name: 'useType',
+    name: 'user',
     components: {
       appForm: Form,
-      appTable: Table
+      appTable: Table,
+      FormError
     },
     data: function () {
       return {
@@ -49,13 +67,13 @@
         update: false,
         indexSelected: null,
         btnOption: {
-          uploadOpc: {
-            name: 'upload',
-            title: 'Subir una Imagen',
+          changeKey: {
+            name: 'changeKey',
+            title: 'Cambiar contraseña',
             content: '',
             variant: 'success',
             selected: false,
-            icon: 'fa fa-picture-o'
+            icon: 'fa fa-key'
           },
           editOpc: {
             name: 'edit',
@@ -74,8 +92,14 @@
         },
         itemPick: {},
         optionPick: {},
-        showModal: false
+        showModal: false,
+
+        optInput: dataFormPass.input,
+        itemPass: dataFormPass.post
       }
+    },
+    validations () {
+      return dataFormPass.validate
     },
     methods: {
       addRow (newItem = '') {
@@ -111,6 +135,12 @@
             this.initData()
           }
         })
+      },
+      changePassword () {
+        let invalid = this.$v.itemPass.$invalid
+        if (!invalid) {
+          alert('Exito')
+        }
       },
       toggleDialog: function () {
         this.showModal = !this.showModal

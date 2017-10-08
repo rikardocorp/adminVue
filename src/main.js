@@ -37,6 +37,7 @@ Vue.use(VueScrollTo, {
 })
 
 // Guard Login
+// router.beforeEach((to, from, next) => {})
 router.afterEach((to, from) => {
   let isLogged = store.state.Login.user.isLogged
   if (!isLogged) {
@@ -46,7 +47,7 @@ router.afterEach((to, from) => {
       store.commit('setAuthHeader')
     } else {
       console.log('NO EXISTE')
-      // router.push('/login')
+      router.push('/login')
     }
   } else {
     store.dispatch('getDataUser')

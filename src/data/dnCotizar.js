@@ -25,6 +25,7 @@ export const DATA_FORM = {
         options: [],
         activate: false,
         loadData: true,
+        localData: 'regions',
         icon: 'fa-map-marker',
         value: ''
       }

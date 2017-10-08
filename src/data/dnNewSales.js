@@ -123,12 +123,44 @@ export const DATA_PURCHASER = {
       type: 'text',
       icon: 'fa fa-address-book-o'
     },
-    departamento: {
+    distrito: {
       label: 'Localidad',
       placeholder: 'Departamento-Provincia-Distrito',
       type: 'text',
       icon: 'fa fa-map-marker',
-      input: 'onlyMultiSelect'
+      input: 'onlyMultiSelect',
+      params: [
+        {
+          url: 'regions',
+          options: [],
+          pickID: null,
+          id: 'region',
+          keySearch: 'name',
+          colorClass: 'badge badge-danger',
+          placeholder: 'Departamento',
+          localData: 'regions'
+        },
+        {
+          url: 'provinces',
+          options: [],
+          pickID: null,
+          id: 'province',
+          keySearch: 'name',
+          colorClass: 'badge badge-success',
+          placeholder: 'Provincia',
+          localData: 'provinces'
+        },
+        {
+          url: 'cities',
+          options: [],
+          pickID: null,
+          id: 'city',
+          keySearch: 'name',
+          colorClass: 'badge badge-info text-white',
+          placeholder: 'Distrito',
+          localData: 'cities',
+        }
+      ]
     },
     phone: {
       label: 'Telefono Fijo',
@@ -160,13 +192,7 @@ export const DATA_PURCHASER = {
       address: {
         required
       },
-      departamento: {
-        required
-      },
       distrito: {
-        required
-      },
-      provincia: {
         required
       },
       phone: {

@@ -95,10 +95,10 @@ export const DATA_FORM = {
         options: [],
         activate: false,
         loadData: true,
+        localData: 'regions',
         value: ''
       }
     },
-
     seatNumber: {
       label: 'Asientos',
       placeholder: 'Numero de asientos',

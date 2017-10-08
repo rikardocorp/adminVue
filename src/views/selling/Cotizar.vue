@@ -6,10 +6,9 @@
           <app-form v-model="items" :item="item" :pickObject="pickObject" :horizontal="true" :urlRest="urlRest" @isSearching="isSearching"></app-form>
         </div>
       </div>
-
+      <!--<pre>{{ $store.state.Login.LOAD_TABLE.regions }}</pre>-->
       <div class="container-fluid">
-
-          <div v-if="isSearch" class="row d-flex justify-content-center pt-4 mt-2 pt-md-2">
+        <div v-if="isSearch" class="row d-flex justify-content-center pt-4 mt-2 pt-md-2">
             <span class="fa-stack fa-2x">
               <i class="fa fa-cog fa-spin-reverse fa-stack-2x text-orange"></i>
               <i class="fa fa-cog fa-spin fa-stack-1x text-cream"></i>

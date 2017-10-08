@@ -136,7 +136,7 @@
         }
       },
       getOption (urlRest, index) {
-        let self = this.$store.dispatch('dispatchHTTP', {type: 'GET', url: urlRest})
+        let self = this.$store.dispatch('dispatchHTTP', {type: 'LOAD_TABLE', url: urlRest, data: {key: this.optInput[index].params.localData}})
         self.then((data) => {
           if (data.status) {
             this.optInput[index].params.options = data.content

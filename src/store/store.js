@@ -19,6 +19,14 @@ export default new Vuex.Store({
     fullscreen: false
   },
   getters: {
+    arrayToObject: (state, getters) => (value) => {
+      console.log('Array To OBJECT')
+      let newArray = []
+      value.forEach(function (value, index) {
+        newArray.push({id: index, name: value})
+      })
+      return newArray
+    }
   },
   mutations: {
     [types.CHANGE_TITLEPAGE]: (state, title) => {
@@ -36,12 +44,22 @@ export default new Vuex.Store({
       }
       Vue.set(state, 'notification', data)
     },
+    sendNotification: (state, value) => {
+      let data = {
+        count: state.notification.count + 1,
+        content: {
+          status: value.status,
+          data: {message: value.message, status: 'frontend', success: value.status, url: ''}
+        }
+      }
+      Vue.set(state, 'notification', data)
+    },
     switchFullscreen: (state, value) => {
       Vue.set(state, 'fullscreen', value)
     }
   },
   actions: {
-    dispatchHTTP: ({commit, state}, { type, url, data, notify = {success: false, error: false} }) => {
+    dispatchHTTP: ({commit, state, getters}, { type, url, data, notify = {success: false, error: false} }) => {
       console.log(type, url, data, notify)
       commit('switchLoading', true)
       let inquiry = ''
@@ -77,10 +95,34 @@ export default new Vuex.Store({
             notify = {success: false, error: false}
             inquiry = Vue.http.get(url)
             break
+          case 'LOAD_TABLE':
+            notify = {success: false, error: false}
+            let dataTable = state.Login.LOAD_TABLE[data.key]
+            if (dataTable === undefined) {
+              console.log('http')
+              inquiry = Vue.http.get(url)
+            } else {
+              if (dataTable.data.length > 0) {
+                // cargamos tablas locales
+                result.status = true
+                result.content = dataTable.data
+                resolve(result)
+              } else {
+                // almacenamos tablas locales
+                inquiry = Vue.http.get(url)
+                inquiry.then((response) => {
+                  let localData = response.data.data
+                  if (data.key === 'roles') localData = getters.arrayToObject(response.data.data)
+                  commit('setLoadTable', {key: data.key, data: localData})
+                  response.data.data = localData
+                })
+              }
+            }
+            break
           default:
             inquiry = []
             result.status = null
-            result.content = 'only [GET,INSERT,UPDATE,DELETE]'
+            result.content = 'only [GET,INSERT,UPDATE,DELETE,FILE,LOAD_TABLE]'
             resolve(result)
         }
 
@@ -114,18 +156,16 @@ export default new Vuex.Store({
         })
       })
       promise.then(() => {
-        console.log('SUCCESSSSSSSSS 2')
         commit('switchLoading', false)
       }).catch(() => {
-        console.log('ERROOORRRRRRRR 2')
         commit('switchLoading', false)
       })
       return promise
-    },
-    alert: (state, title) => {
-      console.log(state)
-      console.log(title + state.isLogged)
-      // console.log()
     }
+    // alert: (state, title) => {
+    //   console.log(state)
+    //   console.log(title + state.isLogged)
+    //   // console.log()
+    // }
   }
 })

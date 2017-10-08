@@ -13,7 +13,7 @@
               </button>
 
               <!-- Wizard Form -->
-              <form-wizard @on-complete="onComplete"
+              <form-wizard id="newSaleWizard" @on-complete="onComplete"
                            @on-validate="handleValidation"
                            @on-change="onchange"
                            color="#ef7b21" errorColor="#e84c3d"
@@ -231,7 +231,8 @@
       async getInsurancePolicy () {
         // let dataLocal = this.data.sale
         let companyId = this.data.pickPolice.item.insuranceCompanyId
-        let url = 'insurancepolicies/mypolicies?sold=0&insuranceCompanyId=' + companyId
+        let url = 'insurancepolicies?insuranceCompanyId=' + companyId + '&sold=0'
+//        let url = 'insurancepolicies/mypolicies?sold=0&insuranceCompanyId=' + companyId
         console.log('GET INSURANCE')
         let self = await this.$store.dispatch('dispatchHTTP', {type: 'GET', url: url})
         return self
@@ -258,7 +259,14 @@
         console.log('My LIST POLICIES')
         console.log(policy)
         if (!policy.status) return false
-        else policyObject = policy.content[0]
+        else {
+          if (policy.content.length === 0) {
+            // mandar mensaje
+            this.$store.commit('sendNotification', {status: false, message: 'No cuenta con polizas asignadas'})
+            return false
+          }
+          policyObject = policy.content[0]
+        }
         console.log(policyObject)
         // INSERT SALE
         this.data.sale.item.insurancePolicy = policyObject
@@ -592,6 +600,24 @@
 
 <style lang="scss">
 
+  #newSaleWizard{
+    /*.form-control[readonly]*/
+    .form-control:disabled{
+      background-color: rgb(255, 150, 5);
+      color: white;
+      border: 1px solid #ff9508;
+    }
+    .multiselect--disabled{
+      opacity: 1;
+      .multiselect__select,
+      .multiselect__tags {
+        background-color: rgb(255, 150, 5);
+        border: 1px solid #ff9508;
+
+      }
+    }
+  }
+
   .localOpacity{
     opacity: 0.6;
   }
@@ -612,8 +638,8 @@
   }
 
   .ticket{
-    font-size: 1.3em;
+    font-size: 1em;
     overflow: hidden;
-    width: 460px;
+    width: 24.4em;
   }
 </style>

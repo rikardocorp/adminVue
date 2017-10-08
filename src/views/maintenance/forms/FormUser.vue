@@ -26,17 +26,19 @@
                          @blur.native="$v.item[index]? $v.item[index].$touch(): false"
                          :rows="3" :max-rows="6"></b-form-textarea>
 
+        <!-- MULTISELECT -->
+        <multiselect v-else-if="option.input=='multiselect'"
+                     :close-on-select="true" :hide-selected="true" :preserve-search="false" :taggable="false" select-label=""
+                     :placeholder="option.placeholder"
+                     :label="option.params.label" :track-by="option.params.label"
+                     :loading="!option.params.activate"
+                     :disabled="!option.params.activate || isLoading"
+                     v-model="item[index]"
+                     :options="option.params.options"
+                     @blur.native="$v.item[index]? $v.item[index].$touch(): false"></multiselect>
+
         <!-- ERROR MESSAGE-->
         <form-error :data="$v.item[index]? $v.item[index] : {} "></form-error>
-      </b-form-group>
-
-      <!-- roles -->
-      <b-form-group class="text-right" :label-cols="lCols"
-        label="ROLES:"
-        feedback="feedback"
-        :state="null"
-        :horizontal="horizontal">
-        <b-form-select value-field="id" :disabled="isLoading || !optType['roles'].activate" v-model="item.role" :options="optType['roles'].options"></b-form-select>
       </b-form-group>
 
       <b-form-group class="text-right" :label-cols="lCols"
@@ -79,24 +81,22 @@
   import cSwitch from '../../../components/Switch'
   import {DATA_FORM as dataForm} from '../../../data/dnUser'
   import FormError from '../../../components/FormError.vue'
+  import Multiselect from 'vue-multiselect'
 
   export default {
     props: ['urlRest', 'item', 'update', 'horizontal'],
     components: {
       cSwitch: cSwitch,
-      FormError
+      FormError,
+      Multiselect
     },
     data () {
       return {
         name: 'form-',
         lCols: 4,
         optInput: dataForm.input,
-        optType: {
-          'roles': {
-            options: ['Please select some item'],
-            activate: false
-          }
-        }
+        selectedKey: '',
+        multiselectKeys: []
       }
     },
     validations () {
@@ -112,6 +112,7 @@
         this.$emit('emit_addRow', newItem)
       },
       processData (action) {
+        this.setPassword()
         let invalid = this.$v.item.$invalid
         let url = !this.item.id ? this.urlRest : this.urlRest + '/' + this.item.id
         if (!invalid) {
@@ -128,30 +129,47 @@
           this.$v.item.$touch()
         }
       },
+      resetMultiSelect () {
+        let vm = this
+        this.$lodash.forEach(this.multiselectKeys, function (key) {
+          vm.item[key] = ''
+        })
+      },
       resetForm (formId) {
         document.getElementById(formId).reset()
+        console.log('BORRARRR')
+        this.resetMultiSelect()
+        this.localidad = ''
         this.$v.item.$reset()
       },
-      getTypes (urlRest) {
-        let self = this.$store.dispatch('dispatchHTTP', {type: 'GET', url: urlRest})
+      getOption (urlRest, index) {
+        let self = this.$store.dispatch('dispatchHTTP', {type: 'LOAD_TABLE', url: urlRest, data: {key: this.optInput[index].params.localData}})
         self.then((data) => {
           if (data.status) {
-            console.log('OPTIONS:')
-            console.log(data.content)
-            console.log(urlRest)
-            console.log(this.optType[urlRest])
-            console.log('-------')
-            this.optType[urlRest].options = this.optType[urlRest].options.concat(data.content)
-            this.optType[urlRest].activate = true
+            this.optInput[index].params.options = data.content
+            this.optInput[index].params.activate = true
           }
         })
+      },
+      setPassword () {
+        this.item.password = this.item.email
+        this.item.role = {
+          email: this.item.email,
+          role: this.item._role.name
+        }
       }
     },
     created () {
       let vm = this
-      this.$lodash.forEach(this.optType, function (value, key) {
-        console.log(key)
-        vm.getTypes(key)
+      this.$lodash.forEach(this.optInput, function (value, key) {
+        if (vm.optInput[key].input === 'multiselect') {
+          vm.multiselectKeys.push(key)
+          if (vm.optInput[key].params.loadData) {
+            vm.getOption(value.params.url, key)
+          } else {
+            vm.optInput[key].params.activate = true
+          }
+        }
       })
     }
   }

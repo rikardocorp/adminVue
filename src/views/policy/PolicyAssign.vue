@@ -2,6 +2,8 @@
   <div class="wrapper">
     <div class="animated fadeIn">
       <div class="row d-flex justify-content-center">
+        <!--<pre>{{ $store.state.Login.LOAD_TABLE.roles }}</pre>-->
+        <!--<pre>{{ $store.state.Login.LOAD_TABLE.regions }}</pre>-->
         <div class="col-md-8">
           <!--<app-form v-model="items" :item="item" :pickObject="pickObject" :horizontal="true" :urlRest="urlRest" @isSearching="isSearching"></app-form>-->
           <app-form :item="itemForm1" :nameForm="nameForm1" :horizontal="true"
@@ -213,6 +215,12 @@
       left: 6.7em;
       z-index: 2;
       display: block;
+    }
+  }
+
+  .card-insurance {
+    .avatar {
+      position: absolute;
     }
   }
 </style>

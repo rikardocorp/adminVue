@@ -1,7 +1,7 @@
 <template>
   <b-card>
     <div slot="header" class="text-center">
-      <strong>Locales</strong> de Venta
+      <strong>Oficinas</strong> de Venta
     </div>
     <b-form :id="name + urlRest">
 
@@ -28,9 +28,21 @@
 
         <!-- ONLYMULTISELECT -->
         <only-multi-select v-if="option.input=='onlyMultiSelect'"
-                           :maxHeight="200" v-model="DPD" :optionList="option.params"
+                           :maxHeight="200" v-model="localidad" :optionList="option.params"
                            :disabled="isLoading"
                            :placeholderDefault="option.placeholder"></only-multi-select>
+
+
+        <!-- MULTISELECT -->
+        <multiselect v-else-if="option.input=='multiselect'"
+                     :close-on-select="true" :hide-selected="true" :preserve-search="false" :taggable="false" select-label=""
+                     :placeholder="option.placeholder"
+                     :label="option.params.label" :track-by="option.params.label"
+                     :loading="!option.params.activate"
+                     :disabled="!option.params.activate || isLoading"
+                     v-model="item[index]"
+                     :options="option.params.options"
+                     @blur.native="$v.item[index]? $v.item[index].$touch(): false"></multiselect>
 
         <!-- ERROR MESSAGE-->
         <form-error :data="$v.item[index]? $v.item[index] : {} "></form-error>
@@ -51,30 +63,34 @@
       </div>
 
     </b-form>
-    <!--<pre>{{ item }}</pre>-->
+    <pre>{{ localidad }}</pre>
   </b-card>
 
 </template>
 
 <script>
   import cSwitch from '../../../components/Switch'
-  import {DATA_FORM as dataForm} from '../../../data/dnStores'
+  import {DATA_FORM as dataForm} from '../../../data/dnOffices'
   import FormError from '../../../components/FormError.vue'
   import OnlyMultiSelect from '../../../components/OnlyMultiSelect.vue'
+  import Multiselect from 'vue-multiselect'
 
   export default {
     props: ['urlRest', 'item', 'update', 'horizontal'],
     components: {
       cSwitch: cSwitch,
       FormError,
-      OnlyMultiSelect
+      OnlyMultiSelect,
+      Multiselect
     },
     data () {
       return {
-        DPD: '',
         name: 'form-',
         lCols: 4,
-        optInput: dataForm.input
+        optInput: dataForm.input,
+        selectedKey: '',
+        multiselectKeys: [],
+        localidad: []
       }
     },
     validations () {
@@ -88,6 +104,7 @@
     methods: {
       addRow (newItem) {
         this.$emit('emit_addRow', newItem)
+        this.resetForm(this.name + this.urlRest)
       },
       processData (action) {
         let invalid = this.$v.item.$invalid
@@ -96,50 +113,62 @@
           let self = this.$store.dispatch('dispatchHTTP', {type: action, url: url, data: this.item})
           self.then((data) => {
             if (data.status) {
-              console.log('DATA-CONTENT ' + action)
-              console.log(data.content)
               this.addRow(data.content)
-              this.resetForm(this.name + this.urlRest)
             }
           })
         } else {
           this.$v.item.$touch()
         }
       },
+      resetMultiSelect () {
+        let vm = this
+        this.$lodash.forEach(this.multiselectKeys, function (key) {
+          vm.item[key] = ''
+        })
+      },
       resetForm (formId) {
         document.getElementById(formId).reset()
+        this.resetMultiSelect()
+        this.localidad = []
         this.$v.item.$reset()
       },
-      getTypes (urlRest) {
-        let self = this.$store.dispatch('dispatchHTTP', {type: 'GET', url: urlRest})
+      getOption (urlRest, index) {
+        let self = this.$store.dispatch('dispatchHTTP', {type: 'LOAD_TABLE', url: urlRest, data: {key: this.optInput[index].params.localData}})
         self.then((data) => {
           if (data.status) {
-            console.log('OPTIONS:')
-            console.log(data.content)
-            console.log(urlRest)
-            console.log(this.optType[urlRest])
-            console.log('-------')
-            this.optType[urlRest].options = this.optType[urlRest].options.concat(data.content)
-            this.optType[urlRest].activate = true
+            this.optInput[index].params.options = data.content
+            this.optInput[index].params.activate = true
           }
         })
       }
     },
     watch: {
-      DPD (newVal, oldVal) {
-        localStorage.setItem('location', JSON.stringify(newVal))
+      localidad (newVal) {
         if (Array.isArray(newVal)) {
-          this.item.region = newVal[0]
-          this.item.province = newVal[1]
-          this.item.city = newVal[2]
+          this.item.region = newVal[0] ? newVal[0] : null
+          this.item.province = newVal[1] ? newVal[1] : null
+          this.item.city = newVal[2] ? newVal[2] : null
+        }
+      },
+      item (newVal, oldVal) {
+        if (this.update) {
+          this.localidad = [this.item.region, this.item.province, this.item.city]
+        } else {
+          this.resetForm(this.name + this.urlRest)
         }
       }
     },
     created () {
       let vm = this
-      this.$lodash.forEach(this.optType, function (value, key) {
-        console.log(key)
-        vm.getTypes(key)
+      this.$lodash.forEach(this.optInput, function (value, key) {
+        if (vm.optInput[key].input === 'multiselect') {
+          vm.multiselectKeys.push(key)
+          if (vm.optInput[key].params.loadData) {
+            vm.getOption(value.params.url, key)
+          } else {
+            vm.optInput[key].params.activate = true
+          }
+        }
       })
     }
   }
