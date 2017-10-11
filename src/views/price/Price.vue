@@ -61,7 +61,7 @@
 </template>
 
 <script>
-  import {DATA_VEHICLETYPE as nDATA} from '../../data/dataNames'
+  import {DATA as nDATA} from '../../data/dnVehicleTypeCategories'
   import {DATA as PriceData} from '../../data/dnInsurancePrices'
   import Form from './forms/FormPrice.vue'
   import Table from '../../components/xTable.vue'
@@ -99,7 +99,7 @@
         // vehicle type
         urlRestVT: nDATA.name,
         itemVT: JSON.parse(JSON.stringify(nDATA.post)),
-        fieldsVT: nDATA.fieldsTable,
+        fieldsVT: nDATA.fieldsTablePrice,
         itemsVT: [],
         btnOptionVT: {
           plusOpc: {
@@ -146,9 +146,10 @@
         })
       },
       getDataInsurancePrices (item) {
-        let brand = item.vehicleBrand
-        let model = item.vehicleModel
-        let thisUrl = 'insuranceprices/filter?vehicleTypeId=' + item.id
+        console.log(item)
+        let vehicleCategory = {id: item.vehicleCategory.id}
+        let vehicleClass = {id: item.vehicleClass.id}
+        let thisUrl = 'insuranceprices/filter?vehicleTypeCategoryId=' + item.id
         // let thisUrl = 'insuranceprices'
         console.log('URL TIPO VEHICULO')
         console.log(thisUrl)

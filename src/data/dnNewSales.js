@@ -8,7 +8,7 @@ export const DATA_VEHICLE = {
     seatNumber: '',
     useType: '',
     engineNumber: '',
-    vehicleType: '',
+    vehicleTypeCategory: '',
     webUser: ''
   },
   input: {
@@ -59,7 +59,7 @@ export const DATA_VEHICLE = {
       engineNumber: {
         required
       },
-      vehicleType: {
+      vehicleTypeCategory: {
         required
       }
     }

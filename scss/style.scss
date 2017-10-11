@@ -146,9 +146,18 @@ html{
     }
   }
 
-  @media (max-width: 574px){
+  @media (max-width: 575px){
     .table-responsive {
-      display: block
+      //display: table !important;
+    }
+    .card{
+      //font-size: 1.4em;
+      .card-body{
+        label{
+          text-align: left;
+          font-size: 1.4em;
+        }
+      }
     }
   }
 
@@ -156,15 +165,22 @@ html{
 
 
 html{
+  .card{
+    .card-header{
+      border-radius: 0.5rem 0.5rem 0 0;
+      padding-bottom: 0.3em;
+      padding-top: 0.3em;
+    }
+  }
+
   .newStyle{
     .card:not(.exception){
       //border: 1px solid #ef7b1f;
       .card-header{
         background: #ffa501;
+        //background: $orange-dark;
         color: white;
         border-radius: 0.5rem 0.5rem 0 0;
-        padding-bottom: 0.3em;
-        padding-top: 0.3em;
       }
     }
 

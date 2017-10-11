@@ -12,17 +12,37 @@ export const DATA = {
     observation: '',
     state: '',
     currency: '',
-    regionId: '',
-    vehicleId: '',
-    insurancePolicyId: '',
-    purchaserId: '',
+    region: null,
+    vehicle: null,
+    insurancePolicy: null,
+    purchaser: null,
     seatNumber: ''
   },
   fieldsTable: {
-    insurancePolicyId: {label: 'Poliza', sortable: true, 'class': 'text-center'},
-    purchaserId: {label: 'Contratante', sortable: true, 'class': 'text-center'},
-    vehicleId: {label: 'Auto', sortable: true, 'class': 'text-center'},
-    regionId: {label: 'Region', sortable: true, 'class': 'text-center'},
+    insurancePolicy: {
+      label: 'Poliza',
+      sortable: true,
+      'class': 'text-center',
+      formatter: (value) => { return value.number }
+    },
+    purchaser: {
+      label: 'Contratante',
+      sortable: true,
+      'class': 'text-center',
+      formatter: (value) => { return value.razonSocial }
+    },
+    vehicle: {
+      label: 'Auto',
+      sortable: true,
+      'class': 'text-center',
+      formatter: (value) => { return value.licensePlate }
+    },
+    region: {
+      label: 'Region',
+      sortable: true,
+      'class': 'text-center',
+      formatter: (value) => { return value.name }
+    },
     seatNumber: {label: 'Asientos', sortable: true, 'class': 'text-center'},
     date: {label: 'Fecha', sortable: true, 'class': 'text-center'},
     amount: {label: 'Monto', sortable: true, 'class': 'text-center'},
@@ -32,20 +52,20 @@ export const DATA = {
     observation: {label: 'Observ', sortable: true, 'class': 'text-center'},
     state: {label: 'Estado', sortable: true, 'class': 'text-center'},
     active: {label: 'Activo?', sortable: true, 'class': 'text-center'},
-    actions: {label: '', thStyle: 'width:75px'}
+    actions: {label: '', 'class': 'text-center', thStyle: 'width:115px'}
   }
 }
 
 export const DATA_FORM = {
   input: {
-    insurancePolicyId: {
+    insurancePolicy: {
       label: 'Polizas',
       placeholder: 'Numero de Polizas',
       type: 'text',
       input: 'multiselect',
       params: {
         url: 'insurancepolicies/mypolicies?sold=0',
-        key: 'insurancePolicyId',
+        key: 'insurancePolicy',
         label: 'number',
         options: [],
         activate: false,
@@ -53,14 +73,14 @@ export const DATA_FORM = {
         value: ''
       }
     },
-    purchaserId: {
+    purchaser: {
       label: 'Cotratante',
       placeholder: 'Numero de asientos',
       type: 'text',
       input: 'multiselect',
       params: {
         url: 'purchasers',
-        key: 'purchaserId',
+        key: 'purchaser',
         label: 'razonSocial',
         options: [],
         activate: false,
@@ -68,14 +88,14 @@ export const DATA_FORM = {
         value: ''
       }
     },
-    vehicleId: {
+    vehicle: {
       label: 'Vehiculo',
       placeholder: 'Vehiculo asegurado',
       type: 'text',
       input: 'multiselect',
       params: {
         url: 'vehicles',
-        key: 'vehicleId',
+        key: 'vehicle',
         label: 'licensePlate',
         options: [],
         activate: false,
@@ -83,14 +103,14 @@ export const DATA_FORM = {
         value: ''
       }
     },
-    regionId: {
+    region: {
       label: 'Departamento',
       placeholder: 'Departamento',
       type: 'text',
       input: 'multiselect',
       params: {
         url: 'regions',
-        key: 'regionId',
+        key: 'region',
         label: 'name',
         options: [],
         activate: false,
@@ -139,16 +159,16 @@ export const DATA_FORM = {
   },
   validate: {
     item: {
-      insurancePolicyId: {
+      insurancePolicy: {
         required
       },
-      purchaserId: {
+      purchaser: {
         required
       },
-      vehicleId: {
+      vehicle: {
         required
       },
-      regionId: {
+      region: {
         required
       },
       seatNumber: {

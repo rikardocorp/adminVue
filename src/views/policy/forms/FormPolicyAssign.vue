@@ -51,24 +51,23 @@
 
         </b-form-group>
 
-        <b-form-group label="Numeros de Poliza:" :horizontal="false">
-          <div class="row">
-            <div class="col-sm-6 pr-1">
-              <b-form-input :disabled="isLoading" type="text" v-model.trim="item['numberFrom']"
-                placeholder="# Desde.."></b-form-input>
-            </div>
-            <div class="col-sm-6 pl-1">
-              <b-form-input :disabled="isLoading" type="text" v-model.trim="item['numberTo']"
-                            placeholder="# Hasta.."></b-form-input>
-            </div>
-          </div>
-        </b-form-group>
+        <!--<b-form-group label="Numeros de Poliza:" :horizontal="false">-->
+          <!--<div class="row">-->
+            <!--<div class="col-sm-6 pr-1">-->
+              <!--<b-form-input :disabled="isLoading" type="text" v-model.trim="item['numberFrom']"-->
+                <!--placeholder="# Desde.."></b-form-input>-->
+            <!--</div>-->
+            <!--<div class="col-sm-6 pl-1">-->
+              <!--<b-form-input :disabled="isLoading" type="text" v-model.trim="item['numberTo']"-->
+                            <!--placeholder="# Hasta.."></b-form-input>-->
+            <!--</div>-->
+          <!--</div>-->
+        <!--</b-form-group>-->
 
         <div slot="footer" class="text-right">
             <b-button class="float-left" @click="resetForm(name + nameForm)" :disabled="isLoading" size="sm" variant="outline-secondary"><i class="fa fa-ban"></i> Reset</b-button>
             <b-button class="float-right" @click.prevent="processData" :disabled="isLoading" type="submit" size="sm" variant="primary"><i class="fa fa-dot-circle-o"></i> Filtrar</b-button>
         </div>
-
       </div>
       <div class="col-md-7">
         <datepicker v-model="datepicker.params.value" :format="datepicker.params.format" language="es" :placeholder="datepicker.placeholder"
@@ -94,8 +93,9 @@
   import Datepicker from 'vuejs-datepicker'
   import {DATA_FORM as dataForm} from '../../../data/dnPolicyAssign'
   import Mixin from '../../../mixins'
+  import EventBus from '../../../event-bus'
   export default {
-    props: ['horizontal', 'item', 'nameForm'],
+    props: ['horizontal', 'item', 'nameForm', 'params'],
     mixins: [Mixin],
     components: {
       Multiselect,
@@ -137,17 +137,25 @@
     },
     methods: {
       async processData () {
-        this.isSearch = true
+        this.$set(this.params, 'isSearch', true)
         let idCompany = this.item.insuranceCompany ? this.item.insuranceCompany.id : ''
+        let idUser = this.item.user ? this.item.user.id : ''
         let sold = this.item.sold
-        let url = 'insurancepolicies/mypolicies?sold=' + sold + '&insuranceCompanyId=' + idCompany
+        let assign = this.item.assign
+        let number = this.item.number
+        let dateFrom = this.item.dateFrom
+        let dateTo = this.item.dateTo
+        // let url = 'insurancepolicies/mypolicies?sold=' + sold + '&insuranceCompanyId=' + idCompany
+        let url = 'insurancepolicies?number=' + number + '&insuranceCompanyId=' + idCompany + '&userId=' + idUser + '&sold=' + sold + '&free=' + assign + '&fromDate=' + dateFrom + '&toDate=' + dateTo
+        console.log('URL-------')
+        console.log(url)
         let self = await this.$store.dispatch('dispatchHTTP', {type: 'GET', url: url})
         if (!self.status) return true
         this.items = self.content
         console.log('self.content')
         console.log(self.content)
         this.$emit('resultFilter', self.content)
-        this.isSearch = false
+        this.$set(this.params, 'isSearch', false)
       },
       selectDate (pickDate) {
         console.log('pickDate')
@@ -173,14 +181,6 @@
             this.$set(this.item, 'dateTo', max._i)
           }
         }
-      },
-      selectOption (selectedOption) {
-        console.log(selectedOption)
-        let key = this.selectedKey
-        this.item[key] = selectedOption === null ? '' : selectedOption.id
-      },
-      openSelect (id) {
-        this.selectedKey = id
       },
       getOption (urlRest, index) {
         let self = this.$store.dispatch('dispatchHTTP', {type: 'GET', url: urlRest})
@@ -220,7 +220,14 @@
           }
         }
       })
+    },
+    mounted () {
+      let vm = this
+      EventBus.$on('FILTER_POLICY', function () {
+        vm.processData()
+      })
     }
+
   }
 </script>
 

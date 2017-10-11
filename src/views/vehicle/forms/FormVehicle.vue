@@ -1,33 +1,24 @@
 <template>
   <b-card>
-    <span @click="switchForm" class="btn-tool-left input-group-addon bg-primary" title="Registrar en grupo">
-      <i class="fa fa-tags" aria-hidden="true"></i>
-    </span>
     <div slot="header" class="text-center">
-      <strong>Registrar</strong> una Poliza
+      <strong>Registrar</strong> Vehiculos
     </div>
     <b-form :id="name + urlRest">
 
-      <b-form-group v-for="(option, index) in optInput" :key="index"
+      <b-form-group v-for="(option, index) in optInput" :key="index" :label-sr-only="option.srOnly"
                     :class="{ 'form-group--error': $v.item[index]? $v.item[index].$error : false, 'text-right': true}"
-                    :label-cols="lCols"
+                    :label-cols="option.srOnly ? null : lCols"
                     :label="option.label + ':'"
                     :horizontal="horizontal">
 
         <!-- INPUT -->
-        <b-form-input v-if="option.input==undefined || option.input=='input'"
-                      :disabled="isLoading" :type="option.type"
-                      v-model.trim="item[index]"
-                      @blur.native="$v.item[index]? $v.item[index].$touch(): false"
-                      :placeholder="option.placeholder+'..'"></b-form-input>
-
-        <!-- TEXTAREA -->
-        <b-form-textarea v-else-if="option.input=='textarea'"
-                         :disabled="isLoading"
-                         v-model.trim="item[index]"
-                         :placeholder="option.placeholder+'..'"
-                         @blur.native="$v.item[index]? $v.item[index].$touch(): false"
-                         :rows="3" :max-rows="6"></b-form-textarea>
+        <b-input-group v-if="option.input==undefined || option.input=='input'">
+          <b-form-input
+            :disabled="isLoading" :type="option.type"
+            v-model.trim="item[index]"
+            @blur.native="$v.item[index]? $v.item[index].$touch(): false"
+            :placeholder="option.placeholder+'..'"></b-form-input>
+        </b-input-group>
 
         <!-- MULTISELECT -->
         <multiselect v-else-if="option.input=='multiselect'"
@@ -48,7 +39,7 @@
       <div slot="footer">
         <b-form-group :horizontal="horizontal" :label-cols="lCols">
           <template v-if="!update">
-            <b-button @click.prevent="processData('INSERT')" :disabled="isLoading"type="submit" size="sm" variant="primary"><i class="fa fa-dot-circle-o"></i> Submit</b-button>
+            <b-button @click.prevent="processData('INSERT')" :disabled="isLoading" type="submit" size="sm" variant="primary"><i class="fa fa-dot-circle-o"></i> Submit</b-button>
             <b-button @click="resetForm(name + urlRest)" :disabled="isLoading" size="sm" variant="danger"><i class="fa fa-ban"></i> Reset</b-button>
           </template>
 
@@ -58,31 +49,30 @@
           </template>
         </b-form-group>
       </div>
-      <!--<p>DPD: {{ DPD }}</p>-->
-      <!--<p>Update: {{ update }}</p>-->
-
     </b-form>
+    <pre>{{item}}</pre>
   </b-card>
 
 </template>
 
 <script>
-  import Multiselect from 'vue-multiselect'
   import FormError from '../../../components/FormError.vue'
-  import {DATA_FORM as dataForm} from '../../../data/dnInsurancePolicies'
+  import {DATA_FORM as dataForm} from '../../../data/dnVehicles'
+  import Multiselect from 'vue-multiselect'
+
   export default {
-    props: ['urlRest', 'item', 'update', 'horizontal', 'switchForm'],
+    props: ['urlRest', 'item', 'update', 'horizontal'],
     components: {
-      Multiselect,
-      FormError
+      FormError,
+      Multiselect
     },
     data () {
       return {
         name: 'form-',
-        optInput: dataForm.input,
         lCols: 4,
+        optInput: dataForm.input,
         selectedKey: '',
-        multiselectKeys: []
+        multiselectKeys: [],
       }
     },
     validations () {
@@ -94,56 +84,22 @@
       }
     },
     methods: {
-      selectOption (selectedOption) {
-        console.log(selectedOption)
-        let key = this.selectedKey
-        this.item[key] = selectedOption === null ? '' : selectedOption.id
-      },
-      openSelect (id) {
-        this.selectedKey = id
-      },
       addRow (newItem) {
         this.$emit('emit_addRow', newItem)
       },
       processData (action) {
         let invalid = this.$v.item.$invalid
-        if (this.item.user === '') this.item.user = null
         let url = !this.item.id ? this.urlRest : this.urlRest + '/' + this.item.id
         if (!invalid) {
           let self = this.$store.dispatch('dispatchHTTP', {type: action, url: url, data: this.item})
           self.then((data) => {
             if (data.status) {
-              console.log('DATA-CONTENT ' + action)
-              console.log(data.content)
               this.addRow(data.content)
-              this.resetForm(this.name + this.urlRest)
             }
           })
         } else {
           this.$v.item.$touch()
         }
-      },
-      getOption (urlRest, index) {
-        let self = this.$store.dispatch('dispatchHTTP', {type: 'GET', url: urlRest})
-        self.then((data) => {
-          if (data.status) {
-            this.optInput[index].params.options = data.content
-            this.optInput[index].params.activate = true
-          }
-        })
-      },
-      setMultiSelect () {
-        let vm = this
-        this.$lodash.forEach(this.multiselectKeys, function (key) {
-          let options = vm.optInput[key].params.options
-          let idKey = vm.optInput[key].params.key
-          let optionPick = vm.$lodash.filter(options, {'id': vm.item[idKey]})
-          if (optionPick.length > 0) {
-            vm.optInput[key].params.value = optionPick[0]
-          } else {
-            vm.optInput[key].params.value = ''
-          }
-        })
       },
       resetMultiSelect () {
         let vm = this
@@ -154,16 +110,17 @@
       resetForm (formId) {
         document.getElementById(formId).reset()
         this.resetMultiSelect()
+        this.localidad = []
         this.$v.item.$reset()
-      }
-    },
-    watch: {
-      item (newVal, oldVal) {
-        if (this.update) {
-          this.setMultiSelect()
-        } else {
-          this.resetForm(this.name + this.urlRest)
-        }
+      },
+      getOption (urlRest, index) {
+        let self = this.$store.dispatch('dispatchHTTP', {type: 'GET', url: urlRest})
+        self.then((data) => {
+          if (data.status) {
+            this.optInput[index].params.options = data.content
+            this.optInput[index].params.activate = true
+          }
+        })
       }
     },
     created () {
@@ -182,13 +139,11 @@
   }
 </script>
 
-<style lang="scss" scoped="">
-  .btn-tool-left {
-    position: absolute;
-    top: 30px;
-    left: -40px;
-    font-size: 1rem;
-    cursor: pointer;
-    border: none;
+<style lang="scss">
+  form {
+    label {
+      text-align: right;
+    }
   }
+
 </style>

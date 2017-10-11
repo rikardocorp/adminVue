@@ -12,17 +12,20 @@ import Login from '@/views/Login'
 // Views Maintenance
 import City from '../views/maintenance/City.vue'
 import UseType from '../views/maintenance/UseType.vue'
-import VehicleType from '../views/maintenance/VehicleType.vue'
 import InsuranceType from '../views/maintenance/InsuranceTypes.vue'
 import User from '../views/maintenance/User.vue'
 import Aseguradoras from '../views/maintenance/InsuranceCompanies.vue'
 import Store from '../views/maintenance/Office.vue'
 
-// Views Sale
-import NewSale from '../views/sale/NewSale.vue'
-import WebUser from '../views/sale/WebUser.vue'
-import Vehicle from '../views/sale/Vehicle.vue'
-import Purchaser from '../views/sale/Purchaser.vue'
+// Views vehicle
+import VehicleType from '../views/vehicle/VehicleType.vue'
+import VehicleCategory from '../views/vehicle/VehicleCategory.vue'
+import VehicleClass from '../views/vehicle/VehicleClass.vue'
+import VehicleTypeCategory from '../views/vehicle/VehicleTypeCategory.vue'
+import NewSale from '../views/vehicle/NewSale.vue'
+import WebUser from '../views/vehicle/WebUser.vue'
+import Vehicle from '../views/vehicle/Vehicle.vue'
+import Purchaser from '../views/vehicle/Purchaser.vue'
 
 // Selling
 import SellNewPolice from '../views/selling/NewSale.vue'
@@ -33,7 +36,8 @@ import Price from '../views/price/Price.vue'
 
 // Policy
 import Policy from '../views/policy/Policy.vue'
-import Policy_assign from '../views/policy/PolicyAssign.vue'
+import PolicyRegister from '../views/policy/PolicyRegister.vue'
+import PolicyAssign from '../views/policy/PolicyAssign.vue'
 import PolicySold from '../views/policy/PolicySold.vue'
 
 Vue.use(Router)
@@ -91,22 +95,37 @@ export default new Router({
               path: 'tipo-seguro',
               name: 'Tipos de Seguro',
               component: InsuranceType
-            },
-            {
-              path: 'tipo-vehiculo',
-              name: 'Tipos de Vehiculo',
-              component: VehicleType
             }
           ]
         },
         {
-          path: 'venta',
-          redirect: '/venta/nueva-venta',
-          name: 'Venta',
+          path: 'vehiculo',
+          redirect: '/vehiculo/tipo-vehiculo',
+          name: 'Vehiculos',
           component: {
             render (c) { return c('router-view') }
           },
           children: [
+            {
+              path: 'tipo-vehiculo',
+              name: 'Tipos de Vehiculo',
+              component: VehicleType
+            },
+            {
+              path: 'categoria-vehiculo',
+              name: 'Categ. de Vehiculo',
+              component: VehicleCategory
+            },
+            {
+              path: 'clases-vehiculo',
+              name: 'Clases de Vehiculo',
+              component: VehicleClass
+            },
+            {
+              path: 'tipo-categoria-vehiculo',
+              name: 'Tipo categoria de Vehiculo',
+              component: VehicleTypeCategory
+            },
             {
               path: 'nueva-venta',
               name: 'Nueva venta',
@@ -140,7 +159,7 @@ export default new Router({
         {
           path: 'asignar-poliza',
           name: 'Asignar Poliza',
-          component: Policy_assign
+          component: PolicyAssign
         },
         {
           path: 'precio-poliza',

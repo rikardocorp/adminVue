@@ -6,19 +6,20 @@
         <!--<pre>{{ $store.state.Login.LOAD_TABLE.regions }}</pre>-->
         <div class="col-md-8">
           <!--<app-form v-model="items" :item="item" :pickObject="pickObject" :horizontal="true" :urlRest="urlRest" @isSearching="isSearching"></app-form>-->
-          <app-form :item="itemForm1" :nameForm="nameForm1" :horizontal="true"
+          <app-form :item="itemForm1" :nameForm="nameForm1" :horizontal="true" :params="params"
                     @defaulValue="defaulValueForm1" @resultFilter="resultFilter"></app-form>
         </div>
         <div class="col-md-4">
           <!--<app-form v-model="items" :item="item" :pickObject="pickObject" :horizontal="true" :urlRest="urlRest" @isSearching="isSearching"></app-form>-->
-          <app-form2 :item="itemForm2" :nameForm="nameForm2"  :horizontal="false" @defaulValue="defaulValueForm2"></app-form2>
+          <app-form2 :item="itemForm2" :nameForm="nameForm2"  :horizontal="false" :list="selectedList"
+                     @defaulValue="defaulValueForm2"></app-form2>
         </div>
       </div>
 
       <!--<pre>{{ itemForm2}}</pre>-->
-      <div class="container-fluid">
+      <div id="policyAssign" class="container-fluid">
         <!-- SEARCH ICON  -->
-        <div v-if="isSearch" class="row d-flex justify-content-center pt-4 mt-2 pt-md-2">
+        <div v-if="params.isSearch" class="row d-flex justify-content-center pt-4 mt-2 pt-md-2">
             <span class="fa-stack fa-2x">
               <i class="fa fa-cog fa-spin-reverse fa-stack-2x text-orange"></i>
               <i class="fa fa-cog fa-spin fa-stack-1x text-cream"></i>
@@ -36,8 +37,8 @@
             <i class="fa fa-thumb-tack" aria-hidden="true"></i>
             <div class="card-ticket cardLeft">
               <avatar :username="x.insuranceCompany.name" :rounded="true" :size="6.4" sizeUnid="em"
-                      :src="'/static/img/company/' + x.insuranceCompany.id + '.png'"
-                      :border="true" colorBorder="#f4f3ef" color="#ecedef"
+                      :src="path + '/' + x.insuranceCompany.image" :alt="x.insuranceCompany.name"
+                      :border="true" colorBorder="#f4f3ef" color="#ecedef" :localSrc="false"
                       backgroundColor="orange" :sizeBorder="0.5"></avatar>
             </div>
             <div class="card-ticket cardCenter dashed">
@@ -91,14 +92,19 @@
 
         items: [],
         update: false,
-        isSearch: false,
+        params: {
+          isSearch: false
+        },
         selected: null,
-        selectedList: {}
+        selectedList: {},
       }
     },
     computed: {
       isLoading () {
         return this.$store.state.isLoading
+      },
+      path () {
+        return this.$store.state.Login.IMAGES_URL
       }
     },
     methods: {
@@ -110,7 +116,6 @@
       },
       resultFilter (items) {
         console.log(items)
-        alert('12')
         this.selectedList = {}
         this.items = items
       },
@@ -169,10 +174,10 @@
         if (!self.status) return true
         this.items = self.content
         console.log(this.items)
-        this.isSearch = false
+        this.params.isSearch = false
       },
       isSearching (value) {
-        this.isSearch = value
+        this.params.isSearch = value
       }
     },
     watch: {
@@ -182,45 +187,49 @@
       }
     },
     created () {
-      this.isSearch = true
-      this.getAll()
+      // this.params.isSearch = true
+      // this.getAll()
     }
   }
 </script>
 
-<style lang="scss" scoped="">
-  .ticket {
-    width: 18em;
-    cursor: pointer;
-    font-size: 0.85em;
-    i {
-      display: none;
-    }
-  }
+<style lang="scss">
 
-  .pickOption{
-    transform: rotateZ(2deg) rotateY(-0.3deg);
-    /*.avatar{*/
+  #policyAssign {
+    .pickOption{
+      transform: rotateZ(2deg) rotateY(-0.3deg);
+      /*.avatar{*/
       /*<!--transform: rotateZ(-3deg);-->*/
-    /*}*/
-    .cardCenter {
-      border: 2px solid rgb(255, 165, 1);
+      /*}*/
+      .cardCenter {
+        border: 2px solid rgb(255, 165, 1);
+      }
+      i {
+        position: absolute;
+        color: #3db3e8;
+        font-size: 2.3em;
+        transform: rotate(23deg);
+        bottom: 0.4em;
+        left: 6.7em;
+        z-index: 2;
+        display: block !important;
+      }
     }
-    i {
-      position: absolute;
-      color: #3db3e8;
-      font-size: 2.3em;
-      transform: rotate(23deg);
-      bottom: 0.4em;
-      left: 6.7em;
-      z-index: 2;
-      display: block;
+
+    .card-insurance {
+      .avatar {
+        position: absolute !important;
+      }
+    }
+
+    .ticket {
+      width: 18em;
+      cursor: pointer;
+      font-size: 0.85em;
+      i {
+        display: none;
+      }
     }
   }
 
-  .card-insurance {
-    .avatar {
-      position: absolute;
-    }
-  }
 </style>

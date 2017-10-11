@@ -46,16 +46,16 @@
 
         <div slot="footer" class="mt-3">
             <b-button class="float-left" @click="resetForm(name + nameForm)" :disabled="isLoading" size="sm" variant="outline-secondary"><i class="fa fa-ban"></i> Reset</b-button>
-            <b-button class="float-right" @click.prevent="processData('INSERT')" :disabled="isLoading" type="submit" size="sm" variant="primary"><i class="fa fa-dot-circle-o"></i> Submit</b-button>
+            <b-button class="float-right" @click.prevent="assignPolicies" :disabled="isLoading" type="submit" size="sm" variant="primary"><i class="fa fa-dot-circle-o"></i> Submit</b-button>
         </div>
       </b-form>
     </b-card>
 
     <b-input-group class="mb-3 passDelete">
       <b-input-group-addon class="bg-primary"><i class="fa fa-key"></i></b-input-group-addon>
-      <b-form-input type="password" placeholde="Password para eliminar" title="Password para eliminar"></b-form-input>
+      <b-form-input v-model="password" type="password" placeholde="Password para eliminar" title="Password para eliminar"></b-form-input>
       <b-input-group-button>
-        <b-btn variant="danger">Eliminar</b-btn>
+        <b-btn variant="danger" @click="deletePolicies">Eliminar</b-btn>
       </b-input-group-button>
     </b-input-group>
 
@@ -73,8 +73,9 @@
   import Multiselect from 'vue-multiselect'
   import FormError from '../../../components/FormError.vue'
   import {DATA_FORM_USER as dataForm} from '../../../data/dnPolicyAssign'
+  import EventBus from '../../../event-bus'
   export default {
-    props: ['horizontal', 'item', 'nameForm'],
+    props: ['horizontal', 'item', 'nameForm', 'list'],
     components: {
       FormError,
       Multiselect
@@ -93,7 +94,8 @@
             { text: 'Selec. Todos', value: '0' },
             { text: 'Deselecciona', value: '1' }
           ]
-        }
+        },
+        password: ''
       }
     },
     validations () {
@@ -105,26 +107,67 @@
       }
     },
     methods: {
-      addRow (newItem) {
-        this.$emit('emit_addRow', newItem)
-      },
-      processData (action) {
+      assignPolicies () {
         let invalid = this.$v.item.$invalid
-        let url = !this.item.id ? this.urlRest : this.urlRest + '/' + this.item.id
         if (!invalid) {
-          let self = this.$store.dispatch('dispatchHTTP', {type: action, url: url, data: this.item})
+          let userId = this.item.user.id
+          let url = 'insurancepolicies/' + userId + '/assignpolicies'
+          let self = this.$store.dispatch('dispatchHTTP', {type: 'INSERT', url: url, data: this.convertList(this.list)})
           self.then((data) => {
             if (data.status) {
-              console.log('DATA-CONTENT ' + action)
+              console.log('SUCCESS')
               console.log(data.content)
-              this.addRow(data.content)
-              this.resetForm(this.name + this.urlRest)
+              EventBus.$emit('FILTER_POLICY')
+            } else {
+              console.log('ERROR')
+              console.log(data)
             }
           })
         } else {
           this.$v.item.$touch()
         }
       },
+      deletePolicies () {
+        let data = {
+          policies: this.convertListDelete(this.list),
+          password: this.password
+        }
+        if (data.password !== '' && data.policies !== '') {
+          let url = 'insurancepolicies/deletepolicies'
+          console.log(data)
+          let self = this.$store.dispatch('dispatchHTTP', {type: 'DELETE', url: url, data: data})
+          self.then((data) => {
+            if (data.status) {
+              console.log('SUCCESS')
+              console.log(data.content)
+              EventBus.$emit('FILTER_POLICY')
+            } else {
+              console.log('ERROR')
+              console.log(data)
+            }
+          })
+        } else {
+          alert('vacio')
+        }
+      },
+      convertList (list) {
+        let newList = []
+        this.$lodash.forEach(list, function (value, key) {
+          newList.push(value)
+        })
+        return newList
+      },
+      convertListDelete (list) {
+        let newList = []
+        this.$lodash.forEach(list, function (value, key) {
+          newList.push(key)
+        })
+        return newList.join(',')
+      },
+      addRow (newItem) {
+        this.$emit('emit_addRow', newItem)
+      },
+
       resetMultiSelect () {
         let vm = this
         this.$lodash.forEach(this.multiselectKeys, function (key) {
@@ -135,7 +178,6 @@
         document.getElementById(formId).reset()
         this.resetMultiSelect()
         this.$v.item.$reset()
-        this.$emit('defaulValue')
       },
       selectOption (selectedOption) {
         console.log(selectedOption)

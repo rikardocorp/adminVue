@@ -47,19 +47,34 @@ export default {
           name: 'Tipos de Seguro',
           url: '/mantenimiento/tipo-seguro',
           icon: 'icon-puzzle'
-        },
-        {
-          name: 'Tipos de Vehiculo',
-          url: '/mantenimiento/tipo-vehiculo',
-          icon: 'icon-puzzle'
         }
       ]
     },
     {
-      name: 'Vehiculos',
-      url: '/venta',
+      name: 'Vehiculo',
+      url: '/vehiculo',
       icon: 'fa fa-gears',
       children: [
+        {
+          name: 'Tipos de Vehiculo',
+          url: '/vehiculo/tipo-vehiculo',
+          icon: 'icon-puzzle'
+        },
+        {
+          name: 'Categ. de Vehiculo',
+          url: '/vehiculo/categoria-vehiculo',
+          icon: 'icon-puzzle'
+        },
+        {
+          name: 'Clases de Vehiculo',
+          url: '/vehiculo/clases-vehiculo',
+          icon: 'icon-puzzle'
+        },
+        {
+          name: 'Tipo Categoria',
+          url: '/vehiculo/tipo-categoria-vehiculo',
+          icon: 'icon-puzzle'
+        },
         // {
         //   name: 'Nueva venta',
         //   url: '/venta/nueva-venta',
@@ -76,12 +91,12 @@ export default {
         // },
         {
           name: 'Registro Vehiculo',
-          url: '/venta/vehiculos',
+          url: '/vehiculo/vehiculos',
           icon: 'fa fa-map-marker'
         },
         {
           name: 'Contratante',
-          url: '/venta/contratantes',
+          url: '/vehiculo/contratantes',
           icon: 'fa fa-map-marker'
         },
         // {

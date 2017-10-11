@@ -2,8 +2,15 @@
   <div class="wrapper">
     <div class="animated fadeIn">
       <div class="row d-flex justify-content-center">
-        <div class="col-md-6">
-          <app-form :item="item" :update="update" :urlRest="urlRest" :horizontal="true" @emit_addRow="addRow"></app-form>
+        <div class="col-md-5 col-lg-5 col-sm-8">
+          <transition-group name="fade" mode="out-in">
+            <app-form key="div1" v-if="!switchForm" :item="item" :update="update"
+                      :urlRest="urlRest" :horizontal="true" :switchForm="switchFormChange"
+                      @emit_addRow="addRow"></app-form>
+            <app-form-2 key="div2" v-if="switchForm" :item="item2" :update="update"
+                        :urlRest="urlRest2" :horizontal="true" :switchForm="switchFormChange"
+                        @emit_addRow="addRow"></app-form-2>
+          </transition-group>
         </div>
       </div>
 
@@ -22,8 +29,8 @@
     <b-modal :title="optionPick.title" :class="'modal-'+optionPick.variant" v-model="showModal">
       <div v-if="optionPick.name === btnOption.deleteOpc.name">{{ optionPick.content }}</div>
       <template slot="modal-footer">
-        <b-button @click="showModal = !showModal">Cancel</b-button>
-        <b-button v-if="optionPick.name === btnOption.deleteOpc.name" @click="deleteData" :variant="optionPick.variant">OK</b-button>
+        <b-button :disabled="isLoading" @click="showModal = !showModal">Cancel</b-button>
+        <b-button :disabled="isLoading" v-if="optionPick.name === btnOption.deleteOpc.name" @click="deleteData" :variant="optionPick.variant">OK</b-button>
       </template>
     </b-modal>
   </div>
@@ -31,17 +38,23 @@
 
 <script>
   import {DATA as nDATA} from '../../data/dnInsurancePolicies'
+  import {DATA as nDATA2} from '../../data/dnPolicyRegister'
   import Form from './forms/FormPolicy.vue'
+  import Form2 from './forms/FormPolicyRegister.vue'
   import Table from '../../components/xTable.vue'
 
   export default {
     name: 'webUser',
     components: {
       appForm: Form,
+      appForm2: Form2,
       appTable: Table
     },
     data: function () {
       return {
+        urlRest2: nDATA2.name,
+        item2: JSON.parse(JSON.stringify(nDATA2.post)),
+
         urlRest: nDATA.name,
         item: JSON.parse(JSON.stringify(nDATA.post)),
         fields: nDATA.fieldsTable,
@@ -66,24 +79,33 @@
         },
         itemPick: {},
         optionPick: {},
-        showModal: false
+        showModal: false,
+        switchForm: false
       }
     },
     methods: {
+      switchFormChange () {
+        this.switchForm = !this.switchForm
+        this.initData()
+      },
       addRow (newItem = '') {
         if (newItem) {
           if (!this.update) {
-            this.items.unshift(newItem)
+            if (Array.isArray(newItem)) {
+              this.getData()
+            } else {
+              this.items.unshift(newItem)
+            }
           } else {
             this.items.splice(this.indexSelected, 1, newItem)
           }
-          this.getData()
         }
         this.initData()
       },
       initData () {
         this.update = false
         this.item = JSON.parse(JSON.stringify(nDATA.post))
+        this.item2 = JSON.parse(JSON.stringify(nDATA2.post))
         this.indexSelected = null
       },
       getData () {
@@ -111,6 +133,7 @@
       },
       pickItem (item, option) {
         this.initData()
+        console.log(item)
         this.itemPick = item
         this.optionPick = option
         this.indexSelected = this.$lodash.findIndex(this.items, item)
@@ -118,6 +141,7 @@
         if (option.name === this.btnOption.editOpc.name) {
           this.item = {...this.item, ...item}
           this.update = true
+          this.switchForm = false
           this.$scrollTo('body')
         } else {
           this.toggleDialog()

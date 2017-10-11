@@ -6,26 +6,110 @@ export const DATA = {
     licensePlate: '',
     manufacturingYear: '',
     seatNumber: '',
-    color: '',
-    useType: '',
     engineNumber: '',
-    vehicleType: '',
-    webUser: ''
+    useType: null,
+    vehicleTypeCategory: null,
+    webUser: null
   },
   fieldsTable: {
     licensePlate: {label: 'Placa', sortable: true, 'class': 'text-center'},
     manufacturingYear: {label: 'Año', sortable: true, 'class': 'text-center'},
     seatNumber: {label: 'Asientos', 'class': 'text-center'},
-    color: {label: 'Color', sortable: true, 'class': 'text-center'},
-    useTypeId: {label: 'Uso', sortable: true, 'class': 'text-center'},
+    useType: {
+      label: 'Uso',
+      sortable: true,
+      'class': 'text-center',
+      formatter: (value) => { return value.name }
+    },
     engineNumber: {label: 'Motor', 'class': 'text-center'},
-    vehicleTypeId: {label: 'Tipo', sortable: true, 'class': 'text-center'},
-    webUser: {label: 'Dueño', 'class': 'text-center'},
+    vehicleTypeCategory: {
+      label: 'Categoria-Tipo',
+      sortable: true,
+      'class': 'text-center',
+      formatter: (value) => { return value ? value.vehicleType.vehicleBrand + '-' + value.vehicleType.vehicleModel + ' / ' + value.vehicleClass.description + '-' + value.vehicleCategory.description : 'vacio' }
+    },
+    webUser: {
+      label: 'Dueño',
+      'class': 'text-center',
+      formatter: (value) => { return value.razonSocial }
+    },
     actions: {label: '', thStyle: 'width:75px'}
   }
 }
 
 export const DATA_FORM = {
+  input: {
+    licensePlate: {
+      label: 'Placa',
+      placeholder: 'Ingrese su placa',
+      type: 'text',
+      icon: 'fa fa-hashtag',
+      input: 'input'
+    },
+    engineNumber: {
+      label: 'Nro. Serie',
+      placeholder: 'Ingrese numero de serie',
+      type: 'text',
+      icon: 'fa fa-hashtag'
+    },
+    seatNumber: {
+      label: 'Nro. Asientos',
+      placeholder: 'Ingrese numero de asientos',
+      type: 'number',
+      icon: 'fa fa-hashtag'
+    },
+    manufacturingYear: {
+      label: 'Año Fabric',
+      placeholder: 'Ingrese año de fabricacion',
+      type: 'number',
+      icon: 'fa fa-calendar-o'
+    },
+    useType: {
+      label: 'Tipo de Uso',
+      placeholder: 'Tipo de uso',
+      type: 'text',
+      input: 'multiselect',
+      params: {
+        url: 'usetypes',
+        key: 'useType',
+        label: 'name',
+        options: [],
+        activate: false,
+        loadData: true,
+        value: ''
+      }
+    },
+    vehicleTypeCategory: {
+      label: 'Categoria',
+      placeholder: 'Categoria y clase del vehiculo',
+      type: 'text',
+      input: 'multiselect',
+      params: {
+        url: 'vehicletypecategories',
+        key: 'vehicleTypeCategory',
+        label: 'vehicleClass',
+        options: [],
+        activate: false,
+        loadData: true,
+        value: ''
+      }
+    },
+    webUser: {
+      label: 'Usuario Cliente',
+      placeholder: 'Usuario tipo cliente',
+      type: 'text',
+      input: 'multiselect',
+      params: {
+        url: 'webusers',
+        key: 'webUser',
+        label: 'razonSocial',
+        options: [],
+        activate: false,
+        loadData: true,
+        value: ''
+      }
+    }
+  },
   validate: {
     item: {
       licensePlate: {
@@ -37,16 +121,13 @@ export const DATA_FORM = {
       seatNumber: {
         required
       },
-      color: {
-        required
-      },
       useType: {
         required
       },
       engineNumber: {
         required
       },
-      vehicleType: {
+      vehicleTypeCategory: {
         required
       },
       webUser: {

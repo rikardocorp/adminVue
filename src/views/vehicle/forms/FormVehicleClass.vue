@@ -1,9 +1,13 @@
 <template>
   <b-card>
     <div slot="header" class="text-center">
-      <strong>Oficinas</strong> de Venta
+      <strong>Clase</strong> del Vehiculo
     </div>
     <b-form :id="name + urlRest">
+      <div class="dropbox">
+        La clase del vehiculo es ... Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+        Accusantium animi aspernatur consequuntur culpa cum ea earum fuga hic.
+      </div>
 
       <b-form-group v-for="(option, index) in optInput" :key="index"
                     :class="{ 'form-group--error': $v.item[index]? $v.item[index].$error : false, 'text-right': true}"
@@ -26,24 +30,6 @@
                          @blur.native="$v.item[index]? $v.item[index].$touch(): false"
                          :rows="3" :max-rows="6"></b-form-textarea>
 
-        <!-- ONLYMULTISELECT -->
-        <only-multi-select v-if="option.input=='onlyMultiSelect'"
-                           :maxHeight="200" v-model="localidad" :optionList="option.params"
-                           :disabled="isLoading"
-                           :placeholderDefault="option.placeholder"></only-multi-select>
-
-
-        <!-- MULTISELECT -->
-        <multiselect v-else-if="option.input=='multiselect'"
-                     :close-on-select="true" :hide-selected="true" :preserve-search="false" :taggable="false" select-label=""
-                     :placeholder="option.placeholder"
-                     :label="option.params.label" :track-by="option.params.label"
-                     :loading="!option.params.activate"
-                     :disabled="!option.params.activate || isLoading"
-                     v-model="item[index]"
-                     :options="option.params.options"
-                     @blur.native="$v.item[index]? $v.item[index].$touch(): false"></multiselect>
-
         <!-- ERROR MESSAGE-->
         <form-error :data="$v.item[index]? $v.item[index] : {} "></form-error>
       </b-form-group>
@@ -63,34 +49,23 @@
       </div>
 
     </b-form>
-    <!--<pre>{{ localidad }}</pre>-->
   </b-card>
 
 </template>
 
 <script>
-  import cSwitch from '../../../components/Switch'
-  import {DATA_FORM as dataForm} from '../../../data/dnOffices'
   import FormError from '../../../components/FormError.vue'
-  import OnlyMultiSelect from '../../../components/OnlyMultiSelect.vue'
-  import Multiselect from 'vue-multiselect'
-
+  import {DATA_FORM as dataForm} from '../../../data/dnVehicleClasses'
   export default {
     props: ['urlRest', 'item', 'update', 'horizontal'],
     components: {
-      cSwitch: cSwitch,
-      FormError,
-      OnlyMultiSelect,
-      Multiselect
+      FormError
     },
     data () {
       return {
         name: 'form-',
         lCols: 4,
-        optInput: dataForm.input,
-        selectedKey: '',
-        multiselectKeys: [],
-        localidad: []
+        optInput: dataForm.input
       }
     },
     validations () {
@@ -104,7 +79,6 @@
     methods: {
       addRow (newItem) {
         this.$emit('emit_addRow', newItem)
-        this.resetForm(this.name + this.urlRest)
       },
       processData (action) {
         let invalid = this.$v.item.$invalid
@@ -113,69 +87,37 @@
           let self = this.$store.dispatch('dispatchHTTP', {type: action, url: url, data: this.item})
           self.then((data) => {
             if (data.status) {
+              console.log('DATA-CONTENT ' + action)
+              console.log(data.content)
               this.addRow(data.content)
+              this.resetForm(this.name + this.urlRest)
             }
           })
         } else {
           this.$v.item.$touch()
         }
       },
-      resetMultiSelect () {
-        let vm = this
-        this.$lodash.forEach(this.multiselectKeys, function (key) {
-          vm.item[key] = ''
-        })
-      },
       resetForm (formId) {
         document.getElementById(formId).reset()
-        this.resetMultiSelect()
-        this.localidad = []
         this.$v.item.$reset()
-      },
-      getOption (urlRest, index) {
-        let self = this.$store.dispatch('dispatchHTTP', {type: 'LOAD_TABLE', url: urlRest, data: {key: this.optInput[index].params.localData}})
-        self.then((data) => {
-          if (data.status) {
-            this.optInput[index].params.options = data.content
-            this.optInput[index].params.activate = true
-          }
-        })
       }
-    },
-    watch: {
-      localidad (newVal) {
-        if (Array.isArray(newVal)) {
-          this.item.region = newVal[0] ? newVal[0] : null
-          this.item.province = newVal[1] ? newVal[1] : null
-          this.item.city = newVal[2] ? newVal[2] : null
-        }
-      },
-      item (newVal, oldVal) {
-        if (this.update) {
-          this.localidad = [this.item.region, this.item.province, this.item.city]
-        } else {
-          this.resetForm(this.name + this.urlRest)
-        }
-      }
-    },
-    created () {
-      let vm = this
-      this.$lodash.forEach(this.optInput, function (value, key) {
-        if (vm.optInput[key].input === 'multiselect') {
-          vm.multiselectKeys.push(key)
-          if (vm.optInput[key].params.loadData) {
-            vm.getOption(value.params.url, key)
-          } else {
-            vm.optInput[key].params.activate = true
-          }
-        }
-      })
     }
   }
 </script>
 
 <style lang="scss">
-  .switch-left{
-    float: left;
+  .dropbox {
+    outline: 0.1em dashed #cacaca;
+    outline-offset: -1.5em;
+    background: #f4f3ef;
+    color: #ababab;
+    padding: 1.8em 2.4em;
+    position: relative;
+    cursor: pointer;
+    border: 0.19em dashed white;
+    margin: 0 2em 2.5em;
+    font-weight: 500;
+    font-size: 0.8em;
+    text-align: justify;
   }
 </style>

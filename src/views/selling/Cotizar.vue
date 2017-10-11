@@ -24,8 +24,8 @@
             <div v-for="x in items" :key="x.id"  class="ticket cardWrap m-3 hvr-bounce-in">
               <div class="card-ticket cardLeft">
                 <avatar :username="x.insuranceCompanyName" :rounded="true" :size="6.4" sizeUnid="em"
-                        :src="'/static/img/company/' + x.insuranceCompanyId + '.png'"
-                        :border="true" colorBorder="#f4f3ef" color="#ecedef"
+                        :src="path + '/' + x.insuranceCompanyImage" :alt="x.insuranceCompanyName"
+                        :border="true" colorBorder="#f4f3ef" color="#ecedef" :localSrc="false"
                         backgroundColor="orange" :sizeBorder="0.5"></avatar>
               </div>
               <div class="card-ticket cardCenter">
@@ -143,6 +143,7 @@
     },
     methods: {
       pickInsurance (insurance) {
+        console.log(insurance)
         // Verifica que haya una venta sin finalizar
         let sale = JSON.parse(localStorage.getItem('sale'))
         if (!sale) {
@@ -150,7 +151,7 @@
             insurance: insurance,
             object: {
               region: {id: insurance.regionId},
-              vehicleType: {id: insurance.vehicleTypeId},
+              vehicleTypeCategory: {id: insurance.vehicleTypeCategoryId},
               useType: {id: insurance.useTypeId}
             }
           }
@@ -196,6 +197,9 @@
     computed: {
       isLoading () {
         return this.$store.state.isLoading
+      },
+      path () {
+        return this.$store.state.Login.IMAGES_URL
       }
     }
   }

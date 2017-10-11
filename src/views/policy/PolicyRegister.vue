@@ -9,29 +9,18 @@
 
       <div class="row">
         <div class="col-12">
-          <app-table :fields="fields" :items="items" :btnOption="btnOption" @pickItem="pickItem">
-            <template slot="title">Lista de aseguradoras</template>
+          <app-table :fields="fields" :items="items" :btnOption="btnOption" @pickItem="pickItem" >
+            <template slot="title">Polizas Ingresadas</template>
           </app-table>
         </div><!--/.col-->
       </div><!--/.row-->
     </div>
+    <pre>{{ item }}</pre>
+    <!--<button @click="update=!update">UPDATE</button>-->
+    <!--<pre>{{item}}</pre>-->
 
     <b-modal :title="optionPick.title" :class="'modal-'+optionPick.variant" v-model="showModal">
       <div v-if="optionPick.name === btnOption.deleteOpc.name">{{ optionPick.content }}</div>
-      <div v-if="optionPick.name === btnOption.uploadOpc.name" class="upload-content">
-        <h4 class="text-center text-uppercase">{{ itemPick.name }}</h4>
-        <div class="d-flex justify-content-center">
-          <ul class="list-unstyled">
-            <li>
-              <img :src="path + '/' + itemPick.image" :alt="itemPick.name" class="img-responsive img-thumbnail">
-            </li>
-          </ul>
-        </div>
-        <upload-image-simple
-          :item="itemPick"
-          :path="path"
-          :multiple="false" @emitCallback="uploadCallBack"></upload-image-simple>
-      </div>
       <template slot="modal-footer">
         <b-button :disabled="isLoading" @click="showModal = !showModal">Cancel</b-button>
         <b-button :disabled="isLoading" v-if="optionPick.name === btnOption.deleteOpc.name" @click="deleteData" :variant="optionPick.variant">OK</b-button>
@@ -41,17 +30,15 @@
 </template>
 
 <script>
-  import {DATA as nDATA} from '../../data/dnInsuranceCompanies'
-  import Form from './forms/FormInsuranceCompanies.vue'
+  import {DATA as nDATA} from '../../data/dnPolicyRegister'
+  import Form from './forms/FormPolicyRegister.vue'
   import Table from '../../components/xTable.vue'
-  import UploadImageSimple from '../../components/UploadImageSimple.vue'
 
   export default {
-    name: 'useType',
+    name: 'webUser',
     components: {
       appForm: Form,
-      appTable: Table,
-      UploadImageSimple
+      appTable: Table
     },
     data: function () {
       return {
@@ -62,14 +49,6 @@
         update: false,
         indexSelected: null,
         btnOption: {
-          uploadOpc: {
-            name: 'upload',
-            title: 'Subir una Imagen',
-            content: '',
-            variant: 'success',
-            selected: false,
-            icon: 'fa fa-picture-o'
-          },
           editOpc: {
             name: 'edit',
             variant: 'primary',
@@ -91,9 +70,6 @@
       }
     },
     methods: {
-      uploadCallBack (value) {
-        this.itemPick.image = value.image
-      },
       addRow (newItem = '') {
         if (newItem) {
           if (!this.update) {
@@ -112,14 +88,13 @@
       getData () {
         let self = this.$store.dispatch('dispatchHTTP', {type: 'GET', url: this.urlRest})
         self.then((data) => {
+          console.log('LOAD DATATABLE')
           console.log(data)
           this.items = data.status ? data.content : []
           this.totalRows = this.items.length
         })
       },
       deleteData () {
-        if (this.optionPick.name !== this.btnOption.deleteOpc.name) return false
-        alert('delete')
         let self = this.$store.dispatch('dispatchHTTP', {type: 'DELETE', url: this.urlRest + '/' + this.items[this.indexSelected].id})
         self.then((data) => {
           console.log(data.content)
@@ -135,6 +110,7 @@
       },
       pickItem (item, option) {
         this.initData()
+        console.log(item)
         this.itemPick = item
         this.optionPick = option
         this.indexSelected = this.$lodash.findIndex(this.items, item)
@@ -151,9 +127,6 @@
     computed: {
       isLoading () {
         return this.$store.state.isLoading
-      },
-      path () {
-        return this.$store.state.Login.IMAGES_URL
       }
     },
     mounted () {
@@ -162,11 +135,7 @@
   }
 </script>
 
-<style lang="scss">
-  .upload-content{
-    img{
-      max-width: 250px;
-      max-height: 200px;
-    }
-  }
+<style>
+
 </style>
+

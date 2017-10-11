@@ -16,11 +16,15 @@
     <!--<pre>{{ item }}</pre>-->
     <button @click="update=!update">UPDATE</button>
 
-    <b-modal :title="modalDetails.title" :class="'modal-'+ownClass" v-model="showModal" :no-close-on-esc="true" :no-close-on-backdrop="true">
-      {{ modalDetails.data }}
+    <b-modal :title="optionPick.title" :class="'modal-'+optionPick.variant" v-model="showModal">
+      <div v-if="optionPick.name === btnOption.deleteOpc.name">{{ optionPick.content }}</div>
+      <div v-if="optionPick.name === btnOption.uploadOpc.name" class="upload-content">
+        <h4 class="text-center text-uppercase">{{ itemPick.name }}</h4>
+        <div class="d-flex justify-content-center"></div>
+      </div>
       <template slot="modal-footer">
         <b-button @click="showModal = !showModal">Cancel</b-button>
-        <b-button :disabled="isLoading" @click="deleteData" :variant="ownClass">OK</b-button>
+        <b-button v-if="optionPick.name === btnOption.deleteOpc.name" @click="deleteData" :variant="optionPick.variant">OK</b-button>
       </template>
     </b-modal>
   </div>
@@ -45,13 +49,33 @@
         items: [],
         update: false,
         indexSelected: null,
-        btnOption: {editOpc: 'info', deleteOpc: 'danger'},
-
-        // Modal
-        modalDetails: { title: 'Eliminar Registro', data: 'Esta seguro de eliminar esto?' },
-        showModal: false,
-        action: '',
-        ownClass: ''
+        btnOption: {
+          uploadOpc: {
+            name: 'upload',
+            title: 'Subir una Imagen',
+            content: '',
+            variant: 'success',
+            selected: false,
+            icon: 'fa fa-picture-o'
+          },
+          editOpc: {
+            name: 'edit',
+            variant: 'primary',
+            selected: false,
+            icon: 'fa fa-pencil'
+          },
+          deleteOpc: {
+            name: 'delete',
+            title: 'Eliminar registro',
+            content: 'Esta seguro de eliminar esto?',
+            variant: 'danger',
+            selected: false,
+            icon: 'fa fa-trash'
+          }
+        },
+        itemPick: {},
+        optionPick: {},
+        showModal: false
       }
     },
     methods: {

@@ -5,12 +5,15 @@ export const DATA = {
   post: {
     name: '',
     price: '',
-    vehicleType: '',
+    // vehicleType: '',
     insuranceCompany: '',
     insuranceType: '',
     region: '',
     useType: '',
-    validityDate: ''
+    validityDate: '',
+    observation: '',
+    vehicleClass: null,
+    vehicleCategory: null
   },
   fieldsTable: {
     name: {label: 'Nombre', sortable: true, 'class': 'text-center'},

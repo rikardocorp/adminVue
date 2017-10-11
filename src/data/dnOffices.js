@@ -76,7 +76,7 @@ export const DATA_FORM = {
           colorClass: 'badge badge-danger',
           placeholder: 'Departamento',
           localData: 'regions',
-          asyncData: false
+          //asyncData: false
         },
         {
           url: 'provinces?regionId=',
@@ -87,7 +87,7 @@ export const DATA_FORM = {
           colorClass: 'badge badge-success',
           placeholder: 'Provincia',
           localData: 'provinces',
-          asyncData: true
+          //asyncData: true
         },
         {
           url: 'cities?regionId=&provinceId=',
@@ -98,7 +98,7 @@ export const DATA_FORM = {
           colorClass: 'badge badge-info text-white',
           placeholder: 'Distrito',
           localData: 'cities',
-          asyncData: true
+          //asyncData: true
         }
       ]
       // params: [

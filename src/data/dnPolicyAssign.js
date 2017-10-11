@@ -42,8 +42,8 @@ export const DATA_FORM = {
         size: 'sm',
         options: [
           { text: 'Todo', value: '' },
-          { text: 'Si', value: '1' },
-          { text: 'No', value: '0' }
+          { text: 'Si', value: '0' },
+          { text: 'No', value: '1' }
         ]
       }
     },
@@ -78,6 +78,12 @@ export const DATA_FORM = {
         loadData: true,
         value: ''
       }
+    },
+    number: {
+      label: 'Numero Poliza',
+      placeholder: 'Numero de #poliza',
+      type: 'text',
+      srOnly: true
     }
   },
   validate: {
@@ -97,19 +103,18 @@ export const DATA_USER = {
 
 export const DATA_FORM_USER = {
   input: {
-    region: {
-      label: 'Departamento',
-      placeholder: 'Departamento',
+    office: {
+      label: 'Oficina',
+      placeholder: 'Elije  oficina',
       type: 'text',
       input: 'multiselect',
       params: {
-        url: 'regions',
-        key: 'region',
-        label: 'name',
+        url: 'offices',
+        key: 'office',
+        label: 'description',
         options: [],
         activate: false,
         loadData: true,
-        localData: 'regions',
         value: ''
       }
     },

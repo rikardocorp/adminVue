@@ -71,8 +71,8 @@
         </b-form-group>
       </div>
 
-      <!--<pre>{{ item }}</pre>-->
-      <!--<pre>{{ vehicle }}</pre>-->
+      <pre>{{ item }}</pre>
+      <pre>{{ vehicle }}</pre>
 
     </b-form>
 
@@ -220,7 +220,8 @@
         console.log('WATCH item')
         console.log(newVal)
         console.log(oldVal)
-        this.item.vehicleType = this.vehicle
+        this.item.vehicleCategory = this.vehicle.vehicleCategory
+        this.item.vehicleClass = this.vehicle.vehicleClass
         if (this.update) {
           console.log('WATCH item update')
           this.setMultiSelect()

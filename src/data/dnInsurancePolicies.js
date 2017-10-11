@@ -7,10 +7,8 @@ export const DATA = {
     number: '',
     validityStart: '01/01/1800',
     validityEnd: '01/01/1800',
-    insuranceCompany: '',
-    // insuranceCompanyName: '',
+    insuranceCompany: null,
     user: null
-    // username: ''
   },
   fieldsTable: {
     number: {
@@ -28,7 +26,7 @@ export const DATA = {
       label: 'Usuario Venta',
       sortable: true,
       class: 'text-center',
-      formatter: (value) => { return value.firstName + ' ' + value.lastName }
+      formatter: (value) => { return (value !== null && value.id !== 0) ? value.firstName + ' ' + value.lastName : 'LIBRE'  }
     },
     actions: {label: '', thStyle: 'width:75px'}
   }

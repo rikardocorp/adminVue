@@ -5,7 +5,7 @@
         <div v-if="!mySwitch" class="row justify-content-center" key="div1">
           <div class="col-10">
             <b-card>
-              <button id="cancelSale" class="input-group-addon bg-warning"
+              <button id="cancelSale" class="input-group-addon bg-primary"
                       @click="CancelSale"
                       :disabled="isLoading || disableBtn"
                       title="Cancelar Venta">
@@ -229,7 +229,7 @@
         this.data[index].formFill = value
       },
       async getInsurancePolicy () {
-        // let dataLocal = this.data.sale
+        // let dataLocal = this.data.vehicle
         let companyId = this.data.pickPolice.item.insuranceCompanyId
         let url = 'insurancepolicies?insuranceCompanyId=' + companyId + '&sold=0'
 //        let url = 'insurancepolicies/mypolicies?sold=0&insuranceCompanyId=' + companyId
@@ -253,6 +253,7 @@
           return true
         }
         localStorage.setItem('vehicle', JSON.stringify(this.data.vehicle.item))
+
         // GET POLICY NUMBER
         let policyObject = ''
         let policy = await this.getInsurancePolicy()
@@ -386,9 +387,9 @@
 
         localStorage.setItem('sale', JSON.stringify(this.data.sale.item))
         return true
-        // sale.observation = null
-        // sale.discount = null
-        // sale.invoiceNumber = null
+        // vehicle.observation = null
+        // vehicle.discount = null
+        // vehicle.invoiceNumber = null
       },
       async insertSale () {
         let dataLocal = this.data.sale
@@ -536,10 +537,11 @@
           let insuranceObject = data.object
           console.log('lleno')
           console.log(insurance)
+          console.log(insuranceObject)
           this.data.pickPolice.item = insurance
-          this.data.vehicle.item.vehicleType = insuranceObject.vehicleType
+          this.data.vehicle.item.vehicleTypeCategory = insuranceObject.vehicleTypeCategory
           this.data.vehicle.item.useType = insuranceObject.useType
-          this.data.vehicle.defaultItem.vehicleType = insuranceObject.vehicleType
+          this.data.vehicle.defaultItem.vehicleTypeCategory = insuranceObject.vehicleTypeCategory
           this.data.vehicle.defaultItem.useType = insuranceObject.useType
 
           // SALE
