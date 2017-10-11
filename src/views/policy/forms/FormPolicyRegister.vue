@@ -56,8 +56,8 @@
       <!--<p>Update: {{ update }}</p>-->
 
     </b-form>
-    <pre>{{ name }}</pre>
-    <pre>{{ item }}</pre>
+    <!--<pre>{{ name }}</pre>-->
+    <!--<pre>{{ item }}</pre>-->
 
   </b-card>
 

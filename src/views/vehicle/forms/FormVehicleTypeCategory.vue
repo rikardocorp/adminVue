@@ -1,7 +1,7 @@
 <template>
   <b-card>
     <div slot="header" class="text-center">
-      <strong>Usuarios</strong> del Sistema
+      <strong>Vehiculos</strong> - Clases y Categorias
     </div>
     <b-form :id="name + urlRest">
 
@@ -58,7 +58,7 @@
       </div>
 
     </b-form>
-    <pre>{{ item }}</pre>
+    <!--<pre>{{ item }}</pre>-->
   </b-card>
 
 </template>

@@ -10,7 +10,7 @@
       <div class="row">
         <div class="col-12">
           <app-table :fields="fields" :items="items" :btnOption="btnOption" @pickItem="pickItem">
-            <template slot="title">Tipos de Seguros</template>
+            <template slot="title">Vehiculos - Clases y Categorias</template>
           </app-table>
         </div><!--/.col-->
       </div><!--/.row-->

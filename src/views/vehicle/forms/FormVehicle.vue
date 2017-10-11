@@ -50,7 +50,7 @@
         </b-form-group>
       </div>
     </b-form>
-    <pre>{{item}}</pre>
+    <!--<pre>{{item}}</pre>-->
   </b-card>
 
 </template>

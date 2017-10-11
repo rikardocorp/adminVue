@@ -6,7 +6,11 @@
     <div slot="header" class="text-center">
       <strong>Registrar Precios</strong>
     </div>
-    <p class="color-primary bold h5 text-center">{{ vehicle.vehicleBrand }} - {{ vehicle.vehicleModel}} - Cat. {{ vehicle.category }}</p>
+    <p class="color-primary bold h5 text-center mb-4">
+      {{ vehicle.vehicleType ? vehicle.vehicleType.vehicleBrand : '' }} - {{ vehicle.vehicleType ? vehicle.vehicleType.vehicleModel : ''}}
+      (<span class="">{{vehicle.seatNumber }}</span>  asientos)<br>
+      <span class="text-dark h6">CLASE {{ vehicle.vehicleClass ? vehicle.vehicleClass.description : '' }}
+        - CATEGORIA {{ vehicle.vehicleCategory ? vehicle.vehicleCategory.description : '' }}</span></p>
     <b-form :id="name + urlRest">
 
       <b-form-group v-for="(option, index) in optInput" :key="index"
@@ -71,8 +75,8 @@
         </b-form-group>
       </div>
 
-      <pre>{{ item }}</pre>
-      <pre>{{ vehicle }}</pre>
+      <!--<pre>{{ item }}</pre>-->
+      <!--<pre>{{ vehicle }}</pre>-->
 
     </b-form>
 

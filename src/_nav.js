@@ -71,7 +71,7 @@ export default {
           icon: 'icon-puzzle'
         },
         {
-          name: 'Tipo Categoria',
+          name: 'VCC',
           url: '/vehiculo/tipo-categoria-vehiculo',
           icon: 'icon-puzzle'
         },

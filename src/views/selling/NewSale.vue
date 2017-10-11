@@ -17,7 +17,7 @@
                            @on-validate="handleValidation"
                            @on-change="onchange"
                            color="#ef7b21" errorColor="#e84c3d"
-                           class="bg-white"
+                           :class="{'bg-white':true, 'saleComplete': isSale}"
                            :start-index="index"
                            :title="'MODULO DE VENTA - ' + data.pickPolice.item.insuranceCompanyName"
                            :subtitle="'Seguro ' + data.pickPolice.item.insuranceTypeName">
@@ -51,7 +51,7 @@
 
             </b-card>
           </div>
-          <pre style="font-size: 0.8em">{{ data }}</pre>
+          <!--<pre style="font-size: 0.8em">{{ data }}</pre>-->
           <!--<pre>{{ data.vehicle }}</pre>-->
           <br>
           <!--<pre>{{ data.webuser }}</pre>-->
@@ -160,7 +160,7 @@
         update: false,
         mySwitch: false,
         pickTabIndex: 0,
-
+        isSale: false,
         data: {
           pickPolice: {
             name: 'pickPolice',
@@ -271,6 +271,8 @@
         console.log(policyObject)
         // INSERT SALE
         this.data.sale.item.insurancePolicy = policyObject
+        console.log('RICK SALE')
+        console.log(this.data.sale.item)
         let r1 = await this.insertSale()
         console.log('R-Sale1: ')
         console.log(r1)
@@ -385,6 +387,7 @@
         console.log(r3)
         if (!r3.status) return false
 
+        this.isSale = true
         localStorage.setItem('sale', JSON.stringify(this.data.sale.item))
         return true
         // vehicle.observation = null
@@ -604,18 +607,20 @@
 
   #newSaleWizard{
     /*.form-control[readonly]*/
-    .form-control:disabled{
-      background-color: rgb(255, 150, 5);
-      color: white;
-      border: 1px solid #ff9508;
-    }
-    .multiselect--disabled{
-      opacity: 1;
-      .multiselect__select,
-      .multiselect__tags {
+    &.saleComplete{
+      .form-control:disabled{
         background-color: rgb(255, 150, 5);
+        color: white;
         border: 1px solid #ff9508;
+      }
+      .multiselect--disabled{
+        opacity: 1;
+        .multiselect__select,
+        .multiselect__tags {
+          background-color: rgb(255, 150, 5);
+          border: 1px solid #ff9508;
 
+        }
       }
     }
   }

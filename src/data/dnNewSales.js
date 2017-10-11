@@ -209,6 +209,7 @@ export const DATA_SALE = {
   name: 'sales',
   post: {
     date: '',
+    validityStart: '01/12/1999',
     amount: '',
     active: '',
     discount: '',
@@ -220,6 +221,7 @@ export const DATA_SALE = {
     vehicle: null,
     insurancePolicy: null,
     purchaser: null,
+    cart: null,
     seatNumber: ''
   }
 }
