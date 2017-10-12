@@ -145,7 +145,7 @@ export const DATA_FORM_USER = {
         label: 'email',
         options: [],
         activate: false,
-        loadData: true,
+        loadData: false,
         value: ''
       }
     }
@@ -153,9 +153,6 @@ export const DATA_FORM_USER = {
   validate: {
     item: {
       user: {
-        required
-      },
-      region: {
         required
       }
     }

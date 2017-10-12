@@ -23,19 +23,19 @@ export const DATA = {
       label: 'Poliza',
       sortable: true,
       'class': 'text-center',
-      formatter: (value) => { return value.number }
+      formatter: (value) => { return '#' + value.number }
     },
     purchaser: {
       label: 'Contratante',
       sortable: true,
       'class': 'text-center',
-      formatter: (value) => { return value.razonSocial }
+      formatter: (value) => { return value ? value.razonSocial : '--' }
     },
     vehicle: {
       label: 'Auto',
       sortable: true,
       'class': 'text-center',
-      formatter: (value) => { return value.licensePlate }
+      formatter: (value) => { return value ? value.licensePlate : '--' }
     },
     region: {
       label: 'Region',
@@ -51,7 +51,7 @@ export const DATA = {
     invoiceNumber: {label: 'Factura', sortable: true, 'class': 'text-center'},
     observation: {label: 'Observ', sortable: true, 'class': 'text-center'},
     state: {label: 'Estado', sortable: true, 'class': 'text-center'},
-    active: {label: 'Activo?', sortable: true, 'class': 'text-center'},
+    active: {label: 'Activo', sortable: true, 'class': 'text-center'},
     actions: {label: '', 'class': 'text-center', thStyle: 'width:115px'}
   }
 }
@@ -81,7 +81,7 @@ export const DATA_FORM = {
       params: {
         url: 'purchasers',
         key: 'purchaser',
-        label: 'razonSocial',
+        label: 'id',
         options: [],
         activate: false,
         loadData: true,

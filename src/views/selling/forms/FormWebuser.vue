@@ -1,47 +1,62 @@
 <template>
   <b-form :id="'forms-'+ urlRest" class="col-md-8 m-auto pt-3 pb-4">
     <div class="d-flex justify-content-center mb-2 mySwitch">
-      <c-switch type="text"
-                variant="warning"
-                on="DNI" off="RUC"
-                :disabled="isLoading || restricted"
-                class="switch-lg mr-1"
-                :pill="true"
-                @change="dniRUC"
-                v-model="item.typeDocument"/>
+      <toggle-button :labels="{checked: 'DNI', unchecked: 'RUC'}" :color="{checked: 'rgb(239, 123, 34)', unchecked: 'rgb(181, 181, 181)'}"
+                     :disabled="isLoading || restricted" :width="75" :height="28"
+                     v-model="item.typeDocument" @change="dniRUC" class="mr-2">
+      </toggle-button>
 
-      <c-switch type="text"
-                variant="warning"
-                on="Email" off="off"
-                :disabled="isLoading || restricted"
-                class="switch-lg ml-1"
-                :pill="true"/>
+      <toggle-button :labels="{checked: 'Email', unchecked: 'Email'}" :color="{checked: 'rgb(99, 193, 222)', unchecked: 'rgb(181, 181, 181)'}"
+                     :disabled="isLoading || restricted" :width="75" :height="28"
+                     v-model="toggleEmail" class="ml-2" @change="changeEmail">
+      </toggle-button>
     </div>
 
-
-    <b-form-group v-for="(option, _index) in optInput" :key="_index"
-                  :class="{ 'form-group--error': $v.item[_index]? $v.item[_index].$error : false, 'text-left': true}"
+    <b-form-group v-show="toggleEmail===1"
+                  :class="{ 'form-group--error': $v.item['email']? $v.item['email'].$error : false, 'text-left': true}"
                   :label-cols="lCols"
+                  :label="optInput['email'].label + ':'"
+                  :horizontal="horizontal">
+      <b-input-group>
+        <b-input-group-addon class="bg-primary"><i :class="'fa ' + optInput['email'].icon"></i></b-input-group-addon>
+        <b-form-input v-if="optInput['email'].input=='input-email'"
+                      :disabled="isLoading || restricted" :type="optInput['email'].type"
+                      v-model.trim="item['email']"
+                      @blur.native="searchUser"
+                      :placeholder="optInput['email'].placeholder+'..'"></b-form-input>
+        <b-input-group-button>
+          <b-btn :disabled="isLoading || restricted" variant="primary" @click="searchUser"><i class="fa fa-search"></i></b-btn>
+        </b-input-group-button>
+      </b-input-group>
+      <!-- ERROR MESSAGE-->
+      <form-error :data="$v.item['email']? $v.item['email'] : {} "></form-error>
+    </b-form-group>
+
+
+    <b-form-group v-for="(option, _index) in optInput" :key="_index" :label-sr-only="option.srOnly"
+                  v-if="option.input!=='input-email'"
+                  :class="{ 'form-group--error': $v.item[_index]? $v.item[_index].$error : false, 'text-left': true}"
+                  :label-cols="option.srOnly ? null : lCols"
                   :label="option.label + ':'"
                   :horizontal="horizontal">
 
       <!-- INPUT -->
       <b-input-group>
-        <b-input-group-addon class="bg-primary"><i :class="'fa ' + option.icon  "></i></b-input-group-addon>
+        <b-input-group-addon class="bg-primary"><i :class="'fa ' + option.icon"></i></b-input-group-addon>
         <b-form-input v-if="option.input==undefined || option.input=='input'"
                       :disabled="isLoading || restricted" :type="option.type"
                       v-model.trim="item[_index]"
                       @blur.native="$v.item[_index]? $v.item[_index].$touch(): false"
                       :placeholder="option.placeholder+'..'"></b-form-input>
 
-        <b-form-input v-if="option.input=='input-email'"
-                      :disabled="isLoading || restricted" :type="option.type"
-                      v-model.trim="item[_index]"
-                      @blur.native="searchUser"
-                      :placeholder="option.placeholder+'..'"></b-form-input>
-        <b-input-group-button v-if="option.input=='input-email'">
-          <b-btn :disabled="isLoading || restricted" variant="primary" @click="searchUser"><i class="fa fa-search"></i></b-btn>
-        </b-input-group-button>
+        <!--<b-form-input v-if="option.input=='input-email'"-->
+                      <!--:disabled="isLoading || restricted" :type="option.type"-->
+                      <!--v-model.trim="item[_index]"-->
+                      <!--@blur.native="searchUser"-->
+                      <!--:placeholder="option.placeholder+'..'"></b-form-input>-->
+        <!--<b-input-group-button v-if="option.input=='input-email'">-->
+          <!--<b-btn :disabled="isLoading || restricted" variant="primary" @click="searchUser"><i class="fa fa-search"></i></b-btn>-->
+        <!--</b-input-group-button>-->
 
         <b-form-input v-if="option.input=='input-dni'"
                       :disabled="isLoading || restricted" :type="option.type"
@@ -61,7 +76,6 @@
       <!-- ERROR MESSAGE-->
       <form-error :data="$v.item[_index]? $v.item[_index] : {} "></form-error>
     </b-form-group>
-
 
 
     <div class="mt-4">
@@ -104,6 +118,7 @@
   import Multiselect from 'vue-multiselect'
   import Avatar from '../../../components/Avatar.vue'
   import FormError from '../../../components/FormError.vue'
+  import ToggleButton from '../../../components/ToggleButton.vue'
   import {DATA_PURCHASER as _purchaser} from '../../../data/dnNewSales'
 
   export default {
@@ -113,7 +128,8 @@
       OnlyMultiSelect,
       Multiselect,
       Avatar,
-      FormError
+      FormError,
+      ToggleButton
     },
     data () {
       return {
@@ -123,7 +139,8 @@
         titledniRuc: 'DNI',
         titleSwitch: 1,
         lCols: 3,
-        owner: null
+        owner: null,
+        toggleEmail: 1
       }
     },
     computed: {
@@ -135,7 +152,11 @@
       }
     },
     validations () {
-      return _purchaser.validate
+      if (this.toggleEmail === 1) {
+        return _purchaser.validate
+      } else {
+        return _purchaser.validate2
+      }
     },
     watch: {
       isInvalid (newVal) {
@@ -156,6 +177,12 @@
       }
     },
     methods: {
+      changeEmail (value) {
+        if (value.value === 0) {
+          console.log('Desactiva Email')
+          this.item.email = ''
+        }
+      },
       dniRUC (value) {
         if (this.item.typeDocument === 1) {
           this.optInput.razonSocial.label = 'Nombre'
@@ -166,7 +193,7 @@
         }
       },
       searchDNI () {
-        alert('12')
+        // alert('12')
       },
       searchUser () {
         console.log('CONSULTA USER by Email?')
@@ -181,6 +208,8 @@
 
               if (data.content.length > 0) {
                 this.owner = true
+                console.log('MI USUARUIO')
+                console.log(data.content[0])
                 this.$emit('connection', 'webuser', data.content[0])
                 console.log('Tiene duseño')
               } else {

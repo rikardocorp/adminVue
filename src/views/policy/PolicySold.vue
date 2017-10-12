@@ -9,22 +9,18 @@
 
       <div class="row">
         <div class="col-12">
-          <app-table :fields="fields" :items="items" :btnOption="btnOption" @pickItem="pickItem" ></app-table>
+          <app-table :fields="fields" :items="items" :btnOption="btnOption" @pickItem="pickItem" >
+            <template slot="title">Ventas Realizadas</template>
+          </app-table>
         </div><!--/.col-->
       </div><!--/.row-->
     </div>
     <!--<pre>{{ item }}</pre>-->
-    <button @click="update=!update">UPDATE</button>
-
     <b-modal :title="optionPick.title" :class="'modal-'+optionPick.variant" v-model="showModal">
       <div v-if="optionPick.name === btnOption.deleteOpc.name">{{ optionPick.content }}</div>
-      <div v-if="optionPick.name === btnOption.uploadOpc.name" class="upload-content">
-        <h4 class="text-center text-uppercase">{{ itemPick.name }}</h4>
-        <div class="d-flex justify-content-center"></div>
-      </div>
       <template slot="modal-footer">
-        <b-button @click="showModal = !showModal">Cancel</b-button>
-        <b-button v-if="optionPick.name === btnOption.deleteOpc.name" @click="deleteData" :variant="optionPick.variant">OK</b-button>
+        <b-button :disabled="isLoading" @click="showModal = !showModal">Cancel</b-button>
+        <b-button :disabled="isLoading" v-if="optionPick.name === btnOption.deleteOpc.name" @click="deleteData" :variant="optionPick.variant">OK</b-button>
       </template>
     </b-modal>
   </div>
@@ -50,14 +46,6 @@
         update: false,
         indexSelected: null,
         btnOption: {
-          uploadOpc: {
-            name: 'upload',
-            title: 'Subir una Imagen',
-            content: '',
-            variant: 'success',
-            selected: false,
-            icon: 'fa fa-picture-o'
-          },
           editOpc: {
             name: 'edit',
             variant: 'primary',
@@ -117,19 +105,19 @@
       toggleDialog: function () {
         this.showModal = !this.showModal
       },
-      pickItem (item, type) {
+      pickItem (item, option) {
         this.initData()
+        console.log(item)
+        this.itemPick = item
+        this.optionPick = option
         this.indexSelected = this.$lodash.findIndex(this.items, item)
-        console.log('INDEX SELECT')
-        console.log(this.update)
-        if (type === this.btnOption.editOpc) {
-          console.log('INDEX update')
+
+        if (option.name === this.btnOption.editOpc.name) {
           this.item = {...this.item, ...item}
           this.update = true
-        }
-
-        if (type === this.btnOption.deleteOpc) {
-          this.ownClass = type
+          this.switchForm = false
+          this.$scrollTo('body')
+        } else {
           this.toggleDialog()
         }
       }

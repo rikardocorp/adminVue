@@ -4,10 +4,10 @@
       <strong>Clase</strong> del Vehiculo
     </div>
     <b-form :id="name + urlRest">
-      <div class="dropbox">
-        La clase del vehiculo es ... Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-        Accusantium animi aspernatur consequuntur culpa cum ea earum fuga hic.
-      </div>
+      <!--<div class="dropbox">-->
+        <!--La clase del vehiculo es ... Lorem ipsum dolor sit amet, consectetur adipisicing elit.-->
+        <!--Accusantium animi aspernatur consequuntur culpa cum ea earum fuga hic.-->
+      <!--</div>-->
 
       <b-form-group v-for="(option, index) in optInput" :key="index"
                     :class="{ 'form-group--error': $v.item[index]? $v.item[index].$error : false, 'text-right': true}"

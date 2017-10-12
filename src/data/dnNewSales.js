@@ -102,7 +102,8 @@ export const DATA_PURCHASER = {
       placeholder: 'Ingrese su email',
       type: 'text',
       icon: 'fa fa-envelope-o',
-      input: 'input-email'
+      input: 'input-email',
+      srOnly: true
     },
     dniRuc: {
       label: 'DNI',
@@ -188,6 +189,30 @@ export const DATA_PURCHASER = {
       email: {
         required,
         email
+      },
+      address: {
+        required
+      },
+      distrito: {
+        required
+      },
+      phone: {
+        required
+      },
+      cellPhone: {
+        required
+      }
+    }
+  },
+  validate2: {
+    item: {
+      razonSocial: {
+        required
+      },
+      dniRuc: {
+        required,
+        numeric,
+        maxLength: maxLength(11)
       },
       address: {
         required

@@ -19,7 +19,6 @@ Vue.prototype.$moment = moment
 moment.locale('es')
 
 Vue.use(Vuelidate)
-// Vue.use(VueScrollTo)
 Vue.use(BootstrapVue)
 Vue.use(VueRosource)
 Vue.use(VueFormWizard)

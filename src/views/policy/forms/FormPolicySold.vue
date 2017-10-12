@@ -36,8 +36,8 @@
                      v-model="option.params.value"
                      :options="option.params.options"
                      @input="selectOption"
-                     @blur.native="$v.item[index]? $v.item[index].$touch(): false"
-                     @open="openSelect(option.params.key)" >
+                     @open="openSelect(option.params.key)"
+                     @blur.native="$v.item[index]? $v.item[index].$touch(): false">
         </multiselect>
         <!--:options="getOption(option.params.url,index)"-->
         <!-- ERROR MESSAGE-->

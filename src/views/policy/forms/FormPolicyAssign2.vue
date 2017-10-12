@@ -37,6 +37,8 @@
                        :max-height="200"
                        v-model="item[index]"
                        :options="option.params.options"
+                       @input="selectOption"
+                       @open="openSelect(option.params.key)"
                        @blur.native="$v.item[index]? $v.item[index].$touch(): false">
           </multiselect>
 
@@ -109,10 +111,14 @@
     methods: {
       assignPolicies () {
         let invalid = this.$v.item.$invalid
+        console.log('assign')
         if (!invalid) {
+          let data = this.convertList(this.list)
+          if (data.length === 0) return false
+          console.log('pasa')
           let userId = this.item.user.id
           let url = 'insurancepolicies/' + userId + '/assignpolicies'
-          let self = this.$store.dispatch('dispatchHTTP', {type: 'INSERT', url: url, data: this.convertList(this.list)})
+          let self = this.$store.dispatch('dispatchHTTP', {type: 'INSERT', url: url, data: data})
           self.then((data) => {
             if (data.status) {
               console.log('SUCCESS')
@@ -178,11 +184,17 @@
         document.getElementById(formId).reset()
         this.resetMultiSelect()
         this.$v.item.$reset()
+        this.$emit('defaulValue')
       },
       selectOption (selectedOption) {
-        console.log(selectedOption)
         let key = this.selectedKey
-        this.item[key] = selectedOption === null ? '' : selectedOption.id
+        let officeId = this.item.office ? this.item.office.id : ''
+        let roleName = this.item.role ? this.item.role.name : ''
+
+        if (officeId !== '' && roleName !== '' && key !== 'user') {
+          let url = 'users?role=' + roleName + '&officeId=' + officeId
+          this.getOption(url, 'user')
+        }
       },
       openSelect (id) {
         this.selectedKey = id

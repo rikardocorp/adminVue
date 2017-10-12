@@ -41,7 +41,7 @@
                 </tab-content>
                 <tab-content title="Poliza" icon="fa fa-credit-card" :before-change="stage2">
 
-                  <form-poliza :data="data" :horizontal="true" :index="2"></form-poliza>
+                  <form-poliza :item="data.sale.item" :data="data" :horizontal="true" :index="2" @connection="connectionPoliza"></form-poliza>
 
                 </tab-content>
                 <tab-content title="Venta" icon="fa fa-check">
@@ -202,6 +202,7 @@
             formFill: false
           }
         }
+
       }
     },
     computed: {
@@ -359,6 +360,7 @@
         localStorage.setItem('purchaser', JSON.stringify(this.data.purchaser.item))
         this.setFormFill('vehicle', true)
         this.setFormFill('purchaser', true)
+        this.isSale = true
         return true
       },
       async stage2 () {
@@ -374,7 +376,7 @@
         let sale = this.data.sale.item
         let vehicle = this.data.vehicle.item
         let purchaser = this.data.purchaser.item
-        let pickPolice = this.data.pickPolice
+        let pickPolice = this.data.pickPolice.item
 
         sale.amount = pickPolice.price
         sale.seatNumber = vehicle.seatNumber
@@ -387,7 +389,6 @@
         console.log(r3)
         if (!r3.status) return false
 
-        this.isSale = true
         localStorage.setItem('sale', JSON.stringify(this.data.sale.item))
         return true
         // vehicle.observation = null
@@ -474,6 +475,9 @@
           console.log('NAME ITEM' + name)
           console.log(this.data[name].item)
         }
+      },
+      connectionPoliza: function (name, data) {
+
       },
       handleValidation: function (isValid, tabIndex) {
         console.log('Tab: ' + tabIndex + ' valid: ' + isValid)
@@ -584,12 +588,12 @@
         if (purchaser) {
           this.data.purchaser.item = purchaser
           if (this.data.purchaser.item.id !== undefined) {
+            this.isSale = true
             this.setFormFill('purchaser', true)
             notification.data = {message: 'Existe una venta registrada sin finalizar', status: '', success: null, url: ''}
             this.$store.commit('pushNotification', notification)
           } else this.setFormFill('purchaser', false)
           this.data.purchaser.validate = true
-
         }
       }
     },
@@ -604,6 +608,11 @@
 
 
 <style lang="scss">
+  .card-insurance {
+    .avatar {
+      position: absolute;
+    }
+  }
 
   #newSaleWizard{
     /*.form-control[readonly]*/
@@ -622,6 +631,10 @@
 
         }
       }
+    }
+
+    .vue-js-switch{
+      font-size: 0.9em;
     }
   }
 
