@@ -16,7 +16,11 @@
       </div><!--/.row-->
     </div>
 
-    <b-modal :title="optionPick.title" :class="'modal-'+optionPick.variant" v-model="showModal">
+    <!--<div>-->
+      <!--<b-btn @click="showModal = !showModal">Launch demo modal</b-btn>-->
+    <!--</div>-->
+
+    <b-modal :title="optionPick.title" :class="'modal-'+optionPick.variant" v-model="showModal" :no-close-on-backdrop="true">
       <div v-if="optionPick.name === btnOption.deleteOpc.name">{{ optionPick.content }}</div>
       <div v-if="optionPick.name === btnOption.uploadOpc.name" class="upload-content">
         <h4 class="text-center text-uppercase">{{ itemPick.name }}</h4>

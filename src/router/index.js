@@ -60,7 +60,7 @@ export default new Router({
         },
         {
           path: 'mantenimiento',
-          redirect: '/mantenimiento/ciudad',
+          redirect: '/mantenimiento/aseguradoras',
           name: 'Mantenimiento',
           component: {
             render (c) { return c('router-view') }

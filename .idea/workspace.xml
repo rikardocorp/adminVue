@@ -2,31 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="62a69400-10bc-4874-9705-83ba672de88f" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/package.json" afterPath="$PROJECT_DIR$/package.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/data/dnNewSales.js" afterPath="$PROJECT_DIR$/src/data/dnNewSales.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/data/dnPolicyAssign.js" afterPath="$PROJECT_DIR$/src/data/dnPolicyAssign.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/data/dnSales.js" afterPath="$PROJECT_DIR$/src/data/dnSales.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main.js" afterPath="$PROJECT_DIR$/src/main.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/scss/style.scss" afterPath="$PROJECT_DIR$/scss/style.scss" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/router/index.js" afterPath="$PROJECT_DIR$/src/router/index.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/views/maintenance/InsuranceCompanies.vue" afterPath="$PROJECT_DIR$/src/views/maintenance/InsuranceCompanies.vue" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/views/maintenance/InsuranceTypes.vue" afterPath="$PROJECT_DIR$/src/views/maintenance/InsuranceTypes.vue" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/views/maintenance/Office.vue" afterPath="$PROJECT_DIR$/src/views/maintenance/Office.vue" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/views/maintenance/UseType.vue" afterPath="$PROJECT_DIR$/src/views/maintenance/UseType.vue" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/views/maintenance/User.vue" afterPath="$PROJECT_DIR$/src/views/maintenance/User.vue" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/views/policy/PolicySold.vue" afterPath="$PROJECT_DIR$/src/views/policy/PolicySold.vue" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/views/policy/forms/FormPolicyAssign2.vue" afterPath="$PROJECT_DIR$/src/views/policy/forms/FormPolicyAssign2.vue" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/views/policy/forms/FormPolicySold.vue" afterPath="$PROJECT_DIR$/src/views/policy/forms/FormPolicySold.vue" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/views/selling/Cotizar.vue" afterPath="$PROJECT_DIR$/src/views/selling/Cotizar.vue" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/views/selling/NewSale.vue" afterPath="$PROJECT_DIR$/src/views/selling/NewSale.vue" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/views/selling/forms/FormPoliza.vue" afterPath="$PROJECT_DIR$/src/views/selling/forms/FormPoliza.vue" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/views/selling/forms/FormWebuser.vue" afterPath="$PROJECT_DIR$/src/views/selling/forms/FormWebuser.vue" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/views/vehicle/Vehicle.vue" afterPath="$PROJECT_DIR$/src/views/vehicle/Vehicle.vue" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/views/vehicle/VehicleCategory.vue" afterPath="$PROJECT_DIR$/src/views/vehicle/VehicleCategory.vue" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/views/vehicle/VehicleClass.vue" afterPath="$PROJECT_DIR$/src/views/vehicle/VehicleClass.vue" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/views/vehicle/VehicleType.vue" afterPath="$PROJECT_DIR$/src/views/vehicle/VehicleType.vue" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/views/vehicle/VehicleTypeCategory.vue" afterPath="$PROJECT_DIR$/src/views/vehicle/VehicleTypeCategory.vue" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/views/vehicle/forms/FormVehicleCategory.vue" afterPath="$PROJECT_DIR$/src/views/vehicle/forms/FormVehicleCategory.vue" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/views/vehicle/forms/FormVehicleClass.vue" afterPath="$PROJECT_DIR$/src/views/vehicle/forms/FormVehicleClass.vue" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -40,16 +18,6 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="VehicleTypeCategory.vue" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/views/vehicle/VehicleTypeCategory.vue">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="60">
-              <caret line="4" column="37" lean-forward="false" selection-start-line="4" selection-start-column="37" selection-end-line="4" selection-end-column="37" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="FormVehicleClass.vue" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/views/vehicle/forms/FormVehicleClass.vue">
           <provider selected="true" editor-type-id="text-editor">
@@ -60,11 +28,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="InsuranceCompanies.vue" pinned="false" current-in-tab="false">
+      <file leaf-file-name="InsuranceCompanies.vue" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/views/maintenance/InsuranceCompanies.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="60">
-              <caret line="4" column="37" lean-forward="false" selection-start-line="4" selection-start-column="37" selection-end-line="4" selection-end-column="37" />
+            <state relative-caret-position="270">
+              <caret line="18" column="0" lean-forward="false" selection-start-line="18" selection-start-column="0" selection-end-line="20" selection-end-column="14" />
               <folding />
             </state>
           </provider>
@@ -110,7 +78,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Cotizar.vue" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Cotizar.vue" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/views/selling/Cotizar.vue">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="60">
@@ -122,21 +90,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="FormVehicleCategory.vue" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/views/vehicle/forms/FormVehicleCategory.vue">
+      <file leaf-file-name="index.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/router/index.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="105">
-              <caret line="7" column="6" lean-forward="false" selection-start-line="7" selection-start-column="10" selection-end-line="10" selection-end-column="16" />
+            <state relative-caret-position="248">
+              <caret line="45" column="15" lean-forward="true" selection-start-line="45" selection-start-column="15" selection-end-line="45" selection-end-column="15" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="VehicleClass.vue" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/views/vehicle/VehicleClass.vue">
+      <file leaf-file-name="FormVehicleCategory.vue" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/views/vehicle/forms/FormVehicleCategory.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="60">
-              <caret line="4" column="37" lean-forward="false" selection-start-line="4" selection-start-column="37" selection-end-line="4" selection-end-column="37" />
+            <state relative-caret-position="105">
+              <caret line="7" column="6" lean-forward="false" selection-start-line="7" selection-start-column="10" selection-end-line="10" selection-end-column="16" />
               <folding />
             </state>
           </provider>
@@ -197,11 +165,9 @@
         <option value="$PROJECT_DIR$/src/data/dnVehicleCategory.js" />
         <option value="$PROJECT_DIR$/src/views/maintenance/VehicleClass.vue" />
         <option value="$PROJECT_DIR$/src/views/maintenance/VehicleCategory.vue" />
-        <option value="$PROJECT_DIR$/scss/style.scss" />
         <option value="$PROJECT_DIR$/src/data/dnUser.js" />
         <option value="$PROJECT_DIR$/src/views/maintenance/forms/FormVehicleClass.vue" />
         <option value="$PROJECT_DIR$/src/views/maintenance/forms/FormVehicleCategory.vue" />
-        <option value="$PROJECT_DIR$/src/router/index.js" />
         <option value="$PROJECT_DIR$/src/data/dnVehicleTypeCategories.js" />
         <option value="$PROJECT_DIR$/src/data/dnInsurancePrices.js" />
         <option value="$PROJECT_DIR$/src/views/price/Price.vue" />
@@ -236,12 +202,14 @@
         <option value="$PROJECT_DIR$/src/views/vehicle/VehicleTypeCategory.vue" />
         <option value="$PROJECT_DIR$/src/views/vehicle/forms/FormVehicleCategory.vue" />
         <option value="$PROJECT_DIR$/src/views/vehicle/forms/FormVehicleClass.vue" />
-        <option value="$PROJECT_DIR$/src/views/maintenance/InsuranceCompanies.vue" />
         <option value="$PROJECT_DIR$/src/views/maintenance/InsuranceTypes.vue" />
         <option value="$PROJECT_DIR$/src/views/maintenance/Office.vue" />
         <option value="$PROJECT_DIR$/src/views/maintenance/User.vue" />
         <option value="$PROJECT_DIR$/src/views/maintenance/UseType.vue" />
         <option value="$PROJECT_DIR$/src/views/selling/Cotizar.vue" />
+        <option value="$PROJECT_DIR$/src/router/index.js" />
+        <option value="$PROJECT_DIR$/src/views/maintenance/InsuranceCompanies.vue" />
+        <option value="$PROJECT_DIR$/scss/style.scss" />
       </list>
     </option>
   </component>
@@ -292,6 +260,11 @@
             <path>
               <item name="adminVue" type="b2602c69:ProjectViewProjectNode" />
               <item name="adminVue" type="462c0819:PsiDirectoryNode" />
+              <item name="scss" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="adminVue" type="b2602c69:ProjectViewProjectNode" />
+              <item name="adminVue" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -305,7 +278,7 @@
               <item name="adminVue" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="views" type="462c0819:PsiDirectoryNode" />
-              <item name="selling" type="462c0819:PsiDirectoryNode" />
+              <item name="maintenance" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -374,12 +347,12 @@
       <workItem from="1507050596027" duration="1223000" />
       <workItem from="1507094185783" duration="82100000" />
       <workItem from="1507348669880" duration="117871000" />
-      <workItem from="1507737923347" duration="14933000" />
+      <workItem from="1507737923347" duration="17768000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="854496000" />
+    <option name="totallyTimeSpent" value="857331000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -434,26 +407,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/router/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2175">
-          <caret line="157" column="10" lean-forward="false" selection-start-line="157" selection-start-column="10" selection-end-line="157" selection-end-column="10" />
-          <folding>
-            <element signature="e#611#669#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/views/price/Price.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1409">
-          <caret line="141" column="29" lean-forward="true" selection-start-line="141" selection-start-column="29" selection-end-line="141" selection-end-column="29" />
-          <folding>
-            <element signature="e#2338#2402#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/data/dnInsurancePrices.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="27">
@@ -812,14 +765,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/views/maintenance/InsuranceCompanies.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="4" column="37" lean-forward="false" selection-start-line="4" selection-start-column="37" selection-end-line="4" selection-end-column="37" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/views/maintenance/InsuranceTypes.vue">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="60">
@@ -859,6 +804,30 @@
           <folding>
             <element signature="e#3694#4922#0" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/router/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="248">
+          <caret line="45" column="15" lean-forward="true" selection-start-line="45" selection-start-column="15" selection-end-line="45" selection-end-column="15" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scss/style.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="953">
+          <caret line="164" column="0" lean-forward="true" selection-start-line="164" selection-start-column="0" selection-end-line="164" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/views/maintenance/InsuranceCompanies.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="270">
+          <caret line="18" column="0" lean-forward="false" selection-start-line="18" selection-start-column="0" selection-end-line="20" selection-end-column="14" />
+          <folding />
         </state>
       </provider>
     </entry>
