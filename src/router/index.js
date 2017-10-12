@@ -42,7 +42,14 @@ import PolicySold from '../views/policy/PolicySold.vue'
 
 Vue.use(Router)
 
-export default new Router({
+const roles = {
+  admin: 'ROLE_ADMIN',
+  puntoVenta: 'ROLE_PUNTO_VENTA',
+  vendedor: 'ROLE_VENDEDOR',
+  cliente: 'ROLE_USUARIO'
+}
+
+const router = new Router({
   mode: 'hash',
   linkActiveClass: 'open active',
   scrollBehavior: () => ({ y: 0 }),
@@ -65,6 +72,7 @@ export default new Router({
           component: {
             render (c) { return c('router-view') }
           },
+          meta: {requiresAuth: true, ROLE_ADMIN: true, ROLE_PUNTO_VENTA: false},
           children: [
             {
               path: 'ciudad',
@@ -127,27 +135,19 @@ export default new Router({
               component: VehicleTypeCategory
             },
             {
-              path: 'nueva-venta',
-              name: 'Nueva venta',
-              component: NewSale
+              path: 'precio-poliza',
+              name: 'Precio de Poliza',
+              component: Price
             },
             {
-              path: 'clientes',
-              name: 'Registro Cliente',
-              component: WebUser
-            },{
               path: 'vehiculos',
               name: 'Registro Vehiculo',
               component: Vehicle
-            },{
+            },
+            {
               path: 'contratantes',
               name: 'Registro Contratante',
               component: Purchaser
-            },
-            {
-              path: 'nueva-venta',
-              name: 'Registro Contrato',
-              component: NewSale
             }
           ]
         },
@@ -160,11 +160,6 @@ export default new Router({
           path: 'asignar-poliza',
           name: 'Asignar Poliza',
           component: PolicyAssign
-        },
-        {
-          path: 'precio-poliza',
-          name: 'Precio de Poliza',
-          component: Price
         },
         {
           path: 'poliza-vendida',
@@ -190,3 +185,35 @@ export default new Router({
     }
   ]
 })
+
+// Guard Login
+// router.beforeEach((to, from, next) => {
+//   if (to.meta.requiresAuth) {
+//     let isLogged = store.state.Login.user.isLogged
+//     const authorization = localStorage.getItem('authorization')
+//     if (!isLogged || !authorization) {
+//       next({name: 'Login'})
+//     }
+//   }
+// })
+
+router.afterEach((to, from) => {
+  let isLogged = store.state.Login.user.isLogged
+  if (!isLogged) {
+    alert('Logged False')
+    let session = localStorage.getItem('authorization')
+    if (session) {
+      store.commit('setAuthHeader')
+    } else {
+      console.log('NO EXISTE')
+      router.push('/login')
+    }
+  } else {
+    alert('Logged False')
+    store.dispatch('getDataUser')
+  }
+  console.log('GLOBAL ROUTER')
+  console.log('Loggin ' + store.state.Login.user.isLogged)
+})
+
+export default router

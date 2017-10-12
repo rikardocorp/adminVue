@@ -61,6 +61,7 @@ const mutations = {
     localStorage.removeItem('username')
     localStorage.removeItem('date')
     localStorage.removeItem('time')
+    localStorage.clear()
     // localStorage.clear()
     Vue.set(state.user, 'isLogged', false)
     router.push('/login')
@@ -81,7 +82,7 @@ const actions = {
       commit('setAuthHeader')
       dispatch('getDataUser')
       commit('switchLoading', false)
-      // dispatch('initDataTables')
+
       if (payload.redirect) {
         router.push(payload.redirect)
       }
@@ -101,6 +102,7 @@ const actions = {
       console.log('response: IDENTITY')
       console.log(response)
       let data = response.data.data
+      localStorage.setItem('UserLog', JSON.stringify(data))
       localStorage.setItem('username', data.username)
       localStorage.setItem('date', data.date)
       localStorage.setItem('time', data.time)
@@ -111,6 +113,35 @@ const actions = {
       commit('logout')
     })
   },
+  loginAuth: function () {
+    alert('auth')
+    const data = JSON.parse(localStorage.getItem('UserLog'))
+    if (data === null || data === undefined) {
+      console.log('data.authorities[0]')
+      router.push('/login')
+    } else {
+      let role = data.authorities[0].authority
+
+      switch (role) {
+        case 'ROLE_ADMIN':
+          router.push('/admin')
+          break
+        case 'ROLE_PUNTO_VENTA':
+          router.push('/subadmin')
+          break
+        case 'ROLE_VENDEDOR':
+          router.push('/vendedor')
+          break
+        default:
+          router.push('/login')
+      }
+    }
+    // } else if (data.authorities[0].authority === 'ADMIN') {
+    //   app.$router.push('/admin')
+    // }else {
+    //   app.$router.push('/resident')
+    // }
+  }
   // initDataTables: ({commit, state}) => {
   //   let value = ''
   //   let promises = []

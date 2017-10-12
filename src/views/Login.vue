@@ -102,6 +102,10 @@
           text: 'Hello user! This is a notification!'
         })
       }
+    },
+    created () {
+//      console.log('loginAuth::::')
+//      this.$store.dispatch('loginAuth')
     }
   }
 </script>

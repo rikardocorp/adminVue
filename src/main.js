@@ -35,26 +35,6 @@ Vue.use(VueScrollTo, {
   y: true
 })
 
-// Guard Login
-// router.beforeEach((to, from, next) => {})
-router.afterEach((to, from) => {
-  let isLogged = store.state.Login.user.isLogged
-  if (!isLogged) {
-    let session = localStorage.getItem('authorization')
-    console.log(session)
-    if (session) {
-      store.commit('setAuthHeader')
-    } else {
-      console.log('NO EXISTE')
-      router.push('/login')
-    }
-  } else {
-    store.dispatch('getDataUser')
-  }
-  console.log('GLOBAL ROUTER')
-  console.log('Loggin ' + store.state.Login.user.isLogged)
-})
-
 // Peticiones al servidor
 // Vue.http.options.root = 'http://192.168.1.7:8070/jmc/rest/v1/'
 Vue.http.options.root = 'http://174.138.48.60:8080/jmc/rest/v1/'

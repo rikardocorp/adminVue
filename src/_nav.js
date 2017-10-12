@@ -75,6 +75,11 @@ export default {
           url: '/vehiculo/tipo-categoria-vehiculo',
           icon: 'icon-puzzle'
         },
+        {
+          name: 'Precios',
+          url: '/vehiculo/precio-poliza',
+          icon: 'fa fa-money'
+        },
         // {
         //   name: 'Nueva venta',
         //   url: '/venta/nueva-venta',
@@ -125,15 +130,6 @@ export default {
       icon: 'fa fa-money',
       badge: {
         variant: 'success',
-        text: 'NEW'
-      }
-    },
-    {
-      name: 'Precios',
-      url: '/precio-poliza',
-      icon: 'fa fa-money',
-      badge: {
-        variant: 'info',
         text: 'NEW'
       }
     },
