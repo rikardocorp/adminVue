@@ -80,6 +80,11 @@ export default {
           url: '/vehiculo/precio-poliza',
           icon: 'fa fa-money'
         },
+        {
+          name: 'Precio Full',
+          url: '/vehiculo/precio-poliza-full',
+          icon: 'fa fa-money'
+        },
         // {
         //   name: 'Nueva venta',
         //   url: '/venta/nueva-venta',

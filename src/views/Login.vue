@@ -78,7 +78,7 @@
           email: this.credentials.username,
           password: this.credentials.password
         }
-        this.$store.dispatch('login', {credentials, redirect: '/'})
+        this.$store.dispatch('login', {credentials})
       },
       login (creds) {
         let urlLogin = this.$store.state.Login.LOGIN_URL

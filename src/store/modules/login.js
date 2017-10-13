@@ -99,9 +99,18 @@ const actions = {
       console.log(response)
       let data = response.data.data
       localStorage.setItem('UserLog', JSON.stringify(data))
+      localStorage.setItem('ROLE', data.authorities[0].authority)
       localStorage.setItem('username', data.username)
       localStorage.setItem('date', data.date)
       localStorage.setItem('time', data.time)
+
+      let user = {
+        role: data.authorities[0].authority,
+        data: data.user,
+        date: data.date,
+        time: data.time
+      }
+      commit('setUser', user)
 
       if (payload.router) dispatch('redirectROLE')
       commit('switchLoading', false)
@@ -114,7 +123,7 @@ const actions = {
     })
   },
   redirectROLE: function () {
-    alert('auth')
+    /// alert('auth')
     const data = JSON.parse(localStorage.getItem('UserLog'))
     console.log(data)
     if (data === null || data === undefined) {
@@ -127,10 +136,10 @@ const actions = {
           router.push('/')
           break
         case 'ROLE_PUNTO_VENTA':
-          router.push('/subadmin')
+          router.push('/dashboard')
           break
         case 'ROLE_VENDEDOR':
-          router.push('/vendedor')
+          router.push('/dashboard')
           break
         default:
           router.push('/login')

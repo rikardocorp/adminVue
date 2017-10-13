@@ -33,6 +33,7 @@ import Cotizar from '../views/selling/Cotizar.vue'
 
 // Price
 import Price from '../views/price/Price.vue'
+import PriceFull from '../views/price/PriceFull.vue'
 
 // Policy
 import Policy from '../views/policy/Policy.vue'
@@ -95,19 +96,19 @@ const router = new Router({
               path: 'usuarios',
               name: 'Usuarios',
               component: User,
-              meta: {requiresAuth: true}
+              meta: {requiresAuth: true, ROLE_ADMIN: true, ROLE_PUNTO_VENTA: true}
             },
             {
               path: 'tipo-uso',
               name: 'Tipos de Uso',
               component: UseType,
-              meta: {requiresAuth: true}
+              meta: {requiresAuth: true, ROLE_ADMIN: true}
             },
             {
               path: 'tipo-seguro',
               name: 'Tipos de Seguro',
               component: InsuranceType,
-              meta: {requiresAuth: true}
+              meta: {requiresAuth: true, ROLE_ADMIN: true}
             }
           ]
         },
@@ -122,49 +123,64 @@ const router = new Router({
             {
               path: 'tipo-vehiculo',
               name: 'Tipos de Vehiculo',
-              component: VehicleType
+              component: VehicleType,
+              meta: {requiresAuth: true, ROLE_ADMIN: true}
             },
             {
               path: 'categoria-vehiculo',
               name: 'Categ. de Vehiculo',
-              component: VehicleCategory
+              component: VehicleCategory,
+              meta: {requiresAuth: true, ROLE_ADMIN: true}
             },
             {
               path: 'clases-vehiculo',
               name: 'Clases de Vehiculo',
-              component: VehicleClass
+              component: VehicleClass,
+              meta: {requiresAuth: true, ROLE_ADMIN: true}
             },
             {
               path: 'tipo-categoria-vehiculo',
               name: 'Tipo categoria de Vehiculo',
-              component: VehicleTypeCategory
+              component: VehicleTypeCategory,
+              meta: {requiresAuth: true, ROLE_ADMIN: true}
             },
             {
               path: 'precio-poliza',
               name: 'Precio de Poliza',
-              component: Price
+              component: Price,
+              meta: {requiresAuth: true, ROLE_ADMIN: true}
+            },
+            {
+              path: 'precio-poliza-full',
+              name: 'Tabla de Precios Poliza',
+              component: PriceFull,
+              meta: {requiresAuth: true, ROLE_ADMIN: true}
             },
             {
               path: 'vehiculos',
               name: 'Registro Vehiculo',
-              component: Vehicle
+              component: Vehicle,
+              meta: {requiresAuth: true, ROLE_ADMIN: true}
             },
             {
               path: 'contratantes',
               name: 'Registro Contratante',
-              component: Purchaser
+              component: Purchaser,
+              meta: {requiresAuth: true, ROLE_ADMIN: true}
             }
           ]
         },
         {
           path: 'insertar-poliza',
           name: 'Asignacion Poliza',
-          component: Policy
+          component: Policy,
+          meta: {requiresAuth: true, ROLE_ADMIN: true, ROLE_PUNTO_VENTA: true}
         },
         {
           path: 'asignar-poliza',
           name: 'Asignar Poliza',
-          component: PolicyAssign
+          component: PolicyAssign,
+          meta: {requiresAuth: true, ROLE_ADMIN: true, ROLE_PUNTO_VENTA: true}
         },
         {
           path: 'poliza-vendida',
@@ -229,9 +245,9 @@ const router = new Router({
 // })
 
 router.beforeEach((to, from, next) => {
-  alert('META?')
+  // alert('META?')
   if (to.meta.requiresAuth) {
-    alert('META!!!!')
+    // alert('META!!!!')
     console.log('META')
     console.log(to.meta)
     const authUser = JSON.parse(localStorage.getItem('UserLog'))
@@ -239,21 +255,21 @@ router.beforeEach((to, from, next) => {
     console.log(authUser)
     console.log(token)
     if (!authUser || !token) {
-      alert('no pasa')
+      // alert('no pasa')
       next({name: 'Login'})
     } else {
       let localRole = authUser.authorities[0].authority
       if (to.meta[localRole] !== undefined && to.meta[localRole]) {
-        alert('tiene accesso')
+        // alert('tiene accesso')
         next()
       } else {
-        alert('no pasa')
+        // alert('no pasa')
         store.dispatch('redirectROLE')
         next(false)
       }
     }
   } else {
-    alert('NO META')
+    // alert('NO META')
     console.log('No META')
     next()
   }
@@ -262,10 +278,12 @@ router.beforeEach((to, from, next) => {
 router.afterEach((to, from) => {
   let isLogged = store.state.Login.user.isLogged
   if (!isLogged) {
-    alert('sethHeaders')
+    // alert('sethHeaders')
     store.commit('setAuthHeader')
-  } else {
     store.dispatch('getDataUser')
+  } else {
+    // alert('getDATAUSER')
+    // store.dispatch('getDataUser')
   }
 })
 

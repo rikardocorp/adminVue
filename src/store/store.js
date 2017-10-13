@@ -16,7 +16,13 @@ export default new Vuex.Store({
       count: 0,
       content: ''
     },
-    fullscreen: false
+    fullscreen: false,
+    user: {
+      role: '',
+      data: '',
+      date: '',
+      time: ''
+    }
   },
   getters: {
     arrayToObject: (state, getters) => (value) => {
@@ -31,6 +37,9 @@ export default new Vuex.Store({
   mutations: {
     [types.CHANGE_TITLEPAGE]: (state, title) => {
       state.titlePage = title
+    },
+    setUser: (state, value) => {
+      Vue.set(state, 'user', value)
     },
     switchLoading: (state, value) => {
       console.log('SWITCH LOADING')
@@ -87,7 +96,10 @@ export default new Vuex.Store({
             notify.error = true
             break
           case 'DELETE':
-            inquiry = Vue.http.delete(url)
+            console.log('DELETE')
+            console.log(url)
+            console.log(data)
+            inquiry = Vue.http.delete(url, {body: data})
             notify.success = true
             notify.error = true
             break

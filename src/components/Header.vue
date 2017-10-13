@@ -8,8 +8,14 @@
       <b-nav is-nav-bar class="ml-auto">
         <b-nav-item-dropdown right>
           <template slot="button-content">
-            <img src="static/img/avatars/6.jpg" class="img-avatar" alt="admin@bootstrapmaster.com">
-            <span class="d-md-down-none">admin</span>
+            <avatar class="avatar-header" :username="username" :rounded="true" :size="3.1" sizeUnid="em"
+                    :alt="user.data.email" :border="true" :localSrc="false" color="#ecedef" backgroundColor="orange"
+                    :sizeBorder="0.2"></avatar>
+            <!--<avatar :username="user.data.firstName + ' ' + user.data.lastName" :rounded="true" :size="6.4" sizeUnid="em"-->
+                    <!--:alt="user.data.email" :border="true" colorBorder="#f4f3ef" color="#ecedef" :localSrc="false"-->
+                    <!--backgroundColor="orange" :sizeBorder="0.5"></avatar>-->
+            <!--<img src="static/img/avatars/6.jpg" class="img-avatar" alt="admin@bootstrapmaster.com">-->
+            <span class="d-md-down-none">{{ username }}</span>
           </template>
           <b-dropdown-header tag="div" class="text-center"><strong>Account</strong></b-dropdown-header>
           <b-dropdown-item><i class="fa fa-bell-o"></i> Updates<span class="badge badge-info">42</span></b-dropdown-item>
@@ -31,39 +37,57 @@
     </header>
 </template>
 <script>
-export default {
-  name: 'header',
-  computed: {
-    isLoading () {
-      return this.$store.state.isLoading
-    }
-  },
-  methods: {
-    sidebarToggle (e) {
-      e.preventDefault()
-      document.body.classList.toggle('sidebar-hidden')
+  import Avatar from '../components/Avatar.vue'
+
+  export default {
+    name: 'header',
+    components: {
+      Avatar
     },
-    sidebarMinimize (e) {
-      e.preventDefault()
-      document.body.classList.toggle('sidebar-minimized')
+    computed: {
+      isLoading () {
+        return this.$store.state.isLoading
+      },
+      user () {
+        return this.$store.state.user
+      },
+      username () {
+        let firtName = this.user.data.firstName ? this.user.data.firstName : ''
+        let lastName = this.user.data.lastName ? this.user.data.lastName : ''
+        return firtName + ' ' + lastName
+      }
     },
-    mobileSidebarToggle (e) {
-      e.preventDefault()
-      document.body.classList.toggle('sidebar-mobile-show')
-    },
-    asideToggle (e) {
-      e.preventDefault()
-      document.body.classList.toggle('aside-menu-hidden')
-    },
-    logout () {
-      console.log('Exit')
-      this.$store.commit('logout')
+    methods: {
+      sidebarToggle (e) {
+        e.preventDefault()
+        document.body.classList.toggle('sidebar-hidden')
+      },
+      sidebarMinimize (e) {
+        e.preventDefault()
+        document.body.classList.toggle('sidebar-minimized')
+      },
+      mobileSidebarToggle (e) {
+        e.preventDefault()
+        document.body.classList.toggle('sidebar-mobile-show')
+      },
+      asideToggle (e) {
+        e.preventDefault()
+        document.body.classList.toggle('aside-menu-hidden')
+      },
+      logout () {
+        console.log('Exit')
+        this.$store.commit('logout')
+      }
     }
   }
-}
 </script>
 
-<style>
+<style lang="scss">
+  .avatar-header{
+    display: inline;
+    margin: 0 5px;
+  }
+
   header,
   .navbar-brand{
     /*overflow: hidden;*/

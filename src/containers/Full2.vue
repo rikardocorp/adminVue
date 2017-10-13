@@ -4,9 +4,11 @@
     <div class="app-body">
       <Sidebar :navItems="nav"/>
       <main class="main">
-        <!--<pre>{{ user }}</pre>-->
         <!--<breadcrumb :list="list"/>-->
         <div class="container-fluid newStyle">
+          <pre>iuwefihwuuifhwf</pre>
+          <pre> {{ nav }}</pre>
+          <pre>iuwefihwuuifhwf</pre>
           <!--<div class="container-fluid">-->
           <router-view></router-view>
         </div>
@@ -49,7 +51,7 @@
     },
     data () {
       return {
-        nav: {}
+        nav: navADMIN
       }
     },
     computed: {
@@ -61,9 +63,6 @@
       },
       notification () {
         return this.$store.state.notification
-      },
-      user () {
-        return this.$store.state.user
       }
     },
     watch: {
@@ -88,10 +87,6 @@
           type: type
         })
       }
-    },
-    created () {
-      let localRole = this.user.role ? this.user.role : _ROLE
-      this.nav = nav[localRole].items
     }
   }
 </script>
