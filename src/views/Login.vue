@@ -104,8 +104,8 @@
       }
     },
     created () {
-//      console.log('loginAuth::::')
-//      this.$store.dispatch('loginAuth')
+      // console.log('loginAuth::::')
+      // this.$store.dispatch('redirectROLE')
     }
   }
 </script>

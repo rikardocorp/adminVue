@@ -72,7 +72,7 @@ const router = new Router({
           component: {
             render (c) { return c('router-view') }
           },
-          meta: {requiresAuth: true, ROLE_ADMIN: true, ROLE_PUNTO_VENTA: false},
+          meta: {requiresAuth: true, ROLE_ADMIN: false, ROLE_PUNTO_VENTA: false, ROLE_VENDEDOR: false},
           children: [
             {
               path: 'ciudad',
@@ -82,27 +82,32 @@ const router = new Router({
             {
               path: 'aseguradoras',
               name: 'Aseguradoras',
-              component: Aseguradoras
+              component: Aseguradoras,
+              meta: {requiresAuth: true, ROLE_ADMIN: true, ROLE_PUNTO_VENTA: false, ROLE_VENDEDOR: false}
             },
             {
               path: 'oficinas',
               name: 'Oficinas',
-              component: Store
+              component: Store,
+              meta: {requiresAuth: true, ROLE_ADMIN: true}
             },
             {
               path: 'usuarios',
               name: 'Usuarios',
-              component: User
+              component: User,
+              meta: {requiresAuth: true}
             },
             {
               path: 'tipo-uso',
               name: 'Tipos de Uso',
-              component: UseType
+              component: UseType,
+              meta: {requiresAuth: true}
             },
             {
               path: 'tipo-seguro',
               name: 'Tipos de Seguro',
-              component: InsuranceType
+              component: InsuranceType,
+              meta: {requiresAuth: true}
             }
           ]
         },
@@ -197,23 +202,93 @@ const router = new Router({
 //   }
 // })
 
+// router.beforeEach((to, from, next) => {
+//   if(to.meta.requiresAuth) {
+//     const authUser = JSON.parse(window.localStorage.getItem('lbUser'))
+//     if(!authUser || !authUser.token) {
+//       next({name:'login'})
+//     } else if(to.meta.adminAuth) {
+//       const authUser = JSON.parse(window.localStorage.getItem('lbUser'))
+//       if (authUser.data.role_id === 'ADMIN') {
+//         next()
+//       } else {
+//         next('/resident')
+//       }
+//     } else if(to.meta.residentAuth) {
+//       const authUser = JSON.parse(window.localStorage.getItem('lbUser'))
+//       if (authUser.data.role_id === 'RESIDENT') {
+//         next()
+//       } else {
+//         console.log('Im in admin')
+//         next('/admin')
+//       }
+//     }
+//   } else {
+//     next()
+//   }
+// })
+
+router.beforeEach((to, from, next) => {
+  alert('META?')
+  if (to.meta.requiresAuth) {
+    alert('META!!!!')
+    console.log('META')
+    console.log(to.meta)
+    const authUser = JSON.parse(localStorage.getItem('UserLog'))
+    const token = localStorage.getItem('authorization')
+    console.log(authUser)
+    console.log(token)
+    if (!authUser || !token) {
+      alert('no pasa')
+      next({name: 'Login'})
+    } else {
+      let localRole = authUser.authorities[0].authority
+      if (to.meta[localRole] !== undefined && to.meta[localRole]) {
+        alert('tiene accesso')
+        next()
+      } else {
+        alert('no pasa')
+        store.dispatch('redirectROLE')
+        next(false)
+      }
+    }
+  } else {
+    alert('NO META')
+    console.log('No META')
+    next()
+  }
+})
+
 router.afterEach((to, from) => {
   let isLogged = store.state.Login.user.isLogged
   if (!isLogged) {
-    alert('Logged False')
-    let session = localStorage.getItem('authorization')
-    if (session) {
-      store.commit('setAuthHeader')
-    } else {
-      console.log('NO EXISTE')
-      router.push('/login')
-    }
+    alert('sethHeaders')
+    store.commit('setAuthHeader')
   } else {
-    alert('Logged False')
     store.dispatch('getDataUser')
   }
-  console.log('GLOBAL ROUTER')
-  console.log('Loggin ' + store.state.Login.user.isLogged)
 })
+
+// router.afterEach((to, from) => {
+//   let isLogged = store.state.Login.user.isLogged
+//   if (!isLogged) {
+//     alert('Logged False')
+//     let session = localStorage.getItem('authorization')
+//     if (session) {
+//       store.commit('setAuthHeader')
+//       //store.dispatch('loginAuth')
+//     } else {
+//       alert('no session')
+//       console.log('NO EXISTE')
+//       router.push('/login')
+//     }
+//   } else {
+//     alert('Logged True')
+//     store.dispatch('getDataUser')
+//     //store.dispatch('loginAuth')
+//   }
+//   console.log('GLOBAL ROUTER')
+//   console.log('Loggin ' + store.state.Login.user.isLogged)
+// })
 
 export default router

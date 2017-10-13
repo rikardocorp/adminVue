@@ -7,6 +7,7 @@
         </div>
       </div>
       <!--<pre>{{ $store.state.Login.LOAD_TABLE.regions }}</pre>-->
+      <pre>{{ items }}</pre>
       <div class="container-fluid">
         <div v-if="isSearch" class="row d-flex justify-content-center pt-4 mt-2 pt-md-2">
             <span class="fa-stack fa-2x">

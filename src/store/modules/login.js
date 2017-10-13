@@ -74,30 +74,26 @@ const mutations = {
 const actions = {
   login: ({ commit, state, dispatch }, payload) => {
     commit('switchLoading', true)
-    let result = {}
     let inquiry = Vue.http.post(state.LOGIN_URL, payload.credentials).then(response => {
-      console.log(response)
       let authKey = response.data.Authorization
       localStorage.setItem('authorization', authKey)
       commit('setAuthHeader')
-      dispatch('getDataUser')
+      dispatch('getDataUser', {router: true})
       commit('switchLoading', false)
-
-      if (payload.redirect) {
-        router.push(payload.redirect)
-      }
     })
     inquiry.catch(error => {
       commit('switchLoading', false)
       console.log('ERROR')
       console.log(error)
+      let result = {}
       result.content = error
       result.data = error.data
       commit('pushNotification', result)
     })
   },
-  getDataUser: ({commit, state}) => {
+  getDataUser: ({commit, state, dispatch}, payload = {router: false}) => {
     console.log('IDENTITY')
+    commit('switchLoading', true)
     let inquiry = Vue.http.get(state.DATAUSER_URL).then(response => {
       console.log('response: IDENTITY')
       console.log(response)
@@ -106,25 +102,29 @@ const actions = {
       localStorage.setItem('username', data.username)
       localStorage.setItem('date', data.date)
       localStorage.setItem('time', data.time)
+
+      if (payload.router) dispatch('redirectROLE')
+      commit('switchLoading', false)
     })
     inquiry.catch(error => {
+      commit('switchLoading', false)
       console.log('ERROR: IDENTITY')
       console.log(error)
       commit('logout')
     })
   },
-  loginAuth: function () {
+  redirectROLE: function () {
     alert('auth')
     const data = JSON.parse(localStorage.getItem('UserLog'))
+    console.log(data)
     if (data === null || data === undefined) {
       console.log('data.authorities[0]')
       router.push('/login')
     } else {
       let role = data.authorities[0].authority
-
       switch (role) {
         case 'ROLE_ADMIN':
-          router.push('/admin')
+          router.push('/')
           break
         case 'ROLE_PUNTO_VENTA':
           router.push('/subadmin')
