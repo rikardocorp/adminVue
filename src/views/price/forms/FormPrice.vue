@@ -36,7 +36,7 @@
 
         <!-- MULTISELECT -->
         <multiselect v-else-if="option.input=='multiselect'"
-                     :close-on-select="true" :clear-on-select="false" :hide-selected="true" :preserve-search="false" :taggable="false" select-label=""
+                     :close-on-select="true" :hide-selected="true" :preserve-search="false" :taggable="false" select-label=""
                      :placeholder="option.placeholder"
                      :label="option.params.label" :track-by="option.params.label"
                      :loading="!option.params.activate"
@@ -89,7 +89,6 @@
   import Datepicker from 'vuejs-datepicker'
   import FormError from '../../../components/FormError.vue'
   import {DATA_FORM as dataForm} from '../../../data/dnInsurancePrices'
-  //  import Clock from '../../../components/Clock.vue'
   import Mixin from '../../../mixins'
   export default {
     props: ['urlRest', 'item', 'vehicle', 'update', 'horizontal'],

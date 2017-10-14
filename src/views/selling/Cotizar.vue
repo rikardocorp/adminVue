@@ -2,7 +2,7 @@
   <div class="wrapper">
     <div class="animated fadeIn">
       <div class="row d-flex justify-content-center">
-        <div class="col-md-6 col-lg-4">
+        <div class="col-md-6 col-lg-5">
           <app-form v-model="items" :item="item" :pickObject="pickObject" :horizontal="true" :urlRest="urlRest" @isSearching="isSearching"></app-form>
         </div>
       </div>

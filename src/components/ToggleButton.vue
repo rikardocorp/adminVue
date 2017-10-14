@@ -44,7 +44,7 @@
     name: 'ToggleButton',
     props: {
       value: {
-        type: Number,
+        // type: Number,
         default: 1
       },
       disabled: {
@@ -106,7 +106,7 @@
       },
 
       buttonRadius () {
-        return this.height - constants.margin * 2;
+        return this.height - constants.margin * 2
       },
 
       distance () {
@@ -171,25 +171,37 @@
     watch: {
       value (value) {
         if (this.sync) {
-          this.toggled = value === 1
+          this.toggled = (value === 1 || value)
         }
       }
     },
     data () {
       return {
-        toggled: this.value
+        toggled: this.value,
+        typeValue: 'number'
       }
     },
     methods: {
       toggle (event) {
         this.toggled = !this.toggled
+        let result = ''
 
-        let result = this.toggled ? 1 : 0
+        if (this.typeValue === 'number') {
+          result = this.toggled ? 1 : 0
+        } else {
+          result = this.toggled
+        }
+
         this.$emit('input', result)
         this.$emit('change', {
           value: result,
           srcEvent: event
         })
+      }
+    },
+    created () {
+      if (!Number.isInteger(this.value)) {
+        this.typeValue = 'boolean'
       }
     }
   }

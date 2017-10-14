@@ -29,7 +29,7 @@
 
           <!-- MULTISELECT -->
           <multiselect v-else-if="option.input=='multiselect'"
-                       :close-on-select="true" :clear-on-select="false" :hide-selected="true" :preserve-search="false" :taggable="false" select-label=""
+                       :close-on-select="true" :hide-selected="true" :preserve-search="false" :taggable="false" select-label=""
                        :placeholder="option.placeholder"
                        :label="option.params.label" :track-by="option.params.label"
                        :loading="!option.params.activate"

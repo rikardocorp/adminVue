@@ -215,6 +215,9 @@
           }
         }
       })
+    },
+    mounted () {
+      this.resetForm(this.name + this.urlRest)
     }
   }
 </script>

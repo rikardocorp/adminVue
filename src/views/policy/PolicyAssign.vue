@@ -96,7 +96,7 @@
           isSearch: false
         },
         selected: null,
-        selectedList: {},
+        selectedList: {}
       }
     },
     computed: {

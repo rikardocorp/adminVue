@@ -1,214 +1,448 @@
 <template>
   <div class="wrapper">
-    <div class="animated fadeIn">
-      <!--<div class="row d-flex justify-content-center">-->
-      <!--<div class="col-md-7">-->
-      <!--<app-forms :item="item" :update="update" :urlRest="urlRest" :horizontal="true" @emit_addRow="addRow"></app-forms>-->
-      <!--</div>-->
-      <!--</div>-->
-      <transition-group name="fade" mode="out-in">
-        <!-- VEHICLES TYPES -->
-        <div key="div1" class="row" v-show="!switchPrices">
-          <div class="col-12">
-            <app-table :fields="fieldsVT" :items="itemsVT" :btnOption="btnOptionVT" @pickItem="pickItem">
-                <span slot="title" class="">
-                  Tipos de Vehiculos
-                </span>
-            </app-table>
-          </div><!--/.col-->
-        </div><!--/.row-->
+    <b-card class="fullPricesCard">
+      <b-form :id="name + urlRest">
+        <div class="row">
+          <b-form-group v-for="(option, index) in optInput" :key="index" :label-sr-only="option.srOnly"
+                        :class="{ 'form-group--error': $v.item[index]? $v.item[index].$error : false, 'text-right': true, 'col-md-2 float-left': true}"
+                        :label-cols="option.srOnly ? null : lCols"
+                        :label="option.label + ':'"
+                        :horizontal="horizontal">
 
-        <!-- INSURANCE PRICES -->
-        <div key="div2" v-show="switchPrices">
+            <!-- INPUT -->
+            <b-form-input v-if="option.input==undefined || option.input=='input'"
+                          :disabled="isLoading" :type="option.type"
+                          v-model.trim="item[index]"
+                          @blur.native="$v.item[index]? $v.item[index].$touch(): false"
+                          :placeholder="option.placeholder+'..'"></b-form-input>
 
-          <div class="row d-flex justify-content-center">
-            <div class="col-md-6">
-              <app-form :item="item"
-                        :vehicle="itemVT"
-                        :update="update"
-                        :urlRest="urlRest"
-                        :horizontal="true"
-                        @emit_addRow="addRow"
-                        @returnMain="returnMain"></app-form>
-            </div>
-          </div>
+            <!-- TEXTAREA -->
+            <b-form-textarea v-else-if="option.input=='textarea'"
+                             :disabled="isLoading"
+                             v-model.trim="item[index]"
+                             :placeholder="option.placeholder+'..'"
+                             @blur.native="$v.item[index]? $v.item[index].$touch(): false"
+                             :rows="3" :max-rows="6"></b-form-textarea>
 
-          <div class="row">
-            <div class="col-12">
-              <app-table :fields="fields" :items="items" :btnOption="btnOption" @pickItem="pickItem">
-                <span slot="title" class="">
-                  {{ itemVT.vehicleBrand }} - {{ itemVT.vehicleModel}} - Cat. {{ itemVT.category }}
-                </span>
-              </app-table>
-            </div><!--/.col-->
-          </div><!--/.row-->
+            <!-- MULTISELECT -->
+            <multiselect v-else-if="option.input=='multiselect'"
+                         :close-on-select="true" :hide-selected="true" :preserve-search="false" :taggable="false" select-label=""
+                         :placeholder="option.placeholder"
+                         :label="option.params.label" :track-by="option.params.label"
+                         :loading="!option.params.activate"
+                         :disabled="!option.params.activate || isLoading"
+                         v-model="item[index]"
+                         :options="option.params.options"
 
+                         @blur.native="$v.item[index]? $v.item[index].$touch(): false">
+            </multiselect>
+
+            <!-- DATEPICKER -->
+            <datepicker v-else-if="option.input=='datepicker'"
+                        v-model="option.params.value" :format="option.params.format" language="es" :placeholder="option.placeholder"
+                        :clear-button="false" :bootstrapStyling="true" calendar-button-icon="fa fa-calendar"
+                        :disabled-picker="isLoading"
+                        :disabled="option.params.disabled"
+                        @input="selectDate" calendar-class="myDatepicker-style" wrapper-class="myDatepicker-content"
+                        @opened="openSelect(option.params.key)"
+                        @blur.native="$v.item[index]? $v.item[index].$touch(): false"></datepicker>
+
+            <!-- ERROR MESSAGE-->
+            <form-error :data="$v.item[index]? $v.item[index] : {} "></form-error>
+          </b-form-group>
+
+          <b-form-group :horizontal="horizontal" :label-cols="null" :label-sr-only="true" class="col-md-2 text-right">
+            <b-button @click.prevent="processData('INSERT')" :disabled="isLoading" type="submit" size="sm" variant="primary"><i class="fa fa-search"></i>Buscar</b-button>
+            <b-button @click="resetForm(name + urlRest)" :disabled="isLoading" size="sm" variant="danger"><i class="fa fa-ban"></i></b-button>
+          </b-form-group>
         </div>
+        <div class="row"></div>
+        <!--<pre>{{ item }}</pre>-->
+        <!--<pre>{{ vehicle }}</pre>-->
+      </b-form>
+    </b-card>
 
-      </transition-group>
-    </div>
+    <b-card class="fullPricesCard">
+      <div class="col-md-4 mt-1">
+          <toggle-button :labels="{checked: 'Edit', unchecked: 'NoEdit'}" :color="{checked: 'rgb(239, 123, 34)', unchecked: 'rgb(113, 113, 113)'}"
+                         :width="75" :height="32" v-model="edit" class="mr-2 float-left">
+          </toggle-button>
+      </div>
+      <div class="col-md-5 ml-auto mb-3">
+          <b-form-input v-model="filter" placeholder="Buscar"  class="searchInput"/>
+      </div>
+      <div class="myEditTable">
+        <b-table :fields="fields" :items="items" class="editTable bg-white" bordered :filter="filter" @filtered="onFiltered">
+          <template v-for="f in fields" :slot="f.key" scope="data">
+            <div class="itemEditTable" v-if="f.key==='vehicle'">
+              <span class="labelCol">
+                {{ data.value.vehicleType.vehicleBrand }}-{{ data.value.vehicleType.vehicleModel }}-{{ data.value.vehicleClass.description}}-{{ data.value.vehicleCategory.description}}
+              </span>
+            </div>
+            <div class="itemEditTable" v-else="">
+              <span :class="{'textActive': !edit}">{{ data.value }}</span>
+              <b-form-input :id="f.key + '_' + data.item.vehicle.id" type="number" v-model="data.item[f.key]"
+                            :class="{'editActive': edit, 'text-center': true}"
+                            placeholder="Precio.."
+                            @change.native="changeValue($event.target, f.key, data.item.vehicle, data.item[f.key])"></b-form-input>
+            </div>
+          </template>
+        </b-table>
+      </div>
+      <div class="col-md-5 ml-auto text-right">
+        <b-button @click.prevent="processData" :disabled="isLoading" type="submit" size="sm" variant="primary">
+          <i class="fa fa-check"></i>Registrar
+        </b-button>
+      </div>
+    </b-card>
 
+    <!--<b-card class="fullPricesCard">-->
+      <!--<div class="col-md-5 ml-auto">-->
+        <!--<b-button @click.prevent="processData('INSERT')" :disabled="isLoading" type="submit" size="sm" variant="primary"><i class="fa fa-search"></i>Buscar</b-button>-->
+        <!--<b-button @click="resetForm(name + urlRest)" :disabled="isLoading" size="sm" variant="danger"><i class="fa fa-ban"></i></b-button>-->
+      <!--</div>-->
+    <!--</b-card>-->
+
+    <pre>{{ changeList }}</pre>
     <!--<pre>{{ item }}</pre>-->
-
-    <b-modal :title="optionPick.title" :class="'modal-'+optionPick.variant" v-model="showModal">
-      <div v-if="optionPick.name === btnOption.deleteOpc.name">{{ optionPick.content }}</div>
-      <template slot="modal-footer">
-        <b-button @click="showModal = !showModal">Cancel</b-button>
-        <b-button v-if="optionPick.name === btnOption.deleteOpc.name" @click="deleteData" :variant="optionPick.variant">OK</b-button>
-      </template>
-    </b-modal>
   </div>
 </template>
 
 <script>
-  import {DATA as nDATA} from '../../data/dnVehicleTypeCategories'
-  import {DATA as PriceData} from '../../data/dnInsurancePrices'
-  import Form from './forms/FormPrice.vue'
-  import Table from '../../components/xTable.vue'
+  import Multiselect from 'vue-multiselect'
+  import Datepicker from 'vuejs-datepicker'
+  import FormError from '../../components/FormError.vue'
+  import ToggleButton from '../../components/ToggleButton.vue'
+  import Mixin from '../../mixins'
+  import {DATA_FORM_PRICE as dataForm, DATA as nData} from '../../data/dnInsurancePrices'
 
   export default {
-    name: 'useType',
-    components: {
-      appForm: Form,
-      appTable: Table
-    },
-    data: function () {
+    mixins: [Mixin],
+    data () {
       return {
-        switchPrices: false,
-        urlRest: PriceData.name,
-        item: JSON.parse(JSON.stringify(PriceData.post)),
-        fields: PriceData.fieldsTable,
-        items: [],
-        btnOption: {
-          editOpc: {
-            name: 'edit',
-            variant: 'primary',
-            selected: false,
-            icon: 'fa fa-pencil'
-          },
-          deleteOpc: {
-            name: 'delete',
-            title: 'Eliminar registro',
-            content: 'Esta seguro de eliminar esto?',
-            variant: 'danger',
-            selected: false,
-            icon: 'fa fa-trash'
-          }
-        },
+        name: 'form-',
+        urlRest: 'fullPrice',
+        item: nData.post,
+        optInput: dataForm.input,
+        selectedKey: '',
+        multiselectKeys: [],
+        datepickerKeys: [],
+        lCols: 4,
+        horizontal: false,
+        filter: null,
 
-        // vehicle type
-        urlRestVT: nDATA.name,
-        itemVT: JSON.parse(JSON.stringify(nDATA.post)),
-        fieldsVT: nDATA.fieldsTablePrice,
-        itemsVT: [],
-        btnOptionVT: {
-          plusOpc: {
-            name: 'plus',
-            variant: 'primary',
-            selected: false,
-            icon: 'fa fa-plus'
-          }
-        },
-
-        update: false,
-        indexSelected: null,
-        itemPick: {},
-        optionPick: {},
-        showModal: false
+        // Note 'isActive' is left out and will not appear in the rendered table
+        changeList: {},
+        edit: false,
+        fields: [],
+        items: []
       }
     },
-    methods: {
-      addRow (newItem = '') {
-        if (newItem) {
-          if (!this.update) {
-            this.items.unshift(newItem)
-          } else {
-            this.items.splice(this.indexSelected, 1, newItem)
-          }
-          //this.getData()
-        }
-        this.initData()
-      },
-      initData () {
-        this.update = false
-        this.item = JSON.parse(JSON.stringify(PriceData.post))
-        this.indexSelected = null
-        if (!this.switchPrices) {
-          this.itemVT = JSON.parse(JSON.stringify(nDATA.post))
-        }
-      },
-      getData () {
-        let self = this.$store.dispatch('dispatchHTTP', {type: 'GET', url: this.urlRestVT})
-        self.then((data) => {
-          console.log(data)
-          this.itemsVT = data.status ? data.content : []
-          this.totalRows = this.items.length
-        })
-      },
-      getDataInsurancePrices (item) {
-        console.log(item)
-        let vehicleCategory = {id: item.vehicleCategory.id}
-        let vehicleClass = {id: item.vehicleClass.id}
-        let thisUrl = 'insuranceprices/filter?vehicleTypeCategoryId=' + item.id
-        // let thisUrl = 'insuranceprices'
-        console.log('URL TIPO VEHICULO')
-        console.log(thisUrl)
-        let self = this.$store.dispatch('dispatchHTTP', {type: 'GET', url: thisUrl})
-        self.then((data) => {
-          console.log('LOAD DATATABLE INSURANCE PRICES')
-          console.log(data)
-          this.items = data.status ? data.content : []
-          //          this.totalRows = this.items.length
-        })
-      },
-      deleteData () {
-        let self = this.$store.dispatch('dispatchHTTP', {type: 'DELETE', url: this.urlRest + '/' + this.items[this.indexSelected].id})
-        self.then((data) => {
-          console.log(data.content)
-          if (data.status) {
-            this.items.splice(this.indexSelected, 1)
-            this.toggleDialog()
-            this.initData()
-          }
-        })
-      },
-      toggleDialog: function () {
-        this.showModal = !this.showModal
-      },
-      pickItem (item, option) {
-        this.initData()
-        this.itemPick = item
-        this.optionPick = option
-        this.indexSelected = this.$lodash.findIndex(this.items, item)
-
-        if (option.name === this.btnOption.editOpc.name) {
-          this.item = {...this.item, ...item}
-          this.update = true
-          this.$scrollTo('body')
-        } else if (option.name === this.btnOption.deleteOpc.name) {
-          this.toggleDialog()
-        } else if (option.name === this.btnOptionVT.plusOpc.name) {
-          this.initData()
-          this.getDataInsurancePrices(item)
-          this.itemVT = {...this.itemVT, ...item}
-          this.switchPrices = true
-        }
-      },
-      returnMain (a) {
-        this.initData()
-        this.switchPrices = false
-      }
+    validations () {
+      return dataForm.validate
     },
     computed: {
       isLoading () {
         return this.$store.state.isLoading
       }
     },
+    methods: {
+      processData () {
+        let invalid = this.$v.item.$invalid
+        if (!invalid) {
+          let data = this.convertList(this.changeList)
+          let url = 'insuranceprices/multiple'
+          let self = this.$store.dispatch('dispatchHTTP', {type: 'INSERT', url: url, data: data})
+          self.then((data) => {
+            console.log(data)
+            if (data.status) {
+              console.log('SUCCESS')
+              console.log(data.content)
+            } else {
+              console.log('ERROR')
+              console.log(data)
+            }
+          }).catch(error => {
+            console.log('ERROR 2')
+            console.log(error)
+          })
+        } else {
+          this.$v.item.$touch()
+        }
+      },
+      changeValue (event, column, row, price) {
+        event.classList.add('isChange')
+        let id = column + '_' + row.id
+        let data = {
+          price: price,
+          insuranceCompany: this.item.insuranceCompany,
+          insuranceType: this.item.insuranceType,
+          region: {id: column},
+          useType: this.item.useType,
+          observation: '',
+          validityDate: this.item.validityDate,
+          vehicleClass: row.vehicleClass,
+          vehicleCategory: row.vehicleCategory
+        }
+        this.$set(this.changeList, id, data)
+        console.log(id)
+        console.log(data)
+      },
+      convertList (list) {
+        let newList = []
+        this.$lodash.forEach(list, function (value, key) {
+          newList.push(value)
+        })
+        return newList
+      },
+      async generateFields () {
+        let region = await this.getData('regions')
+        let fields = [{key: 'vehicle', label: 'Tipos Vehiculos', thStyle: 'width: 300px', variant: 'secondary', 'class': 'text-center'}]
+        region.forEach(function (item) {
+          fields.push({
+            key: item.id,
+            label: item.name,
+            sortable: true,
+            'class': 'text-center'
+          })
+        })
+        this.fields = fields
+      },
+      async generateItems () {
+        let data = await this.getData('vehicletypecategories')
+        let items = []
+        data.forEach(function (item) {
+          items.push({ vehicle: item })
+        })
+        this.items = items
+      },
+      async getData (url) {
+        let self = await this.$store.dispatch('dispatchHTTP', {type: 'GET', url: url})
+        return self.status ? self.content : []
+      },
+      // form
+      selectDate (pickDate) {
+        console.log('pickDate')
+        console.log(pickDate)
+        let newDate = ''
+        if (pickDate) {
+          newDate = this.tranformDateToFormat(pickDate, '/')
+          console.log(newDate)
+          console.log(this.tranformFormatToDate(newDate, '/'))
+        }
+        let key = this.selectedKey
+        this.item[key] = newDate
+      },
+      selectOption (selectedOption) {
+        console.log(selectedOption)
+        let key = this.selectedKey
+        this.item[key] = selectedOption === null ? '' : selectedOption.id
+      },
+      openSelect (id) {
+        console.log('AAAAAAA ' + id)
+        this.selectedKey = id
+      },
+      getOption (urlRest, index) {
+        let self = this.$store.dispatch('dispatchHTTP', {type: 'LOAD_TABLE', url: urlRest, data: {key: this.optInput[index].params.localData}})
+        self.then((data) => {
+          if (data.status) {
+            this.optInput[index].params.options = data.content
+            this.optInput[index].params.activate = true
+          }
+        })
+      },
+      setMultiSelect () {
+        let vm = this
+        this.$lodash.forEach(this.multiselectKeys, function (key) {
+          let options = vm.optInput[key].params.options
+          let idKey = vm.optInput[key].params.key
+          let optionPick = vm.$lodash.filter(options, {'id': vm.item[idKey]})
+          if (optionPick.length > 0) {
+            vm.optInput[key].params.value = optionPick[0]
+          } else {
+            vm.optInput[key].params.value = ''
+          }
+        })
+      },
+      setDatepicker () {
+        let vm = this
+        this.$lodash.forEach(this.datepickerKeys, function (key) {
+          let optionPick = vm.item[key]
+          if (optionPick !== '') {
+            let toDay = vm.$moment(optionPick, 'DD/MM/YYYY')
+            vm.optInput[key].params.value = toDay.format()
+          } else {
+            vm.optInput[key].params.value = ''
+          }
+        })
+      },
+      resetMultiSelect () {
+        let vm = this
+        this.$lodash.forEach(this.multiselectKeys, function (key) {
+          vm.item[key] = ''
+        })
+      },
+      resetDatepicker () {
+        let vm = this
+        this.$lodash.forEach(this.datepickerKeys, function (key) {
+          vm.optInput[key].params.value = ''
+        })
+      },
+      resetForm (formId) {
+        document.getElementById(formId).reset()
+        this.resetDatepicker()
+        this.resetMultiSelect()
+        this.$v.item.$reset()
+      },
+      onFiltered (filteredItems) {
+        this.totalRows = filteredItems.length
+        this.currentPage = 1
+      }
+    },
     mounted () {
-      this.getData()
+      this.generateFields()
+      this.generateItems()
+    },
+    created () {
+      let vm = this
+      this.$lodash.forEach(this.optInput, function (value, key) {
+        if (vm.optInput[key].input === 'multiselect') {
+          vm.multiselectKeys.push(key)
+          if (vm.optInput[key].params.loadData) {
+            vm.getOption(value.params.url, key)
+          } else {
+            vm.optInput[key].params.activate = true
+          }
+        } else if (vm.optInput[key].input === 'datepicker') {
+          vm.datepickerKeys.push(key)
+          if (value.params.disabled) {
+            let date = vm.$store.getters.getDateTime.date
+            let toDay = vm.$moment(date, 'DD/MM/YYYY').add(1, 'days')
+            let day = toDay.get('date')
+            let month = toDay.get('month')
+            let year = toDay.get('year')
+            value.params.disabled.to = new Date(year, month, day)
+            value.params.disabled.from = new Date(year + 1, month, day)
+          }
+        }
+      })
+    },
+    components: {
+      ToggleButton,
+      Multiselect,
+      Datepicker,
+      FormError
     }
   }
 </script>
 
 <style lang="scss">
+  .fullPricesCard{
+    background: #212120;
+    .searchInput{
+      background: #717171;
+      border: #212120 1px solid;
+      color: white;
+    }
+  }
+
+  #form-fullPrice{
+    .form-group{
+      margin: 0;
+      padding: 0;
+    }
+    .myDatepicker-content{
+      input{
+        height: 2.85em;
+      }
+    }
+    .multiselect__tags,
+    .multiselect__tags input,
+    input.form-control{
+      background: #ffa501;
+      border-color: black;
+      color: black;
+    }
+    .multiselect__content-wrapper{
+      border: none;
+    }
+    .multiselect--disabled,
+    .multiselect--disabled .multiselect__select{
+      background: none;
+    }
+    input::-webkit-input-placeholder{
+      color: #3a3a3a;
+    }
+    button.btn{
+      padding: 0.5rem;
+    }
+  }
+
+  .myEditTable{
+    width: 100%;
+    overflow: scroll;
+  }
+  .editTable{
+    font-size: 0.8em;
+    thead{
+      tr th:first-child{
+        background: #212120;
+        color: #c7c7c7;
+        div {
+          width: 210px;
+          font-size: 1em;
+        }
+      }
+      tr th{
+        background: #ffa501;
+        color: black;
+        font-weight: 400;
+        border: 1px solid #333332 !important;
+        div {
+          width: 75px;
+          font-size: 0.9em;
+        }
+      }
+    }
+
+    .itemEditTable{
+      span{
+        display: none;
+        padding: 12px 8px;
+        height: 44px;
+        line-height: 2em;
+        &.textActive{
+          display: block;
+        }
+        &.labelCol{
+          display: block;
+          background: #212120;
+          color: #c7c7c7;
+        }
+      }
+      input{
+        font-weight: 500;
+        background: white;
+        display: none;
+        height: 44px;
+        border-radius: initial;
+        border: none;
+        color: #ef7b22;
+        font-size: 1.2em;
+        &.editActive{
+          display: block;
+          &:visited, &:focus{
+            color: #49abca;
+          }
+        }
+        &.isChange{
+          color: orange;
+        }
+      }
+    }
+    td{
+      padding: 0;
+      border: 1px solid #212120;
+    }
+  }
 </style>

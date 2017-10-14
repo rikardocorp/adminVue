@@ -7,7 +7,8 @@ export const DATA = {
     vehicleType: null,
     vehicleClass: null,
     vehicleCategory: null,
-    seatNumber: ''
+    seatNumber: '',
+    seatNumberTo: ''
   },
   fieldsTable: {
     vehicleType: {
@@ -28,7 +29,8 @@ export const DATA = {
       'class': 'text-center',
       formatter: (value) => { return value ? value.description : 'vacio' }
     },
-    seatNumber: {label: '#Asientos', sortable: true, 'class': 'text-center'},
+    seatNumber: {label: '#Asientos de', sortable: true, 'class': 'text-center'},
+    seatNumberTo: {label: '#Asientos a', sortable: true, 'class': 'text-center'},
     actions: {label: '', thStyle: 'width:115px', 'class': 'text-center'}
   },
   fieldsTablePrice: {
@@ -50,7 +52,8 @@ export const DATA = {
       'class': 'text-center',
       formatter: (value) => { return value ? value.description : 'vacio' }
     },
-    seatNumber: {label: '#Asientos', sortable: true, 'class': 'text-center'},
+    seatNumber: {label: '#Asientos de', sortable: true, 'class': 'text-center'},
+    seatNumberTo: {label: '#Asientos a', sortable: true, 'class': 'text-center'},
     actions: {label: '', thStyle: 'width:45px', 'class': 'text-center'}
   }
 }
@@ -137,7 +140,12 @@ export const DATA_FORM = {
       }
     },
     seatNumber: {
-      label: 'Asientos',
+      label: 'Asientos De',
+      placeholder: 'Numero de asientos',
+      type: 'number'
+    },
+    seatNumberTo: {
+      label: 'Asientos A',
       placeholder: 'Numero de asientos',
       type: 'number'
     }

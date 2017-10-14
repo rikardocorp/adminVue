@@ -5,6 +5,7 @@ export const DATA = {
   post: {
     name: '',
     price: '',
+    date: '',
     // vehicleType: '',
     insuranceCompany: '',
     insuranceType: '',
@@ -128,6 +129,122 @@ export const DATA_FORM = {
       price: {
         required,
         numeric
+      },
+      validityDate: {
+        required
+      }
+    }
+  }
+}
+
+export const DATA_FORM_PRICE = {
+  input: {
+    date: {
+      label: 'Fecha Registro',
+      placeholder: 'F. Registro',
+      type: 'text',
+      input: 'datepicker',
+      srOnly: true,
+      params: {
+        key: 'date',
+        format: 'dd/MM/yyyy',
+        value: ''
+      }
+    },
+    insuranceCompany: {
+      label: 'Aseguradora',
+      placeholder: 'Aseguradora',
+      type: 'text',
+      input: 'multiselect',
+      srOnly: true,
+      params: {
+        url: 'insurancecompanies',
+        key: 'insuranceCompanyId',
+        label: 'name',
+        options: [],
+        activate: false,
+        loadData: true,
+        value: ''
+      }
+    },
+    insuranceType: {
+      label: 'Tipo seguro',
+      placeholder: 'Tipo de seguro',
+      type: 'text',
+      input: 'multiselect',
+      srOnly: true,
+      params: {
+        url: 'insurancetypes',
+        key: 'insuranceTypeId',
+        label: 'name',
+        options: [],
+        activate: false,
+        loadData: true,
+        value: ''
+      }
+    },
+    useType: {
+      label: 'Tipo uso',
+      placeholder: 'Tipo de uso',
+      type: 'text',
+      input: 'multiselect',
+      srOnly: true,
+      params: {
+        url: 'usetypes',
+        key: 'useType',
+        label: 'name',
+        options: [],
+        activate: false,
+        loadData: true,
+        value: ''
+      }
+    },
+    // region: {
+    //   label: 'Departamento',
+    //   placeholder: 'Departamento',
+    //   type: 'text',
+    //   input: 'multiselect',
+    //   params: {
+    //     url: 'regions',
+    //     key: 'regionId',
+    //     label: 'name',
+    //     options: [],
+    //     activate: false,
+    //     loadData: true,
+    //     localData: 'regions',
+    //     value: ''
+    //   }
+    // },
+    validityDate: {
+      label: 'F. Valida',
+      placeholder: 'Fecha valida',
+      type: 'text',
+      input: 'datepicker',
+      srOnly: true,
+      params: {
+        key: 'validityDate',
+        disabled: {
+          to: new Date(2017, 8, 19),
+          from: new Date(2019, 6, 1)
+        },
+        format: 'dd/MM/yyyy',
+        value: ''
+      }
+    }
+  },
+  validate: {
+    item: {
+      // date: {
+      //   required
+      // },
+      insuranceCompany: {
+        required
+      },
+      insuranceType: {
+        required
+      },
+      useType: {
+        required
       },
       validityDate: {
         required

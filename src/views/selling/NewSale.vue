@@ -51,7 +51,7 @@
 
             </b-card>
           </div>
-          <!--<pre style="font-size: 0.8em">{{ data }}</pre>-->
+          <pre style="font-size: 0.8em">{{ data.purchaser }}</pre>
           <!--<pre>{{ data.vehicle }}</pre>-->
           <br>
           <!--<pre>{{ data.webuser }}</pre>-->
