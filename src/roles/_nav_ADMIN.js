@@ -70,21 +70,6 @@ export default {
           url: '/vehiculo/clases-vehiculo',
           icon: 'icon-puzzle'
         },
-        {
-          name: 'VCC',
-          url: '/vehiculo/tipo-categoria-vehiculo',
-          icon: 'icon-puzzle'
-        },
-        {
-          name: 'Precios',
-          url: '/vehiculo/precio-poliza',
-          icon: 'fa fa-money'
-        },
-        {
-          name: 'Precio Full',
-          url: '/vehiculo/precio-poliza-full',
-          icon: 'fa fa-money'
-        },
         // {
         //   name: 'Nueva venta',
         //   url: '/venta/nueva-venta',
@@ -115,6 +100,25 @@ export default {
         //   icon: 'fa fa-map-marker'
         // }
       ]
+    },
+    {
+      title: true,
+      name: 'PRECIOS'
+    },
+    {
+      name: 'VCC',
+      url: '/vehiculo/tipo-categoria-vehiculo',
+      icon: 'icon-puzzle'
+    },
+    {
+      name: 'Precios',
+      url: '/vehiculo/precio-poliza',
+      icon: 'fa fa-money'
+    },
+    {
+      name: 'Precio Full',
+      url: '/vehiculo/precio-poliza-full',
+      icon: 'fa fa-money'
     },
     {
       title: true,
@@ -186,6 +190,16 @@ export default {
         variant: 'info',
         text: 'NEW'
       }
+    },
+    {
+      name: 'Venta Especial',
+      url: '/venta-especial',
+      icon: 'icon-speedometer',
+      badge: {
+        variant: 'success',
+        text: 'NEW'
+      }
     }
+    
   ]
 }

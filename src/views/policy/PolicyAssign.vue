@@ -220,12 +220,15 @@
       .avatar {
         position: absolute !important;
       }
+      .zoomPolicy:hover{
+        zoom: 2;
+      }
     }
 
     .ticket {
       width: 18em;
       cursor: pointer;
-      font-size: 0.85em;
+      font-size: 0.9em;
       i {
         display: none;
       }

@@ -23,7 +23,8 @@ export const DATA = {
     insuranceTypeName: {label: 'Tipo Seguro', sortable: true, 'class': 'text-center'},
     regionName: {label: 'Ciudad', sortable: true, 'class': 'text-center'},
     useTypeName: {label: 'Tipo Uso', sortable: true, 'class': 'text-center'},
-    validityDate: {label: 'Fecha Valida', sortable: true, 'class': 'text-center'},
+    date: {label: 'Valida desde', sortable: true, 'class': 'text-center'},
+    validityDate: {label: 'Valida hasta', sortable: true, 'class': 'text-center'},
     actions: {label: '', thStyle: 'width:75px'}
   }
 }
@@ -148,6 +149,11 @@ export const DATA_FORM_PRICE = {
       params: {
         key: 'date',
         format: 'dd/MM/yyyy',
+        disabled: {
+          to: new Date(2017, 8, 19),
+          from: new Date(2019, 6, 1)
+        },
+        moreDays: 0,
         value: ''
       }
     },
@@ -227,6 +233,7 @@ export const DATA_FORM_PRICE = {
           to: new Date(2017, 8, 19),
           from: new Date(2019, 6, 1)
         },
+        moreDays: 1,
         format: 'dd/MM/yyyy',
         value: ''
       }
@@ -234,9 +241,9 @@ export const DATA_FORM_PRICE = {
   },
   validate: {
     item: {
-      // date: {
-      //   required
-      // },
+      date: {
+        required
+      },
       insuranceCompany: {
         required
       },

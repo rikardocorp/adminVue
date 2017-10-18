@@ -19,7 +19,7 @@
                            color="#ef7b21" errorColor="#e84c3d"
                            :class="{'bg-white':true, 'saleComplete': isSale}"
                            :start-index="index"
-                           :title="'MODULO DE VENTA - ' + data.pickPolice.item.insuranceCompanyName"
+                           :title="'MODULO DE VENTA ESPECIAL - ' + data.pickPolice.item.insuranceCompanyName"
                            :subtitle="'Seguro ' + data.pickPolice.item.insuranceTypeName">
                 <tab-content title="Automovil" icon="fa fa-car" :before-change="stage0">
 
@@ -72,44 +72,44 @@
               Debe seleccionar una Poliza para continuar
             </div>
             <div :class="{'ticket cardWrap mt-5 mx-auto ' : true, 'localOpacity': !messageTicket}">
-                <div class="card-ticket cardLeft">
-                  <avatar :username="data.pickPolice.item.insuranceCompanyName ? data.pickPolice.item.insuranceCompanyName: 'xx'"
-                          :rounded="true" :size="6.4" sizeUnid="em"
-                          :src="'/static/img/company/' + data.pickPolice.item.insuranceCompanyId + '.png'"
-                          :border="true" colorBorder="#f4f3ef" color="#ecedef"
-                          backgroundColor="orange" :sizeBorder="0.5"></avatar>
+              <div class="card-ticket cardLeft">
+                <avatar :username="data.pickPolice.item.insuranceCompanyName ? data.pickPolice.item.insuranceCompanyName: 'xx'"
+                        :rounded="true" :size="6.4" sizeUnid="em"
+                        :src="'/static/img/company/' + data.pickPolice.item.insuranceCompanyId + '.png'"
+                        :border="true" colorBorder="#f4f3ef" color="#ecedef"
+                        backgroundColor="orange" :sizeBorder="0.5"></avatar>
+              </div>
+              <div class="card-ticket cardCenter">
+                <div class="xtitle">
+                  {{ data.pickPolice.item.insuranceCompanyName? data.pickPolice.item.insuranceCompanyName: 'xxxx xxxx' }}
                 </div>
-                <div class="card-ticket cardCenter">
-                  <div class="xtitle">
-                    {{ data.pickPolice.item.insuranceCompanyName? data.pickPolice.item.insuranceCompanyName: 'xxxx xxxx' }}
+                <div class="xcontent">
+                  <div class="title">
+                    <h2>{{ data.pickPolice.item.insuranceTypeName ? data.pickPolice.item.insuranceTypeName : 'xxxxx' }}</h2>
+                    <span>Tipo de seguro</span>
                   </div>
-                  <div class="xcontent">
-                    <div class="title">
-                      <h2>{{ data.pickPolice.item.insuranceTypeName ? data.pickPolice.item.insuranceTypeName : 'xxxxx' }}</h2>
-                      <span>Tipo de seguro</span>
-                    </div>
-                    <div class="seat">
-                      <h2>08</h2>
-                      <span>Asientos</span>
-                    </div>
-                    <div class="time">
-                      <h2>{{ data.pickPolice.item.validityDate ? data.pickPolice.item.validityDate: 'xx/xx/xxxx' }}</h2>
-                      <span>Vigencia</span>
-                    </div>
+                  <div class="seat">
+                    <h2>08</h2>
+                    <span>Asientos</span>
                   </div>
-                </div>
-                <div class="card-ticket cardRight">
-                  <div class="xtitle text-center">
-                    <!--<b-button :pressed="false" size="sm" variant="outline-primary" class="mr-1 my-3"><i class="fa fa-check"></i></b-button>-->
-                    <i class="fa fa-car"></i>
-                  </div>
-                  <div class="number">
-                    <!--<h3>{{ x.price | currency }}</h3>-->
-                    <h3>{{ data.pickPolice.item.price ? data.pickPolice.item.price : 'x' }}</h3>
-                    <span>soles</span>
+                  <div class="time">
+                    <h2>{{ data.pickPolice.item.validityDate ? data.pickPolice.item.validityDate: 'xx/xx/xxxx' }}</h2>
+                    <span>Vigencia</span>
                   </div>
                 </div>
               </div>
+              <div class="card-ticket cardRight">
+                <div class="xtitle text-center">
+                  <!--<b-button :pressed="false" size="sm" variant="outline-primary" class="mr-1 my-3"><i class="fa fa-check"></i></b-button>-->
+                  <i class="fa fa-car"></i>
+                </div>
+                <div class="number">
+                  <!--<h3>{{ x.price | currency }}</h3>-->
+                  <h3>{{ data.pickPolice.item.price ? data.pickPolice.item.price : 'x' }}</h3>
+                  <span>soles</span>
+                </div>
+              </div>
+            </div>
             <div v-if="messageTicket" class="row mt-5" :label-sr-only="true">
               <div class="col-6 text-right pr-0">
                 <b-button :pressed="false" variant="outline-primary" class="mr-1 my-3" @click="$router.push('cotizar-admin')">Recotizar</b-button>
@@ -145,7 +145,7 @@
   import {DATA_VEHICLE as _vehicle, DATA_WEBUSER as _webuser, DATA_PURCHASER as _purchaser, DATA_SALE as _sale} from '../../data/dnNewSales'
   import Avatar from '../../components/Avatar.vue'
 
-//  import Fullscreen from "vue-fullscreen/src/component.vue"
+  //  import Fullscreen from "vue-fullscreen/src/component.vue"
   export default {
     components: {
       FormVehicle,
@@ -324,13 +324,13 @@
           if (!r1.status) return false
           else this.data.webuser.item = r1.content
         } else {
-          //          alert('Recuperando Datos del WEBUSER')
+//          alert('Recuperando Datos del WEBUSER')
           console.log('DEFINED ' + webuserId)
         }
 
         // INSERT VEHICLE
         let vehicleId = this.data.vehicle.item.id
-        if (vehicleId === undefined) {
+        if (vehicleId == undefined) {
           this.$delete(this.data.vehicle.item, 'webUser')
           let r2 = await this.insertVehicleEmail()
           console.log('R2: ')
@@ -338,20 +338,20 @@
           if (!r2.status) return false
           else this.data.vehicle.item = r2.content
         } else {
-          //          alert('Recuperando Datos del VEHICLE')
+//          alert('Recuperando Datos del VEHICLE')
           console.log('DEFINED ' + webuserId)
         }
 
         // INSERT PURCHASER
         purchaserId = this.data.purchaser.item.id
-        if (purchaserId === undefined) {
+        if (purchaserId == undefined) {
           let r3 = await this.insertPurchaser()
           console.log('R2: ')
           console.log(r3)
           if (!r3.status) return false
           else this.data.purchaser.item = r3.content
         } else {
-          //          alert('Recuperando Datos del VEHICLE')
+//          alert('Recuperando Datos del VEHICLE')
           console.log('DEFINED ' + webuserId)
         }
 
@@ -364,10 +364,11 @@
         return true
       },
       async stage2 () {
+
         // VALID LOCALSTORAGE PURCHASER
         let salePurchaser = this.data.sale.item.purchaser
         if (salePurchaser !== null) {
-          //          alert('VENTA TERMINADA')
+//          alert('VENTA TERMINADA')
           return true
         }
 

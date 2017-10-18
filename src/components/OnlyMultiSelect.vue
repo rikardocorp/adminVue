@@ -120,6 +120,11 @@
       },
       loadInitValue (initValue) {
         if (!Array.isArray(initValue)) return false
+
+        if (typeof initValue[0] !== 'object') {
+          initValue = this.textToObject(initValue)
+        }
+
         this.resetSelect()
         let optionIndex = ''
         let localValue = JSON.parse(JSON.stringify(initValue))
@@ -138,6 +143,18 @@
         this.initOption()
         this.localValue = []
         this.setOptions(this.indexSelect)
+      },
+      textToObject (location) {
+        let vm = this
+        let newLocation = []
+        location.forEach(function (item, index) {
+          let optionIndex = vm.optionList[index].options
+          let obj = vm.$lodash.filter(optionIndex, function (x) {
+            if (x.name === item) return x
+          })
+          newLocation.push(obj[0])
+        })
+        return newLocation
       }
     },
     watch: {
@@ -151,6 +168,9 @@
       },
       value (newVal, oldVal) {
         if (this.centinela) {
+//          if (typeof newVal[0] !== 'object') {
+//            newVal = this.textToObject(newVal)
+//          }
           this.loadInitValue(newVal)
         }
         this.centinela = true

@@ -1,6 +1,6 @@
 <template>
   <b-card id="formPolicyRegister" class="exception">
-    <span @click="switchForm" class="btn-tool-left input-group-addon bg-success" title="Registrar en grupo">
+    <span @click="switchForm" class="btn-tool-left input-group-addon bg-info" title="Registrar en grupo">
       <i class="fa fa-tag" aria-hidden="true"></i>
     </span>
     <div slot="header" class="text-center">
@@ -47,8 +47,8 @@
       <div slot="footer">
         <b-form-group :horizontal="horizontal" :label-cols="lCols">
           <template v-if="!update">
-            <b-button @click.prevent="processData('INSERT')" :disabled="isLoading"type="submit" size="sm" variant="success"><i class="fa fa-dot-circle-o"></i> Registrar</b-button>
-            <b-button @click="resetForm(name)" :disabled="isLoading" size="sm" variant="scondary"><i class="fa fa-ban"></i> Reset</b-button>
+            <b-button @click.prevent="processData('INSERT')" :disabled="isLoading"type="submit" size="sm" variant="info" class="text-white"><i class="fa fa-dot-circle-o"></i> Registrar</b-button>
+            <b-button @click="resetForm(name)" :disabled="isLoading" size="sm" variant="secondary" class="text-white"><i class="fa fa-ban"></i> Reset</b-button>
           </template>
         </b-form-group>
       </div>
@@ -77,7 +77,7 @@
       return {
         name: 'form-dnPolicyRegister',
         optInput: dataForm.input,
-        lCols: 5,
+        lCols: 4,
         selectedKey: '',
         multiselectKeys: []
       }
@@ -191,12 +191,12 @@
   #formPolicyRegister{
     &.card {
       .card-header {
-        background: #46b66e !important;
+        background: #64c0dd !important;
         color:white;
       }
 
       .multiselect__option--highlight {
-        background: #41b883 !important;
+        background: #64c0dd !important;
       }
     }
     .btn-tool-left {

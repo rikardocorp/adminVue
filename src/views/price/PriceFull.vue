@@ -1,6 +1,9 @@
 <template>
   <div class="wrapper">
-    <b-card class="fullPricesCard">
+    <b-card class="myCard">
+      <div slot="header" class="text-center">
+        <strong>Busqueda de Precios</strong>
+      </div>
       <b-form :id="name + urlRest">
         <div class="row">
           <b-form-group v-for="(option, index) in optInput" :key="index" :label-sr-only="option.srOnly"
@@ -62,7 +65,10 @@
       </b-form>
     </b-card>
 
-    <b-card class="fullPricesCard">
+    <b-card class="myCard">
+      <div slot="header" class="text-center">
+        Tabla de <strong>Precios</strong>
+      </div>
       <div class="col-md-4 mt-1">
           <toggle-button :labels="{checked: 'Edit', unchecked: 'NoEdit'}" :color="{checked: 'rgb(239, 123, 34)', unchecked: 'rgb(113, 113, 113)'}"
                          :width="75" :height="32" v-model="edit" class="mr-2 float-left">
@@ -77,7 +83,9 @@
             <div class="itemEditTable" v-if="f.key==='vehicle'">
               <span class="labelCol">
                 {{ data.value.vehicleType.vehicleBrand }}-{{ data.value.vehicleType.vehicleModel }}-{{ data.value.vehicleClass.description}}-{{ data.value.vehicleCategory.description}}
+                [{{data.value.seatNumber}}{{data.value.seatNumberTo === data.value.seatNumber ? ']': '-' + data.value.seatNumberTo + ']'}}
               </span>
+              <span></span>
             </div>
             <div class="itemEditTable" v-else="">
               <span :class="{'textActive': !edit}">{{ data.value }}</span>
@@ -151,6 +159,7 @@
         let invalid = this.$v.item.$invalid
         if (!invalid) {
           let data = this.convertList(this.changeList)
+          if (data.length === 0) return false
           let url = 'insuranceprices/multiple'
           let self = this.$store.dispatch('dispatchHTTP', {type: 'INSERT', url: url, data: data})
           self.then((data) => {
@@ -177,6 +186,7 @@
           price: price,
           insuranceCompany: this.item.insuranceCompany,
           insuranceType: this.item.insuranceType,
+          date: this.item.date,
           region: {id: column},
           useType: this.item.useType,
           observation: '',
@@ -317,7 +327,7 @@
           vm.datepickerKeys.push(key)
           if (value.params.disabled) {
             let date = vm.$store.getters.getDateTime.date
-            let toDay = vm.$moment(date, 'DD/MM/YYYY').add(1, 'days')
+            let toDay = vm.$moment(date, 'DD/MM/YYYY').add(value.params.moreDays, 'days')
             let day = toDay.get('date')
             let month = toDay.get('month')
             let year = toDay.get('year')
@@ -356,13 +366,13 @@
         height: 2.85em;
       }
     }
-    .multiselect__tags,
-    .multiselect__tags input,
-    input.form-control{
-      background: #ffa501;
-      border-color: black;
-      color: black;
-    }
+    /*.multiselect__tags,*/
+    /*.multiselect__tags input,*/
+    /*input.form-control{*/
+      /*background: #ffa501;*/
+      /*border-color: black;*/
+      /*color: black;*/
+    /*}*/
     .multiselect__content-wrapper{
       border: none;
     }
@@ -386,22 +396,33 @@
     font-size: 0.8em;
     thead{
       tr th:first-child{
-        background: #212120;
-        color: #c7c7c7;
+        /*background: #212120;*/
+        /*color: #c7c7c7;*/
+        background: #717171;
+        color: #ffffff;
         div {
           width: 210px;
           font-size: 1em;
         }
       }
       tr th{
-        background: #ffa501;
-        color: black;
+        background: #717171;
+        color: white;
+        /*background: #ffa501;*/
+        /*color: black;*/
         font-weight: 400;
         border: 1px solid #333332 !important;
         div {
           width: 75px;
           font-size: 0.9em;
         }
+      }
+    }
+
+    tbody{
+      tr td:first-child{
+        //border: 1px solid #ef7b1f;
+        font-weight: 700;
       }
     }
 
@@ -416,8 +437,10 @@
         }
         &.labelCol{
           display: block;
-          background: #212120;
-          color: #c7c7c7;
+          background: #f4f3ef;
+          /*color: #c7c7c7;*/
+          //background: #ffa501;
+          color: #717171;
         }
       }
       input{
@@ -442,7 +465,7 @@
     }
     td{
       padding: 0;
-      border: 1px solid #212120;
+      // border: 1px solid #212120;
     }
   }
 </style>

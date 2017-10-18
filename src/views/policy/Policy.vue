@@ -2,7 +2,7 @@
   <div class="wrapper">
     <div class="animated fadeIn">
       <div class="row d-flex justify-content-center">
-        <div class="col-md-5 col-lg-5 col-sm-8">
+        <div class="col-md-7 col-lg-6 col-xl-4 col-sm-8">
           <transition-group name="fade" mode="out-in">
             <app-form key="div1" v-if="!switchForm" :item="item" :update="update"
                       :urlRest="urlRest" :horizontal="true" :switchForm="switchFormChange"

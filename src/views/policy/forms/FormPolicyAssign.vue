@@ -234,17 +234,17 @@
 
 <style lang="scss">
 
-  .myCard.card{
-    border: 1px solid #ef7b1f;
-    .form-group {
-      margin-bottom: 0.8rem;
-    }
-    .card-header{
-      background: #ffa501;
-      color: white;
-      border-radius: 0.5rem 0.5rem 0 0;
-    }
-  }
+  /*.myCard.card{*/
+    /*border: 1px solid #ef7b1f;*/
+    /*.form-group {*/
+      /*margin-bottom: 0.8rem;*/
+    /*}*/
+    /*.card-header{*/
+      /*background: #ffa501;*/
+      /*color: white;*/
+      /*border-radius: 0.5rem 0.5rem 0 0;*/
+    /*}*/
+  /*}*/
 
   .radio-group{
     float: left;

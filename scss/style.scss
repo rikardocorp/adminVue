@@ -50,6 +50,11 @@
   src: url("../static/fonts/caviar_dreams/CaviarDreams.ttf");
 }
 
+@font-face {
+  font-family: jmc;
+  src: url("../static/fonts/Muli/Muli-Regular.ttf");
+}
+
 
 .card-columns {
   @include media-breakpoint-only(xl) {
@@ -87,6 +92,11 @@ input::-webkit-input-placeholder{
 }
 
 html{
+  body{
+    //font-family: 'jmc';
+    font-size: 0.8em;
+  }
+
   .nav-dropdown.open{
     .nav-dropdown-toggle{
       background: $marron !important;
@@ -175,6 +185,18 @@ html{
       border-radius: 0.5rem 0.5rem 0 0;
       padding-bottom: 0.3em;
       padding-top: 0.3em;
+    }
+  }
+
+  .myCard.card{
+    border: 1px solid #ef7b1f;
+    .form-group {
+      margin-bottom: 0.8rem;
+    }
+    .card-header{
+      background: #ffa501;
+      color: white;
+      border-radius: 0.5rem 0.5rem 0 0;
     }
   }
 

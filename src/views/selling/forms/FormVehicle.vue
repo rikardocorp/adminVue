@@ -1,6 +1,6 @@
 <template>
 
-  <b-form class="col-md-6 m-auto pt-3 pb-4" :id="'form' + index">
+  <b-form class="col-md-8 col-lg-6 col-xl-5 m-auto pt-3 pb-4" :id="'form' + index">
 
     <b-form-group v-for="(option, _index) in optInput" :key="_index"
                   :class="{ 'form-group--error': $v.item[_index]? $v.item[_index].$error : false, 'text-left': true}"

@@ -107,6 +107,10 @@ export default new Vuex.Store({
             notify = {success: false, error: false}
             inquiry = Vue.http.get(url)
             break
+          case 'LOAD_PDF':
+            notify = {success: false, error: false}
+            inquiry = Vue.http.get(url)
+            break
           case 'LOAD_TABLE':
             notify = {success: false, error: false}
             let dataTable = state.Login.LOAD_TABLE[data.key]
@@ -134,7 +138,7 @@ export default new Vuex.Store({
           default:
             inquiry = []
             result.status = null
-            result.content = 'only [GET,INSERT,UPDATE,DELETE,FILE,LOAD_TABLE]'
+            result.content = 'only [GET,INSERT,UPDATE,DELETE,FILE,LOAD_TABLE,LOAD_PDF]'
             resolve(result)
         }
 
@@ -150,7 +154,7 @@ export default new Vuex.Store({
             commit('pushNotification', message)
           }
           result.status = response.data.success
-          result.content = response.body.data
+          result.content = response.body.data ? response.body.data : response
           resolve(result)
         })
 

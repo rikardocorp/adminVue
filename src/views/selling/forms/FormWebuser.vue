@@ -1,18 +1,18 @@
 <template>
-  <b-form :id="'forms-'+ urlRest" class="col-md-8 m-auto pt-3 pb-4">
+  <b-form :id="'forms-'+ urlRest" class="col-md-8 col-lg-7 m-auto pt-3 pb-4">
     <div class="d-flex justify-content-center mb-2 mySwitch">
       <toggle-button :labels="{checked: 'DNI', unchecked: 'RUC'}" :color="{checked: 'rgb(239, 123, 34)', unchecked: 'rgb(181, 181, 181)'}"
-                     :disabled="isLoading || restricted" :width="75" :height="28"
+                     :disabled="isLoading || restricted" :width="75" :height="28" :sync="true"
                      v-model="item.typeDocument" @change="dniRUC" class="mr-2">
       </toggle-button>
 
       <toggle-button :labels="{checked: 'Email', unchecked: 'Email'}" :color="{checked: 'rgb(99, 193, 222)', unchecked: 'rgb(181, 181, 181)'}"
                      :disabled="isLoading || restricted" :width="75" :height="28"
-                     v-model="toggleEmail" class="ml-2" @change="changeEmail">
+                     v-model="hasEmail" class="ml-2" @change="changeEmail">
       </toggle-button>
     </div>
 
-    <b-form-group v-show="toggleEmail===1"
+    <b-form-group v-show="item['hasEmail']"
                   :class="{ 'form-group--error': $v.item['email']? $v.item['email'].$error : false, 'text-left': true}"
                   :label-cols="lCols"
                   :label="optInput['email'].label + ':'"
@@ -22,10 +22,10 @@
         <b-form-input v-if="optInput['email'].input=='input-email'"
                       :disabled="isLoading || restricted" :type="optInput['email'].type"
                       v-model.trim="item['email']"
-                      @blur.native="searchUser"
+                      @blur.native="searchUser(null)"
                       :placeholder="optInput['email'].placeholder+'..'"></b-form-input>
         <b-input-group-button>
-          <b-btn :disabled="isLoading || restricted" variant="primary" @click="searchUser"><i class="fa fa-search"></i></b-btn>
+          <b-btn :disabled="isLoading || restricted" variant="primary" @click="searchUser(null)"><i class="fa fa-search"></i></b-btn>
         </b-input-group-button>
       </b-input-group>
       <!-- ERROR MESSAGE-->
@@ -79,7 +79,10 @@
 
 
     <div class="mt-4">
-      <!--<div v-if="owner==null" class="media owner-card" style="font-size: 0.6em;">-->
+      <!--<pre>{{ item.hasEmail }}</pre>-->
+      <!--<pre>{{ usernameWU }}</pre>-->
+      <!--<pre>{{ itemWU }}</pre>-->
+      <!--<div v-if="!item.hasEmail" class="media owner-card" style="font-size: 0.6em;">-->
         <!--<div class="d-flex align-self-center mr-3 rounded-circle">-->
           <!--<i class="fa fa-question d-flex align-items-center m-auto fa-3x text-secondary"></i>-->
         <!--</div>-->
@@ -89,19 +92,21 @@
       <!--</div>-->
 
       <transition appear mode="out-in" name="custom-classes-transition" enter-active-class="animated pulse">
-        <div key="div" v-if="owner==true" class="media owner-card" style="border-color: #ef7b21;">
-
+        <div key="div" v-if="owner==true" class="media owner-card col-sm-12 col-md-11 col-lg-10 col-xl-9 m-auto" style="border-color: #ef7b21;">
           <div class="d-flex align-self-center mr-3 hvr-bounce-in">
-            <avatar username="Jane Doe"
-                    :size="5" sizeUnid="em"
-                    src="/static/img/avatars/5.jpg"
-                    :border="true" colorBorder="#ef7b1f" :sizeBorder="0.35" style="cursor: pointer;"></avatar>
+            <avatar :username="usernameWU"
+                    :size="5.5" sizeUnid="em" :localSrc="false" color="#ffffff" backgroundColor="orange" colorBorder="#ef7b1f"
+                    :border="true" :sizeBorder="0.35" style="cursor: pointer;"></avatar>
+            <!--<avatar :username="usernameWU"-->
+                    <!--:size="5" sizeUnid="em"-->
+                    <!--src="/static/img/avatars/5.jpg"-->
+                    <!--:border="true" colorBorder="#ef7b1f" :sizeBorder="0.35" style="cursor: pointer;"></avatar>-->
           </div>
-
           <div class="media-body">
-            <h6 class="mt-2 mb-1 text-primary">Juana Arco Perez Perez perez</h6>
-            <p>Username: rikardo.corp</p>
-            <p>Email: rikardo.corp@gmail.como</p>
+            <h6 class="mt-1 mb-1 text-primary">{{ usernameWU }}</h6>
+            <p>Email: {{ itemWU.user.email }}</p>
+            <p>DNI/RUC: {{ itemWU.dniRuc }}</p>
+            <p>Celular: {{ itemWU.cellPhone }}</p>
           </div>
         </div>
       </transition>
@@ -122,7 +127,7 @@
   import {DATA_PURCHASER as _purchaser} from '../../../data/dnNewSales'
 
   export default {
-    props: ['urlRest', 'item', 'update', 'horizontal', 'keyname', 'restricted', 'dispatch'],
+    props: ['urlRest', 'item', 'itemWU', 'update', 'horizontal', 'keyname', 'restricted', 'dispatch'],
     components: {
       cSwitch,
       OnlyMultiSelect,
@@ -140,7 +145,7 @@
         titleSwitch: 1,
         lCols: 3,
         owner: null,
-        toggleEmail: 1
+        hasEmail: true
       }
     },
     computed: {
@@ -149,10 +154,13 @@
       },
       isInvalid () {
         return this.$v.item.$invalid
+      },
+      usernameWU () {
+        return this.itemWU.user.firstName ? this.itemWU.user.firstName + ' ' + this.itemWU.user.lastName : this.itemWU.user.email
       }
     },
     validations () {
-      if (this.toggleEmail === 1) {
+      if (this.hasEmail) {
         return _purchaser.validate
       } else {
         return _purchaser.validate2
@@ -170,18 +178,35 @@
       localidad (newVal, oldVal) {
         localStorage.setItem('location', JSON.stringify(newVal))
         if (Array.isArray(newVal)) {
-          this.item.departamento = newVal[0] ? newVal[0].name : ''
-          this.item.provincia = newVal[1] ? newVal[1].name : ''
-          this.item.distrito = newVal[2] ? newVal[2].name : ''
+          if (typeof newVal[0] !== 'object') {
+            this.item.departamento = newVal[0]
+            this.item.provincia = newVal[1]
+            this.item.distrito = newVal[2]
+          } else {
+            this.item.departamento = newVal[0] ? newVal[0].name : ''
+            this.item.provincia = newVal[1] ? newVal[1].name : ''
+            this.item.distrito = newVal[2] ? newVal[2].name : ''
+          }
         }
       }
     },
     methods: {
       changeEmail (value) {
-        if (value.value === 0) {
-          console.log('Desactiva Email')
+        this.item.hasEmail = value.value
+        // alert(value.value)
+        if (value.value) {
+          console.log('Email cliente')
           this.item.email = ''
+          this.owner = null
+          this.$emit('connection', 'webuser', null)
+        } else {
+          console.log('Email vendedor')
+          this.item.email = this.$store.state.user.data.email
+          this.searchUser(this.$store.state.user.data.email)
         }
+//        console.log(value)
+//        console.log(this.$store.state.user.data.email)
+        // alert(value.value)
       },
       dniRUC (value) {
         if (this.item.typeDocument === 1) {
@@ -193,27 +218,63 @@
         }
       },
       searchDNI () {
-        // alert('12')
+        console.log('CONSULTA DNI?')
+        let dniRUC = this.item.dniRuc
+        if (dniRUC !== '') {
+          let url = 'purchasers?dniRuc=' + dniRUC
+          let self = this.$store.dispatch('dispatchHTTP', {type: 'GET', url: url})
+          self.then((data) => {
+            console.log(data)
+            if (data.status) {
+              console.log(data.content)
+              if (data.content.length > 0) {
+                this.$set(this.item, 'razonSocial', data.content[0].razonSocial)
+                this.$set(this.item, 'address', data.content[0].address)
+                this.$set(this.item, 'phone', data.content[0].phone)
+                this.$set(this.item, 'cellPhone', data.content[0].cellPhone)
+                this.$set(this.item, 'typeDocument', data.content[0].typeDocument)
+                this.$set(this.item, 'departamento', data.content[0].departamento)
+                this.$set(this.item, 'provincia', data.content[0].provincia)
+                this.$set(this.item, 'distrito', data.content[0].distrito)
+                this.localidad = [data.content[0].departamento, data.content[0].provincia, data.content[0].distrito]
+                this.dniRUC()
+                console.log('Tiene duseño')
+              } else {
+                console.log('No tiene duseño')
+                this.$set(this.item, 'razonSocial', '')
+                this.$set(this.item, 'address', '')
+                this.$set(this.item, 'phone', '')
+                this.$set(this.item, 'cellPhone', '')
+                this.$set(this.item, 'typeDocument', 1)
+                this.$set(this.item, 'departamento', '')
+                this.$set(this.item, 'provincia', '')
+                this.$set(this.item, 'distrito', '')
+                this.localidad = []
+                this.dniRUC()
+              }
+            } else {
+              console.log('Error: ' + url)
+              console.log(data.content)
+            }
+          })
+        }
       },
-      searchUser () {
-        console.log('CONSULTA USER by Email?')
-        let email = this.item.email
+      searchUser (localEmail = null) {
+        let email = (localEmail === null) ? this.item.email : localEmail
+        // let email = this.item.email
+        console.log('EMAIL 33333#####')
+        console.log(email)
+        console.log(localEmail)
         if (email !== '') {
           let url = 'webusers?email=' + email
           let self = this.$store.dispatch('dispatchHTTP', {type: 'GET', url: url})
           self.then((data) => {
             console.log(data)
             if (data.status) {
-              console.log(data.content)
-
               if (data.content.length > 0) {
-                this.owner = true
-                console.log('MI USUARUIO')
-                console.log(data.content[0])
+                this.owner = localEmail === null ? true : null
                 this.$emit('connection', 'webuser', data.content[0])
-                console.log('Tiene duseño')
               } else {
-                console.log('No tiene duseño')
                 this.owner = null
                 this.$emit('connection', 'webuser', null)
               }

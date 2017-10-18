@@ -22,22 +22,46 @@
 
     <div class="row mt-3" :label-sr-only="true">
       <div class="col-6 text-right pr-0">
-        <b-button :pressed="false" variant="outline-primary" class="mr-1 my-3">IMPRIMIR</b-button>
+        <b-button @click="imprimir" :pressed="false" variant="outline-primary" class="mr-1 my-3">IMPRIMIR</b-button>
       </div>
       <div class="col-6 text-left pl-0">
         <b-button :pressed="false" variant="outline-primary" class="ml-1 my-3">PAGOS</b-button>
       </div>
     </div>
 
+    <!--<p><a :href="pdf" target="_blank">Link pdf >></a></p>-->
+    <!--<p>rrrrrr</p>-->
+    <!--<pre>{{saveAs}}</pre>-->
+    <!--<object width="840" height="650" :data="pdf"></object>-->
+
+    <!--<div class="d-flex justify-content-center mb-2 mySwitch">-->
+      <!--<toggle-button :labels="{checked: 'DNI', unchecked: 'RUC'}" :color="{checked: 'rgb(239, 123, 34)', unchecked: 'rgb(181, 181, 181)'}"-->
+                     <!--:disabled="isLoading || restricted" :width="75" :height="28" :sync="true"-->
+                     <!--v-model="item.typeDocument" @change="dniRUC" class="mr-2">-->
+      <!--</toggle-button>-->
+
+      <!--<toggle-button :labels="{checked: 'Email', unchecked: 'Email'}" :color="{checked: 'rgb(99, 193, 222)', unchecked: 'rgb(181, 181, 181)'}"-->
+                     <!--:disabled="isLoading || restricted" :width="75" :height="28"-->
+                     <!--v-model="hasEmail" class="ml-2" @change="changeEmail">-->
+      <!--</toggle-button>-->
+    <!--</div>-->
+
   </div>
 
 </template>
 
 <script>
+  import ToggleButton from '../../../components/ToggleButton.vue'
+  import { saveAs } from 'file-saver'
+
   export default {
     props: ['horizontal', 'data'],
+    components: {
+      ToggleButton
+    },
     data () {
       return {
+        saveAs: saveAs,
         lCols: 6,
 
         razonSocial: '',
@@ -48,10 +72,41 @@
 
         pickPolice: {},
         vehicle: {},
-        purchaser: {}
+        purchaser: {},
+
+        manualWeb: '1',
+        centrado: '1',
+        pdf: ''
       }
     },
     methods: {
+      imprimir () {
+        let idSale = this.data.sale.item.id
+        // let url = 'sales/' + idSale + '/printpolicy?positiva=1&afocat_manual_centrado=1'
+        let url = 'sales/28/printpolicy?afocat_manual_centrado=1'
+        let self = this.$store.dispatch('dispatchHTTP', {type: 'GET', url: url})
+        self.then((data) => {
+          console.log('SUCCESS')
+          console.log(data)
+          // this.pdf = data.content
+          //          let blob = new Blob([data.content], {type: 'Application/pdf'})
+          //          let link = document.createElement('a')
+          //          link.href = window.URL.createObjectURL(blob)
+          //          link.download = 'Report.pdf'
+          //          link.click()
+          console.log(data.content.bodyText)
+          // saveAs(data.content.blob())
+          let blob = new Blob([data.content.bodyText], {type: 'application/pdf'})
+          console.log('blob')
+          console.log(blob)
+          saveAs(blob, 'rick.pdf')
+          // window.open('data:application/pdf;base64,' + data.content.blob() + ',height=650,width=840')
+        }).catch(error => {
+          console.log('ERROR')
+          console.log(error)
+        })
+        console.log(url)
+      },
       altError (alt) {
         let cadena = alt.split(' ')
         let newCadena = ''

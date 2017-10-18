@@ -94,7 +94,8 @@ export const DATA_PURCHASER = {
     provincia: '',
     phone: '',
     cellPhone: '',
-    typeDocument: 1
+    typeDocument: 1,
+    hasEmail: true
   },
   input: {
     email: {
@@ -247,6 +248,7 @@ export const DATA_SALE = {
     insurancePolicy: null,
     purchaser: null,
     cart: null,
-    seatNumber: ''
+    seatNumber: '',
+    bodywork: ''
   }
 }

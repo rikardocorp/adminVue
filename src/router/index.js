@@ -29,6 +29,7 @@ import Purchaser from '../views/vehicle/Purchaser.vue'
 
 // Selling
 import SellNewPolice from '../views/selling/NewSale.vue'
+import SellNewPoliceSpecial from '../views/selling/NewSaleSpecial.vue'
 import Cotizar from '../views/selling/Cotizar.vue'
 
 // Price
@@ -196,6 +197,11 @@ const router = new Router({
           path: 'nueva-venta',
           name: 'Nueva Venta',
           component: SellNewPolice
+        },
+        {
+          path: 'venta-especial',
+          name: 'Venta Especial',
+          component: SellNewPoliceSpecial
         }
       ]
     },
