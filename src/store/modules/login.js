@@ -61,7 +61,7 @@ const mutations = {
     localStorage.removeItem('username')
     localStorage.removeItem('date')
     localStorage.removeItem('time')
-    localStorage.clear()
+    // localStorage.clear()
     // localStorage.clear()
     Vue.set(state.user, 'isLogged', false)
     router.push('/login')

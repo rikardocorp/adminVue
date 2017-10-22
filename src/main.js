@@ -53,7 +53,15 @@ store.commit('initLogin', URL_LOG)
 
 // Filter
 Vue.filter('currency', function (value) {
-  return value + '.00'
+  // alert(value)
+  let decimal = ''
+  let numero = value.toString().split('.')
+  if (numero[1] !== undefined) {
+    decimal = numero[1].length === 1 ? numero[1] + '0' : numero[1][0] + numero[1][1]
+  } else {
+    decimal = '00'
+  }
+  return numero[0] + '.' + decimal
 })
 
 /* eslint-disable no-new */

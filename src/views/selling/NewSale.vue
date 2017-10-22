@@ -14,6 +14,9 @@
 
               <!-- Wizard Form -->
               <form-wizard id="newSaleWizard" @on-complete="onComplete"
+                           nextButtonText="Sig."
+                           backButtonText="Ant."
+                           finishButtonText="Finalizar"
                            @on-validate="handleValidation"
                            @on-change="onchange"
                            color="#ef7b21" errorColor="#e84c3d"
@@ -32,30 +35,35 @@
                 </tab-content>
                 <tab-content title="Contratante" icon="fa fa-male" :before-change="stage1">
 
-                  <form-webuser :item="data.purchaser.item" :itemWU="data.webuser.item"
+                  <form-purchaser :item="data.purchaser.item" :itemU="data.user.item"
                                 :urlRest="data.purchaser.urlRest" :restricted="data.purchaser.formFill"
                                 :name="data.purchaser.name" :index="1" :update="update" :horizontal="true"
-                                @connection="connectionWebuser"
-                                :dispatch="data.purchaser.countAux"></form-webuser>
+                                @connection="connectionUser"
+                                :dispatch="data.purchaser.countAux"></form-purchaser>
 
                 </tab-content>
-                <tab-content title="Poliza" icon="fa fa-credit-card" :before-change="stage2">
+                <tab-content title="Pago" icon="fa fa-credit-card" :before-change="stage2">
 
-                  <form-poliza :item="data.sale.item" :data="data" :horizontal="true" :index="2" @connection="connectionPoliza"></form-poliza>
+                  <form-pay :item="data.pay.item" :urlRest="data.pay.urlRest"
+                            :data="data" :horizontal="true" :index="2"
+                            :restricted="data.pay.formFill" :dispatch="data.pay.countAux"
+                            @connection="connectionPay"></form-pay>
 
                 </tab-content>
-                <tab-content title="Venta" icon="fa fa-check">
-                  <form-success :data="data" :horizontal="true" :index="3"></form-success>
+                <tab-content title="Venta" icon="fa fa-check" :before-change="stage3">
+                  <form-success :item="data.payment.item" :data="data" :horizontal="true" :index="3" @paySale="paySale"></form-success>
                 </tab-content>
               </form-wizard>
 
             </b-card>
           </div>
-          <pre style="font-size: 0.8em">{{ data }}</pre>
+          <!--<pre style="font-size: 0.7em">{{ data.pickPolice }}</pre>-->
+          <!--<pre style="font-size: 0.7em">{{ data.pay }}</pre>-->
+          <!--<pre style="font-size: 0.7em">{{ data.sale }}</pre>-->
           <!--<pre>{{ data.vehicle }}</pre>-->
-          <br>
-          <!--<pre>{{ data.webuser }}</pre>-->
-          <br><br>
+          <!--<br>-->
+          <!--<pre>{{ data.user }}</pre>-->
+          <!--<br><br>-->
           <!--<pre>{{ data.purchaser }}</pre>-->
 
           <!--<pre>{{ data.vehicle }}</pre>-->
@@ -65,17 +73,22 @@
 
         <div v-else="" class="row" key="div2">
           <div class="col-12 text-primary mb-5 card-insurance">
-            <div v-if="messageTicket" class="title text-center h3">
-              Poliza seleccionada - Venta en Proceso
-            </div>
-            <div v-else="" class="title text-center h3">
+            <div v-if="switchMessage==0" class="title text-center h3">
               Debe seleccionar una Poliza para continuar
             </div>
-            <div :class="{'ticket cardWrap mt-5 mx-auto ' : true, 'localOpacity': !messageTicket}">
+            <div v-else-if="switchMessage==1" class="title text-center h3">
+              Poliza seleccionada - Venta en Proceso
+            </div>
+            <div v-else-if="switchMessage==2" class="title text-center h3">
+              Existe una venta especial en proceso<br>
+              <span class="h5 text-info">Finalice o cancele la venta especial</span>
+            </div>
+            <div class="ticket cardWrap mt-5 mx-auto" style="font-size: 1.1em;">
+            <!--<div :class="{'ticket cardWrap mt-5 mx-auto ' : true, 'localOpacity': !messageTicket}">-->
                 <div class="card-ticket cardLeft">
                   <avatar :username="data.pickPolice.item.insuranceCompanyName ? data.pickPolice.item.insuranceCompanyName: 'xx'"
-                          :rounded="true" :size="6.4" sizeUnid="em"
-                          :src="'/static/img/company/' + data.pickPolice.item.insuranceCompanyId + '.png'"
+                          :rounded="true" :size="6.4" sizeUnid="em" :localSrc="false"
+                          :src="data.pickPolice.item.insuranceCompanyImage ? path + '/' + data.pickPolice.item.insuranceCompanyImage : ''"
                           :border="true" colorBorder="#f4f3ef" color="#ecedef"
                           backgroundColor="orange" :sizeBorder="0.5"></avatar>
                 </div>
@@ -89,7 +102,7 @@
                       <span>Tipo de seguro</span>
                     </div>
                     <div class="seat">
-                      <h2>08</h2>
+                      <h2>{{ data.pickPolice.item.seatNumber ? data.pickPolice.item.seatNumber : 'xx' }}</h2>
                       <span>Asientos</span>
                     </div>
                     <div class="time">
@@ -105,12 +118,18 @@
                   </div>
                   <div class="number">
                     <!--<h3>{{ x.price | currency }}</h3>-->
-                    <h3>{{ data.pickPolice.item.price ? data.pickPolice.item.price : 'x' }}</h3>
+                    <h3>{{ data.pickPolice.item.price ? data.pickPolice.item.price : '0.00' }}</h3>
                     <span>soles</span>
                   </div>
                 </div>
               </div>
-            <div v-if="messageTicket" class="row mt-5" :label-sr-only="true">
+            <div v-if="switchMessage==0" class="row mt-2" :label-sr-only="true">
+              <div class="col-12 text-center pr-0">
+                <b-button :pressed="false" variant="outline-primary" class="mr-1 my-3" @click="$router.push('cotizar-admin')">Cotizar</b-button>
+              </div>
+            </div>
+
+            <div v-else-if="switchMessage==1" class="row mt-2" :label-sr-only="true">
               <div class="col-6 text-right pr-0">
                 <b-button :pressed="false" variant="outline-primary" class="mr-1 my-3" @click="$router.push('cotizar-admin')">Recotizar</b-button>
               </div>
@@ -119,15 +138,16 @@
               </div>
             </div>
 
-            <div v-else="" class="row mt-5" :label-sr-only="true">
+            <div v-else-if="switchMessage==2" class="row mt-2" :label-sr-only="true">
               <div class="col-12 text-center pr-0">
-                <b-button :pressed="false" variant="outline-primary" class="mr-1 my-3" @click="$router.push('cotizar-admin')">Cotizar</b-button>
+                <b-button :pressed="false" variant="outline-primary" class="mr-1 my-3 hvr-pulse-grow" @click="$router.push('venta-especial')">Ir a la Venta Especial</b-button>
               </div>
             </div>
             <!--<button @click="mySwitch = !mySwitch">Cambio</button>-->
           </div>
         </div>
       </transition-group>
+      <!--<pre>{{ data.pickPolice }}</pre>-->
 
       <!--<button @click="mySwitch = !mySwitch">Cambio</button>-->
       <!--<input type="number" v-model="data.vehicle.validate">-->
@@ -138,19 +158,19 @@
 
 <script>
   import FormVehicle from './forms/FormVehicle.vue'
-  import FormWebuser from './forms/FormWebuser.vue'
-  import FormPoliza from './forms/FormPoliza.vue'
+  import FormPurchaser from './forms/FormPurchaser.vue'
+  import FormPay from './forms/FormPay.vue'
   import FormSuccess from './forms/FormSuccess.vue'
   import {DATA_INSURANCEPRICES as _pickPolice} from '../../data/dataNames'
-  import {DATA_VEHICLE as _vehicle, DATA_WEBUSER as _webuser, DATA_PURCHASER as _purchaser, DATA_SALE as _sale} from '../../data/dnNewSales'
+  import {DATA_VEHICLE as _vehicle, DATA_USER as _user, DATA_PURCHASER as _purchaser, DATA_PAY as _pay, DATA_PAYMENT as _payment, DATA_SALE as _sale} from '../../data/dnNewSales'
   import Avatar from '../../components/Avatar.vue'
 
 //  import Fullscreen from "vue-fullscreen/src/component.vue"
   export default {
     components: {
       FormVehicle,
-      FormWebuser,
-      FormPoliza,
+      FormPurchaser,
+      FormPay,
       FormSuccess,
       Avatar
     },
@@ -187,12 +207,30 @@
             validate: false,
             countAux: 0
           },
-          webuser: {
-            name: 'webuser',
-            urlRest: _webuser.name,
-            item: JSON.parse(JSON.stringify(_webuser.post)),
-            defaultItem: JSON.parse(JSON.stringify(_webuser.post)),
+          user: {
+            name: 'user',
+            urlRest: _user.name,
+            item: JSON.parse(JSON.stringify(_user.post)),
+            defaultItem: JSON.parse(JSON.stringify(_user.post)),
             formFill: false
+          },
+          pay: {
+            name: 'pay',
+            urlRest: _pay.name,
+            item: JSON.parse(JSON.stringify(_pay.post)),
+            defaultItem: JSON.parse(JSON.stringify(_pay.post)),
+            formFill: false,
+            validate: false,
+            countAux: 0
+          },
+          payment: {
+            name: 'payment',
+            urlRest: _payment.name,
+            item: JSON.parse(JSON.stringify(_payment.post)),
+            defaultItem: JSON.parse(JSON.stringify(_payment.post)),
+            formFill: false,
+            validate: false,
+            countAux: 0
           },
           sale: {
             name: 'sale',
@@ -201,17 +239,20 @@
             defaultItem: JSON.parse(JSON.stringify(_sale.post)),
             formFill: false
           }
-        }
-
+        },
+        switchMessage: 0
       }
     },
     computed: {
+      path () {
+        return this.$store.state.Login.IMAGES_URL
+      },
       disableBtn () {
         let saleId = this.data.sale.item.id
         if (saleId !== undefined) {
           // existe
-          let purchaser = this.data.sale.item.purchaser
-          return purchaser !== null
+          let state = this.data.sale.item.state
+          return !(state <= 2)
         } else {
           // No existe
           return true
@@ -222,7 +263,7 @@
       },
       messageTicket () {
         let data = JSON.parse(localStorage.getItem('insurance'))
-        return data ? true : false
+        return data
       }
     },
     methods: {
@@ -232,9 +273,8 @@
       async getInsurancePolicy () {
         // let dataLocal = this.data.vehicle
         let companyId = this.data.pickPolice.item.insuranceCompanyId
-        let url = 'insurancepolicies?insuranceCompanyId=' + companyId + '&sold=0'
-//        let url = 'insurancepolicies/mypolicies?sold=0&insuranceCompanyId=' + companyId
-        console.log('GET INSURANCE')
+        let myUserID = this.$store.state.user.data.id
+        let url = 'insurancepolicies?insuranceCompanyId=' + companyId + '&sold=0&userId=' + myUserID
         let self = await this.$store.dispatch('dispatchHTTP', {type: 'GET', url: url})
         return self
       },
@@ -272,6 +312,7 @@
         console.log(policyObject)
         // INSERT SALE
         this.data.sale.item.insurancePolicy = policyObject
+        this.data.sale.item.state = 1
         console.log('RICK SALE')
         console.log(this.data.sale.item)
         let r1 = await this.insertSale()
@@ -283,7 +324,6 @@
         localStorage.setItem('sale', JSON.stringify(this.data.sale.item))
         return true
       },
-
       async stage1 () {
         // Valida el formulario
         this.data.purchaser.countAux++
@@ -300,46 +340,52 @@
 
         localStorage.setItem('purchaser', JSON.stringify(this.data.purchaser.item))
         let purchaser = this.data.purchaser.item
-        let webuserId = this.data.webuser.item.id
-        console.log(webuserId)
-        if (webuserId === undefined) {
-          console.log('undefined ' + webuserId)
-          this.data.webuser.item = {
+        let userId = this.data.user.item.id
+        console.log(userId)
+        if (userId === undefined) {
+          console.log('undefined ' + userId)
+          this.data.user.item = {
             dniRuc: purchaser.dniRuc,
             razonSocial: purchaser.razonSocial,
+            firstName: purchaser.razonSocial.split(' ')[0],
+            lastName: purchaser.razonSocial.split(' ')[1],
             address: purchaser.address,
             distrito: purchaser.distrito,
             departamento: purchaser.departamento,
             provincia: purchaser.provincia,
             cellPhone: purchaser.cellPhone,
-            user: {
-              email: purchaser.email
+            phone: purchaser.phone,
+            email: purchaser.email,
+            password: purchaser.email,
+            role: {
+              email: purchaser.email,
+              role: 'ROLE_USUARIO'
             }
           }
 
-          // INSERT WEBUSER
-          let r1 = await this.insertWebuser()
+          // INSERT USER
+          let r1 = await this.insertUser()
           console.log('R1: ')
           console.log(r1)
           if (!r1.status) return false
-          else this.data.webuser.item = r1.content
+          else this.data.user.item = r1.content
         } else {
-          //          alert('Recuperando Datos del WEBUSER')
-          console.log('DEFINED ' + webuserId)
+          //          alert('Recuperando Datos del USER')
+          console.log('DEFINED ' + userId)
         }
 
         // INSERT VEHICLE
         let vehicleId = this.data.vehicle.item.id
         if (vehicleId === undefined) {
-          this.$delete(this.data.vehicle.item, 'webUser')
+          this.$delete(this.data.vehicle.item, 'user')
           let r2 = await this.insertVehicleEmail()
           console.log('R2: ')
           console.log(r2)
           if (!r2.status) return false
           else this.data.vehicle.item = r2.content
         } else {
-          //          alert('Recuperando Datos del VEHICLE')
-          console.log('DEFINED ' + webuserId)
+          // alert('Recuperando Datos del VEHICLE')
+          console.log('DEFINED ' + userId)
         }
 
         // INSERT PURCHASER
@@ -349,13 +395,15 @@
           console.log('R2: ')
           console.log(r3)
           if (!r3.status) return false
-          else this.data.purchaser.item = r3.content
+          else {
+            this.data.purchaser.item = r3.content
+            this.data.pay.item.amount = this.data.pickPolice.item.price
+          }
         } else {
-          //          alert('Recuperando Datos del VEHICLE')
-          console.log('DEFINED ' + webuserId)
+          console.log('DEFINED ' + userId)
         }
 
-        localStorage.setItem('webuser', JSON.stringify(this.data.webuser.item))
+        localStorage.setItem('user', JSON.stringify(this.data.user.item))
         localStorage.setItem('vehicle', JSON.stringify(this.data.vehicle.item))
         localStorage.setItem('purchaser', JSON.stringify(this.data.purchaser.item))
         this.setFormFill('vehicle', true)
@@ -364,35 +412,90 @@
         return true
       },
       async stage2 () {
-        // VALID LOCALSTORAGE PURCHASER
-        let salePurchaser = this.data.sale.item.purchaser
-        if (salePurchaser !== null) {
-          //          alert('VENTA TERMINADA')
-          return true
-        }
+        // Valida el formulario
+        this.data.pay.countAux++
+        if (!this.data.pay.validate) return false
 
+        // ACTUALIZAR SALE
         let saleId = this.data.sale.item.id
-        let sale = this.data.sale.item
-        let vehicle = this.data.vehicle.item
-        let purchaser = this.data.purchaser.item
-        let pickPolice = this.data.pickPolice.item
+        this.data.pay.item.discount = this.data.pay.item.discount === '' ? 0 : this.data.pay.item.discount
+        this.data.sale.item.discount = this.data.pay.item.discount
+        this.data.sale.item.amount = this.data.pickPolice.item.price
+        this.data.sale.item.invoiceNumber = this.data.pay.item.invoiceNumber
+        this.data.sale.item.validityStart = this.data.pay.item.validityStart
+        this.data.sale.item.observation = this.data.pay.item.observation
+        this.data.sale.item.bodywork = this.data.pay.item.bodywork
+        this.data.sale.item.vehicle = this.data.vehicle.item
+        this.data.sale.item.purchaser = this.data.purchaser.item
+        this.data.sale.item.seatNumber = this.data.vehicle.item.seatNumber
+        this.data.sale.item.state = 2
 
-        sale.amount = pickPolice.price
-        sale.seatNumber = vehicle.seatNumber
-        sale.vehicle = vehicle
-        sale.purchaser = purchaser
-        sale.currency = 'soles'
+        // PREPARA PAYMENT
+        this.data.payment.item.amount = this.data.pay.item.amount
+        this.data.payment.item.paymentType = this.data.pay.item.paymentType
+        this.data.payment.item.numFactura = this.data.pay.item.invoiceNumber
+        this.data.payment.item.sale = {id: saleId}
+        console.log(this.data.payment)
 
-        let r3 = await this.updateSale(saleId)
-        console.log('VENTAS EXITOSA')
-        console.log(r3)
-        if (!r3.status) return false
+        // VALID CHANGE PAY
+        let pay = JSON.parse(localStorage.getItem('pay'))
+        let payAux = this.data.pay.item
+        if (this.compareObject(payAux, pay)) return true
 
+        let r1 = await this.updateSale(saleId)
+        console.log(r1)
+        if (!r1.status) return false
+        console.log('UPDATE SALE!!!!')
+        localStorage.setItem('pay', JSON.stringify(this.data.pay.item))
         localStorage.setItem('sale', JSON.stringify(this.data.sale.item))
+
         return true
-        // vehicle.observation = null
-        // vehicle.discount = null
-        // vehicle.invoiceNumber = null
+      },
+      async stage3 () {
+        let paymentId = this.data.payment.item.id
+        if (paymentId === undefined) {
+          this.$store.commit('sendNotification', {status: null, message: 'Debe procesar el pago para finalizar la venta.'})
+          return false
+        }
+        // this.data.sale.item.amount = this.data.pickPolice.item.price
+        return true
+      },
+      async paySale () {
+        let paymentId = this.data.payment.item.id
+        if (paymentId === undefined) {
+          let dataLocal = this.data.payment
+          let self = await this.$store.dispatch('dispatchHTTP', {type: 'INSERT', url: dataLocal.urlRest, data: dataLocal.item})
+          if (!self.status) return false
+          else {
+            this.data.payment.item = self.content
+            this.setFormFill('pay', true)
+          }
+          localStorage.setItem('payment', JSON.stringify(this.data.payment.item))
+          // UPDATE STATE SALE
+          let saleId = this.data.sale.item.id
+          let amountTotal = (this.data.sale.item.amount - this.data.pay.item.discount) - this.data.pay.item.amount
+          this.data.sale.item.state = amountTotal > 0 ? 3 : 4
+          let r1 = await this.updateSale(saleId)
+          console.log(r1)
+          if (!r1.status) return false
+          console.log('UPDATE SALE!!!!')
+          localStorage.setItem('sale', JSON.stringify(this.data.sale.item))
+        } else {
+          this.$store.commit('sendNotification', {status: true, message: 'El pago ya se encuentra registrado'})
+        }
+      },
+      compareObject (obj1, obj2) {
+        let cen = true
+        obj2 = obj2 === null ? {} : obj2
+
+        this.$lodash.forEach(obj1, function (value, key) {
+          console.log(key)
+          if (obj1[key] !== obj2[key]) {
+            cen = false
+            return false
+          }
+        })
+        return cen
       },
       async insertSale () {
         let dataLocal = this.data.sale
@@ -405,25 +508,25 @@
       },
       async updateSale (saleID) {
         let dataLocal = this.data.sale
-        console.log('INSERT SALE')
+        console.log('UPDATE SALE')
         let self = await this.$store.dispatch('dispatchHTTP', {type: 'UPDATE', url: dataLocal.urlRest + '/' + saleID, data: dataLocal.item})
         console.log('RIKAEDOCORO ppppppppp')
         console.log(self)
         console.log('INSERT SALE?')
         return self
       },
-      async insertWebuser () {
-        let dataLocal = this.data.webuser
-        console.log('INSERT WEBUSER')
+      async insertUser () {
+        let dataLocal = this.data.user
+        console.log('INSERT USER')
         let self = await this.$store.dispatch('dispatchHTTP', {type: 'INSERT', url: dataLocal.urlRest, data: dataLocal.item})
         console.log('RIKAEDOCORO ppppppppp')
         console.log(self)
-        console.log('INSERT WEBUSER?')
+        console.log('INSERT USER?')
         return self
       },
       async insertVehicleEmail () {
         let dataLocal = this.data.vehicle
-        let url = 'vehicles/searchbyemail?email=' + this.data.webuser.item.user.email
+        let url = 'vehicles/searchbyemail?email=' + this.data.user.item.email
         console.log('INSERT VEHICLE')
         let self = await this.$store.dispatch('dispatchHTTP', {type: 'INSERT', url: url, data: dataLocal.item})
         return self
@@ -455,7 +558,7 @@
         this.data.vehicle.validate = !data
       },
 
-      connectionWebuser: function (name, data) {
+      connectionUser: function (name, data) {
         console.log('connection:::::')
         console.log(name)
         console.log(data)
@@ -469,14 +572,28 @@
             console.log('NO ENTRA ' + name)
             this.data[name].item = Object.assign({}, this.data[name].defaultItem)
             // this.$delete(this.data.vehicle.item, 'id')
-            // this.data.vehicle.item.webUser = ''
+            // this.data.vehicle.item.user = ''
           }
           console.log('NAME ITEM' + name)
           console.log(this.data[name].item)
         }
       },
-      connectionPoliza: function (name, data) {
-
+      connectionPay: function (name, data) {
+        if (name === 'isValid') {
+          this.data.pay.validate = !data
+        } else {
+          if (data) {
+            console.log('ENTRA' + name)
+            this.data[name].item = data
+          } else {
+            console.log('NO ENTRA ' + name)
+            this.data[name].item = Object.assign({}, this.data[name].defaultItem)
+            // this.$delete(this.data.vehicle.item, 'id')
+            // this.data.vehicle.item.user = ''
+          }
+          console.log('NAME ITEM' + name)
+          console.log(this.data[name].item)
+        }
       },
       handleValidation: function (isValid, tabIndex) {
         console.log('Tab: ' + tabIndex + ' valid: ' + isValid)
@@ -493,20 +610,44 @@
       onComplete: function () {
         localStorage.removeItem('sale')
         localStorage.removeItem('vehicle')
-        localStorage.removeItem('webuser')
+        localStorage.removeItem('user')
         localStorage.removeItem('purchaser')
         localStorage.removeItem('insurance')
         localStorage.removeItem('location')
+        localStorage.removeItem('location')
+        localStorage.removeItem('pay')
+        localStorage.removeItem('payment')
 
-        this.data.pickPolice.item = this.data.pickPolice.defaultItem
-        this.data.sale.item = this.data.sale.defaultItem
-        this.data.vehicle.item = this.data.vehicle.defaultItem
-        this.data.purchaser.item = this.data.purchaser.defaultItem
+        this.data.pickPolice.item = JSON.parse(JSON.stringify(this.data.pickPolice.defaultItem))
+        this.data.sale.item = JSON.parse(JSON.stringify(this.data.sale.defaultItem))
+        this.data.vehicle.item = JSON.parse(JSON.stringify(this.data.vehicle.defaultItem))
+        this.data.purchaser.item = JSON.parse(JSON.stringify(this.data.purchaser.defaultItem))
         this.data.vehicle.validate = false
         this.data.purchaser.validate = false
         // this.mySwitch = true
         this.initData()
         this.$router.push('cotizar-admin')
+      },
+      setDefault () {
+        localStorage.removeItem('sale')
+        localStorage.removeItem('vehicle')
+        localStorage.removeItem('user')
+        localStorage.removeItem('purchaser')
+        localStorage.removeItem('location')
+        localStorage.removeItem('pay')
+        localStorage.removeItem('payment')
+        this.data.sale.item = JSON.parse(JSON.stringify(this.data.sale.defaultItem))
+        this.data.vehicle.item = JSON.parse(JSON.stringify(this.data.vehicle.defaultItem))
+        this.data.purchaser.item = JSON.parse(JSON.stringify(this.data.purchaser.defaultItem))
+        this.data.pay.item = JSON.parse(JSON.stringify(this.data.pay.defaultItem))
+        this.data.vehicle.validate = false
+        this.data.purchaser.validate = false
+        this.data.pay.validate = false
+        this.mySwitch = true
+        this.isSale = false
+        this.setFormFill('vehicle', false)
+        this.setFormFill('purchaser', false)
+        this.setFormFill('pay', false)
       },
       async CancelSale () {
         let dataLocal = this.data.sale
@@ -516,41 +657,23 @@
           if (!self.status) return false
           console.log('Cancel Sale')
           console.log(self)
-          localStorage.removeItem('sale')
-          localStorage.removeItem('vehicle')
-          localStorage.removeItem('webuser')
-          localStorage.removeItem('purchaser')
-          localStorage.removeItem('location')
-          this.data.sale.item = this.data.sale.defaultItem
-          this.data.vehicle.item = this.data.vehicle.defaultItem
-          this.data.purchaser.item = this.data.purchaser.defaultItem
-          this.data.vehicle.validate = false
-          this.data.purchaser.validate = false
-          this.mySwitch = true
-          this.isSale = false
-
-          this.setFormFill('vehicle', false)
-          this.setFormFill('purchaser', false)
+          this.setDefault()
           this.initData()
-        } else {
-//          alert('ddddd')
+          this.switchMessage = 1
         }
       },
       initData () {
         let notification = {}
+
         let data = JSON.parse(localStorage.getItem('insurance'))
         if (data) {
           let insurance = data.insurance
           let insuranceObject = data.object
-          console.log('lleno')
-          console.log(insurance)
-          console.log(insuranceObject)
           this.data.pickPolice.item = insurance
           this.data.vehicle.item.vehicleTypeCategory = insuranceObject.vehicleTypeCategory
           this.data.vehicle.item.useType = insuranceObject.useType
           this.data.vehicle.defaultItem.vehicleTypeCategory = insuranceObject.vehicleTypeCategory
           this.data.vehicle.defaultItem.useType = insuranceObject.useType
-
           // SALE
           this.data.sale.item.region = insuranceObject.region
         } else {
@@ -558,23 +681,25 @@
           this.mySwitch = true
         }
 
+        // GET SALE
         let sale = JSON.parse(localStorage.getItem('sale'))
         if (sale) {
           this.data.sale.item = sale
           if (this.data.sale.item.id !== undefined) {
             this.setFormFill('sale', true)
-
             notification.data = {message: 'Existe una venta en proceso', status: '', success: null, url: ''}
             this.$store.commit('pushNotification', notification)
           }
         }
 
-        let webuser = JSON.parse(localStorage.getItem('webuser'))
-        if (webuser) {
-          this.data.webuser.item = webuser
-          if (this.data.webuser.item.id !== undefined) this.setFormFill('webuser', true)
+        // GET USER
+        let user = JSON.parse(localStorage.getItem('user'))
+        if (user) {
+          this.data.user.item = user
+          if (this.data.user.item.id !== undefined) this.setFormFill('user', true)
         }
 
+        // GET VEHICLE
         let vehicle = JSON.parse(localStorage.getItem('vehicle'))
         if (vehicle) {
           this.data.vehicle.item = vehicle
@@ -584,6 +709,7 @@
           this.data.vehicle.validate = true
         }
 
+        // GET PURCHASER
         let purchaser = JSON.parse(localStorage.getItem('purchaser'))
         if (purchaser) {
           this.data.purchaser.item = purchaser
@@ -595,10 +721,51 @@
           } else this.setFormFill('purchaser', false)
           this.data.purchaser.validate = true
         }
+
+        // GET PAY
+        let pay = JSON.parse(localStorage.getItem('pay'))
+        if (pay) {
+          this.data.pay.item = pay
+          this.data.pay.validate = true
+        }
+
+        // GET PAYMENT
+        let payment = JSON.parse(localStorage.getItem('payment'))
+        if (payment) {
+          this.data.payment.item = payment
+          if (this.data.payment.item.id !== undefined) {
+            this.setFormFill('pay', true)
+          } else {
+            this.setFormFill('pay', false)
+          }
+        }
       }
     },
     created () {
-      this.initData()
+      let oldSellerId = localStorage.getItem('seller')
+      let newSellerId = JSON.parse(localStorage.getItem('UserLog')).user.id
+      let typeSell = localStorage.getItem('typeSell')
+      let sale = JSON.parse(localStorage.getItem('sale'))
+
+      if (sale !== null && typeSell == 1) {
+        this.mySwitch = true
+        let pickPolice = JSON.parse(localStorage.getItem('pickPolice'))
+        console.log('pickPolice !!!!!!!!')
+        console.log(pickPolice)
+        this.data.pickPolice.item = pickPolice
+        this.switchMessage = 2
+      } else {
+        if (oldSellerId == newSellerId) {
+          this.initData()
+        } else {
+          this.setDefault()
+          localStorage.removeItem('insurance')
+          localStorage.removeItem('vehicleType')
+          localStorage.removeItem('pickPolice')
+        }
+      }
+      // this.initData()
+
       // delete this.data.vehicle.defaultItem.licensePlate
     },
     mounted () {
@@ -617,6 +784,34 @@
     }
   }
 
+  /*#newSaleWizard{*/
+    /*!*.form-control[readonly]*!*/
+    /*&.saleComplete{*/
+      /*.form-control:disabled{*/
+        /*background-color: rgb(255, 150, 5);*/
+        /*color: white;*/
+        /*border: 1px solid #ff9508;*/
+      /*}*/
+      /*.multiselect--disabled{*/
+        /*opacity: 1;*/
+        /*.multiselect__select,*/
+        /*.multiselect__tags {*/
+          /*background-color: rgb(255, 150, 5);*/
+          /*border: 1px solid #ff9508;*/
+
+        /*}*/
+      /*}*/
+      /*!*input::-webkit-input-placeholder,*!*/
+      /*!*textarea::-webkit-input-placeholder{*!*/
+        /*!*color: red*!*/
+      /*!*}*!*/
+    /*}*/
+
+    /*.vue-js-switch{*/
+      /*font-size: 0.9em;*/
+    /*}*/
+  /*}*/
+
   #newSaleWizard{
     /*.form-control[readonly]*/
     &.saleComplete{
@@ -627,17 +822,28 @@
       }
       .multiselect--disabled{
         opacity: 1;
-        .multiselect__select,
-        .multiselect__tags {
+        background: none;
+        .multiselect__tags,
+        .multiselect__tags input{
+          color: white;
           background-color: rgb(255, 150, 5);
           border: 1px solid #ff9508;
-
+        }
+        .multiselect__select{
+          background: none;
+          border: none;
         }
       }
+      /*input::-webkit-input-placeholder,*/
+      /*textarea::-webkit-input-placeholder{*/
+      /*color: red*/
+      /*}*/
     }
-
     .vue-js-switch{
       font-size: 0.9em;
+    }
+    .wizard-tab-content{
+      padding-top: 1%;
     }
   }
 

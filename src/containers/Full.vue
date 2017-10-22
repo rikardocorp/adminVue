@@ -17,7 +17,7 @@
     <notifications group="foo"
                    position="top right"
                    animation-type="velocity"
-                   :speed="500" :duration="3000">
+                   :speed="500" :duration="3000" :max="5">
     </notifications>
   </div>
 </template>
@@ -83,7 +83,7 @@
 
         this.$notify({
           group: 'foo',
-          title: 'Important message',
+          title: 'Mensaje Importante',
           text: content.message,
           type: type
         })
@@ -101,6 +101,13 @@
     border-radius: 0.55rem;
     border-left: none;
     box-shadow: 1px 1px 3px #3e3e3e;
+
+    .notification-title{
+      font-size: 1.1em;
+    }
+    .notification-content{
+      font-size: 1.1em;
+    }
   }
 
 </style>

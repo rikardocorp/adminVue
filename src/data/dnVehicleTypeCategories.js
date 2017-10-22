@@ -8,7 +8,8 @@ export const DATA = {
     vehicleClass: null,
     vehicleCategory: null,
     seatNumber: '',
-    seatNumberTo: ''
+    seatNumberTo: '',
+    type: 1
   },
   fieldsTable: {
     vehicleType: {

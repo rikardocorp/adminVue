@@ -6,7 +6,15 @@
 
 <script>
   export default {
-    props: ['data'],
+    props: {
+      data: {
+        default: {}
+      },
+      async: {
+        type: Boolean,
+        default: false
+      }
+    },
     data () {
       return {
         text: {
@@ -54,40 +62,54 @@
         localData: {}
       }
     },
+    watch: {
+      'data.$params': function (newVal, oldVal) {
+        if (this.async) {
+          //          console.log(newVal)
+          //          console.log(oldVal)
+          //          console.log('---------')
+          //          alert('Change Error')
+          this.createError()
+        }
+      }
+    },
     methods: {
       existValue (value) {
-        if (value == '') {
+        if (value === '') {
           alert('undefined')
         } else {
           alert('defined')
         }
+      },
+      createError () {
+        let vm = this
+        let params = []
+        let newText = ''
+        for (let [key, value] of Object.entries(this.data)) {
+          if (key[0] !== '$') {
+            newText = this.text[key].value
+            params = this.text[key].params
+            // console.log('Total Params ' + params.length)
+            if (params.length > 0) {
+              params.forEach(function (item) {
+                newText = newText.replace('$' + item, vm.data.$params[key][item])
+                // console.log(item)
+              })
+            }
+            this.localData[key] = {
+              name: key,
+              text: newText
+            }
+            // console.log(key + ' : ' + value)
+          }
+        }
       }
     },
     created () {
-      console.log('CREATED ERROR')
-      let vm = this
-      let params = []
-      let newText = ''
-      for (let [key, value] of Object.entries(this.data)) {
-        if (key[0] !== '$') {
-          newText = this.text[key].value
-          params = this.text[key].params
-          console.log('Total Params ' + params.length)
-          if (params.length > 0) {
-            params.forEach(function (item) {
-              newText = newText.replace('$' + item, vm.data.$params[key][item])
-              console.log(item)
-            })
-          }
-          this.localData[key] = {
-            name: key,
-            text: newText
-          }
-          console.log(key + ' : ' + value)
-        }
-      }
-      console.log(this.localData)
-      console.log('-------------')
+      // console.log('CREATED ERROR')
+      this.createError()
+      // console.log(this.localData)
+      // console.log('-------------')
     }
   }
 </script>

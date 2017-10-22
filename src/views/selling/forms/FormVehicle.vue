@@ -8,6 +8,14 @@
                   :label="option.label + ':'"
                   :horizontal="horizontal">
 
+      <!--<b-form-group class=""-->
+                    <!--label="Color:"-->
+                    <!--feedback="feedback"-->
+                    <!--:state="null"-->
+                    <!--:horizontal="horizontal" :label-cols="lCols" >-->
+        <!--<picker-color :disabled="isLoading || owner" v-model="item.color" :options="options" :size="1.2" :iconShow="true"></picker-color>-->
+      <!--</b-form-group>-->
+
       <!-- INPUT -->
       <b-input-group v-if="option.input==undefined || option.input=='input'">
         <b-input-group-addon class="bg-primary"><i :class="'fa ' + option.icon  "></i></b-input-group-addon>

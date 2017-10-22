@@ -109,7 +109,7 @@ export default new Vuex.Store({
             break
           case 'LOAD_PDF':
             notify = {success: false, error: false}
-            inquiry = Vue.http.get(url)
+            inquiry = Vue.http.get(url, {responseType: 'blob'})
             break
           case 'LOAD_TABLE':
             notify = {success: false, error: false}
@@ -144,7 +144,7 @@ export default new Vuex.Store({
 
         // SUCCSESS
         inquiry.then(response => {
-          console.log('SUCCESSSSSSSSS')
+          console.log('SUCCESSSSSSSSS 2424342434423')
           console.log(response)
           message.status = response.data.success
           message.data = {message: response.data.message, status: response.status, success: response.data.success, url: response.url}

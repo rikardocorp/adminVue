@@ -95,6 +95,18 @@ html{
   body{
     //font-family: 'jmc';
     font-size: 0.8em;
+
+    .separator {
+      border-bottom: 1px dashed #ef7b22;
+      font-size: 1.3em;
+      label {
+        text-align: left;
+        max-width: 100%;
+        flex: none;
+        color: #ef7b1f;
+        font-weight: 600;
+      }
+    }
   }
 
   .nav-dropdown.open{
@@ -119,7 +131,12 @@ html{
       font-weight: 200;
       padding-bottom: 0;
     }
-    input, textarea, select, .multiselect__tags, .multiselect__spinner{
+    input,
+    textarea,
+    select,
+    .multiselect__tags,
+    .multiselect__spinner,
+    .vdp-datepicker .form-control[readonly]{
       background: #f4f3ef;
       border-color: #e0e0e0;
     }
@@ -416,6 +433,12 @@ html{
   $greyWhite: #f4f3ef;
   $black: #343434;
   $orange: orange;
+
+  &.absolute{
+    .avatar {
+      position: absolute;
+    }
+  }
 
   &.cardWrap {
     color: #fff;

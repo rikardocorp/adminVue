@@ -88,50 +88,7 @@
         src: 'static/img/positiva.png',
         urlRest: nDATA.name,
         item: JSON.parse(JSON.stringify(nDATA.post)),
-        items: [
-//          {
-//            id: 0,
-//            src:'static/img/positiva.png',
-//            name: 'Positiva',
-//            description: 'El seguro mas barato',
-//            price: 200
-//          },
-//          {
-//            id: 1,
-//            src:'static/img/positiva.png',
-//            name: 'Positiva',
-//            description: 'El seguro mas barato',
-//            price: 200
-//          },
-//          {
-//            id: 2,
-//            src:'static/img/positiva.png',
-//            name: 'Positiva',
-//            description: 'El seguro mas barato',
-//            price: 200
-//          },
-//          {
-//            id: 0,
-//            src:'static/img/positiva.png',
-//            name: 'Positiva',
-//            description: 'El seguro mas barato',
-//            price: 200
-//          },
-//          {
-//            id: 1,
-//            src:'static/img/positiva.png',
-//            name: 'Positiva',
-//            description: 'El seguro mas barato',
-//            price: 200
-//          },
-//          {
-//            id: 2,
-//            src:'static/img/positiva.png',
-//            name: 'Positiva',
-//            description: 'El seguro mas barato',
-//            price: 200
-//          }
-        ],
+        items: [],
         update: false,
         isSearch: false,
         pickObject: {}
@@ -144,8 +101,8 @@
     },
     methods: {
       pickInsurance (insurance) {
-        console.log(insurance)
         // Verifica que haya una venta sin finalizar
+        let notification = {}
         let sale = JSON.parse(localStorage.getItem('sale'))
         if (!sale) {
           let data = {
@@ -157,25 +114,14 @@
             }
           }
           localStorage.setItem('insurance', JSON.stringify(data))
+          localStorage.setItem('seller', this.$store.state.user.data.id)
+          localStorage.setItem('typeSell', 0)
           this.$router.push('nueva-venta')
           console.log(data)
         } else {
-          alert('Debe finalizar la venta')
+          notification.data = {message: 'Debe finalizar la venta en proceso.', status: '', success: null, url: ''}
+          this.$store.commit('pushNotification', notification)
         }
-      },
-      altError (alt) {
-        let cadena = alt.split(' ')
-        let newCadena = ''
-        this.$lodash.forEach(cadena, function (value, key) {
-          newCadena = newCadena + value[0].toUpperCase()
-        })
-        return newCadena
-      },
-      imageLoadOnError (error, x) {
-        console.log('ERROR IMG')
-        console.log(error)
-        console.log(x)
-        error.error = true
       },
       initData () {
         this.update = false

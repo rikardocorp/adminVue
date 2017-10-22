@@ -32,7 +32,7 @@
   import Table from '../../components/xTable.vue'
 
   export default {
-    name: 'webUser',
+    name: 'policySold',
     components: {
       appForm: Form,
       appTable: Table

@@ -8,7 +8,7 @@ export const DATA = {
     amount: '',
     active: '',
     discount: '',
-    invoiceNumber: '',
+    numFactura: '',
     observation: '',
     state: '',
     currency: '',
@@ -41,14 +41,14 @@ export const DATA = {
       label: 'Region',
       sortable: true,
       'class': 'text-center',
-      formatter: (value) => { return value.name }
+      formatter: (value) => { return value ? value.name : '--' }
     },
     seatNumber: {label: 'Asientos', sortable: true, 'class': 'text-center'},
     date: {label: 'Fecha', sortable: true, 'class': 'text-center'},
     amount: {label: 'Monto', sortable: true, 'class': 'text-center'},
     discount: {label: 'Descuento', sortable: true, 'class': 'text-center'},
     currency: {label: 'Moneda', sortable: true, 'class': 'text-center'},
-    invoiceNumber: {label: 'Factura', sortable: true, 'class': 'text-center'},
+    numFactura: {label: 'Factura', sortable: true, 'class': 'text-center'},
     observation: {label: 'Observ', sortable: true, 'class': 'text-center'},
     state: {label: 'Estado', sortable: true, 'class': 'text-center'},
     active: {label: 'Activo', sortable: true, 'class': 'text-center'},
@@ -144,7 +144,7 @@ export const DATA_FORM = {
       placeholder: 'Tipo de moneda',
       type: 'text'
     },
-    invoiceNumber: {
+    numFactura: {
       label: 'Factura',
       placeholder: 'Comprobante de pago',
       type: 'text',

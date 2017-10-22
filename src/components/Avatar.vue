@@ -216,7 +216,10 @@
     },
     watch: {
       src (newVal) {
-//        alert(newVal)
+        this.localStyle = {}
+        this.localStyleSpan = {}
+        this.hasImage = false
+        this.style()
 //        document.getElementById('local-avatar').removeAttribute('style')
 //        this.hasImage = true
 //        this.style()

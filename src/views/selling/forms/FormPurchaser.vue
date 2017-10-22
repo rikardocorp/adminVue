@@ -1,5 +1,5 @@
 <template>
-  <b-form :id="'forms-'+ urlRest" class="col-md-8 col-lg-7 m-auto pt-3 pb-4">
+  <b-form :id="'forms-'+ urlRest" class="col-md-8 col-lg-7 col-xl-6 m-auto pt-3">
     <div class="d-flex justify-content-center mb-2 mySwitch">
       <toggle-button :labels="{checked: 'DNI', unchecked: 'RUC'}" :color="{checked: 'rgb(239, 123, 34)', unchecked: 'rgb(181, 181, 181)'}"
                      :disabled="isLoading || restricted" :width="75" :height="28" :sync="true"
@@ -8,7 +8,7 @@
 
       <toggle-button :labels="{checked: 'Email', unchecked: 'Email'}" :color="{checked: 'rgb(99, 193, 222)', unchecked: 'rgb(181, 181, 181)'}"
                      :disabled="isLoading || restricted" :width="75" :height="28"
-                     v-model="hasEmail" class="ml-2" @change="changeEmail">
+                     v-model="item.hasEmail" class="ml-2" @change="changeEmail">
       </toggle-button>
     </div>
 
@@ -32,7 +32,6 @@
       <form-error :data="$v.item['email']? $v.item['email'] : {} "></form-error>
     </b-form-group>
 
-
     <b-form-group v-for="(option, _index) in optInput" :key="_index" :label-sr-only="option.srOnly"
                   v-if="option.input!=='input-email'"
                   :class="{ 'form-group--error': $v.item[_index]? $v.item[_index].$error : false, 'text-left': true}"
@@ -41,36 +40,43 @@
                   :horizontal="horizontal">
 
       <!-- INPUT -->
-      <b-input-group>
+      <b-input-group v-if="option.input==undefined || option.input=='input'">
         <b-input-group-addon class="bg-primary"><i :class="'fa ' + option.icon"></i></b-input-group-addon>
-        <b-form-input v-if="option.input==undefined || option.input=='input'"
-                      :disabled="isLoading || restricted" :type="option.type"
+        <b-form-input :disabled="isLoading || restricted" :type="option.type"
                       v-model.trim="item[_index]"
                       @blur.native="$v.item[_index]? $v.item[_index].$touch(): false"
                       :placeholder="option.placeholder+'..'"></b-form-input>
+      </b-input-group>
 
-        <!--<b-form-input v-if="option.input=='input-email'"-->
-                      <!--:disabled="isLoading || restricted" :type="option.type"-->
-                      <!--v-model.trim="item[_index]"-->
-                      <!--@blur.native="searchUser"-->
-                      <!--:placeholder="option.placeholder+'..'"></b-form-input>-->
-        <!--<b-input-group-button v-if="option.input=='input-email'">-->
-          <!--<b-btn :disabled="isLoading || restricted" variant="primary" @click="searchUser"><i class="fa fa-search"></i></b-btn>-->
-        <!--</b-input-group-button>-->
+      <b-input-group v-if="option.input=='input-dni'">
+          <b-input-group-addon class="bg-primary"><i :class="'fa ' + option.icon"></i></b-input-group-addon>
+          <b-form-input :disabled="isLoading || restricted" :type="option.type"
+                        v-model.trim="item[_index]"
+                        @blur.once.native="searchDNI"
+                        :placeholder="option.placeholder+'..'"></b-form-input>
+          <b-input-group-button v-if="option.input=='input-dni'">
+            <b-btn :disabled="isLoading || restricted" variant="primary" @click="searchDNI"><i class="fa fa-search"></i></b-btn>
+          </b-input-group-button>
+      </b-input-group>
 
-        <b-form-input v-if="option.input=='input-dni'"
-                      :disabled="isLoading || restricted" :type="option.type"
-                      v-model.trim="item[_index]"
-                      @blur.once.native="searchDNI"
-                      :placeholder="option.placeholder+'..'"></b-form-input>
-        <b-input-group-button v-if="option.input=='input-dni'">
-          <b-btn :disabled="isLoading || restricted" variant="primary" @click="searchDNI"><i class="fa fa-search"></i></b-btn>
-        </b-input-group-button>
+      <b-input-group v-if="option.input=='onlyMultiSelect'">
+        <b-input-group-addon class="bg-primary"><i :class="'fa ' + option.icon"></i></b-input-group-addon>
+        <only-multi-select class="special_radius"
+                             :maxHeight="200" v-model="localidad" :optionList="option.params"
+                             :disabled="isLoading || restricted"
+                             :placeholderDefault="option.placeholder"></only-multi-select>
+      </b-input-group>
 
-        <only-multi-select v-if="option.input=='onlyMultiSelect'" class="special_radius"
-                           :maxHeight="200" v-model="localidad" :optionList="option.params"
-                           :disabled="isLoading || restricted"
-                           :placeholderDefault="option.placeholder"></only-multi-select>
+      <b-input-group v-if="option.input=='datepicker'">
+        <b-input-group-addon class="bg-primary"><i :class="'fa ' + option.icon"></i></b-input-group-addon>
+        <!-- DATEPICKER -->
+        <datepicker v-model="birthDate" :format="option.params.format" language="es" :placeholder="option.placeholder"
+                    class="special_radius" initial-view="year"
+                    :clear-button="false" :bootstrapStyling="true"
+                    :disabled-picker="isLoading || restricted"
+                    :disabled="option.params.disabled"
+                    @input="selectDate" calendar-class="myDatepicker-style" wrapper-class="myDatepicker-content"
+                    @blur.native="$v.item[index]? $v.item[index].$touch(): false"></datepicker>
 
       </b-input-group>
       <!-- ERROR MESSAGE-->
@@ -81,7 +87,7 @@
     <div class="mt-4">
       <!--<pre>{{ item.hasEmail }}</pre>-->
       <!--<pre>{{ usernameWU }}</pre>-->
-      <!--<pre>{{ itemWU }}</pre>-->
+      <!--<pre>{{ itemU }}</pre>-->
       <!--<div v-if="!item.hasEmail" class="media owner-card" style="font-size: 0.6em;">-->
         <!--<div class="d-flex align-self-center mr-3 rounded-circle">-->
           <!--<i class="fa fa-question d-flex align-items-center m-auto fa-3x text-secondary"></i>-->
@@ -94,7 +100,7 @@
       <transition appear mode="out-in" name="custom-classes-transition" enter-active-class="animated pulse">
         <div key="div" v-if="owner==true" class="media owner-card col-sm-12 col-md-11 col-lg-10 col-xl-9 m-auto" style="border-color: #ef7b21;">
           <div class="d-flex align-self-center mr-3 hvr-bounce-in">
-            <avatar :username="usernameWU"
+            <avatar :username="usernameU"
                     :size="5.5" sizeUnid="em" :localSrc="false" color="#ffffff" backgroundColor="orange" colorBorder="#ef7b1f"
                     :border="true" :sizeBorder="0.35" style="cursor: pointer;"></avatar>
             <!--<avatar :username="usernameWU"-->
@@ -103,10 +109,10 @@
                     <!--:border="true" colorBorder="#ef7b1f" :sizeBorder="0.35" style="cursor: pointer;"></avatar>-->
           </div>
           <div class="media-body">
-            <h6 class="mt-1 mb-1 text-primary">{{ usernameWU }}</h6>
-            <p>Email: {{ itemWU.user.email }}</p>
-            <p>DNI/RUC: {{ itemWU.dniRuc }}</p>
-            <p>Celular: {{ itemWU.cellPhone }}</p>
+            <h6 class="mt-1 mb-1 text-primary">{{ usernameU }}</h6>
+            <p>Email: {{ itemU.email }}</p>
+            <p>DNI/RUC: {{ itemU.dniRuc }}</p>
+            <p>Celular: {{ itemU.cellPhone }}</p>
           </div>
         </div>
       </transition>
@@ -114,7 +120,6 @@
     <!--<pre>{{optType[0].options}}</pre>-->
 
   </b-form>
-
 </template>
 
 <script>
@@ -125,27 +130,31 @@
   import FormError from '../../../components/FormError.vue'
   import ToggleButton from '../../../components/ToggleButton.vue'
   import {DATA_PURCHASER as _purchaser} from '../../../data/dnNewSales'
+  import Datepicker from 'vuejs-datepicker'
+  import Mixin from '../../../mixins'
 
   export default {
-    props: ['urlRest', 'item', 'itemWU', 'update', 'horizontal', 'keyname', 'restricted', 'dispatch'],
+    props: ['urlRest', 'item', 'itemU', 'update', 'horizontal', 'keyname', 'restricted', 'dispatch'],
+    mixins: [Mixin],
     components: {
       cSwitch,
       OnlyMultiSelect,
       Multiselect,
       Avatar,
       FormError,
-      ToggleButton
+      ToggleButton,
+      Datepicker
     },
     data () {
       return {
+        birthDate: '',
         localidad: [],
         optInput: _purchaser.input,
         titleRazonSocial: 'Nombre',
         titledniRuc: 'DNI',
         titleSwitch: 1,
         lCols: 3,
-        owner: null,
-        hasEmail: true
+        owner: null
       }
     },
     computed: {
@@ -155,12 +164,12 @@
       isInvalid () {
         return this.$v.item.$invalid
       },
-      usernameWU () {
-        return this.itemWU.user.firstName ? this.itemWU.user.firstName + ' ' + this.itemWU.user.lastName : this.itemWU.user.email
+      usernameU () {
+        return this.itemU.firstName ? this.itemU.firstName + ' ' + this.itemU.lastName : this.itemU.email
       }
     },
     validations () {
-      if (this.hasEmail) {
+      if (this.item.hasEmail) {
         return _purchaser.validate
       } else {
         return _purchaser.validate2
@@ -191,14 +200,22 @@
       }
     },
     methods: {
+      selectDate (pickDate) {
+        let newDate = ''
+        if (pickDate) {
+          newDate = this.tranformDateToFormat(pickDate, '/')
+        }
+        // this.birthDate = newDate
+        this.item['birthDate'] = newDate
+      },
       changeEmail (value) {
-        this.item.hasEmail = value.value
+        // this.item.hasEmail = value.value
         // alert(value.value)
         if (value.value) {
           console.log('Email cliente')
           this.item.email = ''
           this.owner = null
-          this.$emit('connection', 'webuser', null)
+          this.$emit('connection', 'user', null)
         } else {
           console.log('Email vendedor')
           this.item.email = this.$store.state.user.data.email
@@ -236,7 +253,9 @@
                 this.$set(this.item, 'departamento', data.content[0].departamento)
                 this.$set(this.item, 'provincia', data.content[0].provincia)
                 this.$set(this.item, 'distrito', data.content[0].distrito)
+                this.$set(this.item, 'birthDate', data.content[0].birthDate)
                 this.localidad = [data.content[0].departamento, data.content[0].provincia, data.content[0].distrito]
+                this.birthDate = data.content[0].birthDate ? this.getDateToDatepicker(data.content[0].birthDate) : ''
                 this.dniRUC()
                 console.log('Tiene duseño')
               } else {
@@ -249,7 +268,9 @@
                 this.$set(this.item, 'departamento', '')
                 this.$set(this.item, 'provincia', '')
                 this.$set(this.item, 'distrito', '')
+                this.$set(this.item, 'birthDate', '')
                 this.localidad = []
+                this.birthDate = ''
                 this.dniRUC()
               }
             } else {
@@ -266,17 +287,17 @@
         console.log(email)
         console.log(localEmail)
         if (email !== '') {
-          let url = 'webusers?email=' + email
+          let url = 'users?email=' + email
           let self = this.$store.dispatch('dispatchHTTP', {type: 'GET', url: url})
           self.then((data) => {
             console.log(data)
             if (data.status) {
               if (data.content.length > 0) {
                 this.owner = localEmail === null ? true : null
-                this.$emit('connection', 'webuser', data.content[0])
+                this.$emit('connection', 'user', data.content[0])
               } else {
                 this.owner = null
-                this.$emit('connection', 'webuser', null)
+                this.$emit('connection', 'user', null)
               }
             } else {
               console.log('Error: ' + url)
@@ -284,20 +305,43 @@
             }
           })
         }
+      },
+      getDateToDatepicker (date) {
+        let toDay = this.$moment(date, 'DD/MM/YYYY')
+        let day = toDay.get('date')
+        let month = toDay.get('month')
+        let year = toDay.get('year')
+        return new Date(year, month, day)
       }
     },
     created () {
       console.log(JSON.parse(localStorage.getItem('location')))
       let purchaser = JSON.parse(localStorage.getItem('purchaser'))
-      if (purchaser) this.localidad = JSON.parse(localStorage.getItem('location'))
+      if (purchaser) {
+        this.localidad = JSON.parse(localStorage.getItem('location'))
+        let date = purchaser.birthDate
+        if (date) {
+          this.birthDate = this.getDateToDatepicker(date)
+        }
+      }
       this.dniRUC()
+
+      // DatePicker
+      let date = this.$store.getters.getDateTime.date
+      let toDay = this.$moment(date, 'DD/MM/YYYY')
+      let day = toDay.get('date')
+      let month = toDay.get('month')
+      let year = toDay.get('year')
+      this.optInput.birthDate.params.disabled.to = new Date(1900, month, day)
+      this.optInput.birthDate.params.disabled.from = new Date(year - 17, month, day)
+      // this.birthDate = new Date(1900, 0, 1)
     }
   }
 </script>
 
 <style lang="scss">
   .special_radius{
-    .multiselect__tags{
+    .multiselect__tags, input{
       border-radius: 0 0.55em 0.55em 0 !important;
     }
   }
@@ -313,4 +357,26 @@
       /*}*/
     }
   }
+
+  .vdp-datepicker{
+    width: 100%;
+  }
+
+  /*.vdp-datepicker{*/
+    /*.form-control[readonly]{*/
+      /*background: #f4f3ef;*/
+      /*border-right: 0;*/
+      /*z-index: inherit;*/
+    /*}*/
+    /*.input-group-addon{*/
+      /*padding: 0.2rem 0.7rem;*/
+      /*margin-bottom: 0;*/
+      /*font-size: 1.4rem;*/
+      /*color: #999999;*/
+      /*background-color: #f4f3ef;*/
+      /*border: 1px solid #e0e0e0;*/
+      /*border-radius: 0 0.55rem 0.55rem 0;*/
+      /*border-left: 0;*/
+    /*}*/
+  /*}*/
 </style>
