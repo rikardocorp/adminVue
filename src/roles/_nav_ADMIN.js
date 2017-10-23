@@ -174,6 +174,15 @@ export default {
       }
     },
     {
+      name: 'Ventas',
+      url: '/polizas-vendidas',
+      icon: 'icon-speedometer',
+      badge: {
+        variant: 'warning',
+        text: 'NEW'
+      }
+    },
+    {
       name: 'Cotizacion',
       url: '/cotizar-admin',
       icon: 'icon-speedometer',

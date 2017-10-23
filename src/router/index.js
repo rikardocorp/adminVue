@@ -28,6 +28,7 @@ import Vehicle from '../views/vehicle/Vehicle.vue'
 import Purchaser from '../views/vehicle/Purchaser.vue'
 
 // Selling
+import Sales from '../views/selling/Sales.vue'
 import SellNewPolice from '../views/selling/NewSale.vue'
 import SellNewPoliceSpecial from '../views/selling/NewSaleSpecial.vue'
 import Cotizar from '../views/selling/Cotizar.vue'
@@ -187,6 +188,11 @@ const router = new Router({
           path: 'poliza-vendida',
           name: 'Poliza Vendida',
           component: PolicySold
+        },
+        {
+          path: 'polizas-vendidas',
+          name: 'Ventas',
+          component: Sales
         },
         {
           path: 'cotizar-admin',

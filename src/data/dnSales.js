@@ -186,3 +186,87 @@ export const DATA_FORM = {
     }
   }
 }
+
+export const DATA_FILTER = {
+  name: 'assignUser',
+  post: {
+    state: '',
+    insuranceCompany: null,
+    region: null,
+    number: '',
+    dniRuc: '',
+    dateFrom: '',
+    dateTo: ''
+  }
+}
+
+export const DATA_FORM_FILTER = {
+  input: {
+    state: {
+      label: 'Estados',
+      placeholder: 'Estado de la venta',
+      type: 'text',
+      input: 'radio-group',
+      params: {
+        variant: 'primary',
+        size: 'sm',
+        options: [
+          {text: '&nbsp;', value: ''},
+          { text: '&nbsp;', value: '1' },
+          { text: '&nbsp;', value: '2' },
+          { text: '&nbsp;', value: '3' },
+          { text: '&nbsp;', value: '4' },
+          { text: '&nbsp;', value: '5' }
+        ]
+      }
+    },
+    insuranceCompany: {
+      label: 'Aseguradora',
+      placeholder: 'Compañia de Seguro',
+      type: 'text',
+      input: 'multiselect',
+      srOnly: true,
+      params: {
+        url: 'insurancecompanies',
+        key: 'insuranceCompany',
+        label: 'name',
+        options: [],
+        activate: false,
+        loadData: true,
+        value: ''
+      }
+    },
+    region: {
+      label: 'Departamento',
+      placeholder: 'Departamento',
+      type: 'text',
+      input: 'multiselect',
+      srOnly: true,
+      params: {
+        url: 'regions',
+        key: 'regionId',
+        label: 'name',
+        options: [],
+        activate: false,
+        loadData: true,
+        localData: 'regions',
+        value: ''
+      }
+    },
+    number: {
+      label: 'Numero Poliza',
+      placeholder: 'Numero de #poliza',
+      type: 'text',
+      srOnly: true
+    },
+    dniRuc: {
+      label: 'DNI/RUC',
+      placeholder: '#Documento de Identidad',
+      type: 'number',
+      srOnly: true
+    }
+  },
+  validate: {
+    item: {}
+  }
+}
