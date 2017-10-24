@@ -192,7 +192,8 @@ const router = new Router({
         {
           path: 'polizas-vendidas',
           name: 'Ventas',
-          component: Sales
+          component: Sales,
+          meta: {requiresAuth: true, ROLE_ADMIN: true, ROLE_PUNTO_VENTA: true}
         },
         {
           path: 'cotizar-admin',

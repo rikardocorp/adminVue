@@ -1,65 +1,67 @@
 <template>
   <div class="wrapper">
     <div class="animated fadeIn">
-      <div class="row d-flex justify-content-center">
-        <!--<pre>{{ $store.state.Login.LOAD_TABLE.roles }}</pre>-->
-        <!--<pre>{{ $store.state.Login.LOAD_TABLE.regions }}</pre>-->
-        <div class="col-md-11">
-          <!--<app-form v-model="items" :item="item" :pickObject="pickObject" :horizontal="true" :urlRest="urlRest" @isSearching="isSearching"></app-form>-->
-          <app-form :item="itemForm1" :nameForm="nameForm1" :horizontal="true" :params="params"
-                    @defaulValue="defaulValueForm1" @resultFilter="resultFilter"></app-form>
-        </div>
-      </div>
-
-      <!--<pre>{{ itemForm2}}</pre>-->
-      <div id="getSale" class="container-fluid">
-        <!-- SEARCH ICON  -->
-        <div v-if="params.isSearch" class="row d-flex justify-content-center pt-4 mt-2 pt-md-2">
-            <span class="fa-stack fa-2x">
-              <i class="fa fa-cog fa-spin-reverse fa-stack-2x text-orange"></i>
-              <i class="fa fa-cog fa-spin fa-stack-1x text-cream"></i>
-            </span>
-        </div>
-        <div v-else-if="items.length==0" class="row d-flex justify-content-center pt-5 mt-4">
-            <span class="h3" style="opacity: 0.35">
-              <i class="fa fa-search fa-5x text-orange fa-flip-horizontal" aria-hidden="true"></i>
-            </span>
-        </div>
-
-        <!--ALL POLICIES -->
-        <div v-if="items.length" class="card-insurance row d-flex justify-content-center pt-3">
-          <div v-for="(x, index) in items" :key="x.id"  :class="{'ticket cardWrap m-2 mb-3 hvr-bounce-in':true, 'pickOption': x.pick}" @click="selectedPolice(x)">
-            <i class="fa fa-thumb-tack" aria-hidden="true"></i>
-            <div class="card-ticket cardLeft">
-              <avatar :username="x.insurancePolicy.insuranceCompany.name" :rounded="true" :size="6.4" sizeUnid="em"
-                      :src="path + '/' + x.insurancePolicy.insuranceCompany.image" :alt="x.insurancePolicy.insuranceCompany.name"
-                      :border="true" colorBorder="#f4f3ef" color="#ecedef" :localSrc="false"
-                      backgroundColor="orange" :sizeBorder="0.5"></avatar>
-            </div>
-            <div class="card-ticket cardCenter dashed">
-              <div class="xtitle">
-                Poliza #{{ x.insurancePolicy.number }}
-              </div>
-              <div class="xcontent">
-                <div class="title">
-                  <!--<h2 class="big">{{ x.insurancePolicy.number }}</h2>-->
-                  <h2>{{ x.purchaser.razonSocial }}</h2>
-                  <span>Contratante</span>
-                </div>
-                <div class="seat">
-                  <h2>{{ x.date }}</h2>
-                  <span>Compra</span>
-                </div>
-                <div class="seat ml-2">
-                  <h2>{{ x.validityStart }}</h2>
-                  <span>Inicio</span>
-                </div>
-              </div>
+      <transition-group name="fade" mode="out-in">
+        <div v-show="!isDetail" key="div1">
+          <div class="row d-flex justify-content-center">
+            <div class="col-md-11">
+              <app-form :item="itemForm1" :nameForm="nameForm1" :horizontal="true" :params="params"
+                        @defaulValue="defaulValueForm1" @resultFilter="resultFilter"></app-form>
             </div>
           </div>
+          <div id="getSale" class="container-fluid">
+            <div v-if="params.isSearch" class="row d-flex justify-content-center pt-4 mt-2 pt-md-2">
+                <span class="fa-stack fa-2x">
+                  <i class="fa fa-cog fa-spin-reverse fa-stack-2x text-orange"></i>
+                  <i class="fa fa-cog fa-spin fa-stack-1x text-cream"></i>
+                </span>
+            </div>
+            <div v-else-if="items.length==0" class="row d-flex justify-content-center pt-5 mt-4">
+                <span class="h3" style="opacity: 0.35">
+                  <i class="fa fa-search fa-5x text-orange fa-flip-horizontal" aria-hidden="true"></i>
+                </span>
+            </div>
+            <!--ALL SALES -->
+            <div v-if="items.length" class="card-insurance row d-flex justify-content-center pt-3">
+              <div v-for="(x, index) in items" :key="x.id"  :class="{'ticket cardWrap m-2 mb-3 hvr-bounce-in':true, 'pickOption': x.pick}" @click="selectedSale(x)">
+                <i class="fa fa-thumb-tack" aria-hidden="true"></i>
+                <div class="card-ticket cardLeft">
+                  <avatar :username="x.insurancePolicy.insuranceCompany.name" :rounded="true" :size="6.4" sizeUnid="em"
+                          :src="path + '/' + x.insurancePolicy.insuranceCompany.image" :alt="x.insurancePolicy.insuranceCompany.name"
+                          :border="true" colorBorder="#f4f3ef" color="#ecedef" :localSrc="false"
+                          backgroundColor="orange" :sizeBorder="0.5"></avatar>
+                </div>
+                <div class="card-ticket cardCenter dashed">
+                  <div :class="{'xtitle': true, 'bg-danger': x.state==1, 'bg-primary': x.state==2, 'bg-info': x.state==3, 'bg-success': x.state==4, 'bg-blue': x.state==5}">
+                    Placa {{ x.vehicle.licensePlate }} {{x.state}}
+                  </div>
+                  <div class="xcontent">
+                    <div class="title">
+                      <!--<h2 class="big">{{ x.insurancePolicy.number }}</h2>-->
+                      <h2>{{ x.purchaser.razonSocial }}</h2>
+                      <span>Contratante</span>
+                    </div>
+                    <div class="seat">
+                      <h2>{{ x.date.split(' ')[0] }}</h2>
+                      <span>Compra</span>
+                    </div>
+                    <div class="seat ml-2">
+                      <h2>{{ x.validityStart }}</h2>
+                      <span>Inicio</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div><!--/.col-->
         </div>
-      </div><!--/.col-->
 
+        <div v-show="isDetail" key="div2" id="saleDetail">
+        <div class="col-md-11 col-sm-12 col-lg-9 col-xl-7 m-auto">
+          <detail-sale :item="selectedItem" :urlRest="'sales'" @returnMain="returnMain"></detail-sale>
+        </div>
+      </div>
+      </transition-group>
     </div>
   </div>
 </template>
@@ -69,15 +71,15 @@
   import {DATA as nDATA} from '../../data/dnInsurancePolicies'
   import {DATA_FILTER as dataSale} from '../../data/dnSales'
   import Form from './forms/FormSales.vue'
-  //import Form2 from './forms/FormPolicyAssign2.vue'
+  import DetailSale from './DetailSale.vue'
   import Avatar from '../../components/Avatar.vue'
 
   export default {
     name: 'webUser',
     components: {
       appForm: Form,
-      //appForm2: Form2,
-      Avatar
+      Avatar,
+      DetailSale
     },
     data: function () {
       return {
@@ -94,7 +96,8 @@
           isSearch: false
         },
         selected: null,
-        selectedList: {}
+        selectedItem: {},
+        isDetail: false
       }
     },
     computed: {
@@ -114,23 +117,6 @@
         this.selectedList = {}
         this.items = items
       },
-      pickItem (item, type) {
-        this.initData()
-        this.indexSelected = this.$lodash.findIndex(this.items, item)
-        console.log('INDEX SELECT')
-        console.log(this.update)
-        if (type === this.btnOption.editOpc) {
-          console.log('INDEX update')
-          this.item = {...this.item, ...item}
-          this.update = true
-        }
-
-        if (type === this.btnOption.deleteOpc) {
-          this.ownClass = type
-          this.toggleDialog()
-        }
-      },
-
       selectedAll (value = true) {
         let policy = ''
         let vm = this
@@ -150,18 +136,18 @@
           })
         }
       },
-      selectedPolice (item) {
-        let value = null
-        this.selected = item
-        let policy = {id: item.id}
-        if (item.pick) {
-          value = false
-          this.$delete(this.selectedList, item.id)
-        } else {
-          value = true
-          this.$set(this.selectedList, item.id, policy)
-        }
-        this.$set(item, 'pick', value)
+      selectedSale (item) {
+        this.selectedItem = item
+        this.isDetail = true
+//        let policy = {id: item.id}
+//        if (item.pick) {
+//          value = false
+//          this.$delete(this.selectedList, item.id)
+//        } else {
+//          value = true
+//          this.$set(this.selectedList, item.id, policy)
+//        }
+//        this.$set(item, 'pick', value)
       },
       async getAll () {
         console.log('GET POLICIS')
@@ -173,11 +159,12 @@
       },
       isSearching (value) {
         this.params.isSearch = value
+      },
+      returnMain () {
+        this.isDetail = false
       }
     },
     created () {
-      // this.params.isSearch = true
-      // this.getAll()
     }
   }
 </script>

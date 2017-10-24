@@ -1,36 +1,39 @@
 <template>
-
   <b-card class="myCard listSales">
     <div slot="header" class="text-left">
-      <strong>Polizas</strong> - Filtros de busqueda
+      <strong>Ventas de Sucursal</strong> - Filtros de busqueda
     </div>
     <b-form :id="name + nameForm" class="row">
       <div class="col-md-4 myLegend">
         <h6 class="mt-2" style="color: #ffa505;">Leyenda de Estados</h6>
         <ul class="list-group mt-3">
           <li class="list-group-item justify-content-between">
-            <span class="badge badge-secondary badge-pill" style="background: #6f6f6f">&nbsp;&nbsp;</span>
-            Todos los estados.
+            <span class="badge badge-secondary badge-pill bg-white" style="border: 1px solid #6f6f6f">&nbsp;&nbsp;</span>
+            <span class="float-left">Todos los estados.</span>
           </li>
           <li class="list-group-item justify-content-between">
             <span class="badge badge-danger badge-pill">&nbsp;&nbsp;</span>
-            Venta en Proceso - Poliza asignada.
+            <span>Venta en Proceso - Poliza asignada.</span>
           </li>
           <li class="list-group-item justify-content-between">
             <span class="badge badge-primary badge-pill">&nbsp;&nbsp;</span>
-            Venta en Proceso - Contratante.
+            <span>Venta en Proceso - Contratante.</span>
           </li>
           <li class="list-group-item justify-content-between">
             <span class="badge badge-info badge-pill">&nbsp;&nbsp;</span>
-            Venta terminada - Credito
+            <span>Venta terminada - Credito</span>
           </li>
           <li class="list-group-item justify-content-between">
             <span class="badge badge-success badge-pill">&nbsp;&nbsp;</span>
-            Venta terminada
+            <span>Venta terminada</span>
           </li>
           <li class="list-group-item justify-content-between">
-            <span class="badge bg-white badge-pill" style="border: 1px solid gray;">&nbsp;&nbsp;</span>
-            Documento PDF asignado
+            <span class="badge bg-blue badge-pill">&nbsp;&nbsp;</span>
+            <span>Documento PDF asignado</span>
+          </li>
+          <li class="list-group-item justify-content-between">
+            <span class="badge badge-pill" style="background: #454545">&nbsp;&nbsp;</span>
+            <span>Contrato Vencido</span>
           </li>
           <!--<li class="list-group-item justify-content-between">-->
             <!--<span class="badge badge-default badge-pill">5</span>-->
@@ -103,7 +106,6 @@
     </b-form>
     <!--<pre>{{item}}</pre>-->
   </b-card>
-
 </template>
 
 <script>
@@ -122,7 +124,7 @@
     data () {
       return {
         name: 'form-',
-        lCols: 3,
+        lCols: 4,
         itemDefault: JSON.parse(JSON.stringify(this.item)),
         optInput: dataFormFilter.input,
         selectedKey: '',
@@ -267,6 +269,13 @@
   /*}*/
   /*}*/
   .listSales{
+
+    .myDatepicker-content{
+      .myDatepicker-style{
+        min-width: 200px;
+      }
+    }
+
     .vdp-datepicker__calendar .cell{
       height: 35px;
       line-height: 35px;
@@ -277,7 +286,7 @@
         cursor: pointer;
       }
       label:nth-child(1){
-        background: #6f6f6f;
+        background: white;
       }
       label:nth-child(2){
         background: #f96d6c;
@@ -292,7 +301,10 @@
         background: #4ebc75;
       }
       label:nth-child(6){
-        background: white;
+        background: #2e86e8;
+      }
+      label:nth-child(7){
+        background: #454545;
       }
     }
     .myLegend{
@@ -301,6 +313,18 @@
         li.list-group-item{
           border: none;
           padding: 9px 0;
+          span{
+            float: left;
+          }
+          span:first-child{
+            margin-top: 2px;
+          }
+          span:last-child{
+            display: block;
+            width: 90%;
+            padding-left: 3%;
+            line-height: 1.3em;
+          }
         }
 
       }

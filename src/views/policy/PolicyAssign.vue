@@ -51,7 +51,7 @@
                   <span>Numero Poliza</span>
                 </div>
                 <div class="seat">
-                  <h2>{{ x.user.id ? x.user.firstName + ' ' + x.user.lastName : 'LIBRE'   }}</h2>
+                  <h2>{{ x.user ? x.user.firstName + ' ' + x.user.lastName : 'LIBRE'   }}</h2>
                   <span>Usuario</span>
                 </div>
               </div>
@@ -73,7 +73,7 @@
   import Avatar from '../../components/Avatar.vue'
 
   export default {
-    name: 'webUser',
+    name: 'PolicyAssign',
     components: {
       appForm: Form,
       appForm2: Form2,

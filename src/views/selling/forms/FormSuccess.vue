@@ -150,13 +150,6 @@
         console.log('edweffwef')
         let idSale = this.data.sale.item.id
         let url = 'sales/' + idSale + '/printpolicy?positiva=1&afocat_manual_centrado=1'
-        //        this.$http.get(url, {responseType: 'blob'}).then((response) => {
-        //          FileSaver.saveAs(response.body)
-        //        }).catch(error => {
-        //          alert('ERROR PDF')
-        //          console.log(error)
-        //        })
-
         let self = this.$store.dispatch('dispatchHTTP', {type: 'LOAD_PDF', url: url})
         self.then((response) => {
           let data = response.content

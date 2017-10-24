@@ -727,6 +727,8 @@
         if (pay) {
           this.data.pay.item = pay
           this.data.pay.validate = true
+        } else {
+          this.data.pay.item.amount = this.data.pickPolice.item.price
         }
 
         // GET PAYMENT

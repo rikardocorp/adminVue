@@ -81,6 +81,13 @@
 .text-cream{
   color: $cream
 }
+.bg-blue{
+  background: #2e86e8 !important
+}
+.text-blue{
+  color: #2e86e8 !important
+}
+
 
 input::-webkit-input-placeholder{
   color: #bcbcbb
@@ -106,6 +113,26 @@ html{
         color: #ef7b1f;
         font-weight: 600;
       }
+    }
+
+    .btn-in-title-left{
+      color: white;
+      padding: 0.4em;
+      width: 30px;
+      height: 30px;
+      border-radius: 2em;
+      margin-left: -10px;
+      margin-right: 10px;
+    }
+
+    .btn-in-title-right{
+      color: white;
+      padding: 0.4em;
+      width: 30px;
+      height: 30px;
+      border-radius: 2em;
+      float: right;
+      margin: 0 !important;
     }
   }
 
@@ -240,7 +267,7 @@ html{
   .myDatepicker-content{
     .myDatepicker-style{
       width: 100%;
-      min-width: 200px;
+      min-width: 250px;
       border-radius: $bRadius;
       border: 1px solid #e0e0e0;
       header{

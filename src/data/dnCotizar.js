@@ -1,3 +1,4 @@
+import { required, minLength, maxLength, between, numeric } from 'vuelidate/lib/validators'
 
 export const DATA = {
   name: 'cotizar',
@@ -11,25 +12,6 @@ export const DATA = {
 
 export const DATA_FORM = {
   input: {
-    regionId: {
-      label: 'Ciudad',
-      placeholder: 'CIUDAD',
-      type: 'text',
-      input: 'multiselect',
-      params: {
-        url: 'regions',
-        key: 'regionId',
-        keyValue: 'id',
-        objectKey: 'region',
-        label: 'name',
-        options: [],
-        activate: false,
-        loadData: true,
-        localData: 'regions',
-        icon: 'fa-map-marker',
-        value: ''
-      }
-    },
     brand: {
       label: 'Marca',
       placeholder: 'MARCA',
@@ -66,6 +48,25 @@ export const DATA_FORM = {
         value: ''
       }
     },
+    regionId: {
+      label: 'Ciudad',
+      placeholder: 'CIUDAD',
+      type: 'text',
+      input: 'multiselect',
+      params: {
+        url: 'regions',
+        key: 'regionId',
+        keyValue: 'id',
+        objectKey: 'region',
+        label: 'name',
+        options: [],
+        activate: false,
+        loadData: true,
+        localData: 'regions',
+        icon: 'fa-map-marker',
+        value: ''
+      }
+    },
     useTypeId: {
       label: 'Tipo de Uso',
       placeholder: 'TIPO DE USO',
@@ -86,6 +87,13 @@ export const DATA_FORM = {
     }
   },
   validate: {
-    item: {}
+    item: {
+      brand:{
+        required
+      },
+      model: {
+        required
+      }
+    }
   }
 }

@@ -216,7 +216,8 @@ export const DATA_FORM_FILTER = {
           { text: '&nbsp;', value: '2' },
           { text: '&nbsp;', value: '3' },
           { text: '&nbsp;', value: '4' },
-          { text: '&nbsp;', value: '5' }
+          { text: '&nbsp;', value: '5' },
+          { text: '&nbsp;', value: '6' }
         ]
       }
     },
@@ -268,5 +269,31 @@ export const DATA_FORM_FILTER = {
   },
   validate: {
     item: {}
+  }
+}
+
+export const DATA_PAYMENT = {
+  name: 'payments',
+  post: {
+    amount: 0,
+    paymentType: 1,
+    numFactura: '',
+    sale: null
+  }
+}
+
+export const DATA_FORM_PAYMENT = {
+  validate: {
+    item: {
+      amount: {
+        required
+      },
+      paymentType: {
+        required
+      },
+      sale: {
+        required
+      }
+    }
   }
 }

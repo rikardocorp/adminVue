@@ -68,7 +68,8 @@
 
             </b-card>
           </div>
-          <!--<pre style="font-size: 0.7em">{{ data.sale}}</pre>-->
+          <!--<pre style="font-size: 0.7em">{{ data.pay }}</pre>-->
+          <pre style="font-size: 0.7em">{{ data.sale }}</pre>
           <!--<pre style="font-size: 0.7em">{{ data.pickPolice}}</pre>-->
           <!--<pre style="font-size: 0.7em">{{ data.pickPolice }}</pre>-->
           <!--<pre style="font-size: 0.7em">{{ data.vehicleType  }}</pre>-->
@@ -318,6 +319,8 @@
         let r1 = await this.insertSale()
         if (!r1.status) return false
         else this.data.sale.item = r1.content
+        console.log('INSERT SALE')
+        console.log(r1.content)
         localStorage.setItem('sale', JSON.stringify(this.data.sale.item))
 
         return true
@@ -411,7 +414,7 @@
                 vehicleType: this.data.vehicleType.item.vehicleType,
                 seatNumber: this.data.vehicle.item.seatNumber,
                 seatNumberTo: this.data.vehicle.item.seatNumber,
-                type: 0
+                type: 1
               }
               let r4 = await this.insertVehicleTypeCategory(vehicleTypeCategory)
               if (!r4.status) return false
@@ -478,6 +481,7 @@
         this.data.sale.item.vehicle = this.data.vehicle.item
         this.data.sale.item.purchaser = this.data.purchaser.item
         this.data.sale.item.seatNumber = this.data.vehicle.item.seatNumber
+        this.data.sale.item.region = this.$store.state.user.data.office.region
         this.data.sale.item.state = 2
 
         // PREPARA PAYMENT
@@ -814,8 +818,11 @@
         // GET PAY
         let pay = JSON.parse(localStorage.getItem('pay'))
         if (pay) {
+          alert('pay')
           this.data.pay.item = pay
           this.data.pay.validate = true
+        } else {
+          this.data.pay.item.amount = this.data.pickPolice.item.price
         }
 
         // GET PAYMENT

@@ -18,6 +18,10 @@
         type: String,
         required: true
       },
+      usernameComplete: {
+        type: Boolean,
+        default: false
+      },
       initials: {
         type: String
       },
@@ -108,19 +112,22 @@
 
     methods: {
       initial (username) {
-        let parts = username.split(/[ -]/)
         let initials = ''
+        if (!this.usernameComplete) {
+          let parts = username.split(/[ -]/)
 
-        for (var i = 0; i < parts.length; i++) {
-          initials += parts[i].charAt(0)
+          for (var i = 0; i < parts.length; i++) {
+            initials += parts[i].charAt(0)
+          }
+
+          if (initials.length > 3 && initials.search(/[A-Z]/) !== -1) {
+            initials = initials.replace(/[a-z]+/g, '')
+          }
+
+          initials = initials.substr(0, 3).toUpperCase()
+        } else {
+          initials = username
         }
-
-        if (initials.length > 3 && initials.search(/[A-Z]/) !== -1) {
-          initials = initials.replace(/[a-z]+/g, '')
-        }
-
-        initials = initials.substr(0, 3).toUpperCase()
-
         return initials
       },
 

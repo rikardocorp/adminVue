@@ -219,7 +219,7 @@
         this.fields = fields
       },
       async generateItems () {
-        let data = await this.getData('vehicletypecategories')
+        let data = await this.getData('vehicletypecategories/filter')
         let items = []
         data.forEach(function (item) {
           items.push({ vehicle: item })
