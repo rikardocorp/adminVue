@@ -25,14 +25,14 @@ export const DATA = {
     },
     email: {label: 'Email', sortable: true, 'class': 'text-center'},
     phone: {label: 'Celular', sortable: true, 'class': 'text-center'},
-    expense: {
-      label: 'Gastos',
+    enabled: {
+      label: 'Activo',
       sortable: true,
       'class': 'text-center',
       formatter: (value) => { return value ? 'SI' : 'NO' }
     },
-    enabled: {
-      label: 'Activo',
+    expense: {
+      label: 'Gastos',
       sortable: true,
       'class': 'text-center',
       formatter: (value) => { return value ? 'SI' : 'NO' }
@@ -97,7 +97,8 @@ export const DATA_FORM = {
         activate: false,
         loadData: true,
         localData: 'roles',
-        value: ''
+        value: '',
+        editDisable: true
       }
     }
   },

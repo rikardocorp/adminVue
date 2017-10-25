@@ -9,7 +9,8 @@ export const DATA = {
     prefijo: '',
     postfijo: '',
     numberFrom: '',
-    numberTo: ''
+    numberTo: '',
+    policyType: ''
   }
 }
 
@@ -62,6 +63,26 @@ export const DATA_FORM = {
         value: ''
       }
     },
+    policyType: {
+      label: 'Tipo de Poliza',
+      placeholder: 'Tipo de la Poliza',
+      type: 'text',
+      input: 'multiselect',
+      params: {
+        url: 'policyTypes',
+        key: 'policyType',
+        keyValue: 'id',
+        label: 'name',
+        options: [
+          {id: 'W', name: 'WEB'},
+          {id: 'D', name: 'Digital'},
+          {id: 'M', name: 'Manual'}
+        ],
+        activate: false,
+        loadData: false,
+        value: ''
+      }
+    },
     userId: {
       label: 'Usuarios',
       placeholder: 'Usuarios [opcional]',
@@ -89,6 +110,9 @@ export const DATA_FORM = {
         required
       },
       postfijo: {
+        required
+      },
+      policyType: {
         required
       },
       numberFrom: {

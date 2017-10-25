@@ -1,6 +1,7 @@
 <template>
   <div id="contentDetailSale">
-    <b-card>
+    <div class="col-md-11 col-sm-12 col-lg-9 col-xl-7 m-auto">
+      <b-card>
       <div slot="header" class="text-left">
         <button @click="returnMain" title="Regresar" class="btn btn-in-title-left bg-primary"><i class="fa fa-arrow-left"></i></button>
         <strong>Detalles de la Venta</strong> - Pagos
@@ -27,7 +28,7 @@
           </div>
           <div class="py-2">
             <p class="title">INFORMACION DEL CERTIFICADO</p>
-            <p class="fa-2x" style="padding-bottom: 0.4em;"># <span class="numberPolicy">{{ item2.insurancePolicy.number }}</span></p>
+            <p class="fa-2x" style="padding-bottom: 0.4em; padding-top: 0.3em;"># <span class="numberPolicy">{{ item2.insurancePolicy.number }}</span></p>
             <p class="subtitle value text-center"><span>DESDE:</span>  {{ item2.validityStart }}</p>
             <p class="subtitle value text-center"><span>HASTA:</span>  {{ validityEnd }}</p>
             <p :class="{'subtitle value text-center vigente':true, 'vencido': daysContract < 0}"><span>{{ daysContract >= 0 ? daysContract + ' dias vigentes' : (daysContract*-1) + ' dias vencidos' }}</span></p>
@@ -154,6 +155,7 @@
         <!--<pre>{{ item2 }}</pre>-->
       </div>
     </b-card>
+    </div>
     <div class="card-insurance row d-flex justify-content-center">
       <div v-for="(x, index) in listPayment" :key="x.id"  :class="{'ticket absolute cardWrap m-2 mb-3 hvr-bounce-in':true, 'pickOption': x.pick}">
         <div class="card-ticket cardLeft">
@@ -235,7 +237,7 @@
     watch: {
       async item (newVal) {
         this.item2 = newVal
-        this.listPayment = await this.getPayments(null)
+        this.listPayment = await this.getPayments(newVal.id)
       }
     },
     computed: {
@@ -304,7 +306,7 @@
       },
       async getPayments (idSale) {
         // let url = this.urlPayment + '/' + idSale
-        let url = this.urlPayment
+        let url = this.urlPayment + '?saleId=' + idSale
         let self = await this.$store.dispatch('dispatchHTTP', {type: 'GET', url: url})
         return self.status ? self.content : []
       },
@@ -396,6 +398,7 @@
       background: #ffa501;
       color: white;
       border-radius: 0.5em;
+      font-size: 1.1em;
     }
     p{
       margin: 0;

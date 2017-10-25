@@ -5,7 +5,7 @@ export const DATA = {
   post: {
     name: '',
     price: '',
-    date: '',
+    // date: '',
     // vehicleType: '',
     insuranceCompany: '',
     insuranceType: '',
@@ -13,6 +13,8 @@ export const DATA = {
     useType: '',
     validityDate: '',
     observation: '',
+    seatNumber: '',
+    seatNumberTo: '',
     vehicleClass: null,
     vehicleCategory: null
   },
@@ -241,9 +243,9 @@ export const DATA_FORM_PRICE = {
   },
   validate: {
     item: {
-      date: {
-        required
-      },
+      // date: {
+      //   required
+      // },
       insuranceCompany: {
         required
       },

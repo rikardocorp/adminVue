@@ -43,6 +43,12 @@
   import Form2 from './forms/FormPolicyRegister.vue'
   import Table from '../../components/xTable.vue'
 
+  const _policyType = {
+    'W': {id: 'W', name: 'WEB'},
+    'D': {id: 'D', name: 'Digital'},
+    'M': {id: 'M', name: 'Manual'}
+  }
+
   export default {
     name: 'webUser',
     components: {
@@ -140,6 +146,7 @@
 
         if (option.name === this.btnOption.editOpc.name) {
           this.item = {...this.item, ...item}
+          this.item.policyType = _policyType[this.item.policyType]
           this.update = true
           this.switchForm = false
           this.$scrollTo('body')

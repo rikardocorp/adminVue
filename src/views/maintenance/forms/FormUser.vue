@@ -32,7 +32,7 @@
                      :placeholder="option.placeholder"
                      :label="option.params.label" :track-by="option.params.label"
                      :loading="!option.params.activate"
-                     :disabled="!option.params.activate || isLoading"
+                     :disabled="!option.params.activate || isLoading || (option.params.editDisable && update)"
                      v-model="item[index]"
                      :options="option.params.options"
                      @blur.native="$v.item[index]? $v.item[index].$touch(): false"></multiselect>
@@ -41,32 +41,29 @@
         <form-error :data="$v.item[index]? $v.item[index] : {} "></form-error>
       </b-form-group>
 
-      <b-form-group class="text-right" :label-cols="lCols"
-                    label="Gastos:"
-                    feedback="feedback"
-                    :state="null"
-                    :horizontal="horizontal">
-        <c-switch type="text" variant="warning" on="On" off="Off" :pill="true" v-model="item.expense" class="switch-left" size="lg"/>
-      </b-form-group>
-
-      <b-form-group class="text-right" :label-cols="lCols"
-                    label="Activo:"
-                    feedback="feedback"
-                    :state="null"
-                    :horizontal="horizontal">
-        <c-switch type="text" variant="warning" on="On" off="Off" :pill="true" v-model="item.enabled" class="switch-left" size="lg"/>
-      </b-form-group>
+      <div class="row mb-4">
+        <div class="col-md-6 text-right">
+          <toggle-button :labels="{checked: 'Activo', unchecked: 'Inactivo'}" :color="{checked: 'rgb(239, 123, 34)', unchecked: 'rgb(181, 181, 181)'}"
+                         :disabled="isLoading" :width="85" :height="28" :sync="true"
+                         v-model="item.enabled" class="mr-2"></toggle-button>
+        </div>
+        <div class="col-md-6 text-left">
+          <toggle-button :labels="{checked: 'Gastos', unchecked: 'Sin Gastos'}" :color="{checked: 'rgb(239, 123, 34)', unchecked: 'rgb(181, 181, 181)'}"
+                         :disabled="isLoading" :width="90" :height="28" :sync="true"
+                         v-model="item.expense" class="mr-2"></toggle-button>
+        </div>
+      </div>
 
       <div slot="footer">
         <b-form-group :horizontal="horizontal" :label-cols="lCols">
           <template v-if="!update">
-            <b-button @click.prevent="processData('INSERT')" :disabled="isLoading" type="submit" size="sm" variant="primary"><i class="fa fa-dot-circle-o"></i> Submit</b-button>
-            <b-button @click="resetForm(name + urlRest)" :disabled="isLoading" size="sm" variant="danger"><i class="fa fa-ban"></i> Reset</b-button>
+            <b-button @click.prevent="processData('INSERT')" :disabled="isLoading" type="submit" size="sm" variant="primary"><i class="fa fa-dot-circle-o"></i> {{$global.submit}}</b-button>
+            <b-button @click="resetForm(name + urlRest)" :disabled="isLoading" size="sm" variant="danger"><i class="fa fa-ban"></i> {{$global.reset}}</b-button>
           </template>
 
           <template v-if="update">
-            <b-button @click.prevent="processData('UPDATE')" :disabled="isLoading" size="sm" variant="primary"><i class="fa fa-dot-circle-o"></i> Update</b-button>
-            <b-button @click="addRow()" :disabled="isLoading" type="reset" size="sm" variant="danger"><i class="fa fa-ban"></i> Cancel</b-button>
+            <b-button @click.prevent="processData('UPDATE')" :disabled="isLoading" size="sm" variant="primary"><i class="fa fa-dot-circle-o"></i> {{$global.update}}</b-button>
+            <b-button @click="addRow()" :disabled="isLoading" type="reset" size="sm" variant="danger"><i class="fa fa-ban"></i> {{$global.cancel}}</b-button>
           </template>
         </b-form-group>
       </div>
@@ -82,18 +79,20 @@
   import {DATA_FORM as dataForm} from '../../../data/dnUser'
   import FormError from '../../../components/FormError.vue'
   import Multiselect from 'vue-multiselect'
+  import ToggleButton from '../../../components/ToggleButton.vue'
 
   export default {
     props: ['urlRest', 'item', 'update', 'horizontal'],
     components: {
       cSwitch: cSwitch,
       FormError,
-      Multiselect
+      Multiselect,
+      ToggleButton
     },
     data () {
       return {
         name: 'form-',
-        lCols: 4,
+        lCols: 3,
         optInput: dataForm.input,
         selectedKey: '',
         multiselectKeys: []
@@ -112,7 +111,7 @@
         this.$emit('emit_addRow', newItem)
       },
       processData (action) {
-        this.setPassword()
+        // this.setPassword()
         let invalid = this.$v.item.$invalid
         let url = !this.item.id ? this.urlRest : this.urlRest + '/' + this.item.id
         if (!invalid) {

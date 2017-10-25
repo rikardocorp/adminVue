@@ -4,6 +4,7 @@
       <i class="fa fa-eraser" aria-hidden="true"></i>
     </span>
     <div slot="header" class="text-center">
+      <!--<button title="Regresar" class="btn btn-in-title-left bg-primary"><i class="fa fa-arrow-left"></i></button>-->
       <strong>Cotizar</strong> Seguros
     </div>
 
@@ -170,21 +171,26 @@
         })
       },
       cotizar () {
-        this.isSearch = true
-        this.$emit('isSearching', true)
-        let myUrl = 'insuranceprices/cotizar?regionId=' + this.item['regionId'] + '&useTypeId=' + this.item['useTypeId'] + '&brand=' + this.item['brand'] + '&model=' + this.item['model']
-        let self = this.$store.dispatch('dispatchHTTP', {type: 'GET', url: myUrl})
-        self.then((data) => {
-          if (data.status) {
-            console.log(data.content)
-            this.emitResult(data.content)
-          } else {
-            console.log(data)
-          }
-          this.isSearch = false
-          this.$emit('isSearching', false)
-        })
-        console.log(myUrl)
+        let invalid = this.$v.item.$invalid
+        if (!invalid) {
+          this.isSearch = true
+          this.$emit('isSearching', true)
+          let myUrl = 'insuranceprices/cotizar?regionId=' + this.item['regionId'] + '&useTypeId=' + this.item['useTypeId'] + '&brand=' + this.item['brand'] + '&model=' + this.item['model']
+          let self = this.$store.dispatch('dispatchHTTP', {type: 'GET', url: myUrl})
+          self.then((data) => {
+            if (data.status) {
+              console.log(data.content)
+              this.emitResult(data.content)
+            } else {
+              console.log(data)
+            }
+            this.isSearch = false
+            this.$emit('isSearching', false)
+          })
+          console.log(myUrl)
+        } else {
+          this.$v.item.$touch()
+        }
       },
       emitResult (items) {
         this.$emit('input', items)

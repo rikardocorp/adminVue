@@ -146,7 +146,7 @@ export const DATA_FORM = {
     },
     description: {
       label: 'Descripcion',
-      placeholder: 'Numero celular',
+      placeholder: 'Nombre de Sucursal',
       type: 'text',
       input: 'textarea'
     }

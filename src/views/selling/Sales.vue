@@ -24,7 +24,7 @@
             <!--ALL SALES -->
             <div v-if="items.length" class="card-insurance row d-flex justify-content-center pt-3">
               <div v-for="(x, index) in items" :key="x.id"  :class="{'ticket cardWrap m-2 mb-3 hvr-bounce-in':true, 'pickOption': x.pick}" @click="selectedSale(x)">
-                <i class="fa fa-thumb-tack" aria-hidden="true"></i>
+                <!--<i class="fa fa-thumb-tack" aria-hidden="true"></i>-->
                 <div class="card-ticket cardLeft">
                   <avatar :username="x.insurancePolicy.insuranceCompany.name" :rounded="true" :size="6.4" sizeUnid="em"
                           :src="path + '/' + x.insurancePolicy.insuranceCompany.image" :alt="x.insurancePolicy.insuranceCompany.name"
@@ -33,7 +33,8 @@
                 </div>
                 <div class="card-ticket cardCenter dashed">
                   <div :class="{'xtitle': true, 'bg-danger': x.state==1, 'bg-primary': x.state==2, 'bg-info': x.state==3, 'bg-success': x.state==4, 'bg-blue': x.state==5}">
-                    Placa {{ x.vehicle.licensePlate }} {{x.state}}
+                    Placa {{ x.vehicle.licensePlate }}
+                    <!--<button class="btn btn-danger"><i class="fa fa-trash"></i></button>-->
                   </div>
                   <div class="xcontent">
                     <div class="title">
@@ -57,7 +58,7 @@
         </div>
 
         <div v-show="isDetail" key="div2" id="saleDetail">
-        <div class="col-md-11 col-sm-12 col-lg-9 col-xl-7 m-auto">
+        <div class="col-md-12 m-auto">
           <detail-sale :item="selectedItem" :urlRest="'sales'" @returnMain="returnMain"></detail-sale>
         </div>
       </div>
@@ -172,25 +173,6 @@
 <style lang="scss">
 
   #getSale {
-    .pickOption{
-      transform: rotateZ(2deg) rotateY(-0.3deg);
-      /*.avatar{*/
-      /*<!--transform: rotateZ(-3deg);-->*/
-      /*}*/
-      .cardCenter {
-        border: 2px solid rgb(255, 165, 1);
-      }
-      i {
-        position: absolute;
-        color: #3db3e8;
-        font-size: 2.3em;
-        transform: rotate(23deg);
-        bottom: 0.4em;
-        left: 6.7em;
-        z-index: 2;
-        display: block !important;
-      }
-    }
 
     .card-insurance {
       .avatar {
@@ -205,9 +187,6 @@
       width: 21em;
       cursor: pointer;
       font-size: 0.9em;
-      i {
-        display: none;
-      }
       .cardCenter{
         width: 18em;
       }
@@ -217,6 +196,17 @@
           font-size: 1.3em;
           height: 2.2em;
           padding: 0.4em 0.4em 0.4em 0.6em;
+          button{
+            display: block !important;
+            padding: 0.1em;
+            width: 25px;
+            height: 25px;
+            border-radius: 1em;
+            font-size: 0.9em;
+            position: absolute;
+            right: 10px;
+            top: 8px;
+          }
         }
         .xcontent{
           font-size: 1.1em;

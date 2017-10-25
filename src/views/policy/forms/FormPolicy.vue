@@ -1,9 +1,10 @@
 <template>
   <b-card>
-    <span @click="switchForm" class="btn-tool-left input-group-addon bg-primary" title="Registrar en grupo">
-      <i class="fa fa-tags" aria-hidden="true"></i>
-    </span>
+    <!--<span @click="switchForm" class="btn-tool-left input-group-addon bg-primary" title="Registrar en grupo">-->
+      <!--<i class="fa fa-tags" aria-hidden="true"></i>-->
+    <!--</span>-->
     <div slot="header" class="text-center">
+      <button @click="switchForm" title="Registrar en grupo" class="btn btn-in-title-left"><i class="fa fa-tags" aria-hidden="true"></i></button>
       <strong>Registrar</strong> una Poliza
     </div>
     <b-form :id="name + urlRest">
@@ -48,18 +49,18 @@
       <div slot="footer">
         <b-form-group :horizontal="horizontal" :label-cols="lCols">
           <template v-if="!update">
-            <b-button @click.prevent="processData('INSERT')" :disabled="isLoading"type="submit" size="sm" variant="primary"><i class="fa fa-dot-circle-o"></i> Submit</b-button>
-            <b-button @click="resetForm(name + urlRest)" :disabled="isLoading" size="sm" variant="danger"><i class="fa fa-ban"></i> Reset</b-button>
+            <b-button @click.prevent="processData('INSERT')" :disabled="isLoading"type="submit" size="sm" variant="primary"><i class="fa fa-dot-circle-o"></i> {{$global.submit}}</b-button>
+            <b-button @click="resetForm(name + urlRest)" :disabled="isLoading" size="sm" variant="danger"><i class="fa fa-ban"></i> {{$global.reset}}</b-button>
           </template>
 
           <template v-if="update">
-            <b-button @click.prevent="processData('UPDATE')" :disabled="isLoading" size="sm" variant="primary"><i class="fa fa-dot-circle-o"></i> Update</b-button>
-            <b-button @click="addRow()" :disabled="isLoading" type="reset" size="sm" variant="danger"><i class="fa fa-ban"></i> Cancel</b-button>
+            <b-button @click.prevent="processData('UPDATE')" :disabled="isLoading" size="sm" variant="primary"><i class="fa fa-dot-circle-o"></i> {{$global.update}}</b-button>
+            <b-button @click="addRow()" :disabled="isLoading" type="reset" size="sm" variant="danger"><i class="fa fa-ban"></i> {{$global.cancel}}</b-button>
           </template>
         </b-form-group>
       </div>
       <!--<p>DPD: {{ DPD }}</p>-->
-      <!--<p>Update: {{ update }}</p>-->
+      <!--<pre>item: {{ $global }}</pre>-->
 
     </b-form>
   </b-card>
@@ -94,14 +95,6 @@
       }
     },
     methods: {
-      selectOption (selectedOption) {
-        console.log(selectedOption)
-        let key = this.selectedKey
-        this.item[key] = selectedOption === null ? '' : selectedOption.id
-      },
-      openSelect (id) {
-        this.selectedKey = id
-      },
       addRow (newItem) {
         this.$emit('emit_addRow', newItem)
       },
@@ -110,7 +103,11 @@
         if (this.item.user === '') this.item.user = null
         let url = !this.item.id ? this.urlRest : this.urlRest + '/' + this.item.id
         if (!invalid) {
-          let self = this.$store.dispatch('dispatchHTTP', {type: action, url: url, data: this.item})
+          // LOCAL ITEM
+          let item = JSON.parse(JSON.stringify(this.item))
+          item.policyType = item.policyType.id
+
+          let self = this.$store.dispatch('dispatchHTTP', {type: action, url: url, data: item})
           self.then((data) => {
             if (data.status) {
               console.log('DATA-CONTENT ' + action)

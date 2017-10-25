@@ -1,5 +1,21 @@
 <template>
   <div class="wrapper">
+    <!--<div class="row d-flex justify-content-center">-->
+      <!--&lt;!&ndash;<pre>{{ $store.state.Login.LOAD_TABLE.roles }}</pre>&ndash;&gt;-->
+      <!--&lt;!&ndash;<pre>{{ $store.state.Login.LOAD_TABLE.regions }}</pre>&ndash;&gt;-->
+      <!--<div class="col-md-8">-->
+        <!--&lt;!&ndash;<app-form v-model="items" :item="item" :pickObject="pickObject" :horizontal="true" :urlRest="urlRest" @isSearching="isSearching"></app-form>&ndash;&gt;-->
+        <!--<app-form :item="item" :nameForm="itemName" :horizontal="true" :params="params"-->
+                  <!--@defaulValue="defaulValueForm1" @resultFilter="resultFilter"></app-form>-->
+      <!--</div>-->
+      <!--&lt;!&ndash;<div class="col-md-4">&ndash;&gt;-->
+        <!--&lt;!&ndash;&lt;!&ndash;<app-form v-model="items" :item="item" :pickObject="pickObject" :horizontal="true" :urlRest="urlRest" @isSearching="isSearching"></app-form>&ndash;&gt;&ndash;&gt;-->
+        <!--&lt;!&ndash;<app-form2 :item="itemForm2" :nameForm="nameForm2"  :horizontal="false" :list="selectedList"&ndash;&gt;-->
+                   <!--&lt;!&ndash;@defaulValue="defaulValueForm2"></app-form2>&ndash;&gt;-->
+      <!--&lt;!&ndash;</div>&ndash;&gt;-->
+    <!--</div>-->
+
+
     <b-card class="myCard">
       <div slot="header" class="text-center">
         <strong>Busqueda de Precios</strong>
@@ -82,7 +98,9 @@
           <template v-for="f in fields" :slot="f.key" scope="data">
             <div class="itemEditTable" v-if="f.key==='vehicle'">
               <span class="labelCol">
-                {{ data.value.vehicleType.vehicleBrand }}-{{ data.value.vehicleType.vehicleModel }}-{{ data.value.vehicleClass.description}}-{{ data.value.vehicleCategory.description}}
+                <!--{{ data.value.vehicleType.vehicleBrand }}-{{ data.value.vehicleType.vehicleModel }}-{{ data.value.vehicleClass.description}}-{{ data.value.vehicleCategory.description}}-->
+                <!--[{{data.value.seatNumber}}{{data.value.seatNumberTo === data.value.seatNumber ? ']': '-' + data.value.seatNumberTo + ']'}}-->
+                {{ data.value.vehicleClass.description}}-{{ data.value.vehicleCategory.description}}
                 [{{data.value.seatNumber}}{{data.value.seatNumberTo === data.value.seatNumber ? ']': '-' + data.value.seatNumberTo + ']'}}
               </span>
               <span></span>
@@ -110,9 +128,8 @@
         <!--<b-button @click="resetForm(name + urlRest)" :disabled="isLoading" size="sm" variant="danger"><i class="fa fa-ban"></i></b-button>-->
       <!--</div>-->
     <!--</b-card>-->
-
+    <pre>{{ item }}</pre>
     <pre>{{ changeList }}</pre>
-    <!--<pre>{{ item }}</pre>-->
   </div>
 </template>
 
@@ -123,6 +140,7 @@
   import ToggleButton from '../../components/ToggleButton.vue'
   import Mixin from '../../mixins'
   import {DATA_FORM_PRICE as dataForm, DATA as nData} from '../../data/dnInsurancePrices'
+  import Form from './forms/FormPriceFull.vue'
 
   export default {
     mixins: [Mixin],
@@ -131,6 +149,7 @@
         name: 'form-',
         urlRest: 'fullPrice',
         item: nData.post,
+        itemName: nData.name,
         optInput: dataForm.input,
         selectedKey: '',
         multiselectKeys: [],
@@ -138,6 +157,9 @@
         lCols: 4,
         horizontal: false,
         filter: null,
+        params: {
+          isSearch: false
+        },
 
         // Note 'isActive' is left out and will not appear in the rendered table
         changeList: {},
@@ -155,6 +177,14 @@
       }
     },
     methods: {
+      defaulValueForm1 () {
+        this.item = JSON.parse(JSON.stringify(nData.post))
+      },
+      resultFilter (items) {
+        console.log(items)
+        this.selectedList = {}
+        this.items = items
+      },
       processData () {
         let invalid = this.$v.item.$invalid
         if (!invalid) {
@@ -186,13 +216,15 @@
           price: price,
           insuranceCompany: this.item.insuranceCompany,
           insuranceType: this.item.insuranceType,
-          date: this.item.date,
+          // date: this.item.date,
           region: {id: column},
           useType: this.item.useType,
           observation: '',
           validityDate: this.item.validityDate,
           vehicleClass: row.vehicleClass,
-          vehicleCategory: row.vehicleCategory
+          vehicleCategory: row.vehicleCategory,
+          seatNumber: row.seatNumber,
+          seatNumberTo: row.seatNumberTo
         }
         this.$set(this.changeList, id, data)
         console.log(id)
@@ -341,7 +373,8 @@
       ToggleButton,
       Multiselect,
       Datepicker,
-      FormError
+      FormError,
+      appForm: Form
     }
   }
 </script>

@@ -2,7 +2,7 @@
   <div class="wrapper">
     <div class="animated fadeIn">
       <div class="row d-flex justify-content-center">
-        <div class="col-md-6 col-lg-5">
+        <div class="col-md-7 col-lg-6 col-xl-5">
           <app-form :item="item" :update="update" :urlRest="urlRest" :horizontal="true" @emit_addRow="addRow"></app-form>
         </div>
       </div>
@@ -50,6 +50,25 @@
   import Form from './forms/FormUser.vue'
   import Table from '../../components/xTable.vue'
   import FormError from '../../components/FormError.vue'
+
+  const _roles = {
+    ROLE_ADMIN: {
+      id: 0,
+      name: 'ROLE_ADMIN'
+    },
+    ROLE_PUNTO_VENTA: {
+      id: 1,
+      name: 'ROLE_PUNTO_VENTA'
+    },
+    ROLE_USUARIO: {
+      id: 2,
+      name: 'ROLE_USUARIO'
+    },
+    ROLE_VENDEDOR: {
+      id: 3,
+      name: 'ROLE_VENDEDOR'
+    }
+  }
 
   export default {
     name: 'user',
@@ -146,6 +165,7 @@
         this.showModal = !this.showModal
       },
       pickItem (item, option) {
+        console.log(item)
         this.initData()
         this.itemPick = item
         this.optionPick = option
@@ -153,6 +173,7 @@
 
         if (option.name === this.btnOption.editOpc.name) {
           this.item = {...this.item, ...item}
+          this.item._role = _roles[this.item.role.role]
           this.update = true
           this.$scrollTo('body')
         } else {

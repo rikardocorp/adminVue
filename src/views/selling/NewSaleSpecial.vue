@@ -69,7 +69,8 @@
             </b-card>
           </div>
           <!--<pre style="font-size: 0.7em">{{ data.pay }}</pre>-->
-          <pre style="font-size: 0.7em">{{ data.sale }}</pre>
+          <!--<pre style="font-size: 0.7em">{{ data.vehicle }}</pre>-->
+          <!--<pre style="font-size: 0.7em">{{ data.sale }}</pre>-->
           <!--<pre style="font-size: 0.7em">{{ data.pickPolice}}</pre>-->
           <!--<pre style="font-size: 0.7em">{{ data.pickPolice }}</pre>-->
           <!--<pre style="font-size: 0.7em">{{ data.vehicleType  }}</pre>-->
@@ -395,18 +396,18 @@
         // INSERT VEHICLE TYPE CATEGORY
         let vehicleTypeCategoryId = this.data.vehicle.item.vehicleTypeCategory.id
         if (vehicleTypeCategoryId === undefined) {
-          alert('vehicleTypeCategory undefined')
+//          alert('vehicleTypeCategory undefined')
           // SEARCH VEHICLE TYPE CATEGORY
           let r3 = await this.searchVehicleTypeCategory()
           console.log('R3: ')
           console.log(r3)
-
+//          alert('vehicleTypeCategory Search')
           if (!r3.status) return false
           else {
             if (r3.content.length > 0) {
               this.data.vehicle.item.vehicleTypeCategory = r3.content[0]
             } else {
-              alert('insert vehicleTypeCategory')
+//              alert('insert vehicleTypeCategory')
               // INSERT VEHICLE TYPE CATEGORY
               let vehicleTypeCategory = {
                 vehicleCategory: this.data.vehicleType.item.vehicleCategory,
@@ -818,7 +819,7 @@
         // GET PAY
         let pay = JSON.parse(localStorage.getItem('pay'))
         if (pay) {
-          alert('pay')
+//          alert('pay')
           this.data.pay.item = pay
           this.data.pay.validate = true
         } else {

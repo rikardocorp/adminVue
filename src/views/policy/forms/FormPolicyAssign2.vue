@@ -47,8 +47,8 @@
         </b-form-group>
 
         <div slot="footer" class="mt-3">
-            <b-button class="float-left" @click="resetForm(name + nameForm)" :disabled="isLoading" size="sm" variant="outline-secondary"><i class="fa fa-ban"></i> Reset</b-button>
-            <b-button class="float-right" @click.prevent="assignPolicies" :disabled="isLoading" type="submit" size="sm" variant="primary"><i class="fa fa-dot-circle-o"></i> Submit</b-button>
+            <b-button class="float-left" @click="resetForm(name + nameForm)" :disabled="isLoading" size="sm" variant="outline-secondary"><i class="fa fa-ban"></i> {{$global.reset}}</b-button>
+            <b-button class="float-right" @click.prevent="assignPolicies" :disabled="isLoading" type="submit" size="sm" variant="primary"><i class="fa fa-dot-circle-o"></i> {{$global.assign}}</b-button>
         </div>
       </b-form>
     </b-card>
@@ -57,7 +57,7 @@
       <b-input-group-addon class="bg-primary"><i class="fa fa-key"></i></b-input-group-addon>
       <b-form-input v-model="password" type="password" placeholde="Password para eliminar" title="Password para eliminar"></b-form-input>
       <b-input-group-button>
-        <b-btn variant="danger" @click="deletePolicies">Eliminar</b-btn>
+        <b-btn variant="danger" @click="deletePolicies">{{$global.delete}}</b-btn>
       </b-input-group-button>
     </b-input-group>
 

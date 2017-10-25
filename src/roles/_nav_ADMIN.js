@@ -164,17 +164,17 @@ export default {
     //     text: 'NEW'
     //   }
     // },
+    // {
+    //   name: 'Poliza Vendida',
+    //   url: '/poliza-vendida',
+    //   icon: 'icon-speedometer',
+    //   badge: {
+    //     variant: 'danger',
+    //     text: 'NEW'
+    //   }
+    // },
     {
       name: 'Poliza Vendida',
-      url: '/poliza-vendida',
-      icon: 'icon-speedometer',
-      badge: {
-        variant: 'danger',
-        text: 'NEW'
-      }
-    },
-    {
-      name: 'Ventas',
       url: '/polizas-vendidas',
       icon: 'icon-speedometer',
       badge: {

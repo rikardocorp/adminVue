@@ -64,9 +64,9 @@
           <!--</div>-->
         <!--</b-form-group>-->
 
-        <div slot="footer" class="text-right">
-            <b-button class="float-left" @click="resetForm(name + nameForm)" :disabled="isLoading" size="sm" variant="outline-secondary"><i class="fa fa-ban"></i> Reset</b-button>
-            <b-button class="float-right" @click.prevent="processData" :disabled="isLoading" type="submit" size="sm" variant="primary"><i class="fa fa-dot-circle-o"></i> Filtrar</b-button>
+        <div slot="footer" class="text-right d-none d-md-block">
+            <b-button class="float-left" @click="resetForm(name + nameForm)" :disabled="isLoading" size="sm" variant="outline-secondary"><i class="fa fa-ban"></i> {{$global.reset}}</b-button>
+            <b-button class="float-right" @click.prevent="processData" :disabled="isLoading" type="submit" size="sm" variant="primary"><i class="fa fa-dot-circle-o"></i> {{$global.filter}}</b-button>
         </div>
       </div>
       <div class="col-md-7">
@@ -78,8 +78,12 @@
                     calendar-class="myDatepicker-style" wrapper-class="myDatepicker-content"></datepicker>
 
         <div class="row pt-1">
-          <div class="col-sm-6 text-dark text-right"><span class="text-primary">Del: </span>{{item.dateFrom}}</div>
-          <div class="col-sm-6 text-dark"><span class="text-primary">Al: </span>{{item.dateTo}}</div>
+          <div class="col-6 col-sm-6 text-dark text-right"><span class="text-primary">Del: </span>{{item.dateFrom}}</div>
+          <div class="col-6 col-sm-6 text-dark"><span class="text-primary">Al: </span>{{item.dateTo}}</div>
+        </div>
+        <div slot="footer" class="text-right d-md-none">
+          <b-button class="float-left" @click="resetForm(name + nameForm)" :disabled="isLoading" size="sm" variant="outline-secondary"><i class="fa fa-ban"></i> {{$global.reset}}</b-button>
+          <b-button class="float-right" @click.prevent="processData" :disabled="isLoading" type="submit" size="sm" variant="primary"><i class="fa fa-dot-circle-o"></i> {{$global.filter}}</b-button>
         </div>
       </div>
     </b-form>

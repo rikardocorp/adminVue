@@ -31,7 +31,7 @@
               </div>
               <div class="card-ticket cardCenter">
                 <div class="xtitle">
-                  {{ x.insuranceCompanyName }}
+                  {{ x.insuranceCompanyName }} - {{ x.regionName }}
                 </div>
                 <div class="xcontent">
                   <div class="title">

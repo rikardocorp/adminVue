@@ -7,10 +7,10 @@
       <strong>Registrar Precios</strong>
     </div>
     <p class="color-primary bold h5 text-center mb-4">
-      {{ vehicle.vehicleType ? vehicle.vehicleType.vehicleBrand : '' }} - {{ vehicle.vehicleType ? vehicle.vehicleType.vehicleModel : ''}}
-      (<span class="">{{vehicle.seatNumber }}</span>  asientos)<br>
-      <span class="text-dark h6">CLASE {{ vehicle.vehicleClass ? vehicle.vehicleClass.description : '' }}
-        - CATEGORIA {{ vehicle.vehicleCategory ? vehicle.vehicleCategory.description : '' }}</span></p>
+      <!--{{ vehicle.vehicleType ? vehicle.vehicleType.vehicleBrand : '' }} - {{ vehicle.vehicleType ? vehicle.vehicleType.vehicleModel : ''}}-->
+      <span class="text-dark h6">CLASE</span> {{ vehicle.vehicleClass ? vehicle.vehicleClass.description : '' }}
+      <span class="text-dark h6"> - CATEGORIA</span> {{ vehicle.vehicleCategory ? vehicle.vehicleCategory.description : '' }}<br>
+      <span class="text-dark h6">[{{vehicle.seatNumber }} a {{vehicle.seatNumberTo }}] asientos</span></p>
     <b-form :id="name + urlRest">
 
       <b-form-group v-for="(option, index) in optInput" :key="index"
@@ -64,13 +64,13 @@
       <div slot="footer">
         <b-form-group :horizontal="horizontal" :label-cols="lCols">
           <template v-if="!update">
-            <b-button @click.prevent="processData('INSERT')" :disabled="isLoading" type="submit" size="sm" variant="primary"><i class="fa fa-dot-circle-o"></i> Submit</b-button>
-            <b-button @click="resetForm(name + urlRest)" :disabled="isLoading" size="sm" variant="danger"><i class="fa fa-ban"></i> Reset</b-button>
+            <b-button @click.prevent="processData('INSERT')" :disabled="isLoading" type="submit" size="sm" variant="primary"><i class="fa fa-dot-circle-o"></i> {{$global.submit}}</b-button>
+            <b-button @click="resetForm(name + urlRest)" :disabled="isLoading" size="sm" variant="danger"><i class="fa fa-ban"></i> {{$global.reset}}</b-button>
           </template>
 
           <template v-if="update">
-            <b-button @click.prevent="processData('UPDATE')" :disabled="isLoading" size="sm" variant="primary"><i class="fa fa-dot-circle-o"></i> Update</b-button>
-            <b-button @click="addRow()" :disabled="isLoading" type="reset" size="sm" variant="danger"><i class="fa fa-ban"></i> Cancel</b-button>
+            <b-button @click.prevent="processData('UPDATE')" :disabled="isLoading" size="sm" variant="primary"><i class="fa fa-dot-circle-o"></i> {{$global.update}}</b-button>
+            <b-button @click="addRow()" :disabled="isLoading" type="reset" size="sm" variant="danger"><i class="fa fa-ban"></i> {{$global.cancel}}</b-button>
           </template>
         </b-form-group>
       </div>
@@ -79,6 +79,8 @@
       <!--<pre>{{ vehicle }}</pre>-->
 
     </b-form>
+    <!--<pre>{{item}}</pre>-->
+    <!--<pre>{{vehicle}}</pre>-->
 
   </b-card>
 
@@ -118,8 +120,6 @@
     },
     methods: {
       selectDate (pickDate) {
-        console.log('pickDate')
-        console.log(pickDate)
         let newDate = ''
         if (pickDate) {
           newDate = this.tranformDateToFormat(pickDate, '/')
@@ -225,6 +225,8 @@
         console.log(oldVal)
         this.item.vehicleCategory = this.vehicle.vehicleCategory
         this.item.vehicleClass = this.vehicle.vehicleClass
+        this.item.seatNumber = this.vehicle.seatNumber
+        this.item.seatNumberTo = this.vehicle.seatNumberTo
         if (this.update) {
           console.log('WATCH item update')
           this.setMultiSelect()

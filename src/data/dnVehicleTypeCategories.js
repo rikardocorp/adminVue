@@ -1,7 +1,7 @@
 import { required, minLength, maxLength, between, numeric, email, sameAs } from 'vuelidate/lib/validators'
 
 export const DATA = {
-  name: 'vehicletypecategories',
+  name: 'vehicletypecategories?type=',
   post: {
     brand: '',
     vehicleType: null,
@@ -35,12 +35,12 @@ export const DATA = {
     actions: {label: '', thStyle: 'width:115px', 'class': 'text-center'}
   },
   fieldsTablePrice: {
-    vehicleType: {
-      label: 'Vehiculo',
-      sortable: true,
-      'class': 'text-center',
-      formatter: (value) => { return value ? value.vehicleBrand + '-' + value.vehicleModel : '-' }
-    },
+    // vehicleType: {
+    //   label: 'Vehiculo',
+    //   sortable: true,
+    //   'class': 'text-center',
+    //   formatter: (value) => { return value ? value.vehicleBrand + '-' + value.vehicleModel : '-' }
+    // },
     vehicleClass: {
       label: 'Clase',
       sortable: true,

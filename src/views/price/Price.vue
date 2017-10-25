@@ -10,11 +10,12 @@
         <!-- VEHICLES TYPES -->
         <div key="div1" class="row" v-show="!switchPrices">
           <div class="col-12">
-            <app-table :fields="fieldsVT" :items="itemsVT" :btnOption="btnOptionVT" @pickItem="pickItem">
+            <app-table :fields="fieldsVTC" :items="itemsVTC" :btnOption="btnOptionVTC" @pickItem="pickItem">
                 <span slot="title" class="">
-                  Tipos de Vehiculos
+                  Lista de Clase - Categoria [Precios]
                 </span>
             </app-table>
+            <pre>{{ totalRows }}</pre>
           </div><!--/.col-->
         </div><!--/.row-->
 
@@ -24,7 +25,7 @@
           <div class="row d-flex justify-content-center">
             <div class="col-md-6">
               <app-form :item="item"
-                        :vehicle="itemVT"
+                        :vehicle="itemVTC"
                         :update="update"
                         :urlRest="urlRest"
                         :horizontal="true"
@@ -37,7 +38,7 @@
             <div class="col-12">
               <app-table :fields="fields" :items="items" :btnOption="btnOption" @pickItem="pickItem">
                 <span slot="title" class="">
-                  {{ itemVT.vehicleBrand }} - {{ itemVT.vehicleModel}} - Cat. {{ itemVT.category }}
+                  {{ itemVTC.vehicleBrand }} - {{ itemVTC.vehicleModel}} - Cat. {{ itemVTC.category }}
                 </span>
               </app-table>
             </div><!--/.col-->
@@ -97,11 +98,11 @@
         },
 
         // vehicle type
-        urlRestVT: nDATA.name,
-        itemVT: JSON.parse(JSON.stringify(nDATA.post)),
-        fieldsVT: nDATA.fieldsTablePrice,
-        itemsVT: [],
-        btnOptionVT: {
+        urlRestVTC: nDATA.name,
+        itemVTC: JSON.parse(JSON.stringify(nDATA.post)),
+        fieldsVTC: nDATA.fieldsTablePrice,
+        itemsVTC: [],
+        btnOptionVTC: {
           plusOpc: {
             name: 'plus',
             variant: 'primary',
@@ -114,7 +115,8 @@
         indexSelected: null,
         itemPick: {},
         optionPick: {},
-        showModal: false
+        showModal: false,
+        totalRows: 0
       }
     },
     methods: {
@@ -127,28 +129,31 @@
           }
           //this.getData()
         }
-        this.initData()
+        //this.initData()
+        this.getDataInsurancePrices()
       },
       initData () {
         this.update = false
         this.item = JSON.parse(JSON.stringify(PriceData.post))
         this.indexSelected = null
         if (!this.switchPrices) {
-          this.itemVT = JSON.parse(JSON.stringify(nDATA.post))
+          this.itemVTC = JSON.parse(JSON.stringify(nDATA.post))
         }
       },
       getData () {
-        let self = this.$store.dispatch('dispatchHTTP', {type: 'GET', url: this.urlRestVT})
+        // let url = this.urlRestVTC + '1'
+        let url = 'vehicletypecategories/filter?type=0'
+        // alert(url)
+
+        let self = this.$store.dispatch('dispatchHTTP', {type: 'GET', url: url})
         self.then((data) => {
           console.log(data)
-          this.itemsVT = data.status ? data.content : []
-          this.totalRows = this.items.length
+          this.itemsVTC = data.status ? data.content : []
+          this.totalRows = this.itemsVTC.length
         })
       },
-      getDataInsurancePrices (item) {
-        console.log(item)
-        let vehicleCategory = {id: item.vehicleCategory.id}
-        let vehicleClass = {id: item.vehicleClass.id}
+      getDataInsurancePrices () {
+        let item = this.itemPick
         let thisUrl = 'insuranceprices/filter?vehicleTypeCategoryId=' + item.id
         // let thisUrl = 'insuranceprices'
         console.log('URL TIPO VEHICULO')
@@ -187,10 +192,10 @@
           this.$scrollTo('body')
         } else if (option.name === this.btnOption.deleteOpc.name) {
           this.toggleDialog()
-        } else if (option.name === this.btnOptionVT.plusOpc.name) {
+        } else if (option.name === this.btnOptionVTC.plusOpc.name) {
           this.initData()
-          this.getDataInsurancePrices(item)
-          this.itemVT = {...this.itemVT, ...item}
+          this.getDataInsurancePrices()
+          this.itemVTC = {...this.itemVTC, ...item}
           this.switchPrices = true
         }
       },

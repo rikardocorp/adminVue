@@ -1,9 +1,10 @@
 <template>
   <b-card id="formPolicyRegister" class="exception">
-    <span @click="switchForm" class="btn-tool-left input-group-addon bg-info" title="Registrar en grupo">
-      <i class="fa fa-tag" aria-hidden="true"></i>
-    </span>
+    <!--<span @click="switchForm" class="btn-tool-left input-group-addon bg-info" title="Registrar en grupo">-->
+      <!--<i class="fa fa-tag" aria-hidden="true"></i>-->
+    <!--</span>-->
     <div slot="header" class="text-center">
+      <button @click="switchForm" title="Registro simple" class="btn btn-in-title-left"><i class="fa fa-tag" aria-hidden="true"></i></button>
       <strong>Registrar</strong> Polizas
     </div>
     <b-form :id="name">
@@ -47,14 +48,13 @@
       <div slot="footer">
         <b-form-group :horizontal="horizontal" :label-cols="lCols">
           <template v-if="!update">
-            <b-button @click.prevent="processData('INSERT')" :disabled="isLoading"type="submit" size="sm" variant="info" class="text-white"><i class="fa fa-dot-circle-o"></i> Registrar</b-button>
+            <b-button @click.prevent="processData('INSERT')" :disabled="isLoading"type="submit" size="sm" variant="info" class="text-white"><i class="fa fa-dot-circle-o"></i> Insertar</b-button>
             <b-button @click="resetForm(name)" :disabled="isLoading" size="sm" variant="secondary" class="text-white"><i class="fa fa-ban"></i> Reset</b-button>
           </template>
         </b-form-group>
       </div>
       <!--<p>DPD: {{ DPD }}</p>-->
       <!--<p>Update: {{ update }}</p>-->
-
     </b-form>
     <!--<pre>{{ name }}</pre>-->
     <!--<pre>{{ item }}</pre>-->
