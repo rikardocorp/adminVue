@@ -36,6 +36,7 @@ import Cotizar from '../views/selling/Cotizar.vue'
 // Price
 import Price from '../views/price/Price.vue'
 import PriceFull from '../views/price/PriceFull.vue'
+import PriceFull2 from '../views/price/PriceFull2.vue'
 
 // Policy
 import Policy from '../views/policy/Policy.vue'
@@ -156,6 +157,12 @@ const router = new Router({
               path: 'precio-poliza-full',
               name: 'Tabla de Precios Poliza',
               component: PriceFull,
+              meta: {requiresAuth: true, ROLE_ADMIN: true}
+            },
+            {
+              path: 'precio-poliza-full2',
+              name: 'Tabla de Precios Poliza 2',
+              component: PriceFull2,
               meta: {requiresAuth: true, ROLE_ADMIN: true}
             },
             {

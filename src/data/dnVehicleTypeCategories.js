@@ -168,6 +168,10 @@ export const DATA_FORM = {
       seatNumber: {
         required,
         numeric
+      },
+      seatNumberTo: {
+        required,
+        numeric
       }
     }
   }

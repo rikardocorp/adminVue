@@ -139,6 +139,62 @@ html{
       float: right;
       margin: 0 !important;
     }
+
+    .cover{
+      position: absolute;
+      background: rgba(0, 128, 0, 0);
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+    }
+
+    //$dg_red:  #f96d6c;
+    $dg_color:  #ef7b1f;
+    .dg-backdrop{
+      /*opacity: 0.5;*/
+      /*background-color: #101010;*/
+    }
+    .dg-container{
+      .dg-main-content{
+        background: $dg_color;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+        border: 1px solid $dg_color;
+        .dg-content-body{
+          border-bottom: 1px solid rgba(0, 0, 0, 0.18);
+          .dg-content{
+            color: white;
+            font-size: 1.2em;
+            text-align: center;
+          }
+        }
+        .dg-content-footer{
+          .dg-btn{
+            display: inline-block;
+            font-weight: normal;
+            background: rgba(0, 0, 0, 0.44);
+            white-space: nowrap;
+            vertical-align: middle;
+            user-select: none;
+            border: 1px solid transparent;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.875rem;
+            line-height: 1.25;
+            border-radius: 0.55rem;
+            transition: all 0.15s ease-in-out;
+            &.dg-btn--ok{
+              border: 1px solid $dg_color;
+              background: white;
+              color: $dg_color;
+            }
+            &.dg-btn--cancel{
+
+            }
+          }
+        }
+      }
+    }
   }
 
   .nav-dropdown.open{
@@ -180,6 +236,12 @@ html{
     .multiselect__spinner:after,
     .multiselect__spinner:before{
       border-color: #ef7b1f transparent transparent;
+    }
+    .multiselect--disabled{
+      background: none;
+      .multiselect__select{
+        background: none;
+      }
     }
   }
 

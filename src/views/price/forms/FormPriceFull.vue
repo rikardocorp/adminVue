@@ -1,8 +1,7 @@
 <template>
-
-  <b-card class="myCard">
+  <b-card id="fullPrice" class="myCard">
     <div slot="header" class="text-left">
-      <strong>Polizas</strong> - Filtros de busqueda
+      <strong>Precios</strong> - Busqueda de Precios
     </div>
     <b-form :id="name + nameForm" class="row">
       <div class="col-md-5">
@@ -40,6 +39,14 @@
                        @blur.native="$v.item[index]? $v.item[index].$touch(): false">
           </multiselect>
 
+          <!-- DATEPICKER -->
+          <datepicker v-else-if="option.input=='datepicker'"
+                      v-model="registerDate" :format="option.params.format" language="es" :placeholder="option.placeholder"
+                      :clear-button="false" :bootstrapStyling="true"
+                      :disabled-picker="isLoading"
+                      @input="selectDate" calendar-class="myDatepicker-style" wrapper-class="myDatepicker-content"
+                      @blur.native="$v.item[index]? $v.item[index].$touch(): false"></datepicker>
+
           <!-- RADIO-GROUP -->
           <b-form-radio-group v-else-if="option.input=='radio-group'" class="radio-group"
                               buttons
@@ -49,6 +56,7 @@
                               :options="option.params.options">
           </b-form-radio-group>
 
+          <form-error :data="$v.item[index]? $v.item[index] : {} "></form-error>
         </b-form-group>
 
         <!--<b-form-group label="Numeros de Poliza:" :horizontal="false">-->
@@ -77,13 +85,13 @@
                     @input="selectDate" :inline="true"
                     calendar-class="myDatepicker-style" wrapper-class="myDatepicker-content"></datepicker>
 
-        <div class="row pt-1">
-          <div class="col-sm-6 text-dark text-right"><span class="text-primary">Del: </span>{{item.dateFrom}}</div>
-          <div class="col-sm-6 text-dark"><span class="text-primary">Al: </span>{{item.dateTo}}</div>
-        </div>
+        <!--<div class="row pt-1">-->
+          <!--<div class="col-sm-6 text-dark text-right"><span class="text-primary">Del: </span>{{item.dateFrom}}</div>-->
+          <!--<div class="col-sm-6 text-dark"><span class="text-primary">Al: </span>{{item.dateTo}}</div>-->
+        <!--</div>-->
       </div>
     </b-form>
-    <!--<pre>{{item}}</pre>-->
+    <pre>{{item}}</pre>
   </b-card>
 
 </template>
@@ -92,20 +100,23 @@
   import Multiselect from 'vue-multiselect'
   import Datepicker from 'vuejs-datepicker'
   import {DATA_FORM_PRICE as dataForm} from '../../../data/dnInsurancePrices'
-
   import Mixin from '../../../mixins'
   import EventBus from '../../../event-bus'
+  import FormError from '../../../components/FormError.vue'
+
   export default {
     props: ['horizontal', 'item', 'nameForm', 'params'],
     mixins: [Mixin],
     components: {
       Multiselect,
-      Datepicker
+      Datepicker,
+      FormError
     },
     data () {
       return {
         name: 'form-',
         lCols: 5,
+        registerDate: '',
         itemDefault: JSON.parse(JSON.stringify(this.item)),
         optInput: dataForm.input,
         selectedKey: '',
@@ -117,10 +128,6 @@
           input: 'datepicker',
           params: {
             key: 'date',
-            highlighted: {
-              to: null,
-              from: null
-            },
             format: 'dd/MM/yyyy',
             value: '',
             count: 0
@@ -162,27 +169,8 @@
       selectDate (pickDate) {
         console.log('pickDate')
         console.log(pickDate)
-        let newDate = ''
-        if (pickDate) {
-          newDate = this.tranformDateToFormat(pickDate, '/')
-          if (this.datepicker.params.count === 0) {
-            this.datepicker.params.count++
-            this.datepicker.params.highlighted.from = pickDate
-            this.datepicker.params.highlighted.to = pickDate
-            this.$set(this.item, 'dateFrom', newDate)
-            this.$set(this.item, 'dateTo', '')
-          } else {
-            this.datepicker.params.count = 0
-            let a = this.$moment(this.item.dateFrom, 'DD/MM/YYYY')
-            let b = this.$moment(newDate, 'DD/MM/YYYY')
-            let max = this.$moment.max(a, b)
-            let min = this.$moment.min(a, b)
-            this.datepicker.params.highlighted.from = min
-            this.datepicker.params.highlighted.to = max
-            this.$set(this.item, 'dateFrom', min._i)
-            this.$set(this.item, 'dateTo', max._i)
-          }
-        }
+        let newDate = this.tranformDateToFormat(pickDate, '/')
+        this.item.date = newDate
       },
       getOption (urlRest, index) {
         let self = this.$store.dispatch('dispatchHTTP', {type: 'GET', url: urlRest})
@@ -199,15 +187,9 @@
           vm.optInput[key].params.value = ''
         })
       },
-      resetDatepicker () {
-        this.datepicker.params.highlighted.from = null
-        this.datepicker.params.highlighted.to = null
-      },
       resetForm (formId) {
         document.getElementById(formId).reset()
-        this.resetDatepicker()
         this.resetMultiSelect()
-        this.datepicker.params.count = 0
         this.datepicker.params.value = ''
         this.$emit('defaulValue')
       }
@@ -249,6 +231,12 @@
   /*border-radius: 0.5rem 0.5rem 0 0;*/
   /*}*/
   /*}*/
+  #fullPrice{
+    .vdp-datepicker__calendar .cell{
+      height: 37px;
+    }
+  }
+
 
   .radio-group{
     float: left;

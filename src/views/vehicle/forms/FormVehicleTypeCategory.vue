@@ -79,7 +79,7 @@
     data () {
       return {
         name: 'form-',
-        lCols: 4,
+        lCols: 3,
         optInput: dataForm.input,
         selectedKey: '',
         multiselectKeys: []

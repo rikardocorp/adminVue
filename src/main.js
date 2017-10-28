@@ -13,6 +13,7 @@ import lodash from 'lodash'
 import moment from 'moment'
 import VueFormWizard from 'vue-form-wizard'
 import VueScrollTo from 'vue-scrollto'
+import VuejsDialog from 'vuejs-dialog'
 import {names} from './data/GlobalNames'
 
 Vue.prototype.$lodash = lodash
@@ -20,6 +21,15 @@ Vue.prototype.$moment = moment
 Vue.prototype.$global = names
 moment.locale('es')
 
+Vue.use(VuejsDialog, {
+  html: true,
+  loader: true,
+  okText: 'Si',
+  cancelText: 'No',
+  animation: 'bounce',
+  clicksCount: 2,
+  type: 'soft' // 'soft', 'hard', 'basic'
+})
 Vue.use(Vuelidate)
 Vue.use(BootstrapVue)
 Vue.use(VueRosource)

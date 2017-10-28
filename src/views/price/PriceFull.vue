@@ -1,85 +1,85 @@
 <template>
   <div class="wrapper">
-    <!--<div class="row d-flex justify-content-center">-->
-      <!--&lt;!&ndash;<pre>{{ $store.state.Login.LOAD_TABLE.roles }}</pre>&ndash;&gt;-->
-      <!--&lt;!&ndash;<pre>{{ $store.state.Login.LOAD_TABLE.regions }}</pre>&ndash;&gt;-->
-      <!--<div class="col-md-8">-->
-        <!--&lt;!&ndash;<app-form v-model="items" :item="item" :pickObject="pickObject" :horizontal="true" :urlRest="urlRest" @isSearching="isSearching"></app-form>&ndash;&gt;-->
-        <!--<app-form :item="item" :nameForm="itemName" :horizontal="true" :params="params"-->
-                  <!--@defaulValue="defaulValueForm1" @resultFilter="resultFilter"></app-form>-->
-      <!--</div>-->
-      <!--&lt;!&ndash;<div class="col-md-4">&ndash;&gt;-->
-        <!--&lt;!&ndash;&lt;!&ndash;<app-form v-model="items" :item="item" :pickObject="pickObject" :horizontal="true" :urlRest="urlRest" @isSearching="isSearching"></app-form>&ndash;&gt;&ndash;&gt;-->
-        <!--&lt;!&ndash;<app-form2 :item="itemForm2" :nameForm="nameForm2"  :horizontal="false" :list="selectedList"&ndash;&gt;-->
-                   <!--&lt;!&ndash;@defaulValue="defaulValueForm2"></app-form2>&ndash;&gt;-->
-      <!--&lt;!&ndash;</div>&ndash;&gt;-->
-    <!--</div>-->
-
-
-    <b-card class="myCard">
-      <div slot="header" class="text-center">
-        <strong>Busqueda de Precios</strong>
+    <div class="row d-flex justify-content-center">
+      <!--<pre>{{ $store.state.Login.LOAD_TABLE.roles }}</pre>-->
+      <!--<pre>{{ $store.state.Login.LOAD_TABLE.regions }}</pre>-->
+      <div class="col-md-8">
+        <!--<app-form v-model="items" :item="item" :pickObject="pickObject" :horizontal="true" :urlRest="urlRest" @isSearching="isSearching"></app-form>-->
+        <app-form :item="item" :nameForm="itemName" :horizontal="true" :params="params"
+                  @defaulValue="defaulValueForm1" @resultFilter="resultFilter"></app-form>
       </div>
-      <b-form :id="name + urlRest">
-        <div class="row">
-          <b-form-group v-for="(option, index) in optInput" :key="index" :label-sr-only="option.srOnly"
-                        :class="{ 'form-group--error': $v.item[index]? $v.item[index].$error : false, 'text-right': true, 'col-md-2 float-left': true}"
-                        :label-cols="option.srOnly ? null : lCols"
-                        :label="option.label + ':'"
-                        :horizontal="horizontal">
+      <!--<div class="col-md-4">-->
+        <!--&lt;!&ndash;<app-form v-model="items" :item="item" :pickObject="pickObject" :horizontal="true" :urlRest="urlRest" @isSearching="isSearching"></app-form>&ndash;&gt;-->
+        <!--<app-form2 :item="itemForm2" :nameForm="nameForm2"  :horizontal="false" :list="selectedList"-->
+                   <!--@defaulValue="defaulValueForm2"></app-form2>-->
+      <!--</div>-->
+    </div>
 
-            <!-- INPUT -->
-            <b-form-input v-if="option.input==undefined || option.input=='input'"
-                          :disabled="isLoading" :type="option.type"
-                          v-model.trim="item[index]"
-                          @blur.native="$v.item[index]? $v.item[index].$touch(): false"
-                          :placeholder="option.placeholder+'..'"></b-form-input>
 
-            <!-- TEXTAREA -->
-            <b-form-textarea v-else-if="option.input=='textarea'"
-                             :disabled="isLoading"
-                             v-model.trim="item[index]"
-                             :placeholder="option.placeholder+'..'"
-                             @blur.native="$v.item[index]? $v.item[index].$touch(): false"
-                             :rows="3" :max-rows="6"></b-form-textarea>
+    <!--<b-card class="myCard">-->
+      <!--<div slot="header" class="text-center">-->
+        <!--<strong>Busqueda de Precios</strong>-->
+      <!--</div>-->
+      <!--<b-form :id="name + urlRest">-->
+        <!--<div class="row">-->
+          <!--<b-form-group v-for="(option, index) in optInput" :key="index" :label-sr-only="option.srOnly"-->
+                        <!--:class="{ 'form-group&#45;&#45;error': $v.item[index]? $v.item[index].$error : false, 'text-right': true, 'col-md-2 float-left': true}"-->
+                        <!--:label-cols="option.srOnly ? null : lCols"-->
+                        <!--:label="option.label + ':'"-->
+                        <!--:horizontal="horizontal">-->
 
-            <!-- MULTISELECT -->
-            <multiselect v-else-if="option.input=='multiselect'"
-                         :close-on-select="true" :hide-selected="true" :preserve-search="false" :taggable="false" select-label=""
-                         :placeholder="option.placeholder"
-                         :label="option.params.label" :track-by="option.params.label"
-                         :loading="!option.params.activate"
-                         :disabled="!option.params.activate || isLoading"
-                         v-model="item[index]"
-                         :options="option.params.options"
+            <!--&lt;!&ndash; INPUT &ndash;&gt;-->
+            <!--<b-form-input v-if="option.input==undefined || option.input=='input'"-->
+                          <!--:disabled="isLoading" :type="option.type"-->
+                          <!--v-model.trim="item[index]"-->
+                          <!--@blur.native="$v.item[index]? $v.item[index].$touch(): false"-->
+                          <!--:placeholder="option.placeholder+'..'"></b-form-input>-->
 
-                         @blur.native="$v.item[index]? $v.item[index].$touch(): false">
-            </multiselect>
+            <!--&lt;!&ndash; TEXTAREA &ndash;&gt;-->
+            <!--<b-form-textarea v-else-if="option.input=='textarea'"-->
+                             <!--:disabled="isLoading"-->
+                             <!--v-model.trim="item[index]"-->
+                             <!--:placeholder="option.placeholder+'..'"-->
+                             <!--@blur.native="$v.item[index]? $v.item[index].$touch(): false"-->
+                             <!--:rows="3" :max-rows="6"></b-form-textarea>-->
 
-            <!-- DATEPICKER -->
-            <datepicker v-else-if="option.input=='datepicker'"
-                        v-model="option.params.value" :format="option.params.format" language="es" :placeholder="option.placeholder"
-                        :clear-button="false" :bootstrapStyling="true" calendar-button-icon="fa fa-calendar"
-                        :disabled-picker="isLoading"
-                        :disabled="option.params.disabled"
-                        @input="selectDate" calendar-class="myDatepicker-style" wrapper-class="myDatepicker-content"
-                        @opened="openSelect(option.params.key)"
-                        @blur.native="$v.item[index]? $v.item[index].$touch(): false"></datepicker>
+            <!--&lt;!&ndash; MULTISELECT &ndash;&gt;-->
+            <!--<multiselect v-else-if="option.input=='multiselect'"-->
+                         <!--:close-on-select="true" :hide-selected="true" :preserve-search="false" :taggable="false" select-label=""-->
+                         <!--:placeholder="option.placeholder"-->
+                         <!--:label="option.params.label" :track-by="option.params.label"-->
+                         <!--:loading="!option.params.activate"-->
+                         <!--:disabled="!option.params.activate || isLoading"-->
+                         <!--v-model="item[index]"-->
+                         <!--:options="option.params.options"-->
 
-            <!-- ERROR MESSAGE-->
-            <form-error :data="$v.item[index]? $v.item[index] : {} "></form-error>
-          </b-form-group>
+                         <!--@blur.native="$v.item[index]? $v.item[index].$touch(): false">-->
+            <!--</multiselect>-->
 
-          <b-form-group :horizontal="horizontal" :label-cols="null" :label-sr-only="true" class="col-md-2 text-right">
-            <b-button @click.prevent="processData('INSERT')" :disabled="isLoading" type="submit" size="sm" variant="primary"><i class="fa fa-search"></i>Buscar</b-button>
-            <b-button @click="resetForm(name + urlRest)" :disabled="isLoading" size="sm" variant="danger"><i class="fa fa-ban"></i></b-button>
-          </b-form-group>
-        </div>
-        <div class="row"></div>
-        <!--<pre>{{ item }}</pre>-->
-        <!--<pre>{{ vehicle }}</pre>-->
-      </b-form>
-    </b-card>
+            <!--&lt;!&ndash; DATEPICKER &ndash;&gt;-->
+            <!--<datepicker v-else-if="option.input=='datepicker'"-->
+                        <!--v-model="option.params.value" :format="option.params.format" language="es" :placeholder="option.placeholder"-->
+                        <!--:clear-button="false" :bootstrapStyling="true" calendar-button-icon="fa fa-calendar"-->
+                        <!--:disabled-picker="isLoading"-->
+                        <!--:disabled="option.params.disabled"-->
+                        <!--@input="selectDate" calendar-class="myDatepicker-style" wrapper-class="myDatepicker-content"-->
+                        <!--@opened="openSelect(option.params.key)"-->
+                        <!--@blur.native="$v.item[index]? $v.item[index].$touch(): false"></datepicker>-->
+
+            <!--&lt;!&ndash; ERROR MESSAGE&ndash;&gt;-->
+            <!--<form-error :data="$v.item[index]? $v.item[index] : {} "></form-error>-->
+          <!--</b-form-group>-->
+
+          <!--<b-form-group :horizontal="horizontal" :label-cols="null" :label-sr-only="true" class="col-md-2 text-right">-->
+            <!--<b-button @click.prevent="processData('INSERT')" :disabled="isLoading" type="submit" size="sm" variant="primary"><i class="fa fa-search"></i>Buscar</b-button>-->
+            <!--<b-button @click="resetForm(name + urlRest)" :disabled="isLoading" size="sm" variant="danger"><i class="fa fa-ban"></i></b-button>-->
+          <!--</b-form-group>-->
+        <!--</div>-->
+        <!--<div class="row"></div>-->
+        <!--&lt;!&ndash;<pre>{{ item }}</pre>&ndash;&gt;-->
+        <!--&lt;!&ndash;<pre>{{ vehicle }}</pre>&ndash;&gt;-->
+      <!--</b-form>-->
+    <!--</b-card>-->
 
     <b-card class="myCard">
       <div slot="header" class="text-center">

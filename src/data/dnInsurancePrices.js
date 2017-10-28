@@ -5,7 +5,7 @@ export const DATA = {
   post: {
     name: '',
     price: '',
-    // date: '',
+    date: '',
     // vehicleType: '',
     insuranceCompany: '',
     insuranceType: '',
@@ -133,7 +133,7 @@ export const DATA_FORM = {
         required,
         numeric
       },
-      validityDate: {
+      date: {
         required
       }
     }
@@ -142,21 +142,36 @@ export const DATA_FORM = {
 
 export const DATA_FORM_PRICE = {
   input: {
-    date: {
-      label: 'Fecha Registro',
-      placeholder: 'F. Registro',
+    // date: {
+    //   label: 'Fecha Registro',
+    //   placeholder: 'F. Registro',
+    //   type: 'text',
+    //   input: 'datepicker',
+    //   srOnly: true,
+    //   params: {
+    //     key: 'date',
+    //     format: 'dd/MM/yyyy',
+    //     disabled: {
+    //       to: new Date(2017, 8, 19),
+    //       from: new Date(2019, 6, 1)
+    //     },
+    //     moreDays: 0,
+    //     value: ''
+    //   }
+    // },
+    priceType: {
+      label: 'Vendidos',
+      placeholder: 'Estado de las polizas',
       type: 'text',
-      input: 'datepicker',
+      input: 'radio-group',
       srOnly: true,
       params: {
-        key: 'date',
-        format: 'dd/MM/yyyy',
-        disabled: {
-          to: new Date(2017, 8, 19),
-          from: new Date(2019, 6, 1)
-        },
-        moreDays: 0,
-        value: ''
+        variant: 'primary',
+        size: 'sm',
+        options: [
+          { text: 'Movil', value: '0' },
+          { text: 'PuntoVenta', value: '1' }
+        ]
       }
     },
     insuranceCompany: {
@@ -175,22 +190,42 @@ export const DATA_FORM_PRICE = {
         value: ''
       }
     },
-    insuranceType: {
-      label: 'Tipo seguro',
-      placeholder: 'Tipo de seguro',
-      type: 'text',
-      input: 'multiselect',
-      srOnly: true,
-      params: {
-        url: 'insurancetypes',
-        key: 'insuranceTypeId',
-        label: 'name',
-        options: [],
-        activate: false,
-        loadData: true,
-        value: ''
-      }
-    },
+    // insuranceType: {
+    //   label: 'Tipo seguro',
+    //   placeholder: 'Tipo de seguro',
+    //   type: 'text',
+    //   input: 'multiselect',
+    //   srOnly: true,
+    //   params: {
+    //     url: 'insurancetypes',
+    //     key: 'insuranceTypeId',
+    //     label: 'name',
+    //     options: [],
+    //     activate: false,
+    //     loadData: true,
+    //     value: ''
+    //   }
+    // },
+    // policyType: {
+    //   label: 'Tipo de Poliza',
+    //   placeholder: 'Tipo de la Poliza',
+    //   type: 'text',
+    //   input: 'multiselect',
+    //   srOnly: true,
+    //   params: {
+    //     url: 'policyTypes',
+    //     key: 'policyType',
+    //     label: 'name',
+    //     options: [
+    //       {id: 'W', name: 'WEB'},
+    //       {id: 'D', name: 'Digital'},
+    //       {id: 'M', name: 'Manual'}
+    //     ],
+    //     activate: false,
+    //     loadData: false,
+    //     value: ''
+    //   }
+    // },
     useType: {
       label: 'Tipo uso',
       placeholder: 'Tipo de uso',
@@ -201,6 +236,38 @@ export const DATA_FORM_PRICE = {
         url: 'usetypes',
         key: 'useType',
         label: 'name',
+        options: [],
+        activate: false,
+        loadData: true,
+        value: ''
+      }
+    },
+    vehicleClass: {
+      label: 'Clase',
+      placeholder: 'Clase de vehiculo',
+      type: 'text',
+      input: 'multiselect-restricted',
+      srOnly: true,
+      params: {
+        url: 'vehicleclasses',
+        key: 'vehicleClass',
+        label: 'description',
+        options: [],
+        activate: false,
+        loadData: true,
+        value: ''
+      }
+    },
+    vehicleCategory: {
+      label: 'Categoria',
+      placeholder: 'Categoria de vehiculo',
+      type: 'text',
+      input: 'multiselect-restricted',
+      srOnly: true,
+      params: {
+        url: 'vehiclecategories',
+        key: 'vehicleCategory',
+        label: 'description',
         options: [],
         activate: false,
         loadData: true,
@@ -223,41 +290,60 @@ export const DATA_FORM_PRICE = {
     //     value: ''
     //   }
     // },
-    validityDate: {
-      label: 'F. Valida',
-      placeholder: 'Fecha valida',
-      type: 'text',
-      input: 'datepicker',
-      srOnly: true,
-      params: {
-        key: 'validityDate',
-        disabled: {
-          to: new Date(2017, 8, 19),
-          from: new Date(2019, 6, 1)
-        },
-        moreDays: 1,
-        format: 'dd/MM/yyyy',
-        value: ''
-      }
-    }
+    // validityDate: {
+    //   label: 'F. Valida',
+    //   placeholder: 'Fecha valida',
+    //   type: 'text',
+    //   input: 'datepicker',
+    //   srOnly: true,
+    //   params: {
+    //     key: 'validityDate',
+    //     disabled: {
+    //       to: new Date(2017, 8, 19),
+    //       from: new Date(2019, 6, 1)
+    //     },
+    //     moreDays: 1,
+    //     format: 'dd/MM/yyyy',
+    //     value: ''
+    //   }
+    // }
   },
-  validate: {
+  validate0: {
     item: {
-      // date: {
-      //   required
-      // },
-      insuranceCompany: {
+      priceType: {
         required
       },
-      insuranceType: {
+      vehicleClass: {
+        required
+      },
+      insuranceCompany: {
         required
       },
       useType: {
         required
       },
-      validityDate: {
+      date: {
         required
       }
+    }
+  },
+  validate1: {
+    item: {
+      priceType: {
+        required
+      },
+      vehicleClass: {
+        required
+      },
+      insuranceCompany: {
+        required
+      },
+      useType: {
+        required
+      },
+      // validityDate: {
+      //   required
+      // }
     }
   }
 }
