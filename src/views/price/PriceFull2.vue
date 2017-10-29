@@ -1,21 +1,24 @@
 <template>
   <div class="wrapper">
-
     <!-- FORMULARIOS -->
     <div class="row d-flex justify-content-center">
-      <div v-if="btnForm.switchForm" class="col-md-8">
-        <app-form ref="form1"  aux="date" :btn_title="btnForm" :order="0" :total="items.length"
-                  :item="item1" :nameForm="itemName" :horizontal="true" @defaulValue="defaulValueForm1" @eventForm="searchTablePrices">
-          <template slot="title"><strong>BUSQUEDA</strong> de <strong>PRECIOS</strong></template>
-          <template slot="title-datepicker">Fecha de Registro</template>
+
+      <!-- FORM SEARCH PRICES -->
+      <div class="col-md-4 col-lg-4 col-xl-3">
+        <app-form :id="'formPrices'" :listCalendarPrices="listCalendarPrices"
+                  :item="itemPrices" :horizontal="true" :disabled="copyDisabled"
+                  @defaulValue="defaulValueForm"
+                  @eventForm="searchTablePrices">
+          <template slot="title"><strong>Registro</strong> de <strong>Precios</strong></template>
         </app-form>
       </div>
-      <div v-if="!btnForm.switchForm" class="col-md-7">
-        <app-form ref="form2" aux="validityDate" :btn_title="btnForm" :order="1" :total="items.length"
-                  :item="item2" :nameForm="itemName" :horizontal="true" @defaulValue="defaulValueForm2" @eventForm="generateItems">
-          <template slot="title"><strong>REGISTRO</strong> de <strong>PRECIOS</strong></template>
-          <template slot="title-datepicker">Vigencia de Precios</template>
-        </app-form>
+
+      <!-- FORM FORM CALENDAR PRICES -->
+      <div class="col-md-8 col-lg-8 col-xl-6">
+        <form-calendar :id="'formCalendar'" :item="itemCalendar" :horizontal="true" :restricted="restrictedCalendarPrices"
+                       @listCalendar="fillListCalendar">
+          <template slot="title"><strong>Calendario</strong> de <strong>Precios</strong></template>
+        </form-calendar>
       </div>
     </div>
 
@@ -27,8 +30,9 @@
                     :clear-button="false" :bootstrapStyling="true" class="float-left"
                     :disabled-picker="isLoading" @input="selectDate" :disabled="datepicker.params.disabled"
                     calendar-class="myDatepicker-style" wrapper-class="myDatepicker-content"></datepicker>
-        <b-button v-if="btnForm.switchForm"  class="float-left ml-2" @click="saveTable" :disabled="isLoading" size="sm" variant="success"><i class="fa fa-ban"></i> Actualizar</b-button>
-        <b-button v-else="" class="float-left ml-2" @click="saveTable" :disabled="isLoading" size="sm" variant="primary"><i class="fa fa-ban"></i> Guardar</b-button>
+        <!--<b-button v-if="btnForm.switchForm"  class="float-left ml-2" @click="saveTable" :disabled="isLoading" size="sm" variant="success"><i class="fa fa-ban"></i> Actualizar</b-button>-->
+        <b-button class="float-left ml-2" @click="saveTable" :disabled="isLoading" size="sm" variant="primary"><i class="fa fa-ban"></i> Guardar</b-button>
+        <b-button class="float-left ml-2" @click="copyPrices" :disabled="isLoading" size="sm" variant="info"><i class="fa fa-ban"></i> Copiar</b-button>
       </div>
 
       <div class="col-md-5 ml-auto mb-3">
@@ -43,16 +47,19 @@
 
             <div v-if="f.key==='actions'" >
               <template v-if="data.item.vehicle.exception===0">
-                <b-button v-b-tooltip.hover.auto :title="'Lista de autos'" variant="primary" @click.stop="getListCar(data.item.vehicle)" size="sm" :disabled="isLoading">
+                <b-button v-b-tooltip.hover.auto :title="'Lista de autos'" variant="success" @click.stop="getListCar(data.item.vehicle)" size="sm" :disabled="isLoading">
                   <i class="fa fa-car" aria-hidden="false"></i>
                 </b-button>
-                <b-button variant="success" @click.stop="addException(data.item.vehicle)" size="sm" :disabled="isLoading">
-                  <i class="fa fa-map-marker" aria-hidden="false"></i>
+                <b-button  v-b-tooltip.hover.auto :title="'Excepciones'" variant="danger" @click.stop="addException(data.item.vehicle)" size="sm" :disabled="isLoading">
+                  <i class="fa fa-fire" aria-hidden="false"></i>
                 </b-button>
               </template>
               <template v-else="">
-                <b-button>
-                  <i class="fa fa-search" aria-hidden="false"></i>
+                <b-button style="padding: 0px; background: none;" v-b-tooltip.hover.auto :title="'Lista de autos'" variant="secundary" @click.stop="getListCar(data.item.vehicle)" size="sm" :disabled="isLoading">
+                  <span class="fa-stack fa-lg" style="font-size: 1.1em">
+                    <i class="fa fa-car fa-stack-1x" style="color: white;"></i>
+                    <i class="fa fa-ban fa-stack-2x text-danger"></i>
+                  </span>
                 </b-button>
               </template>
             </div>
@@ -60,11 +67,7 @@
             <!-- ONLY CLASS CATEGORY -->
             <div class="itemEditTable" v-else-if="f.key==='vehicle'">
               <!--<b-badge v-if="data.item.vehicle.exception===1" variant="primary">New</b-badge>-->
-              <p class="labelCol p-0 m-0">
-                <span v-if="data.item.vehicle.exception===1"  style="display: inline-block" class="fa-stack fa-lg">
-                  <i class="fa fa-car fa-stack-1x"></i>
-                  <i class="fa fa-ban fa-stack-2x text-danger"></i>
-                </span>
+              <p class="labelCol m-0" style="padding-top: 1.2em !important;">
                 {{ data.value.vehicleClass.description}}-{{ data.value.vehicleCategory.description}}
                 [{{data.value.seatNumber}}{{data.value.seatNumberTo === data.value.seatNumber ? ']': '-' + data.value.seatNumberTo + ']'}}
               </p>
@@ -73,15 +76,15 @@
             <!-- DEPARTAMENTOS COLUMN -->
             <div :class="{'itemEditTable':true, 'isChange': changeList[f.key+'_'+data.item.vehicle.id] ? true : false}" v-else="">
               <span :class="{'textActive': !(changeList[f.key+'_'+data.item.vehicle.id] ? changeList[f.key+'_'+data.item.vehicle.id].edit : false)}"
-                    @click="activeInput(f.key+'_'+data.item.vehicle.id)">{{ data.value }} {{data.item.edit}}</span>
+                    @click="activeInput(f.key+'_'+data.item.vehicle.id, data.item[f.key])">{{ data.value ? data.value.price : '' }}</span>
               <b-form-input :ref="f.key+'_'+data.item.vehicle.id"
-                            type="number" v-model="data.item[f.key]"
+                            type="number" v-model="itemPrice"
                             :class="{
                               'editActive': changeList[f.key+'_'+data.item.vehicle.id] ? changeList[f.key+'_'+data.item.vehicle.id].edit : false,
                               'text-center': true
                             }"
                             @blur.native="deactiveInput"
-                            @change.native="changeValue(f.key+'_'+data.item.vehicle.id, f.key, data.item.vehicle, data.item[f.key])"
+                            @change.native="changeValue(data.item.vehicle.id, f.key, data.item.vehicle)"
                             placeholder="Precio.." :autofocus="true">
               </b-form-input>
 
@@ -92,45 +95,43 @@
 
     </b-card>
 
-    <b-modal :title="'Lista de Autos'" class="modal-primary modal-list-car" v-model="showModal" :hide-footer="true">
+    <b-modal :title="'Lista de Autos'"
+             :class="{'modal-success': (pickRowItem.exception==0), 'modal-danger': (pickRowItem.exception==1), 'modal-list-car': true}" v-model="showModal" :hide-footer="true">
       <!--<template slot="modal-header">-->
       <!--</template>-->
       <div class="text-center">
-        <span class="h5 text-primary pb-2 d-block">
+        <span :class="{'text-success': (pickRowItem.exception==0), 'text-danger': (pickRowItem.exception==1), 'pb-2 d-block h5': true}">
           {{ pickRowItem.vehicleClass ? pickRowItem.vehicleClass.description : ''}}-{{ pickRowItem.vehicleCategory ? pickRowItem.vehicleCategory.description: ''}}
           [{{pickRowItem.seatNumber}}{{pickRowItem.seatNumberTo === pickRowItem.seatNumber ? ']': '-' + pickRowItem.seatNumberTo + ']'}}
         </span>
         <input class="form-control text-center w-75 m-auto"
                type="text" v-model="search" style="margin-bottom: 0.51em !important;background-color: #e5e5e5 !important;" placeholder="Buscar marca y modelo">
-        <div class="pt-2 content-list-car">
-          <b-badge v-for="car in filteredCars" pill :key="car.id">{{ car.vehicleType.vehicleBrand }}-{{ car.vehicleType.vehicleModel }}</b-badge>
+        <div v-if="pickRowItem.exception===1" class="pt-2 content-list-car">
+          <b-badge v-for="car in filteredCars" pill
+                   :key="car.id" :class="{'hvr-pulse-grow': true, 'bg-danger': listDescription[car.id] ? true : false}"
+                   @click="addItemDescription(car)">{{ car.vehicleType.vehicleBrand }}-{{ car.vehicleType.vehicleModel }}</b-badge>
+        </div>
+        <div v-else="" class="pt-2 content-list-car">
+          <b-badge v-for="car in filteredCars" pill
+                   :key="car.id" :class="{'hvr-pulse-grow': true, 'bg-success': listDescription[car.id] ? true : false}"
+                   @click="addItemDescription(car)">{{ car.vehicleType.vehicleBrand }}-{{ car.vehicleType.vehicleModel }}</b-badge>
         </div>
       </div>
     </b-modal>
-    <!--<div class="row">-->
-      <!--<div class="col-md-4">-->
-        <!--<h1>item</h1>-->
-        <!--<pre>{{ item }}</pre>-->
-      <!--</div>-->
-      <!--<div class="col-md-4">-->
-        <!--<h1>item1</h1>-->
-        <!--<pre>{{ item1 }}</pre>-->
-      <!--</div>-->
-      <!--<div class="col-md-4">-->
-        <!--<h1>item2</h1>-->
-        <!--<pre>{{ item2 }}</pre>-->
-      <!--</div>-->
-    <!--</div>-->
-    <pre>{{ itemsIndex  }}</pre>
-    <!--<pre>{{ rick }}</pre>-->
-    <!--<pre>{{changeList}}</pre>-->
+
+    <!--<pre>{{ itemPrice }}</pre>-->
+    <!--<pre>{{ items }}</pre>-->
+    <pre>{{changeList}}</pre>
   </div>
 </template>
 
 <script>
   import ToggleButton from '../../components/ToggleButton.vue'
+  import CalendarInline from '../../components/CalendarInline.vue'
   import {DATA as nData} from '../../data/dnInsurancePrices'
-  import Form from './forms/FormPriceFull2.vue'
+  import {DATA as nDataCalendar} from '../../data/dnPriceCalendar'
+  import Form from './forms/FormPriceFull3.vue'
+  import FormCalendar from './forms/FormPriceCalendar.vue'
   import Datepicker from 'vuejs-datepicker'
   import Mixin from '../../mixins'
 
@@ -139,7 +140,9 @@
     components: {
       appForm: Form,
       ToggleButton,
-      Datepicker
+      Datepicker,
+      CalendarInline,
+      FormCalendar
     },
     mixins: [Mixin],
     data () {
@@ -157,8 +160,8 @@
           },
           switchForm: false
         },
-        item1: JSON.parse(JSON.stringify(nData.post)),
-        item2: JSON.parse(JSON.stringify(nData.post)),
+        itemPrices: JSON.parse(JSON.stringify(nData.post)),
+        itemCalendar: JSON.parse(JSON.stringify(nDataCalendar.post)),
         item: {},
         datepicker: {
           label: 'Fecha de Caducidad',
@@ -176,7 +179,6 @@
             }
           }
         },
-        itemName: nData.name,
         fields: [],
         items: [],
         itemsIndex: {},
@@ -188,7 +190,13 @@
         changeList: {},
         pickCellId: '',
         rick: [],
-        insuranceType: {}
+        insuranceType: {},
+        listDescription: {},
+        listCalendarPrices: [],
+        itemPrice: [],
+        restrictedCalendarPrices: false,
+        prices: [],
+        copyDisabled: false
       }
     },
     computed: {
@@ -200,29 +208,41 @@
           let text = item.vehicleType.vehicleBrand.toLowerCase() + ' ' + item.vehicleType.vehicleModel.toLowerCase()
           return text.indexOf(this.search.toLowerCase()) > -1
         })
-      },
-      counterItems () {
-        return this.items.length
       }
     },
     watch: {
-      'btnForm.switchForm' (newVal) {
-        this.item = {}
-        this.datepicker.params.value = ''
-        if (newVal) {
-          this.item = this.item1
+      showModal (newVal) {
+        this.$root.$emit('bv::hide::tooltip')
+        console.log(this.pickRowItem)
+        if (!newVal) {
+          console.log(this.listDescription)
+          this.pickRowItem['description_' + this.pickRowItem.exception] = JSON.stringify(this.listDescription)
+          this.listDescription = {}
         } else {
-          this.item = this.item2
+          console.log('description')
+          console.log(this.pickRowItem.description)
+          this.listDescription = this.pickRowItem['description_' + this.pickRowItem.exception] ? JSON.parse(this.pickRowItem['description_' + this.pickRowItem.exception]) : {}
         }
       }
     },
     methods: {
+      fillListCalendar (value) {
+        this.listCalendarPrices = value
+      },
       // Funciones basicas
-      generateId (region, data) {
-        return region + '_' + data.vehicleCategory.id + '_' + data.vehicleClass.id + '_' + data.seatNumber + '_' + data.seatNumberTo
+      async getData (url) {
+        let self = await this.$store.dispatch('dispatchHTTP', {type: 'GET', url: url})
+        return self.status ? self.content : []
       },
       generateVCCId (data, exception = 0) {
         return data.vehicleCategory.id + '_' + data.vehicleClass.id + '_' + data.seatNumber + '_' + data.seatNumberTo + '_' + exception
+      },
+      generateIndexRow (list) {
+        let itemsIndex = {}
+        list.forEach(function (item, index) {
+          itemsIndex[item.vehicle.id] = index
+        })
+        this.itemsIndex = itemsIndex
       },
       initData () {
         // initData
@@ -233,30 +253,18 @@
         this.changeList = {}
         this.pickCellId = ''
       },
-      defaulValueForm1 (type = false) {
-        this.item1.validityDate = ''
-        this.datepicker.params.value = ''
+      defaulValueForm (type = false) {
+//        this.itemPrices = JSON.parse(JSON.stringify(nData.post))
+//        this.initData()
+//        this.item2.validityDate = ''
+//        this.datepicker.params.value = ''
         if (!type) {
-          // alert('borra form1')
-          this.item1 = JSON.parse(JSON.stringify(nData.post))
-          this.item = this.item1
-          this.datepicker.params.value = ''
-          this.initData()
-        } else {
-          this.initData()
+          this.itemPrices = JSON.parse(JSON.stringify(nData.post))
+          this.item = this.itemPrices
         }
-      },
-      defaulValueForm2 (type = false) {
-        this.item2.validityDate = ''
-        this.datepicker.params.value = ''
-        if (!type) {
-          // alert('borra form2')
-          this.item2 = JSON.parse(JSON.stringify(nData.post))
-          this.item = this.item2
-          this.initData()
-        } else {
-          this.initData()
-        }
+        this.copyDisabled = false
+        this.restrictedCalendarPrices = false
+        this.initData()
       },
       onFiltered (filteredItems) {
         this.totalRows = filteredItems.length
@@ -269,53 +277,81 @@
         let newDate = this.tranformDateToFormat(pickDate, '/')
         this.item['validityDate'] = newDate
       },
-      async getData (url) {
-        let self = await this.$store.dispatch('dispatchHTTP', {type: 'GET', url: url})
-        return self.status ? self.content : []
-      },
       convertList (list) {
         let newList = []
         let vm = this
         this.$lodash.forEach(list, function (value, key) {
+          let id = vm.generateVCCId(value, value.exception)
+          let index = vm.itemsIndex[id]
+          let row = vm.items[index].vehicle
+          console.log(index, id)
+          console.log(row)
           value.validityDate = vm.item.validityDate
+          value.priceCalendar = {id: vm.item.priceCalendar.id}
           value.insuranceType = {id: vm.insuranceType[0].id}
           value.insuranceCompany = {id: vm.item.insuranceCompany.id}
           value.priceType = vm.item.priceType
           value.useType = {id: vm.item.useType.id}
+          value.description = row['description_' + row.exception] ? row['description_' + row.exception] : ''
           newList.push(value)
         })
         return newList
       },
 
       // Generate Table
-      fillTable (prices) {
+      copyPrices () {
+        this.copyDisabled = false
+        this.fillTable(this.prices, true)
+      },
+      fillTable (prices, copy = false) {
         let vm = this
         let id = 0
         let indexItems = 0
-        prices.forEach(function (item, index) {
-          id = vm.generateVCCId(item)
-          indexItems = vm.itemsIndex[id]
-          vm.$set(vm.items[indexItems],item.region.id, item.price)
-          vm.changeValue(item.region.id + '_' + id, item.region.id, item, item.price)
-        })
+        if (!copy) {
+          prices.forEach(function (item, index) {
+            if (item.exception === 1) vm.addException(item, false)
+            id = vm.generateVCCId(item, item.exception)
+            indexItems = vm.itemsIndex[id]
+            let data = {
+              id: item.id,
+              price: item.price
+            }
+            vm.$set(vm.items[indexItems], item.region.id, data)
+            vm.getDescription(indexItems, item.description, item.exception)
+          })
+        } else {
+          prices.forEach(function (item, index) {
+            if (item.exception === 1) vm.addException(item, false)
+            id = vm.generateVCCId(item, item.exception)
+            indexItems = vm.itemsIndex[id]
+            let data = {
+              id: item.id,
+              price: item.price
+            }
+            vm.$set(vm.items[indexItems], item.region.id, data)
+            vm.getDescription(indexItems, item.description, item.exception)
+            // Volver a registrar todos los precios
+            vm.itemPrice = item.price
+            vm.changeValue(id, item.region.id, item)
+          })
+        }
       },
       async searchTablePrices () {
         await this.generateItems()
         let obj = {
           date: this.item.date,
+          priceCalendarId: this.item.priceCalendar.id,
           insuranceCompanyId: this.item.insuranceCompany.id,
           useTypeId: this.item.useType.id,
           priceType: this.item.priceType,
           vehicleClassId: this.item.vehicleClass.id,
           vehicleCategoryId: this.item.vehicleCategory ? this.item.vehicleCategory.id : ''
         }
-        console.log('OBJETO')
-        console.log(obj)
-        let url = 'insuranceprices?date='+obj.date+'&insuranceCompanyId='+obj.insuranceCompanyId+'&priceType='+obj.priceType+'&useTypeId='+obj.useTypeId+'&vehicleClassId='+obj.vehicleClassId+'&vehicleCategoryId='+obj.vehicleCategoryId
-        console.log(url)
+        let url = 'insuranceprices?priceCalendarId='+obj.priceCalendarId+'&insuranceCompanyId='+obj.insuranceCompanyId+'&priceType='+obj.priceType+'&useTypeId='+obj.useTypeId+'&vehicleClassId='+obj.vehicleClassId+'&vehicleCategoryId='+obj.vehicleCategoryId
         let prices = await this.getData(url)
         console.log('PRECIOS')
         console.log(prices)
+        this.prices = prices
         this.fillTable(prices)
       },
       async generateFields () {
@@ -334,6 +370,8 @@
         this.fields = fields
       },
       async generateItems () {
+        this.copyDisabled = true
+        this.restrictedCalendarPrices = true
         this.items = []
         let vm = this
         let classId = this.item.vehicleClass.id
@@ -359,17 +397,47 @@
         }
         this.items = items
         this.itemsIndex = itemsIndex
-        console.log('ROWSSSSSSSS')
-        console.log(this.items)
       },
       async getListCar (item) {
         this.pickRowItem = item
         this.search = ''
-        this.toggleDialog()
-        console.log(item)
         let url = 'vehicletypecategories?type=0&vehicleClassId='+item.vehicleClass.id+'&vehicleCategoryId'+item.vehicleCategory.id+'&seatNumber='+item.seatNumber+'&seatNumberTo='+item.seatNumberTo
         this.carsVTC = await this.getData(url)
-        console.log(this.carsVTC)
+        this.toggleDialog()
+      },
+      getDescription (index, description, exception) {
+        let localDescription = this.items[index].vehicle['description_' + exception]
+        if (localDescription !== undefined) return false
+        if (description !== '') {
+          this.items[index].vehicle['description_' + exception] = description
+        }
+      },
+      addItemDescription (car) {
+        console.log(car)
+        if (this.listDescription[car.id]) {
+          this.$delete(this.listDescription, car.id)
+        } else {
+          this.$set(this.listDescription, car.id, car)
+          this.listDescription[car.id] = [car.vehicleType.vehicleBrand, car.vehicleType.vehicleModel]
+        }
+      },
+      addException (item, alert = true) {
+        let id = this.generateVCCId(item)
+        let newId = this.generateVCCId(item, 1)
+        let indexItems = this.itemsIndex[id]
+        if (this.itemsIndex[newId] !== undefined) {
+          if (alert) this.$store.commit('sendNotification', {status: null, message: 'Ya existe una excepción para esta clase.'})
+          return false
+        }
+        let newRow = {
+          _rowVariant: 'danger',
+          _cellVariants: {vehicle: 'warning'},
+          vehicle: JSON.parse(JSON.stringify(item))
+        }
+        newRow.vehicle.id = newId
+        newRow.vehicle.exception = 1
+        this.items.splice(indexItems, 0, newRow)
+        this.generateIndexRow(this.items)
       },
       saveTable () {
         let data = this.convertList(this.changeList)
@@ -384,7 +452,7 @@
         }
         this.rick = data
         console.log(this.item.validityDate)
-        return false
+
         let url = 'insuranceprices/multiple'
         let self = this.$store.dispatch('dispatchHTTP', {type: 'INSERT', url: url, data: data})
         self.then((data) => {
@@ -403,27 +471,10 @@
           console.log(error)
         })
       },
-      addException (item) {
-        let id = this.generateVCCId(item)
-        let newId = this.generateVCCId(item, 1)
-        let indexItems = this.itemsIndex[id]
-
-        let newRow = {
-          _rowVariant: 'danger',
-          _cellVariants: {vehicle: 'warning'},
-          vehicle: JSON.parse(JSON.stringify(item))
-        }
-        newRow.vehicle.id = newId
-        newRow.vehicle.exception = 1
-        this.items.splice(indexItems + 1, 0, newRow)
-        console.log(item)
-        console.log(newRow)
-        console.log(id)
-        console.log(indexItems)
-      },
 
       // Events Table Prices
-      activeInput (id) {
+      activeInput (id, itemPrice) {
+        this.itemPrice = itemPrice ? itemPrice.price : ''
         let data = {edit: true}
         // this.deactiveInput()
         if (this.changeList[id]) {
@@ -445,29 +496,29 @@
           }
         }
       },
-      changeValue (id, column, row, price) {
-        console.log(column)
-        console.log(row)
-        console.log(price)
+      changeValue (id, column, row) {
+        let newId = column + '_' + id
+        let indexItems = this.itemsIndex[id]
+        let xData = this.items[indexItems]
+        if (xData[column]) {
+          xData[column].price = this.itemPrice
+        } else {
+          xData[column] = {price: this.itemPrice}
+        }
+
         let data = {
-          price: price,
+          price: this.itemPrice,
           exception: row.exception,
           region: {id: column},
-          observation: '',
           vehicleClass: row.vehicleClass,
           vehicleCategory: row.vehicleCategory,
           seatNumber: row.seatNumber,
           seatNumberTo: row.seatNumberTo,
           edit: false
-          // insuranceType: {
-          //  id: this.insuranceType[0].id
-          // },
-          // insuranceCompany: {id: this.item.insuranceCompany.id},
-          // priceType: this.item.priceType,
-          // useType: {id: this.item.useType.id},
-          // validityDate: this.item.validityDate,
         }
-        this.$set(this.changeList, id, data)
+
+        if (xData[column].id) data.id = xData[column].id
+        this.$set(this.changeList, newId, data)
       }
     },
     async created () {
@@ -483,7 +534,7 @@
       let year = toDay.get('year')
       this.datepicker.params.disabled.to = new Date(year, month, day)
       this.datepicker.params.disabled.from = new Date(year + 1, month, day)
-      this.item = this.item2
+      this.item = this.itemPrices
     }
   }
 </script>
@@ -611,6 +662,7 @@
     }
 
     .badge-pill{
+      cursor: pointer;
       border-radius: 10rem;
       font-size: 1em;
       font-weight: 100;
@@ -618,6 +670,9 @@
       margin-right: 1em;
       margin-bottom: 0.4em;
       padding: 0.5em 0.6em;
+      &:hover{
+        background: #63c1de;
+      }
     }
   }
 </style>

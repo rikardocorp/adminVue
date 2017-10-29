@@ -128,6 +128,13 @@ html{
       margin-left: -10px !important;
       margin-right: 10px !important;
       background: rgba(0, 0, 0, 0.15);
+      &.btn-small {
+        padding: 0em;
+        width: 20px;
+        height: 20px;
+        font-size: 0.8em;
+        margin-right: 0.2em !important;
+      }
     }
 
     .btn-in-title-right{
@@ -138,6 +145,13 @@ html{
       border-radius: 2em;
       float: right;
       margin: 0 !important;
+      &.btn-small {
+        padding: 0em;
+        width: 20px;
+        height: 20px;
+        font-size: 0.8em;
+        margin-left: 0.2em !important;
+      }
     }
 
     .cover{

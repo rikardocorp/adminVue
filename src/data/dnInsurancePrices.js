@@ -16,7 +16,8 @@ export const DATA = {
     seatNumber: '',
     seatNumberTo: '',
     vehicleClass: null,
-    vehicleCategory: null
+    vehicleCategory: null,
+    priceCalendar: null
   },
   fieldsTable: {
     name: {label: 'Nombre', sortable: true, 'class': 'text-center'},
@@ -174,6 +175,22 @@ export const DATA_FORM_PRICE = {
         ]
       }
     },
+    priceCalendar: {
+      label: 'Calendario',
+      placeholder: 'Calendario de precios',
+      type: 'text',
+      input: 'multiselect',
+      srOnly: true,
+      params: {
+        url: 'pricecalendars',
+        key: 'priceCalendar',
+        label: 'description',
+        options: [],
+        activate: false,
+        loadData: false,
+        value: ''
+      }
+    },
     insuranceCompany: {
       label: 'Aseguradora',
       placeholder: 'Aseguradora',
@@ -307,6 +324,25 @@ export const DATA_FORM_PRICE = {
     //     value: ''
     //   }
     // }
+  },
+  validate: {
+    item: {
+      priceType: {
+        required
+      },
+      priceCalendar: {
+        required
+      },
+      vehicleClass: {
+        required
+      },
+      insuranceCompany: {
+        required
+      },
+      useType: {
+        required
+      }
+    }
   },
   validate0: {
     item: {

@@ -21,7 +21,7 @@
                       :highlighted="datepicker.params.highlighted"
                       @input="selectDate" :inline="true"
                       @blur.native="$v.item[aux]? $v.item[aux].$touch(): false"
-                      :calendar-class="{'myDatepicker-style': true, 'localOpacity': restricted} " wrapper-class="myDatepicker-content">
+                      :calendar-class="{'myDatepicker-style': true, 'localOpacity': restricted}" wrapper-class="myDatepicker-content">
           </datepicker>
           <div class="row pt-1">
             <div class="col-6 col-sm-12 text-dark text-center">
@@ -354,5 +354,4 @@
       }
     }
   }
-
 </style>
