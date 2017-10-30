@@ -6,10 +6,21 @@
           <div class="col-10">
             <b-card>
               <button id="cancelSale" class="input-group-addon bg-primary"
-                      @click="CancelSale"
+                      @click="eventCancelSale"
                       :disabled="isLoading || disableBtn"
                       title="Cancelar Venta">
                 <i class="fa fa-ban" aria-hidden="true"></i>
+              </button>
+
+              <button :class="{
+                        'input-group-addon btn-wizard':true,
+                        'bg-info': data.pickPolice.item.exception==0,
+                        'bg-danger': data.pickPolice.item.exception==1,
+                        'bg-primary': data.pickPolice.item.description=='',
+                      }" v-b-tooltip.html.right
+                      :title="convertDescription(data.pickPolice.item.description, data.pickPolice.item.exception)">
+                <!--:disabled="data.pickPolice.item.description == ''"-->
+                <i class="fa fa-info" aria-hidden="true"></i>
               </button>
 
               <!-- Wizard Form -->
@@ -267,6 +278,15 @@
       }
     },
     methods: {
+      convertDescription (data, exception) {
+        if (data === '') return ''
+        let list = JSON.parse(data)
+        let text = exception === 1 ? '<h6 class="text-danger pt-2">Autos Restringuidos</h6>' : '<h6 class="text-info pt-2">Autos Permitidos</h6>'
+        this.$lodash.forEach(list, function (value, key) {
+          text = text + value.brand + ' ' + value.model + ', '
+        })
+        return text
+      },
       setFormFill (index, value) {
         this.data[index].formFill = value
       },
@@ -662,6 +682,14 @@
           this.switchMessage = 1
         }
       },
+      eventCancelSale () {
+        this.$dialog.confirm('¿Desea cancelar esta venta en proceso?').then((dialog) => {
+          this.CancelSale()
+          dialog.close()
+        }).catch(() => {
+          console.log('Clicked on cancel')
+        })
+      },
       initData () {
         let notification = {}
 
@@ -861,6 +889,27 @@
     cursor: pointer;
     z-index: 1;
 
+    &:disabled {
+      /*background-color: red !important;*/
+      opacity: 0.7;
+      cursor: auto;
+    }
+  }
+
+  .btn-wizard{
+    border-radius: 0 0.7em 0.7em 0 !important;
+    position: absolute;
+    top: 23px;
+    left: 0px;
+    font-size: 1rem;
+    cursor: pointer;
+    z-index: 1;
+    &:focus{
+      outline: none !important;
+    }
+    &.bg-primary{
+      background: #ef7b24 !important;
+    }
     &:disabled {
       /*background-color: red !important;*/
       opacity: 0.7;

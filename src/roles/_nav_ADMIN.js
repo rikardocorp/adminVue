@@ -120,11 +120,11 @@ export default {
       url: '/vehiculo/precio-poliza-full',
       icon: 'fa fa-money'
     },
-    {
-      name: 'Precio Full2',
-      url: '/vehiculo/precio-poliza-full2',
-      icon: 'fa fa-money'
-    },
+    // {
+    //   name: 'Precio Full2',
+    //   url: '/vehiculo/precio-poliza-full2',
+    //   icon: 'fa fa-money'
+    // },
     {
       title: true,
       name: 'POLIZA'

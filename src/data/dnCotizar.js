@@ -88,10 +88,13 @@ export const DATA_FORM = {
   },
   validate: {
     item: {
-      brand:{
+      brand: {
         required
       },
       model: {
+        required
+      },
+      regionId: {
         required
       }
     }

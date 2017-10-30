@@ -41,21 +41,22 @@
 
       <!-- TABLE -->
       <div class="myEditTable">
-        <b-table :fields="fields" :items="items" class="editTable bg-white" bordered :filter="filter" @filtered="onFiltered">
+        <b-table :fields="fields" :items="items" class="editTable bg-white" bordered :filter="filter" @filtered="onFiltered"
+                 :show-empty="true" empty-text="No hay resultados en lista de precios.">
 
-          <template v-for="f in fields" :slot="f.key" scope="data" :class="{'exception': data.item.vehicle.exception===1}">
+          <template v-for="f in fields" :slot="f.key" scope="data" :class="{'exception': data.item._vehicle.exception===1}">
 
             <div v-if="f.key==='actions'" >
-              <template v-if="data.item.vehicle.exception===0">
-                <b-button v-b-tooltip.hover.auto :title="'Lista de autos'" variant="success" @click.stop="getListCar(data.item.vehicle)" size="sm" :disabled="isLoading">
+              <template v-if="data.item._vehicle.exception===0">
+                <b-button v-b-tooltip.hover.auto :title="'Lista de autos'" variant="success" @click.stop="getListCar(data.item._vehicle)" size="sm" :disabled="isLoading">
                   <i class="fa fa-car" aria-hidden="false"></i>
                 </b-button>
-                <b-button  v-b-tooltip.hover.auto :title="'Excepciones'" variant="danger" @click.stop="addException(data.item.vehicle)" size="sm" :disabled="isLoading">
+                <b-button  v-b-tooltip.hover.auto :title="'Excepciones'" variant="danger" @click.stop="addException(data.item._vehicle)" size="sm" :disabled="isLoading">
                   <i class="fa fa-fire" aria-hidden="false"></i>
                 </b-button>
               </template>
               <template v-else="">
-                <b-button style="padding: 0px; background: none;" v-b-tooltip.hover.auto :title="'Lista de autos'" variant="secundary" @click.stop="getListCar(data.item.vehicle)" size="sm" :disabled="isLoading">
+                <b-button style="padding: 0px; background: none;" v-b-tooltip.hover.auto :title="'Lista de autos'" variant="secundary" @click.stop="getListCar(data.item._vehicle)" size="sm" :disabled="isLoading">
                   <span class="fa-stack fa-lg" style="font-size: 1.1em">
                     <i class="fa fa-car fa-stack-1x" style="color: white;"></i>
                     <i class="fa fa-ban fa-stack-2x text-danger"></i>
@@ -65,7 +66,7 @@
             </div>
 
             <!-- ONLY CLASS CATEGORY -->
-            <div class="itemEditTable" v-else-if="f.key==='vehicle'">
+            <div class="itemEditTable" v-else-if="f.key==='_vehicle'">
               <!--<b-badge v-if="data.item.vehicle.exception===1" variant="primary">New</b-badge>-->
               <p class="labelCol m-0" style="padding-top: 1.2em !important;">
                 {{ data.value.vehicleClass.description}}-{{ data.value.vehicleCategory.description}}
@@ -74,22 +75,24 @@
             </div>
 
             <!-- DEPARTAMENTOS COLUMN -->
-            <div :class="{'itemEditTable':true, 'isChange': changeList[f.key+'_'+data.item.vehicle.id] ? true : false}" v-else="">
-              <span :class="{'textActive': !(changeList[f.key+'_'+data.item.vehicle.id] ? changeList[f.key+'_'+data.item.vehicle.id].edit : false)}"
-                    @click="activeInput(f.key+'_'+data.item.vehicle.id, data.item[f.key])">{{ data.value ? data.value.price : '' }}</span>
-              <b-form-input :ref="f.key+'_'+data.item.vehicle.id"
+            <div :class="{'itemEditTable':true, 'isChange': changeList[f.key+'_'+data.item._vehicle.id] ? true : false}" v-else="">
+              <span :class="{'textActive': !(changeList[f.key+'_'+data.item._vehicle.id] ? changeList[f.key+'_'+data.item._vehicle.id].edit : false)}"
+                    @click="activeInput(f.key+'_'+data.item._vehicle.id, data.item[f.key])">{{ data.value ? data.value.price : '' }}</span>
+              <b-form-input :ref="f.key+'_'+data.item._vehicle.id"
                             type="number" v-model="itemPrice"
                             :class="{
-                              'editActive': changeList[f.key+'_'+data.item.vehicle.id] ? changeList[f.key+'_'+data.item.vehicle.id].edit : false,
+                              'editActive': changeList[f.key+'_'+data.item._vehicle.id] ? changeList[f.key+'_'+data.item._vehicle.id].edit : false,
                               'text-center': true
                             }"
                             @blur.native="deactiveInput"
-                            @change.native="changeValue(data.item.vehicle.id, f.key, data.item.vehicle)"
+                            @change.native="changeValue(data.item._vehicle.id, f.key, data.item._vehicle)"
                             placeholder="Precio.." :autofocus="true">
               </b-form-input>
 
             </div>
           </template>
+
+          <!--<template slot="empty">rikardocorp</template>-->
         </b-table>
       </div>
 
@@ -121,7 +124,7 @@
 
     <!--<pre>{{ itemPrice }}</pre>-->
     <!--<pre>{{ items }}</pre>-->
-    <pre>{{changeList}}</pre>
+    <!--<pre>{{ changeList }}</pre>-->
   </div>
 </template>
 
@@ -218,6 +221,7 @@
           console.log(this.listDescription)
           this.pickRowItem['description_' + this.pickRowItem.exception] = JSON.stringify(this.listDescription)
           this.listDescription = {}
+          this.activeRowPrices(this.pickRowItem)
         } else {
           console.log('description')
           console.log(this.pickRowItem.description)
@@ -226,6 +230,23 @@
       }
     },
     methods: {
+      activeRowPrices (pickRowItem) {
+        console.log('ACTIVE PICK ROW')
+        console.log(pickRowItem)
+        let vm = this
+        let id = pickRowItem.id
+        let indexItems = this.itemsIndex[id]
+        console.log(this.items[indexItems])
+        //this.changeValue(id, item.region.id, item)
+
+        this.$lodash.forEach(this.items[indexItems], function (value, key) {
+          if (key[0] !== '_') {
+            console.log(key, value)
+            vm.itemPrice = value.price
+            vm.changeValue(id, key, vm.pickRowItem)
+          }
+        })
+      },
       fillListCalendar (value) {
         this.listCalendarPrices = value
       },
@@ -240,7 +261,7 @@
       generateIndexRow (list) {
         let itemsIndex = {}
         list.forEach(function (item, index) {
-          itemsIndex[item.vehicle.id] = index
+          itemsIndex[item._vehicle.id] = index
         })
         this.itemsIndex = itemsIndex
       },
@@ -283,7 +304,7 @@
         this.$lodash.forEach(list, function (value, key) {
           let id = vm.generateVCCId(value, value.exception)
           let index = vm.itemsIndex[id]
-          let row = vm.items[index].vehicle
+          let row = vm.items[index]._vehicle
           console.log(index, id)
           console.log(row)
           value.validityDate = vm.item.validityDate
@@ -338,6 +359,7 @@
       },
       async searchTablePrices () {
         await this.generateItems()
+
         let obj = {
           date: this.item.date,
           priceCalendarId: this.item.priceCalendar.id,
@@ -358,7 +380,7 @@
         let region = await this.getData('regions')
         let fields = [
           {key: 'actions', label: '&nbsp;', thStyle: 'width:50px'},
-          {key: 'vehicle', label: 'Tipos Vehiculos', thStyle: 'width: 300px', variant: 'secondary', 'class': 'text-center'}
+          {key: '_vehicle', label: 'Tipos Vehiculos', thStyle: 'width: 300px', variant: 'secondary', 'class': 'text-center'}
         ]
         region.forEach(function (item) {
           fields.push({
@@ -387,14 +409,14 @@
           // Generate Items
           item.id = vm.generateVCCId(item)
           item.exception = 0
-          items.push({ vehicle: item })
+          items.push({ _vehicle: item })
           // Generate struct load data
           itemsIndex[item.id] = index
         })
-        if (items.length === 0) {
-          if (this.$refs.form1) this.$refs.form1.restricted = false
-          if (this.$refs.form2) this.$refs.form2.restricted = false
-        }
+//        if (items.length === 0) {
+//          if (this.$refs.form1) this.$refs.form1.restricted = false
+//          if (this.$refs.form2) this.$refs.form2.restricted = false
+//        }
         this.items = items
         this.itemsIndex = itemsIndex
       },
@@ -406,10 +428,10 @@
         this.toggleDialog()
       },
       getDescription (index, description, exception) {
-        let localDescription = this.items[index].vehicle['description_' + exception]
+        let localDescription = this.items[index]._vehicle['description_' + exception]
         if (localDescription !== undefined) return false
         if (description !== '') {
-          this.items[index].vehicle['description_' + exception] = description
+          this.items[index]._vehicle['description_' + exception] = description
         }
       },
       addItemDescription (car) {
@@ -431,11 +453,11 @@
         }
         let newRow = {
           _rowVariant: 'danger',
-          _cellVariants: {vehicle: 'warning'},
-          vehicle: JSON.parse(JSON.stringify(item))
+          // _cellVariants: {_vehicle: 'warning'},
+          _vehicle: JSON.parse(JSON.stringify(item))
         }
-        newRow.vehicle.id = newId
-        newRow.vehicle.exception = 1
+        newRow._vehicle.id = newId
+        newRow._vehicle.exception = 1
         this.items.splice(indexItems, 0, newRow)
         this.generateIndexRow(this.items)
       },
@@ -555,6 +577,11 @@
       }
     }
   }
+
+  .vdp-datepicker{
+    width: auto !important;
+  }
+
   .editTable{
     font-size: 0.8em;
     thead{

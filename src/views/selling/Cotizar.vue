@@ -22,7 +22,8 @@
           </div>
 
           <div v-if="items.length" class="card-insurance row d-flex justify-content-center">
-            <div v-for="x in items" :key="x.id"  class="ticket cardWrap m-3 hvr-bounce-in">
+            <div v-for="x in items" :key="x.id"  class="ticket cardWrap m-3 hvr-bounce-in"
+                 v-b-tooltip.html.top :title="convertDescription(x.description, x.exception)">
               <div class="card-ticket cardLeft">
                 <avatar :username="x.insuranceCompanyName" :rounded="true" :size="6.4" sizeUnid="em"
                         :src="path + '/' + x.insuranceCompanyImage" :alt="x.insuranceCompanyName"
@@ -30,8 +31,9 @@
                         backgroundColor="orange" :sizeBorder="0.5"></avatar>
               </div>
               <div class="card-ticket cardCenter">
+                <!--<div class="xtitle"> <i :class="'fa fa-info-circle info-exception ' + (x.exception==1 ? 'true' : 'false')"></i>-->
                 <div class="xtitle">
-                  {{ x.insuranceCompanyName }} - {{ x.regionName }}
+                  {{ x.insuranceCompanyName }}
                 </div>
                 <div class="xcontent">
                   <div class="title">
@@ -39,7 +41,7 @@
                     <span>Tipo de seguro</span>
                   </div>
                   <div class="seat">
-                    <h2>08</h2>
+                    <h2>[{{ x.seatNumber }}{{ x.seatNumberTo==x.seatNumber ? ']' : '-' +x.seatNumberTo + ']'  }}</h2>
                     <span>Asientos</span>
                   </div>
                   <div class="time">
@@ -100,6 +102,15 @@
       }
     },
     methods: {
+      convertDescription (data, exception) {
+        if (data === '') return ''
+        let list = JSON.parse(data)
+        let text = exception === 1 ? '<h6 class="text-danger pt-2">Autos Restringuidos</h6>' : '<h6 class="text-info pt-2">Autos Permitidos</h6>'
+        this.$lodash.forEach(list, function (value, key) {
+          text = text + value.brand + ' ' + value.model + ', '
+        })
+        return text
+      },
       pickInsurance (insurance) {
         // Verifica que haya una venta sin finalizar
         let notification = {}
@@ -156,6 +167,22 @@
   .card-insurance {
     .avatar {
       position: absolute;
+    }
+    .xtitle{
+      font-weight: 700;
+    }
+
+    .info-exception{
+      font-size: 2em;
+      float: left;
+      margin-right: 10px;
+      text-shadow: 1px 1px 1px #ef7b1f;
+      &.true{
+        color: #e53439 !important
+      }
+      &.false{
+        color: #63c1de !important;
+      }
     }
   }
 </style>

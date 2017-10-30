@@ -53,6 +53,14 @@
       <!-- FORM SELECT VALUES-->
       <div class="col-md-5 col-lg-6">
         <div class="list-calendar-prices">
+          <div class="cover" v-if="showDelete">
+            <div class="rounded div-password">
+              <h6 class="text-center text-white"> Eliminar Calendario </h6>
+              <b-form-input v-model="localPassword" type="password" class="w-75 m-auto mb-4" placeholder="Ingrese su contraseña"></b-form-input>
+              <b-button size="sm" variant="secundary" class="mt-2" @click="showDelete=false">Cancel</b-button>
+              <b-button size="sm" variant="danger" class="mt-2" @click="deleteItem">OK</b-button>
+            </div>
+          </div>
           <ul class="list-group">
             <li v-for="(x,index) in listCalendar" :class="{'list-group-item':true, 'active': x.active==1}" >
               <div class="row title">
@@ -60,7 +68,7 @@
                   <span @click="pickItem(x,index)">{{ x.description }}</span>
                 </p>
                 <p v-if="x.active==0" class="col-4" >
-                  <button v-b-tooltip.hover.auto title="Eliminar" @click="deleteItem(x,index)" :disabled="isLoading"
+                  <button v-b-tooltip.hover.auto title="Eliminar" @click="modalDelete(x,index)" :disabled="isLoading"
                           class="btn btn-in-title-right btn-small bg-danger" ><i class="fa fa-times" aria-hidden="true"></i>
                   </button>
                   <button v-b-tooltip.hover.auto title="Seleccionar" @click="updateItem(x,index)" :disabled="isLoading"
@@ -80,7 +88,7 @@
         </div>
       </div>
     </b-form>
-    <!--<pre>{{listCalendar}}</pre>-->
+    <!--<pre>{{item}}</pre>-->
   </b-card>
 </template>
 
@@ -109,7 +117,12 @@
         urlRest: nData.name,
         fecha: '',
         update: false,
-        indexSelected: 0
+        indexSelected: 0,
+
+        // Delete calendar
+        showDelete: false,
+        dataDelete: {},
+        localPassword: ''
       }
     },
     validations () {
@@ -179,11 +192,25 @@
           console.log(error)
         })
       },
-      deleteItem (item, index) {
-        let self = this.$store.dispatch('dispatchHTTP', {type: 'DELETE', url: this.urlRest + '/' + item.id})
+      modalDelete (item, index) {
+        this.dataDelete = {
+          item: item,
+          index: index
+        }
+        this.localPassword = ''
+        this.showDelete = true
+      },
+      deleteItem () {
+        if (this.localPassword == '') return false
+        let data = {password: this.localPassword}
+        let item = this.dataDelete.item
+        let index = this.dataDelete.index
+        let self = this.$store.dispatch('dispatchHTTP', {type: 'DELETE', url: this.urlRest + '/' + item.id, data: data})
         self.then((data) => {
           if (data.status) {
             this.listCalendar.splice(index, 1)
+            this.showDelete = false
+            this.localPassword = ''
           } else {
             console.log('ERROR')
             console.log(data)
@@ -273,7 +300,7 @@
     }
     .vdp-datepicker__calendar .cell{
       height: 31px;
-      line-height: 2.4em;
+      line-height: 2.5em;
     }
 
     .localOpacity{
@@ -292,6 +319,13 @@
       .active{
         z-index: 0 !important;
       }
+    }
+
+    .div-password{
+      width: 90%;
+      margin: auto;
+      background: rgba(255, 165, 1, 0.84);
+      padding: 122px 0;
     }
   }
   .list-calendar-prices{

@@ -6,7 +6,7 @@
           <div class="col-10">
             <b-card>
               <button id="cancelSale" class="input-group-addon bg-primary"
-                      @click="CancelSale"
+                      @click="eventCancelSale"
                       :disabled="isLoading || disableBtn"
                       title="Cancelar Venta">
                 <i class="fa fa-ban" aria-hidden="true"></i>
@@ -78,9 +78,9 @@
           <!--<pre style="font-size: 0.7em">{{ data.user }}</pre>-->
           <!--<pre>{{ data.vehicle }}</pre>-->
           <!--<br>-->
-          <!--<pre>{{ data.user }}</pre>-->
+          <pre>{{ data.user }}</pre>
           <!--<br><br>-->
-          <!--<pre>{{ data.purchaser }}</pre>-->
+          <pre>{{ data.purchaser }}</pre>
 
           <!--<pre>{{ data.vehicle }}</pre>-->
           <!--<br><br>-->
@@ -447,7 +447,9 @@
           console.log(r3)
           if (!r3.status) return false
           else {
+            let hasEmail = this.data.purchaser.item.hasEmail
             this.data.purchaser.item = r3.content
+            this.data.purchaser.item.hasEmail = hasEmail
             this.data.pay.item.amount = this.data.pickPolice.item.price
           }
         } else {
@@ -755,6 +757,14 @@
           this.initData()
         }
         this.mySwitch = true
+      },
+      eventCancelSale () {
+        this.$dialog.confirm('¿Desea cancelar esta venta en proceso?').then((dialog) => {
+          this.CancelSale()
+          dialog.close()
+        }).catch(() => {
+          console.log('Clicked on cancel')
+        })
       },
       initData () {
         let notification = {}

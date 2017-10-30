@@ -142,12 +142,18 @@
     },
     methods: {
       imprimir () {
+
+        //let companyId = this.data.pickPolice.insuranceCompanyId
+        //console.log(company)
+        // id : 1 POsitiva
+        // id : 6,7,8 afocat
+        // if (companyId === 1)
+
         let paymentId = this.data.payment.item.id
         if (paymentId === undefined) {
           this.$store.commit('sendNotification', {status: null, message: 'Debe procesar el pago para imprimir la venta.'})
           return false
         }
-        console.log('edweffwef')
         let idSale = this.data.sale.item.id
         let url = 'sales/' + idSale + '/printpolicy?positiva=1&afocat_manual_centrado=1'
         let self = this.$store.dispatch('dispatchHTTP', {type: 'LOAD_PDF', url: url})
