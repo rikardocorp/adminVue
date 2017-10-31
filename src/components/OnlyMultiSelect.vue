@@ -20,6 +20,7 @@
       <template slot="tag" scope="props"><span :class="props.option.color">{{ props.option[keySearch] }}</span></template>
       <template slot="option" scope="props"><span class="option__small">{{ props.option[keySearch] }}</span></template>
       <template slot="maxElements" scope="props">Departamento-Provincia-Distrito</template>
+      <template slot="noResult"></template>
     </multiselect>
     <!--<pre class="text-left">{{ selectValue }}</pre>-->
     <!--<pre class="text-left">DPD: {{value}}</pre>-->
@@ -124,9 +125,10 @@
         if (typeof initValue[0] !== 'object') {
           initValue = this.textToObject(initValue)
         }
-
         this.resetSelect()
         let optionIndex = ''
+        if (initValue[0] == undefined) return false
+
         let localValue = JSON.parse(JSON.stringify(initValue))
         let vm = this
         localValue.forEach(function (value, index) {
@@ -154,6 +156,8 @@
           })
           newLocation.push(obj[0])
         })
+        console.log('MARCELA TE AMO')
+        console.log(newLocation)
         return newLocation
       }
     },

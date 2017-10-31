@@ -5,9 +5,12 @@ import router from '../../router'
 const state = {
   API_URL: '',
   LOGIN_URL: '',
+  RESET_PASSWORD_URL: '',
+  RECOVER_PASSWORD_URL: '',
   SIGNUP_URL: '',
   DATAUSER_URL: '',
   IMAGES_URL: '',
+  FILES_URL: '',
   user: {
     isLogged: false
   },
@@ -42,10 +45,12 @@ const mutations = {
     console.log('InitLogin')
     state.API_URL = payload.API_URL
     state.LOGIN_URL = payload.LOGIN_URL
+    state.RESET_PASSWORD_URL = payload.RESET_PASSWORD_URL
+    state.RECOVER_PASSWORD_URL = payload.RECOVER_PASSWORD_URL
     state.SIGNUP_URL = payload.SIGNUP_URL
     state.DATAUSER_URL = payload.DATAUSER_URL
     state.IMAGES_URL = payload.IMAGES_URL
-    console.log(state.IMAGES_URL)
+    state.FILES_URL = payload.FILES_URL
   },
   changeAuth: (state, value) => {
     Vue.set(state.user, 'isLogged', value)
@@ -80,6 +85,46 @@ const actions = {
       commit('setAuthHeader')
       dispatch('getDataUser', {router: true})
       commit('switchLoading', false)
+    })
+    inquiry.catch(error => {
+      commit('switchLoading', false)
+      console.log('ERROR')
+      console.log(error)
+      let result = {}
+      result.content = error
+      result.data = error.data
+      commit('pushNotification', result)
+    })
+  },
+  recoverPassword: ({ commit, state, dispatch }, data) => {
+    commit('switchLoading', true)
+    console.log('RECOVEF PASSWORD')
+    console.log(data)
+    Vue.http.headers.common['Content-Type'] = 'application/json'
+    let inquiry = Vue.http.post(state.RECOVER_PASSWORD_URL, data).then(response => {
+      commit('switchLoading', false)
+      console.log(response)
+    })
+    inquiry.catch(error => {
+      commit('switchLoading', false)
+      console.log('ERROR')
+      console.log(error)
+      let result = {}
+      result.content = error
+      result.data = error.data
+      commit('pushNotification', result)
+    })
+  },
+  resetPassword: ({ commit, state, dispatch }, payload) => {
+    commit('switchLoading', true)
+    console.log(payload.data)
+    let inquiry = Vue.http.post(state.RESET_PASSWORD_URL, payload.data, {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+      }
+    }).then(response => {
+      commit('switchLoading', false)
+      console.log(response)
     })
     inquiry.catch(error => {
       commit('switchLoading', false)

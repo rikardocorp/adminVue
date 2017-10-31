@@ -8,6 +8,8 @@ import Full from '@/containers/Full'
 // Views
 import Dashboard from '@/views/Dashboard'
 import Login from '@/views/Login'
+import RecoverPass from '@/views/RecoverPass'
+import Profile from '../views/maintenance/Profile.vue'
 
 // Views Maintenance
 import City from '../views/maintenance/City.vue'
@@ -29,6 +31,7 @@ import Purchaser from '../views/vehicle/Purchaser.vue'
 
 // Selling
 import Sales from '../views/selling/Sales.vue'
+import Sale from '../views/selling/Sale.vue'
 import SellNewPolice from '../views/selling/NewSale.vue'
 import SellNewPoliceSpecial from '../views/selling/NewSaleSpecial.vue'
 import Cotizar from '../views/selling/Cotizar.vue'
@@ -147,30 +150,30 @@ const router = new Router({
               component: VehicleTypeCategory,
               meta: {requiresAuth: true, ROLE_ADMIN: true}
             },
-            {
-              path: 'precio-poliza',
-              name: 'Precio de Poliza',
-              component: Price,
-              meta: {requiresAuth: true, ROLE_ADMIN: true}
-            },
+            // {
+            //   path: 'precio-poliza',
+            //   name: 'Precio de Poliza',
+            //   component: Price,
+            //   meta: {requiresAuth: true, ROLE_ADMIN: true}
+            // },
             {
               path: 'precio-poliza-full',
               name: 'Tabla de Precios Poliza',
               component: PriceFull,
               meta: {requiresAuth: true, ROLE_ADMIN: true}
             },
-            {
-              path: 'precio-poliza-full2',
-              name: 'Tabla de Precios Poliza 2',
-              component: PriceFull2,
-              meta: {requiresAuth: true, ROLE_ADMIN: true}
-            },
-            {
-              path: 'vehiculos',
-              name: 'Registro Vehiculo',
-              component: Vehicle,
-              meta: {requiresAuth: true, ROLE_ADMIN: true}
-            },
+            // {
+            //   path: 'precio-poliza-full2',
+            //   name: 'Tabla de Precios Poliza 2',
+            //   component: PriceFull2,
+            //   meta: {requiresAuth: true, ROLE_ADMIN: true}
+            // },
+            // {
+            //   path: 'vehiculos',
+            //   name: 'Registro Vehiculo',
+            //   component: Vehicle,
+            //   meta: {requiresAuth: true, ROLE_ADMIN: true}
+            // },
             {
               path: 'contratantes',
               name: 'Registro Contratante',
@@ -178,6 +181,12 @@ const router = new Router({
               meta: {requiresAuth: true, ROLE_ADMIN: true}
             }
           ]
+        },
+        {
+          path: 'perfil',
+          name: 'PerfilUsuario',
+          component: Profile,
+          meta: {requiresAuth: true, ROLE_ADMIN: true, ROLE_PUNTO_VENTA: true, ROLE_VENDEDOR: true, ROLE_USUARIO: true}
         },
         {
           path: 'insertar-poliza',
@@ -203,6 +212,12 @@ const router = new Router({
           meta: {requiresAuth: true, ROLE_ADMIN: true, ROLE_PUNTO_VENTA: true}
         },
         {
+          path: 'polizas-vendidas/:idSale/:type',
+          name: 'VentasId',
+          component: Sale,
+          meta: {requiresAuth: true, ROLE_ADMIN: true, ROLE_PUNTO_VENTA: true}
+        },
+        {
           path: 'cotizar-admin',
           name: 'cotizar',
           component: Cotizar
@@ -223,6 +238,11 @@ const router = new Router({
       path: '/login',
       name: 'Login',
       component: Login
+    },
+    {
+      path: '/recoverpassword/:token',
+      name: 'Recover',
+      component: RecoverPass
     }
   ]
 })
@@ -265,8 +285,10 @@ const router = new Router({
 // })
 
 router.beforeEach((to, from, next) => {
-  // alert('META?')
-  if (to.meta.requiresAuth) {
+
+  if (to.name === 'Recover') {
+    next()
+  } else if (to.meta.requiresAuth) {
     // alert('META!!!!')
     console.log('META')
     console.log(to.meta)
@@ -296,6 +318,7 @@ router.beforeEach((to, from, next) => {
 })
 
 router.afterEach((to, from) => {
+  if (to.name === 'Recover') return false
   let isLogged = store.state.Login.user.isLogged
   if (!isLogged) {
     // alert('sethHeaders')

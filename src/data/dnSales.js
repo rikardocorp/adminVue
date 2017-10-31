@@ -188,7 +188,7 @@ export const DATA_FORM = {
 }
 
 export const DATA_FILTER = {
-  name: 'assignUser',
+  name: 'sales',
   post: {
     state: '',
     insuranceCompany: null,
@@ -207,11 +207,13 @@ export const DATA_FORM_FILTER = {
       placeholder: 'Estado de la venta',
       type: 'text',
       input: 'radio-group',
+      srOnly: true,
       params: {
         variant: 'primary',
         size: 'sm',
         options: [
           {text: '&nbsp;', value: ''},
+          { text: '&nbsp;', value: '0' },
           { text: '&nbsp;', value: '1' },
           { text: '&nbsp;', value: '2' },
           { text: '&nbsp;', value: '3' },

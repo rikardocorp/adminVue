@@ -78,9 +78,9 @@
           <!--<pre style="font-size: 0.7em">{{ data.user }}</pre>-->
           <!--<pre>{{ data.vehicle }}</pre>-->
           <!--<br>-->
-          <pre>{{ data.user }}</pre>
+          <!--<pre>{{ data.user }}</pre>-->
           <!--<br><br>-->
-          <pre>{{ data.purchaser }}</pre>
+          <!--<pre>{{ data.purchaser }}</pre>-->
 
           <!--<pre>{{ data.vehicle }}</pre>-->
           <!--<br><br>-->

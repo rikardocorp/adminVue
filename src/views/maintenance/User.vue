@@ -19,22 +19,24 @@
     <b-modal :title="optionPick.title" :class="'modal-'+optionPick.variant" v-model="showModal">
       <div v-if="optionPick.name === btnOption.deleteOpc.name">{{ optionPick.content }}</div>
       <div v-if="optionPick.name === btnOption.changeKey.name" class="upload-content">
-        <h4 class="text-center text-uppercase">{{ itemPick.name }}</h4>
-        <b-form-group v-for="(option, index) in optInput" :key="index"
-                      :class="{ 'form-group--error': $v.itemPass[index]? $v.itemPass[index].$error : false, 'text-right': true}"
-                      :label-cols="4"
-                      :label="option.label + ':'"
-                      :horizontal="true">
+        <h4 class="text-center text-uppercase">{{ itemPick.firstName + ' ' + itemPick.lastName }}</h4>
+        <p class="text-center mb-3"><span class=" text-success">{{ itemPick.email }}</span></p>
+        <form enctype="multipart/form-data">
+          <b-form-group v-for="(option, index) in optInput" :key="index"
+                        :class="{ 'form-group--error': $v.itemPass[index]? $v.itemPass[index].$error : false, 'text-right': true}"
+                        :label-cols="4"
+                        :label="option.label + ':'"
+                        :horizontal="true">
 
-          <!-- INPUT -->
-          <b-form-input v-if="option.input==undefined || option.input=='input'"
-                        :disabled="isLoading" :type="option.type"
-                        v-model.trim="itemPass[index]"
-                        @blur.native="$v.itemPass[index]? $v.itemPass[index].$touch(): false"
-                        :placeholder="option.placeholder+'..'"></b-form-input>
-          <form-error :data="$v.itemPass[index] ? $v.itemPass[index] : {} "></form-error>
-        </b-form-group>
-
+            <!-- INPUT -->
+            <b-form-input v-if="option.input==undefined || option.input=='input'"
+                          :disabled="isLoading" :type="option.type"
+                          v-model.trim="itemPass[index]"
+                          @blur.native="$v.itemPass[index]? $v.itemPass[index].$touch(): false"
+                          :placeholder="option.placeholder+'..'"></b-form-input>
+            <form-error :data="$v.itemPass[index] ? $v.itemPass[index] : {} "></form-error>
+          </b-form-group>
+        </form>
       </div>
       <template slot="modal-footer">
         <b-button @click="showModal = !showModal">Cancel</b-button>
@@ -115,7 +117,7 @@
         showModal: false,
 
         optInput: dataFormPass.input,
-        itemPass: dataFormPass.post
+        itemPass: JSON.parse(JSON.stringify(dataFormPass.post))
       }
     },
     validations () {
@@ -156,10 +158,21 @@
           }
         })
       },
-      changePassword () {
+      async changePassword () {
         let invalid = this.$v.itemPass.$invalid
         if (!invalid) {
-          alert('Exito')
+          let url = 'users/' + this.itemPick.id + '/changepassword'
+          let formData = new FormData()
+          formData.append('password', this.itemPass.rePassword)
+          let self = await this.$store.dispatch('dispatchHTTP', {type: 'INSERT', url: url, data: formData})
+          console.log(self)
+          if (self.status) {
+            this.itemPass = JSON.parse(JSON.stringify(dataFormPass.post))
+            this.$v.itemPass.$reset()
+            this.toggleDialog()
+          }
+        } else {
+          this.$v.itemPass.$touch()
         }
       },
       toggleDialog: function () {
@@ -178,6 +191,8 @@
           this.update = true
           this.$scrollTo('body')
         } else {
+          this.itemPass = JSON.parse(JSON.stringify(dataFormPass.post))
+          this.$v.itemPass.$reset()
           this.toggleDialog()
         }
       }

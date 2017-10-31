@@ -81,6 +81,22 @@
       <i class="fa fa-print" aria-hidden="true"></i> IMPRIMIR
     </b-button>
 
+    <!-- PARA LA POSITIVA -->
+    <div v-if="data.pickPolice.item.insuranceCompanyId==1" class="text-center mt-3">
+      <toggle-button :labels="{checked: 'Manual', unchecked: 'WEB'}" :color="{checked: 'rgb(239, 123, 34)', unchecked: 'rgb(181, 181, 181)'}"
+                     :width="85" :height="32" :sync="true"
+                     v-model="typePositiva" class="mr-2">
+      </toggle-button>
+    </div>
+
+    <!-- PARA LA AFOCAT 6Y7 -->
+    <div v-if="data.pickPolice.item.insuranceCompanyId==6 || data.pickPolice.item.insuranceCompanyId==7" class="text-center mt-3">
+      <toggle-button :labels="{checked: 'Centrado', unchecked: 'otro'}" :color="{checked: 'rgb(239, 123, 34)', unchecked: 'rgb(181, 181, 181)'}"
+                     :width="85" :height="32" :sync="true"
+                     v-model="typeAfocat" class="mr-2">
+      </toggle-button>
+    </div>
+
     <!--<p><a :href="pdf" target="_blank">Link pdf >></a></p>-->
     <!--<p>rrrrrr</p>-->
     <!--<pre>{{saveAs}}</pre>-->
@@ -97,7 +113,7 @@
                      <!--v-model="hasEmail" class="ml-2" @change="changeEmail">-->
       <!--</toggle-button>-->
     <!--</div>-->
-
+    <pre>{{ data.pickPolice }}</pre>
   </div>
 
 </template>
@@ -129,7 +145,9 @@
 
         manualWeb: '1',
         centrado: '1',
-        pdf: ''
+        pdf: '',
+        typePositiva: true,
+        typeAfocat: true
       }
     },
     computed: {
@@ -142,20 +160,29 @@
     },
     methods: {
       imprimir () {
+//       1  positiva: /sales/{id}/printpolicy?positiva=(1: manual, 2: web)
+//          rimac: /sales/{id}/printpolicy
+//          mapfre: /sales/{id}/printpolicy
+//          pacifico: /sales/{id}/printpolicy
+//          protecta: /sales/{id}/printpolicy
+//       6  afocat unica: /sales/{id}/printpolicy?afocat_manual_centrado=(1: centrado, other: no centrado)
+//       7   afocat revisor: /sales/{id}/printpolicy?afocat_manual_centrado=(1: centrado, other: no centrado)
+//       8    afocat aqp: /sales/{id}/printpolicy
 
         //let companyId = this.data.pickPolice.insuranceCompanyId
         //console.log(company)
         // id : 1 POsitiva
         // id : 6,7,8 afocat
         // if (companyId === 1)
-
         let paymentId = this.data.payment.item.id
         if (paymentId === undefined) {
           this.$store.commit('sendNotification', {status: null, message: 'Debe procesar el pago para imprimir la venta.'})
           return false
         }
+
+        let idCompany = this.data.pickPolice.item.insuranceCompanyId
         let idSale = this.data.sale.item.id
-        let url = 'sales/' + idSale + '/printpolicy?positiva=1&afocat_manual_centrado=1'
+        let url = this.getUrlPrint(idCompany, idSale)
         let self = this.$store.dispatch('dispatchHTTP', {type: 'LOAD_PDF', url: url})
         self.then((response) => {
           let data = response.content
@@ -167,6 +194,20 @@
       },
       paySale () {
         this.$emit('paySale')
+      },
+      getUrlPrint (idCompany, idSale) {
+        let url = ''
+        let type = ''
+        if (idCompany === 1) {
+          type = this.typePositiva ? 1 : 2
+          url = 'sales/' + idSale + '/printpolicy?positiva=' + type
+        } else if (idCompany === 6 || idCompany === 7) {
+          type = this.typePositiva ? 1 : 2
+          url = 'sales/' + idSale + '/printpolicy?afocat_manual_centrado=' + type
+        } else {
+          url = 'sales/' + idSale + '/printpolicy'
+        }
+        return url
       }
     },
     created () {

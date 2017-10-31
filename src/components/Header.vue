@@ -19,16 +19,16 @@
           </template>
           <b-dropdown-header tag="div" class="text-center"><strong>Account</strong></b-dropdown-header>
           <b-dropdown-item><i class="fa fa-bell-o"></i> Updates<span class="badge badge-info">42</span></b-dropdown-item>
-          <b-dropdown-item><i class="fa fa-envelope-o"></i> Messages<span class="badge badge-success">42</span></b-dropdown-item>
-          <b-dropdown-item><i class="fa fa-tasks"></i> Tasks<span class="badge badge-danger">42</span></b-dropdown-item>
-          <b-dropdown-item><i class="fa fa-comments"></i> Comments<span class="badge badge-warning">42</span></b-dropdown-item>
-          <b-dropdown-header tag="div" class="text-center"><strong>Settings</strong></b-dropdown-header>
-          <b-dropdown-item><i class="fa fa-user"></i> Profile</b-dropdown-item>
-          <b-dropdown-item><i class="fa fa-wrench"></i> Settings</b-dropdown-item>
-          <b-dropdown-item><i class="fa fa-usd"></i> Payments<span class="badge badge-default">42</span></b-dropdown-item>
-          <b-dropdown-item><i class="fa fa-file"></i> Projects<span class="badge badge-primary">42</span></b-dropdown-item>
-          <b-dropdown-divider></b-dropdown-divider>
-          <b-dropdown-item><i class="fa fa-shield"></i> Lock Account</b-dropdown-item>
+          <!--<b-dropdown-item><i class="fa fa-envelope-o"></i> Messages<span class="badge badge-success">42</span></b-dropdown-item>-->
+          <!--<b-dropdown-item><i class="fa fa-tasks"></i> Tasks<span class="badge badge-danger">42</span></b-dropdown-item>-->
+          <!--<b-dropdown-item><i class="fa fa-comments"></i> Comments<span class="badge badge-warning">42</span></b-dropdown-item>-->
+          <!--<b-dropdown-header tag="div" class="text-center"><strong>Settings</strong></b-dropdown-header>-->
+          <!--<b-dropdown-item><i class="fa fa-user"></i> Profile</b-dropdown-item>-->
+          <!--<b-dropdown-item><i class="fa fa-wrench"></i> Settings</b-dropdown-item>-->
+          <!--<b-dropdown-item><i class="fa fa-usd"></i> Payments<span class="badge badge-default">42</span></b-dropdown-item>-->
+          <!--<b-dropdown-item><i class="fa fa-file"></i> Projects<span class="badge badge-primary">42</span></b-dropdown-item>-->
+          <!--<b-dropdown-divider></b-dropdown-divider>-->
+          <!--<b-dropdown-item><i class="fa fa-shield"></i> Lock Account</b-dropdown-item>-->
           <b-dropdown-item @click="logout"><i class="fa fa-lock"></i> Logout</b-dropdown-item>
         </b-nav-item-dropdown>
       </b-nav>
@@ -65,6 +65,9 @@
       sidebarMinimize (e) {
         e.preventDefault()
         document.body.classList.toggle('sidebar-minimized')
+        if (!document.body.classList.contains('aside-menu-hidden')) {
+          document.body.classList.toggle('aside-menu-hidden')
+        }
       },
       mobileSidebarToggle (e) {
         e.preventDefault()
@@ -73,6 +76,9 @@
       asideToggle (e) {
         e.preventDefault()
         document.body.classList.toggle('aside-menu-hidden')
+        if (!document.body.classList.contains('sidebar-minimized')) {
+          document.body.classList.toggle('sidebar-minimized')
+        }
       },
       logout () {
         console.log('Exit')

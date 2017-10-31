@@ -5,11 +5,15 @@
     </div>
     <b-form :id="name + nameForm" class="row">
       <div class="col-md-4  myLegend">
-        <h6 class="mt-2" style="color: #ffa505;">Leyenda de Estados</h6>
-        <ul class="list-group mt-3">
+        <h6 class="" style="color: #ffa505;">Leyenda de Estados</h6>
+        <ul class="list-group mt-1">
           <li class="list-group-item justify-content-between">
             <span class="badge badge-secondary badge-pill bg-white" style="border: 1px solid #6f6f6f">&nbsp;&nbsp;</span>
             <span class="float-left">Todos los estados.</span>
+          </li>
+          <li class="list-group-item justify-content-between">
+            <span class="badge badge-pill" style="border: 1px solid #FF9800; background: #ffe956;">&nbsp;&nbsp;</span>
+            <span class="float-left">Carrito de Compras.</span>
           </li>
           <li class="list-group-item justify-content-between">
             <span class="badge badge-danger badge-pill">&nbsp;&nbsp;</span>
@@ -169,19 +173,31 @@
         let dniRuc = this.item.dniRuc
         let dateFrom = this.item.dateFrom
         let dateTo = this.item.dateTo
+        let url = ''
+        let urlCart = ''
+        let result = []
         // let url = 'insurancepolicies/mypolicies?sold=' + sold + '&insuranceCompanyId=' + idCompany
         // let url = 'insurancepolicies?number=' + number + '&insuranceCompanyId=' + idCompany + '&userId=' + idUser + '&sold=' + sold + '&free=' + assign + '&fromDate=' + dateFrom + '&toDate=' + dateTo
-        let url = 'sales?dateFrom='+dateFrom+'&dateTo='+dateTo+'&regionId='+regionId+'&insurancePolicyNumber='+number+'&purchaserDniRuc='+dniRuc+'&insuranceCompanyId='+idCompany+'&state='+state
-        console.log('URL-------')
-        console.log(url)
+        if (state === '0') {
+          // url = 'carts'
+          url = 'carts?dateFrom='+dateFrom+'&dateTo='+dateTo+'&regionId='+regionId+'&purchaserDniRuc='+dniRuc+'&insuranceCompanyId='+idCompany+'&state='+state
+//          let selfCart = await this.$store.dispatch('dispatchHTTP', {type: 'GET', url: urlCart})
+//          if (!selfCart.status) return false
+//          result = result.concat(selfCart.content)
+//          console.log(result)
+        } else {
+          url = 'sales?dateFrom='+dateFrom+'&dateTo='+dateTo+'&regionId='+regionId+'&insurancePolicyNumber='+number+'&purchaserDniRuc='+dniRuc+'&insuranceCompanyId='+idCompany+'&state='+state
+        }
         let self = await this.$store.dispatch('dispatchHTTP', {type: 'GET', url: url})
-        if (!self.status) return true
-        this.items = self.content
-        console.log('self.content')
-        console.log(self.content)
-        this.$emit('resultFilter', self.content)
+        if (!self.status) return false
+        result = result.concat(self.content)
+        console.log(result)
+        this.$emit('resultFilter', result)
         this.$set(this.params, 'isSearch', false)
         this.datepicker.params.count = 0
+      },
+      getData (url) {
+
       },
       selectDate (pickDate) {
         console.log('pickDate')
@@ -293,21 +309,24 @@
         background: white;
       }
       label:nth-child(2){
-        background: #f96d6c;
+        background: #ffe956;
       }
       label:nth-child(3){
-        background: #ef7b21;
+        background: #f96d6c;
       }
       label:nth-child(4){
-        background: #63c1de;
+        background: #ef7b21;
       }
       label:nth-child(5){
-        background: #4ebc75;
+        background: #63c1de;
       }
       label:nth-child(6){
-        background: #2e86e8;
+        background: #4ebc75;
       }
       label:nth-child(7){
+        background: #2e86e8;
+      }
+      label:nth-child(8){
         background: #454545;
       }
     }
@@ -316,7 +335,7 @@
         border: none;
         li.list-group-item{
           border: none;
-          padding: 9px 0;
+          padding: 7px 0;
           span{
             float: left;
           }

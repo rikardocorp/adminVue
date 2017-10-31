@@ -68,7 +68,7 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    dispatchHTTP: ({commit, state, getters}, { type, url, data, notify = {success: false, error: false} }) => {
+    dispatchHTTP: ({commit, state, getters}, {type, url, data, notify = {success: false, error: false}}) => {
       console.log(type, url, data, notify)
       commit('switchLoading', true)
       let inquiry = ''

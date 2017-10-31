@@ -57,9 +57,12 @@ const API_URL = 'http://174.138.48.60:8080/jmc/'
 const URL_LOG = {
   API_URL: API_URL,
   LOGIN_URL: API_URL + 'login',
+  RESET_PASSWORD_URL: API_URL + 'resetpassword',
+  RECOVER_PASSWORD_URL: API_URL + 'recoverpassword',
   SIGNUP_URL: API_URL + 'users',
   DATAUSER_URL: API_URL + 'rest/v1/identity',
-  IMAGES_URL: API_URL + 'files'
+  IMAGES_URL: API_URL + 'files',
+  FILES_URL: API_URL + 'docs'
 }
 store.commit('initLogin', URL_LOG)
 

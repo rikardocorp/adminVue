@@ -1,5 +1,6 @@
 <template>
   <div id="contentDetailSale">
+
     <div class="col-md-11 col-sm-12 col-lg-9 col-xl-7 m-auto">
       <b-card>
       <div slot="header" class="text-left">
@@ -110,7 +111,7 @@
             </div>
           </div>
           <div class="row pt-2 detailPay">
-            <div class="col-md-12 borderChild">
+            <div v-if="item2.cart==null" class="col-md-12 borderChild">
               <p class="title">PAGOS</p>
               <div class="row pt-2">
                 <div class="col-md-6 container-subtitle">
@@ -148,6 +149,25 @@
                 <div class="col-md-12 container-subtitle">
                   <b-button @click="addPay" class="float-right w-100" :disabled="isLoading" type="submit" size="sm" variant="primary"><i class="fa fa-dot-circle-o"></i> Pagar</b-button>
                 </div>
+              </div>
+            </div>
+
+            <div v-else="" class="col-md-12 borderChild">
+              <p class="title">PAGOS</p>
+              <div class="row pt-2">
+                <div class="col-md-6 container-subtitle">
+                  <p class="subtitle text-left"><span class="bg-danger">COMPROBANTE</span></p>
+                  <p class="value">{{ item2.numFactura == '' ? 'S/N' : item2.numFactura }}</p>
+                </div>
+                <div class="col-md-6 container-subtitle">
+                  <p class="subtitle text-left"><span class="bg-success">COSTO POLIZA</span></p>
+                  <p class="value"><span>s/.</span> {{ item2.amount | currency }}</p>
+                </div>
+              </div>
+              <p class="title bg-info mt-2">SUBIR PDF</p>
+              <p v-if="item2.policy!==null" class="text-center text-info py-2"><a :href="pathDocs + '/' + item2.policy" target="_blank">{{ 'ver archivo de Poliza >>' }} {{item2.policy}}</a></p>
+              <div class="upload-content">
+                <upload-simple :url="urlFile" :path="pathDocs" :multiple="false" @emitCallback="uploadCallBack"></upload-simple>
               </div>
             </div>
           </div>
@@ -198,6 +218,7 @@
   import Avatar from '../../components/Avatar.vue'
   import {DATA_PAYMENT as dataPay} from '../../data/dnSales'
   import FileSaver from 'file-saver'
+  import UploadSimple from '../../components/UploadFileSimple.vue'
 
   // import {DATA_FORM_PAYMENT as _payment} from '../../data/dnSales'
 
@@ -205,7 +226,8 @@
     props: ['item', 'urlRest'],
     components: {
       ToggleButton,
-      Avatar
+      Avatar,
+      UploadSimple
     },
     data () {
       return {
@@ -231,13 +253,15 @@
         },
         listPayment: [],
         payment: dataPay.post,
-        urlPayment: dataPay.name
+        urlPayment: dataPay.name,
+        urlFile: ''
       }
     },
     watch: {
       async item (newVal) {
         this.item2 = newVal
         this.listPayment = await this.getPayments(newVal.id)
+        this.urlFile = 'sales/' + newVal.id + '/uploadpolicydocument'
       }
     },
     computed: {
@@ -246,6 +270,9 @@
       },
       path () {
         return this.$store.state.Login.IMAGES_URL
+      },
+      pathDocs () {
+        return this.$store.state.Login.FILES_URL
       },
       validityEnd () {
         // Date
@@ -290,6 +317,9 @@
       }
     },
     methods: {
+      uploadCallBack (value) {
+        this.item2.policy = value.policy
+      },
       async updateSale () {
         let state = this.countCredito > 0 ? 3 : 4
         let saleID = this.item.id
@@ -468,6 +498,9 @@
           font-size: 0.8em;
         }
       }
+      .col-md-12{
+        overflow: hidden;
+      }
     }
 
     .formPay{
@@ -485,6 +518,28 @@
   },
 
   #contentDetailSale{
+
+    .dropbox {
+      color: #546c79 !important;
+      outline: 0.1em dashed #cacaca;
+      outline-offset: -1.5em;
+      background: #f4f3ef;
+      color: #ababab;
+      padding: 1.8em 2.4em;
+      position: relative;
+      cursor: pointer;
+      border: 0.19em dashed white;
+      margin: 0;
+      font-weight: 500;
+      font-size: 0.8em;
+      text-align: justify;
+      p span.text-italic {
+        color: #64c1de;
+        padding: 10px;
+        font-size: 1em;
+      }
+    }
+
     .avatar{
       span{
         font-size: 1.5em !important;

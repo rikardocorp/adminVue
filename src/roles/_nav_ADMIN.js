@@ -84,11 +84,11 @@ export default {
         //   url: '/venta/clientes',
         //   icon: 'fa fa-map-marker'
         // },
-        {
-          name: 'Registro Vehiculo',
-          url: '/vehiculo/vehiculos',
-          icon: 'fa fa-map-marker'
-        },
+        // {
+        //   name: 'Registro Vehiculo',
+        //   url: '/vehiculo/vehiculos',
+        //   icon: 'fa fa-map-marker'
+        // },
         {
           name: 'Contratante',
           url: '/vehiculo/contratantes',
@@ -110,13 +110,13 @@ export default {
       url: '/vehiculo/tipo-categoria-vehiculo',
       icon: 'icon-puzzle'
     },
+    // {
+    //   name: 'Precios',
+    //   url: '/vehiculo/precio-poliza',
+    //   icon: 'fa fa-money'
+    // },
     {
       name: 'Precios',
-      url: '/vehiculo/precio-poliza',
-      icon: 'fa fa-money'
-    },
-    {
-      name: 'Precio Full',
       url: '/vehiculo/precio-poliza-full',
       icon: 'fa fa-money'
     },

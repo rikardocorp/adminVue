@@ -23,33 +23,70 @@
             </div>
             <!--ALL SALES -->
             <div v-if="items.length" class="card-insurance row d-flex justify-content-center pt-3">
-              <div v-for="(x, index) in items" :key="x.id"  :class="{'ticket cardWrap m-2 mb-3 hvr-bounce-in':true, 'pickOption': x.pick}" @click="selectedSale(x)">
-                <!--<i class="fa fa-thumb-tack" aria-hidden="true"></i>-->
-                <div class="card-ticket cardLeft">
-                  <avatar :username="x.insurancePolicy.insuranceCompany.name" :rounded="true" :size="6.4" sizeUnid="em"
-                          :src="path + '/' + x.insurancePolicy.insuranceCompany.image" :alt="x.insurancePolicy.insuranceCompany.name"
-                          :border="true" colorBorder="#f4f3ef" color="#ecedef" :localSrc="false"
-                          backgroundColor="orange" :sizeBorder="0.5"></avatar>
-                </div>
-                <div class="card-ticket cardCenter dashed">
-                  <div :class="{'xtitle': true, 'bg-danger': x.state==1, 'bg-primary': x.state==2, 'bg-info': x.state==3, 'bg-success': x.state==4, 'bg-blue': x.state==5}">
-                    Placa {{ x.vehicle.licensePlate }}
-                    <!--<button class="btn btn-danger"><i class="fa fa-trash"></i></button>-->
+              <!-- SALES LIST -->
+              <div v-for="(x, index) in items" :key="x.id" >
+
+                <div v-if="x.insurancePolicy !== undefined" :class="{'ticket cardWrap m-2 mb-3 hvr-bounce-in':true, 'pickOption': x.pick}" @click="selectedSale(x, true)">
+                  <!--<i class="fa fa-thumb-tack" aria-hidden="true"></i>-->
+                  <i v-if="x.cart" class="fa fa-shopping-cart icon-cart" aria-hidden="true"></i>
+                  <div class="card-ticket cardLeft">
+                    <avatar :username="x.insurancePolicy.insuranceCompany.name" :rounded="true" :size="6.4" sizeUnid="em"
+                            :src="path + '/' + x.insurancePolicy.insuranceCompany.image" :alt="x.insurancePolicy.insuranceCompany.name"
+                            :border="true" colorBorder="#f4f3ef" color="#ecedef" :localSrc="false"
+                            backgroundColor="orange" :sizeBorder="0.5"></avatar>
                   </div>
-                  <div class="xcontent">
-                    <div class="title">
-                      <!--<h2 class="big">{{ x.insurancePolicy.number }}</h2>-->
-                      <h2>{{ x.purchaser.razonSocial }}</h2>
-                      <span>Contratante</span>
+                  <div class="card-ticket cardCenter dashed">
+                    <div :class="{'xtitle': true, 'bg-danger': x.state==1, 'bg-primary': x.state==2, 'bg-info': x.state==3, 'bg-success': x.state==4, 'bg-blue': x.state==5}">
+                      Placa {{ x.vehicle.licensePlate }}
+                      <!--<button class="btn btn-danger"><i class="fa fa-trash"></i></button>-->
                     </div>
-                    <div class="seat">
-                      <h2>{{ x.date.split(' ')[0] }}</h2>
-                      <span>Compra</span>
+                    <div class="xcontent">
+                      <div class="title">
+                        <!--<h2 class="big">{{ x.insurancePolicy.number }}</h2>-->
+                        <h2>{{ x.purchaser.razonSocial }}</h2>
+                        <span>Contratante</span>
+                      </div>
+                      <div class="seat">
+                        <h2>{{ x.date.split(' ')[0] }}</h2>
+                        <span>Compra</span>
+                      </div>
+                      <div class="seat ml-2">
+                        <h2>{{ x.validityStart }}</h2>
+                        <span>Inicio</span>
+                      </div>
                     </div>
-                    <div class="seat ml-2">
-                      <h2>{{ x.validityStart }}</h2>
-                      <span>Inicio</span>
+                  </div>
+                </div>
+
+                <div v-else="" :class="{'ticket cardWrap m-2 mb-3 hvr-bounce-in':true, 'pickOption': x.pick}" @click="selectedSale(x, false)">
+                  <i class="fa fa-cart-plus" aria-hidden="true"></i>
+                  <div class="card-ticket cardLeft">
+                    <avatar :username="x.insuranceCompany.name" :rounded="true" :size="6.4" sizeUnid="em"
+                            :src="path + '/' + x.insuranceCompany.image" :alt="x.insuranceCompany.name"
+                            :border="true" colorBorder="#f4f3ef" color="#ecedef" :localSrc="false"
+                            backgroundColor="orange" :sizeBorder="0.5"></avatar>
+                  </div>
+                  <div class="card-ticket cardCenter dashed">
+                    <div :class="{'xtitle': true, 'bg-cart': true}">
+                      Placa {{ x.vehicle.licensePlate }}
+                      <!--<button class="btn btn-danger"><i class="fa fa-trash"></i></button>-->
                     </div>
+                    <div class="xcontent">
+                      <div class="title">
+                        <!--<h2 class="big">{{ x.insurancePolicy.number }}</h2>-->
+                        <h2>{{ x.purchaser.razonSocial }}</h2>
+                        <span>Contratante</span>
+                      </div>
+                      <div class="seat">
+                        <h2>{{ x.seatNumber }}</h2>
+                        <span>Asientos</span>
+                      </div>
+                      <div class="seat ml-2">
+                        <h2>{{ x.date.split(' ')[0] }}</h2>
+                        <span>Compra</span>
+                      </div>
+                    </div>
+
                   </div>
                 </div>
               </div>
@@ -58,10 +95,14 @@
         </div>
 
         <div v-show="isDetail" key="div2" id="saleDetail">
-        <div class="col-md-12 m-auto">
-          <detail-sale :item="selectedItem" :urlRest="'sales'" @returnMain="returnMain"></detail-sale>
+          <div v-show="isSale"  class="col-md-12 m-auto">
+            <detail-sale :item="selectedItem" :urlRest="'sales'" @returnMain="returnMain"></detail-sale>
+          </div>
+
+          <div v-show="!isSale"  class="col-md-12 m-auto">
+            <detail-cart :item="selectedItemCart" :urlRest="'sales'" @returnMain="returnMain"></detail-cart>
+          </div>
         </div>
-      </div>
       </transition-group>
     </div>
   </div>
@@ -73,6 +114,7 @@
   import {DATA_FILTER as dataSale} from '../../data/dnSales'
   import Form from './forms/FormSales.vue'
   import DetailSale from './DetailSale.vue'
+  import DetailCart from './DetailCart.vue'
   import Avatar from '../../components/Avatar.vue'
 
   export default {
@@ -80,7 +122,8 @@
     components: {
       appForm: Form,
       Avatar,
-      DetailSale
+      DetailSale,
+      DetailCart
     },
     data: function () {
       return {
@@ -98,7 +141,9 @@
         },
         selected: null,
         selectedItem: {},
-        isDetail: false
+        selectedItemCart: {},
+        isDetail: false,
+        isSale: false
       }
     },
     computed: {
@@ -137,8 +182,13 @@
           })
         }
       },
-      selectedSale (item) {
-        this.selectedItem = item
+      selectedSale (item, isSale) {
+        if (isSale) {
+          this.selectedItem = item
+        } else {
+          this.selectedItemCart = item
+        }
+        this.isSale = isSale
         this.isDetail = true
 //        let policy = {id: item.id}
 //        if (item.pick) {
@@ -150,13 +200,11 @@
 //        }
 //        this.$set(item, 'pick', value)
       },
-      async getAll () {
-        console.log('GET POLICIS')
-        let self = await this.$store.dispatch('dispatchHTTP', {type: 'GET', url: this.urlRest})
-        if (!self.status) return true
-        this.items = self.content
-        console.log(this.items)
-        this.params.isSearch = false
+      async getData (url) {
+        console.log('GET SALE')
+        let self = await this.$store.dispatch('dispatchHTTP', {type: 'GET', url: url})
+        console.log(self)
+        return self.status ? self.content : null
       },
       isSearching (value) {
         this.params.isSearch = value
@@ -165,7 +213,14 @@
         this.isDetail = false
       }
     },
-    created () {
+    async mounted () {
+//      if (this.$route.params.idSale !== undefined) {
+//        let url = this.nameForm1 + '/' + this.$route.params.idSale
+//        let sale = await this.getData(url)
+//        console.log('bandera')
+//        console.log(sale.insurancePolicy !== undefined)
+//        if (sale) this.selectedSale(sale, sale.insurancePolicy !== undefined)
+//      }
     }
   }
 </script>
@@ -174,12 +229,35 @@
 
   #getSale {
 
+    .bg-cart{
+      background: #ffe956 !important;
+      color: #ef7b22;
+      border: 1px dashed #ffa501;
+    }
+
     .card-insurance {
       .avatar {
         position: absolute !important;
       }
       .zoomPolicy:hover{
         zoom: 2;
+      }
+      i {
+        position: absolute;
+        color: #3db3e8;
+        font-size: 3.3em;
+        transform: rotate(17deg);
+        bottom: 0.1em;
+        left: 5.5em;
+        z-index: 2;
+        display: block !important;
+
+        &.icon-cart{
+          color: #4ebc75;
+          transform: rotate(0deg);
+          font-size: 3em;
+          left: 5.9em;
+        }
       }
     }
 

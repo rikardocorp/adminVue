@@ -137,12 +137,16 @@ export const DATA_FORM_PASSWORD = {
     password: {
       label: 'Contraseña',
       placeholder: 'Nueva Contraseña',
-      type: 'password'
+      type: 'password',
+      icon: 'fa-unlock-alt',
+      srOnly: true
     },
     rePassword: {
       label: 'Re-Contraseña',
       placeholder: 'Ingrese nuevamente la contraseña',
-      type: 'password'
+      type: 'password',
+      icon: 'fa-lock',
+      srOnly: true
     }
   },
   validate: {
@@ -154,6 +158,112 @@ export const DATA_FORM_PASSWORD = {
       rePassword: {
         required,
         sameAsPassword: sameAs('password')
+      }
+    }
+  }
+}
+
+export const DATA_FORM_PASSWORD_RECOVER = {
+  post: {
+    password: '',
+    rePassword: ''
+  },
+  input: {
+    email: {
+      label: 'Email',
+      placeholder: 'Correo Electronico',
+      type: 'email',
+      icon: 'fa-email',
+      srOnly: true
+    },
+    password: {
+      label: 'Contraseña',
+      placeholder: 'Nueva Contraseña',
+      type: 'password',
+      icon: 'fa-unlock-alt',
+      srOnly: true
+    },
+    rePassword: {
+      label: 'Re-Contraseña',
+      placeholder: 'Ingrese nuevamente la contraseña',
+      type: 'password',
+      icon: 'fa-lock',
+      srOnly: true
+    }
+  },
+  validate: {
+    itemPass: {
+      email: {
+        required,
+        email
+      },
+      password: {
+        required,
+        minLength: minLength(4)
+      },
+      rePassword: {
+        required,
+        sameAsPassword: sameAs('password')
+      }
+    }
+  }
+}
+
+export const DATA_USER_PROFILE = {
+  validate: {
+    item: {
+      firstName: {
+        required
+      },
+      lastName: {
+        required
+      },
+      razonSocial: {
+        required
+      },
+      dniRuc: {
+        required
+      },
+      birthDate: {
+        required
+      },
+      address: {
+        required
+      },
+      cellPhone: {
+        required
+      },
+      departamento: {
+        required
+      },
+      provincia: {
+        required
+      },
+      distrito: {
+        required
+      }
+    }
+  }
+}
+
+export const DATA_FORM_PASSWORD_CHANGE = {
+  post: {
+    oldPassword: '',
+    newPassword: '',
+    rePassword: ''
+  },
+  validate: {
+    itemPass: {
+      oldPassword: {
+        required
+      },
+      newPassword: {
+        required,
+        minLength: minLength(4)
+      },
+      rePassword: {
+        required,
+        sameAsPassword: sameAs('newPassword')
       }
     }
   }

@@ -7,7 +7,7 @@
           <div class="card-group mb-0">
 
             <div class="card p-4">
-              <div class="card-body">
+              <div v-if="!changePass" class="card-body">
                 <h1>JMC</h1>
                 <p class="text-muted">Iniciar Sesion</p>
                 <div class="alert alert-danger" v-if="error">
@@ -26,7 +26,27 @@
                     <button type="button" class="btn btn-primary px-4" @click="submit">Ingresar</button>
                   </div>
                   <div class="col-6 text-right">
-                    <button type="button" class="btn btn-link px-0">olvidaste tu password?</button>
+                    <button @click="changePass=true" type="button" class="btn btn-link px-0">olvidaste tu password?</button>
+                  </div>
+                </div>
+              </div>
+              <div v-else="" class="card-body">
+                <h1>JMC</h1>
+                <p class="text-muted">Recuperar Contraseña</p>
+
+                <b-form-group>
+                  <!-- INPUT -->
+                  <b-input-group>
+                    <b-input-group-addon class=""><i class="fa fa-envelope-o"></i></b-input-group-addon>
+                    <b-form-input type="email" v-model.trim="recoverEmail" placeholder="Correo Electronico.."></b-form-input>
+                  </b-input-group>
+                </b-form-group>
+                <div class="row">
+                  <div class="col-6 text-left">
+                    <button type="button" class="btn bg-inverse px-4" @click.prevent="changePass=false">Regresar</button>
+                  </div>
+                  <div class="col-6 text-right">
+                    <button type="button" class="btn btn-primary px-4" @click.prevent="recoverPassword">Cambiar</button>
                   </div>
                 </div>
               </div>
@@ -60,7 +80,9 @@
           username: '',
           password: ''
         },
-        error: ''
+        error: '',
+        changePass: false,
+        recoverEmail: ''
       }
     },
     computed: {
@@ -89,7 +111,37 @@
           // error callback
           console.log(response)
         })
+      },
+      async recoverPassword () {
+        console.log('Submit')
+        if (this.recoverEmail === '') return false
+        let data = {
+          email: this.recoverEmail
+        }
+//        let url = this.$store.state.Login.RECOVER_PASSWORD_URL
+        this.$http.post('http://174.138.48.60:8080/jmc/recoverpassword', {'email': 'oscarqpe@gmail.com'})
+          .then(response => {
+            // success callback
+            console.log(response)
+          }, response => {
+            // error callback
+          })
+
+
+//        this.$http.post(url, data, {
+//          headers: {
+//            'Content-Type': 'application/json'
+//          }
+//        }).then(response => {
+//          console.log(response)
+//        }, response => {
+//          console.log(response)
+//        })
+//        let self = await this.$store.dispatch('dispatchHTTP', {type: 'INSERT', url: url, data: data})
+//        console.log(self)
+        // this.$store.dispatch('recoverPassword', data)
       }
+
     },
     watch: {
       notification (newVal, oldVal) {

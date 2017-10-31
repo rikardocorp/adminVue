@@ -118,7 +118,7 @@
       </transition>
     </div>
     <!--<pre>{{optType[0].options}}</pre>-->
-    <pre>{{item}}</pre>
+    <!--<pre>{{item}}</pre>-->
   </b-form>
 </template>
 
