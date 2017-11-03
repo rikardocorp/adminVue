@@ -3,7 +3,8 @@
     <div class="progress-line" v-if="isLoading"></div>
     <div class="container">
       <div class="row justify-content-center">
-        <div class="col-md-9">
+        <div class="col-md-8 col-lg-6 col-xl-5">
+        <!--<div class="col-md-9">-->
           <div class="card-group mb-0">
 
             <div class="card p-4">
@@ -41,6 +42,7 @@
                     <b-form-input type="email" v-model.trim="recoverEmail" placeholder="Correo Electronico.."></b-form-input>
                   </b-input-group>
                 </b-form-group>
+                <br>
                 <div class="row">
                   <div class="col-6 text-left">
                     <button type="button" class="btn bg-inverse px-4" @click.prevent="changePass=false">Regresar</button>
@@ -51,20 +53,25 @@
                 </div>
               </div>
             </div>
-            <div class="card text-white bg-primary py-5 d-md-down-none" style="width:44%">
-              <div class="card-body text-center">
-                <div>
-                  <h2>Registrate</h2>
-                  <p>Para cualquier duda comuniquese con nosotros al 999-00-9966 o al email <span>jcm@gmail.com</span></p>
-                  <button type="button" class="btn btn-primary active mt-3">Registrarse!</button>
-                </div>
-              </div>
-            </div>
+            <!--<div class="card text-white bg-primary py-5 d-md-down-none" style="width:44%">-->
+              <!--<div class="card-body text-center">-->
+                <!--<div>-->
+                  <!--<h2>Registrate</h2>-->
+                  <!--<p>Para cualquier duda comuniquese con nosotros al 999-00-9966 o al email <span>jcm@gmail.com</span></p>-->
+                  <!--<button type="button" class="btn btn-primary active mt-3">Registrarse!</button>-->
+                <!--</div>-->
+              <!--</div>-->
+            <!--</div>-->
           </div>
         </div>
       </div>
     </div>
-    <notifications animation-type="velocity" group="foo" />
+    <!--<notifications animation-type="velocity" group="foo" />-->
+    <notifications group="foo"
+                   position="top right"
+                   animation-type="velocity"
+                   :speed="500" :duration="3000" :max="5">
+    </notifications>
   </div>
 </template>
 
@@ -118,40 +125,34 @@
         let data = {
           email: this.recoverEmail
         }
-//        let url = this.$store.state.Login.RECOVER_PASSWORD_URL
-        this.$http.post('http://174.138.48.60:8080/jmc/recoverpassword', {'email': 'oscarqpe@gmail.com'})
-          .then(response => {
-            // success callback
-            console.log(response)
-          }, response => {
-            // error callback
-          })
-
-
-//        this.$http.post(url, data, {
-//          headers: {
-//            'Content-Type': 'application/json'
-//          }
-//        }).then(response => {
-//          console.log(response)
-//        }, response => {
-//          console.log(response)
-//        })
-//        let self = await this.$store.dispatch('dispatchHTTP', {type: 'INSERT', url: url, data: data})
-//        console.log(self)
-        // this.$store.dispatch('recoverPassword', data)
+        let self = await this.$store.dispatch('recoverPassword', data)
+        if (self.status) {
+          this.recoverEmail = ''
+          this.changePass = false
+        }
+        console.log(self)
       }
-
     },
     watch: {
       notification (newVal, oldVal) {
-        console.log('ISLOADING')
+        console.log('NOTIFICATION')
         console.log(newVal)
-        console.log(newVal)
+        console.log(oldVal)
+        let type = ''
+        let content = newVal.content.data
+        if (content.success === true) {
+          type = 'success'
+        } else if (content.success === false) {
+          type = 'error'
+        } else if (content.success === null) {
+          type = 'warn'
+        }
+
         this.$notify({
           group: 'foo',
-          title: 'Important message',
-          text: 'Hello user! This is a notification!'
+          title: 'Mensaje Importante',
+          text: content.message,
+          type: type
         })
       }
     },
@@ -162,7 +163,22 @@
   }
 </script>
 
-<style>
+<style lang="scss">
+  .vue-notification {
+    border-radius: 0.55rem;
+    border-left: none;
+    box-shadow: 1px 1px 3px #3e3e3e;
+
+    .notification-title{
+      font-size: 1.1em;
+    }
+    .notification-content{
+      font-size: 1.1em;
+    }
+  }
+
+
+
   .progress-line, .progress-line:before, .progress-line:after {
     height: 3px;
     width: 100%;

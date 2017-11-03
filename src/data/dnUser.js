@@ -173,21 +173,21 @@ export const DATA_FORM_PASSWORD_RECOVER = {
       label: 'Email',
       placeholder: 'Correo Electronico',
       type: 'email',
-      icon: 'fa-email',
+      icon: 'icon-envelope',
       srOnly: true
     },
     password: {
       label: 'Contraseña',
       placeholder: 'Nueva Contraseña',
       type: 'password',
-      icon: 'fa-unlock-alt',
+      icon: 'icon-lock-open',
       srOnly: true
     },
     rePassword: {
       label: 'Re-Contraseña',
       placeholder: 'Ingrese nuevamente la contraseña',
       type: 'password',
-      icon: 'fa-lock',
+      icon: 'icon-lock',
       srOnly: true
     }
   },

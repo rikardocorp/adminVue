@@ -180,7 +180,7 @@
         // let url = 'insurancepolicies?number=' + number + '&insuranceCompanyId=' + idCompany + '&userId=' + idUser + '&sold=' + sold + '&free=' + assign + '&fromDate=' + dateFrom + '&toDate=' + dateTo
         if (state === '0') {
           // url = 'carts'
-          url = 'carts?dateFrom='+dateFrom+'&dateTo='+dateTo+'&regionId='+regionId+'&purchaserDniRuc='+dniRuc+'&insuranceCompanyId='+idCompany+'&state='+state
+          url = 'carts?dateFrom='+dateFrom+'&dateTo='+dateTo+'&regionId='+regionId+'&purchaserDniRuc='+dniRuc+'&insuranceCompanyId='+idCompany+'&state=1'
 //          let selfCart = await this.$store.dispatch('dispatchHTTP', {type: 'GET', url: urlCart})
 //          if (!selfCart.status) return false
 //          result = result.concat(selfCart.content)

@@ -4,7 +4,7 @@
     <div class="col-md-12 col-sm-12 col-lg-9 col-xl-7 m-auto">
       <b-card>
         <div slot="header" class="text-left">
-          <strong>Perfil</strong> de Usuario
+          <strong>Perfil</strong> de Usuario | {{edit}}
           <toggle-button :labels="{checked: 'Editar', unchecked: ''}" :color="{checked: '#63c1de', unchecked: 'rgb(239, 123, 34)'}"
                          :width="75" :height="28" :sync="true"
                          v-model="edit" class="float-right">
@@ -34,21 +34,21 @@
                   <div class="col-md-12">
                     <p class="subtitle text-left"><span>CONTRASEÑA ACTUAL</span></p>
                     <p class="value"><input :disabled="isLoading" type="password" v-model="itemPass.oldPassword" placeholder="Ingrese su contraseña actual" class="form-control"></p>
-                    <form-error :data="$v.itemPass.oldPassword? $v.itemPass.oldPassword : {} "></form-error>
+                    <form-error :data="$v.itemPass? $v.itemPass.oldPassword : {} "></form-error>
                   </div>
                 </div>
                 <div class="row">
                   <div class="col-md-12">
                     <p class="subtitle text-left"><span>CONTRASEÑA</span></p>
                     <p class="value"><input :disabled="isLoading" type="password" v-model="itemPass.newPassword" placeholder="Ingrese nueva contraseña" class="form-control"></p>
-                    <form-error :data="$v.itemPass.newPassword? $v.itemPass.newPassword : {} "></form-error>
+                    <form-error :data="$v.itemPass? $v.itemPass.newPassword : {} "></form-error>
                   </div>
                 </div>
                 <div class="row">
                   <div class="col-md-12">
                     <p class="subtitle text-left"><span>RE-CONTRASEÑA</span></p>
                     <p class="value"><input :disabled="isLoading" type="password" v-model="itemPass.rePassword" placeholder="Repita la contraseña" class="form-control"></p>
-                    <form-error :data="$v.itemPass.rePassword? $v.itemPass.rePassword : {} "></form-error>
+                    <form-error :data="$v.itemPass? $v.itemPass.rePassword : {} "></form-error>
                   </div>
                 </div>
                 <div class="col-md-12 container-subtitle">
@@ -293,6 +293,7 @@
           console.log(user)
           let url = 'users/updateprofile'
           this.$store.dispatch('dispatchHTTP', {type: 'UPDATE', url: url, data: user})
+          this.edit = true
         } else {
           this.$store.commit('sendNotification', {status: null, message: 'Debe llenar todo el formulario.'})
           this.$v.item.$touch()
@@ -313,6 +314,7 @@
             if (data.status) {
               this.itemPass = JSON.parse(JSON.stringify(dataFormPass.post))
               this.$v.itemPass.$reset()
+              this.edit = true
             }
           })
         } else {

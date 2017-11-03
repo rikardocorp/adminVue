@@ -26,24 +26,34 @@
               <!-- SALES LIST -->
               <div v-for="(x, index) in items" :key="x.id" >
 
-                <div v-if="x.insurancePolicy !== undefined" :class="{'ticket cardWrap m-2 mb-3 hvr-bounce-in':true, 'pickOption': x.pick}" @click="selectedSale(x, true)">
+                <!-- SALES -->
+                <div v-if="x.insurancePolicy !== undefined"
+                     :class="{'ticket cardWrap m-2 mb-3 hvr-bounce-in':true, 'pickOption': x.pick}" @click="selectedSale(x, true)">
                   <!--<i class="fa fa-thumb-tack" aria-hidden="true"></i>-->
                   <i v-if="x.cart" class="fa fa-shopping-cart icon-cart" aria-hidden="true"></i>
-                  <div class="card-ticket cardLeft">
+
+                  <div class="card-ticket cardLeft" v-if="x.state !== 0 && x.state !== 1 && x.state !== null">
                     <avatar :username="x.insurancePolicy.insuranceCompany.name" :rounded="true" :size="6.4" sizeUnid="em"
                             :src="path + '/' + x.insurancePolicy.insuranceCompany.image" :alt="x.insurancePolicy.insuranceCompany.name"
                             :border="true" colorBorder="#f4f3ef" color="#ecedef" :localSrc="false"
                             backgroundColor="orange" :sizeBorder="0.5"></avatar>
                   </div>
+
+                  <div class="card-ticket cardLeft" v-else="">
+                    <avatar :username="'S N'" :rounded="true" :size="6.4" sizeUnid="em"
+                            :border="true" colorBorder="#f4f3ef" color="#ecedef" :localSrc="false"
+                            backgroundColor="orange" :sizeBorder="0.5"></avatar>
+                  </div>
+
                   <div class="card-ticket cardCenter dashed">
                     <div :class="{'xtitle': true, 'bg-danger': x.state==1, 'bg-primary': x.state==2, 'bg-info': x.state==3, 'bg-success': x.state==4, 'bg-blue': x.state==5}">
-                      Placa {{ x.vehicle.licensePlate }}
+                      Placa {{ x.vehicle ? x.vehicle.licensePlate : 'S/N' }}
                       <!--<button class="btn btn-danger"><i class="fa fa-trash"></i></button>-->
                     </div>
                     <div class="xcontent">
                       <div class="title">
                         <!--<h2 class="big">{{ x.insurancePolicy.number }}</h2>-->
-                        <h2>{{ x.purchaser.razonSocial }}</h2>
+                        <h2>{{ x.purchaser ? x.purchaser.razonSocial  : 'Sin asignar' }}</h2>
                         <span>Contratante</span>
                       </div>
                       <div class="seat">
@@ -51,14 +61,14 @@
                         <span>Compra</span>
                       </div>
                       <div class="seat ml-2">
-                        <h2>{{ x.validityStart }}</h2>
+                        <h2>{{ x.validityStart ? x.validityStart : '--/--/----' }}</h2>
                         <span>Inicio</span>
                       </div>
                     </div>
                   </div>
                 </div>
-
-                <div v-else="" :class="{'ticket cardWrap m-2 mb-3 hvr-bounce-in':true, 'pickOption': x.pick}" @click="selectedSale(x, false)">
+                <!-- CARTS -->
+                <div v-else="" :class="{'ticket cardWrap m-2 mb-3 hvr-bounce-in':true, 'pickOption': x.pick}" @click="selectedCart(x, false)">
                   <i class="fa fa-cart-plus" aria-hidden="true"></i>
                   <div class="card-ticket cardLeft">
                     <avatar :username="x.insuranceCompany.name" :rounded="true" :size="6.4" sizeUnid="em"
@@ -100,7 +110,7 @@
           </div>
 
           <div v-show="!isSale"  class="col-md-12 m-auto">
-            <detail-cart :item="selectedItemCart" :urlRest="'sales'" @returnMain="returnMain"></detail-cart>
+            <detail-cart-sale :item="selectedItemCart" :urlRest="'sales'" @returnMain="returnMain"></detail-cart-sale>
           </div>
         </div>
       </transition-group>
@@ -114,16 +124,16 @@
   import {DATA_FILTER as dataSale} from '../../data/dnSales'
   import Form from './forms/FormSales.vue'
   import DetailSale from './DetailSale.vue'
-  import DetailCart from './DetailCart.vue'
+  import DetailCartSale from './DetailCartSale.vue'
   import Avatar from '../../components/Avatar.vue'
 
   export default {
-    name: 'webUser',
+    name: 'Sales',
     components: {
       appForm: Form,
       Avatar,
       DetailSale,
-      DetailCart
+      DetailCartSale
     },
     data: function () {
       return {
@@ -142,6 +152,7 @@
         selected: null,
         selectedItem: {},
         selectedItemCart: {},
+        selectedMyCart: {},
         isDetail: false,
         isSale: false
       }
@@ -183,22 +194,40 @@
         }
       },
       selectedSale (item, isSale) {
+        alert(isSale)
+        console.log('item.state')
+        console.log(item)
+        if (item.state === 1 || item.state === 0 || item.state === null) return false
+
         if (isSale) {
+          alert('sale')
           this.selectedItem = item
         } else {
+          alert('cart')
           this.selectedItemCart = item
         }
         this.isSale = isSale
         this.isDetail = true
-//        let policy = {id: item.id}
-//        if (item.pick) {
-//          value = false
-//          this.$delete(this.selectedList, item.id)
-//        } else {
-//          value = true
-//          this.$set(this.selectedList, item.id, policy)
-//        }
-//        this.$set(item, 'pick', value)
+      },
+      async selectedCart (item, isSale) {
+        console.log('SelectedCart')
+        console.log(item)
+        let idCart = item.id
+        // let idCart = 14
+        let itemSale = await this.getData('sales?cartId=' + idCart)
+        console.log(itemSale)
+        if (itemSale.length === 0) {
+          this.$store.commit('sendNotification', {status: null, message: 'No existe la venta seleccionada.'})
+          return false
+        }
+
+        itemSale[0]['insuranceCompany'] = item.insuranceCompany
+        console.log('ItemSale')
+        console.log(itemSale)
+        this.selectedItemCart = itemSale[0]
+        this.selectedMyCart = item
+        this.isSale = false
+        this.isDetail = true
       },
       async getData (url) {
         console.log('GET SALE')

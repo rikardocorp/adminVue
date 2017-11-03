@@ -3,10 +3,10 @@
     <div class="progress-line" v-if="isLoading"></div>
     <div class="container">
       <div class="row justify-content-center">
-        <div class="col-md-6">
+        <div class="col-md-8 col-lg-6 col-xl-5">
           <div class="card-group mb-0">
             <div class="card p-4">
-              <div class="card-body">
+              <div v-if="!switchResetPass" class="card-body">
                 <h1>JMC</h1>
                 <p class="text-muted">Recuperar Contraseña</p>
 
@@ -18,7 +18,7 @@
                               :horizontal="true">
                   <!-- INPUT -->
                   <b-input-group v-if="option.input==undefined || option.input=='input'">
-                    <b-input-group-addon class=""><i :class="'fa ' + option.icon"></i></b-input-group-addon>
+                    <b-input-group-addon class=""><i :class="option.icon"></i></b-input-group-addon>
                     <b-form-input :disabled="isLoading" :type="option.type"
                                   v-model.trim="itemPass[index]"
                                   @blur.native="$v.itemPass[index]? $v.itemPass[index].$touch(): false"
@@ -36,12 +36,31 @@
                   </div>
                 </div>
               </div>
+
+              <div v-else class="card-body">
+                <br>
+                <br>
+                <h4 class="text-primary text-center">Solicitud Procesada</h4>
+                <br><br>
+                <p class="text-center">
+                  El cambio de su contraseña fue procesada con exito, ahora puede ingresar a nuestro sistema.
+                </p>
+                <p class="text-right">
+                  <router-link to="/login" class="text-primary">ingresar al sistema >></router-link>
+                </p>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <notifications animation-type="velocity" group="foo" />
+    <!--<notifications animation-type="velocity" group="foo" />-->
+    <notifications group="foo"
+                   position="top right"
+                   animation-type="velocity"
+                   :speed="500" :duration="3000" :max="5">
+    </notifications>
+
   </div>
 </template>
 
@@ -61,7 +80,8 @@
           username: '',
           password: ''
         },
-        error: ''
+        error: '',
+        switchResetPass: false
       }
     },
     components: {
@@ -87,15 +107,11 @@
             password: this.itemPass.rePassword,
             token: this.$route.params.token
           }
-
-          this.$store.dispatch('resetPassword', {data})
-//
-//          let self = await this.$store.dispatch('dispatchHTTP', {type: 'INSERT', url: url, data: data, headers: headers})
-//          console.log(self)
-//          if (self.status) {
-//            this.itemPass = JSON.parse(JSON.stringify(dataFormPass.post))
-//            this.$v.itemPass.$reset()
-//          }
+          let self = await this.$store.dispatch('resetPassword', data)
+          if (self.status) {
+            this.switchResetPass = true
+          }
+          console.log(self)
         } else {
           this.$v.itemPass.$touch()
         }
@@ -125,13 +141,24 @@
     },
     watch: {
       notification (newVal, oldVal) {
-        console.log('ISLOADING')
+        console.log('NOTIFICATION')
         console.log(newVal)
-        console.log(newVal)
+        console.log(oldVal)
+        let type = ''
+        let content = newVal.content.data
+        if (content.success === true) {
+          type = 'success'
+        } else if (content.success === false) {
+          type = 'error'
+        } else if (content.success === null) {
+          type = 'warn'
+        }
+
         this.$notify({
           group: 'foo',
-          title: 'Important message',
-          text: 'Hello user! This is a notification!'
+          title: 'Mensaje Importante',
+          text: content.message,
+          type: type
         })
       }
     },
@@ -142,7 +169,22 @@
   }
 </script>
 
-<style>
+<style lang="scss">
+
+  .vue-notification {
+    border-radius: 0.55rem;
+    border-left: none;
+    box-shadow: 1px 1px 3px #3e3e3e;
+
+    .notification-title{
+      font-size: 1.1em;
+    }
+    .notification-content{
+      font-size: 1.1em;
+    }
+  }
+
+
   .progress-line, .progress-line:before, .progress-line:after {
     height: 3px;
     width: 100%;

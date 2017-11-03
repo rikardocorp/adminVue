@@ -11,18 +11,13 @@ export default {
     },
     {
       title: true,
-      name: 'UI elements'
+      name: 'Mantenimiento'
     },
     {
-      name: 'Mantenimineto',
+      name: 'General',
       url: '/mantenimiento',
       icon: 'icon-puzzle',
       children: [
-        // {
-        //   name: 'Ciudad',
-        //   url: '/mantenimiento/ciudad',
-        //   icon: 'icon-puzzle'
-        // },
         {
           name: 'Aseguradoras',
           url: '/mantenimiento/aseguradoras',
@@ -47,27 +42,32 @@ export default {
           name: 'Tipos de Seguro',
           url: '/mantenimiento/tipo-seguro',
           icon: 'icon-puzzle'
+        },
+        {
+          name: 'Contratante',
+          url: '/mantenimiento/contratantes',
+          icon: 'fa fa-map-marker'
         }
       ]
     },
     {
-      name: 'Vehiculo',
-      url: '/vehiculo',
+      name: 'Precios',
+      url: '/precios',
       icon: 'fa fa-gears',
       children: [
         {
           name: 'Tipos de Vehiculo',
-          url: '/vehiculo/tipo-vehiculo',
+          url: '/precios/tipo-vehiculo',
           icon: 'icon-puzzle'
         },
         {
           name: 'Categ. de Vehiculo',
-          url: '/vehiculo/categoria-vehiculo',
+          url: '/precios/categoria-vehiculo',
           icon: 'icon-puzzle'
         },
         {
           name: 'Clases de Vehiculo',
-          url: '/vehiculo/clases-vehiculo',
+          url: '/precios/clases-vehiculo',
           icon: 'icon-puzzle'
         },
         // {
@@ -89,11 +89,6 @@ export default {
         //   url: '/vehiculo/vehiculos',
         //   icon: 'fa fa-map-marker'
         // },
-        {
-          name: 'Contratante',
-          url: '/vehiculo/contratantes',
-          icon: 'fa fa-map-marker'
-        },
         // {
         //   name: 'Contratos',
         //   url: '/venta/contratos',
@@ -103,11 +98,11 @@ export default {
     },
     {
       title: true,
-      name: 'PRECIOS'
+      name: 'PRECIOS VEHICULO'
     },
     {
       name: 'VCC',
-      url: '/vehiculo/tipo-categoria-vehiculo',
+      url: '/precios/tipo-categoria-vehiculo',
       icon: 'icon-puzzle'
     },
     // {
@@ -117,7 +112,7 @@ export default {
     // },
     {
       name: 'Precios',
-      url: '/vehiculo/precio-poliza-full',
+      url: '/precios/precio-poliza-full',
       icon: 'fa fa-money'
     },
     // {
@@ -213,7 +208,15 @@ export default {
         variant: 'success',
         text: 'NEW'
       }
+    },
+    {
+      name: 'Venta Cliente',
+      url: '/venta-cliente',
+      icon: 'icon-speedometer',
+      badge: {
+        variant: 'info',
+        text: 'NEW'
+      }
     }
-    
   ]
 }

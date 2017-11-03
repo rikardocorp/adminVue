@@ -57,6 +57,7 @@ const mutations = {
   },
   setAuthHeader: (state) => {
     console.log('HEADER')
+    // alert('HEADER')
     Vue.http.headers.common['Authorization'] = localStorage.getItem('authorization')
     Vue.set(state.user, 'isLogged', true)
   },
@@ -90,51 +91,61 @@ const actions = {
       commit('switchLoading', false)
       console.log('ERROR')
       console.log(error)
-      let result = {}
-      result.content = error
-      result.data = error.data
-      commit('pushNotification', result)
+      commit('sendNotification', {status: false, message: 'Ocurrio un problema, vuelva a intentarlo.'})
     })
   },
   recoverPassword: ({ commit, state, dispatch }, data) => {
     commit('switchLoading', true)
-    console.log('RECOVEF PASSWORD')
-    console.log(data)
-    Vue.http.headers.common['Content-Type'] = 'application/json'
-    let inquiry = Vue.http.post(state.RECOVER_PASSWORD_URL, data).then(response => {
-      commit('switchLoading', false)
-      console.log(response)
+    let promise = new Promise((resolve, reject) => {
+      Vue.http.post(state.RECOVER_PASSWORD_URL, data).then(response => {
+        commit('switchLoading', false)
+        let state = response.data.success
+        let message = response.data.message
+        commit('sendNotification', {status: state, message: message})
+
+        let result = {}
+        result.status = response.data.success
+        result.content = response.body.data
+        resolve(result)
+      }).catch(error => {
+        console.log(error)
+        commit('switchLoading', false)
+        commit('sendNotification', {status: false, message: 'Ocurrio un problema, vuelva a intentarlo.'})
+
+        let result = {}
+        result.status = false
+        result.content = error
+        reject(result)
+      })
     })
-    inquiry.catch(error => {
-      commit('switchLoading', false)
-      console.log('ERROR')
-      console.log(error)
-      let result = {}
-      result.content = error
-      result.data = error.data
-      commit('pushNotification', result)
-    })
+    return promise
   },
-  resetPassword: ({ commit, state, dispatch }, payload) => {
+  resetPassword: ({ commit, state, dispatch }, data) => {
     commit('switchLoading', true)
-    console.log(payload.data)
-    let inquiry = Vue.http.post(state.RESET_PASSWORD_URL, payload.data, {
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-      }
-    }).then(response => {
-      commit('switchLoading', false)
-      console.log(response)
+    console.log(data)
+    let promise = new Promise((resolve, reject) => {
+      Vue.http.post(state.RESET_PASSWORD_URL, data).then(response => {
+        commit('switchLoading', false)
+        let state = response.data.success
+        let message = response.data.message
+        commit('sendNotification', {status: state, message: message})
+
+        let result = {}
+        result.status = response.data.success
+        result.content = response.body.data
+        resolve(result)
+      }).catch(error => {
+        console.log(error)
+        commit('switchLoading', false)
+        commit('sendNotification', {status: false, message: 'Ocurrio un problema, vuelva a intentarlo.'})
+
+        let result = {}
+        result.status = false
+        result.content = error
+        reject(result)
+      })
     })
-    inquiry.catch(error => {
-      commit('switchLoading', false)
-      console.log('ERROR')
-      console.log(error)
-      let result = {}
-      result.content = error
-      result.data = error.data
-      commit('pushNotification', result)
-    })
+    return promise
   },
   getDataUser: ({commit, state, dispatch}, payload = {router: false}) => {
     console.log('IDENTITY')
@@ -153,7 +164,8 @@ const actions = {
         role: data.authorities[0].authority,
         data: data.user,
         date: data.date,
-        time: data.time
+        time: data.time,
+        isClient: data.authorities[0].authority === 'ROLE_USUARIO'
       }
       commit('setUser', user)
 

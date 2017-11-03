@@ -127,7 +127,11 @@
           localStorage.setItem('insurance', JSON.stringify(data))
           localStorage.setItem('seller', this.$store.state.user.data.id)
           localStorage.setItem('typeSell', 0)
-          this.$router.push('nueva-venta')
+          if (this.isClient) {
+            this.$router.push('venta-cliente')
+          } else {
+            this.$router.push('nueva-venta')
+          }
           console.log(data)
         } else {
           notification.data = {message: 'Debe finalizar la venta en proceso.', status: '', success: null, url: ''}
@@ -158,6 +162,9 @@
       },
       path () {
         return this.$store.state.Login.IMAGES_URL
+      },
+      isClient () {
+        return this.$store.state.user.isClient
       }
     }
   }

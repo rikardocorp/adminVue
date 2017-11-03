@@ -1,15 +1,17 @@
 <template>
   <div class="wrapper">
     <div class="animated fadeIn">
-      <div id="saleDetail" v-show="!isLoading">
-        <div v-show="type==0"  class="col-md-12 m-auto">
-          <detail-cart :item="selectedItemCart" :urlRest="'sales'" @returnMain="returnMain"></detail-cart>
-        </div>
-        <div v-show="type==1"  class="col-md-12 m-auto">
+      <div v-show="!isLoading || !flag" id="saleDetail">
+        <div v-show="isSale"  class="col-md-12 m-auto">
           <detail-sale :item="selectedItem" :urlRest="'sales'" @returnMain="returnMain"></detail-sale>
         </div>
+
+        <div v-show="!isSale"  class="col-md-12 m-auto">
+          <detail-cart-sale :item="selectedItemCart" :urlRest="'sales'" @returnMain="returnMain"></detail-cart-sale>
+        </div>
       </div>
-      <div v-if="isLoading" class="row d-flex justify-content-center pt-5 mt-5 pt-md-2">
+
+      <div v-if="isLoading && flag" class="row d-flex justify-content-center pt-5 mt-5 pt-md-2">
         <span class="fa-stack fa-2x">
           <i class="fa fa-cog fa-spin-reverse fa-stack-2x text-orange"></i>
           <i class="fa fa-cog fa-spin fa-stack-1x text-cream"></i>
@@ -25,7 +27,7 @@
   import {DATA_FILTER as dataSale} from '../../data/dnSales'
   // import Form from './forms/FormSales.vue'
   import DetailSale from './DetailSale.vue'
-  import DetailCart from './DetailCart.vue'
+  import DetailCartSale from './DetailCartSale.vue'
   import Avatar from '../../components/Avatar.vue'
 
   export default {
@@ -34,7 +36,7 @@
       //appForm: Form,
       Avatar,
       DetailSale,
-      DetailCart
+      DetailCartSale
     },
     data: function () {
       return {
@@ -43,8 +45,10 @@
         update: false,
         selectedItem: {},
         selectedItemCart: {},
+        selectedMyCart: {},
         isSale: false,
-        type: null
+        type: null,
+        flag: true
       }
     },
     computed: {
@@ -70,14 +74,6 @@
         console.log(self)
         return self.status ? self.content : null
       },
-      selectedSale (item, isSale) {
-        if (isSale) {
-          this.selectedItem = item
-        } else {
-          this.selectedItemCart = item
-        }
-        this.isSale = isSale
-      },
       isSearching (value) {
         this.params.isSearch = value
       },
@@ -86,23 +82,30 @@
         this.isDetail = false
       },
       async initData () {
+        this.flag = false
+        console.log('INIT DATA')
+        let data = {}
         if (this.$route.params.idSale !== undefined) {
           let url = ''
-          let localType = null
           if (this.$route.params.type == 0) {
-            url = 'carts/' + this.$route.params.idSale
-            localType = 0
+            url = 'sales?cartId=' + this.$route.params.idSale
+            data = await this.getData(url)
+            data[0]['insuranceCompany'] = data[0].cart.insuranceCompany
+            console.log('CART')
+            console.log(data[0])
+            this.selectedItemCart = data[0]
+            this.isSale = false
+            console.log('his.selectedItemCart')
+            console.log(this.selectedItemCart)
           } else {
             url = 'sales/' + this.$route.params.idSale
-            localType = 1
-          }
-
-          let saleCart = await this.getData(url)
-          this.type = localType
-          if (saleCart) {
-            this.selectedSale(saleCart, saleCart.insurancePolicy !== undefined)
-          } else {
-            this.$router.push('/polizas-vendidas')
+            data = await this.getData(url)
+            console.log('SALES')
+            console.log(data)
+            this.selectedItem = data
+            this.isSale = true
+            console.log('his.selectedItem')
+            console.log(this.selectedItem)
           }
         }
       }

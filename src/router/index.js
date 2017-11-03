@@ -8,7 +8,7 @@ import Full from '@/containers/Full'
 // Views
 import Dashboard from '@/views/Dashboard'
 import Login from '@/views/Login'
-import RecoverPass from '@/views/RecoverPass'
+import ResetPass from '@/views/ResetPass'
 import Profile from '../views/maintenance/Profile.vue'
 
 // Views Maintenance
@@ -34,6 +34,7 @@ import Sales from '../views/selling/Sales.vue'
 import Sale from '../views/selling/Sale.vue'
 import SellNewPolice from '../views/selling/NewSale.vue'
 import SellNewPoliceSpecial from '../views/selling/NewSaleSpecial.vue'
+import SellNewPoliceClient from '../views/selling/NewSaleClient.vue'
 import Cotizar from '../views/selling/Cotizar.vue'
 
 // Price
@@ -70,7 +71,8 @@ const router = new Router({
         {
           path: 'dashboard',
           name: 'Dashboard',
-          component: Dashboard
+          component: Dashboard,
+          meta: {requiresAuth: true, ROLE_ADMIN: true, ROLE_PUNTO_VENTA: true, ROLE_VENDEDOR: true}
         },
         {
           path: 'mantenimiento',
@@ -115,13 +117,19 @@ const router = new Router({
               name: 'Tipos de Seguro',
               component: InsuranceType,
               meta: {requiresAuth: true, ROLE_ADMIN: true}
+            },
+            {
+              path: 'contratantes',
+              name: 'Contratante',
+              component: Purchaser,
+              meta: {requiresAuth: true, ROLE_ADMIN: true}
             }
           ]
         },
         {
-          path: 'vehiculo',
-          redirect: '/vehiculo/tipo-vehiculo',
-          name: 'Vehiculos',
+          path: 'precios',
+          redirect: '/precios/tipo-vehiculo',
+          name: 'Precios',
           component: {
             render (c) { return c('router-view') }
           },
@@ -161,7 +169,7 @@ const router = new Router({
               name: 'Tabla de Precios Poliza',
               component: PriceFull,
               meta: {requiresAuth: true, ROLE_ADMIN: true}
-            },
+            }
             // {
             //   path: 'precio-poliza-full2',
             //   name: 'Tabla de Precios Poliza 2',
@@ -174,12 +182,6 @@ const router = new Router({
             //   component: Vehicle,
             //   meta: {requiresAuth: true, ROLE_ADMIN: true}
             // },
-            {
-              path: 'contratantes',
-              name: 'Registro Contratante',
-              component: Purchaser,
-              meta: {requiresAuth: true, ROLE_ADMIN: true}
-            }
           ]
         },
         {
@@ -225,12 +227,20 @@ const router = new Router({
         {
           path: 'nueva-venta',
           name: 'Nueva Venta',
-          component: SellNewPolice
+          component: SellNewPolice,
+          meta: {requiresAuth: true, ROLE_ADMIN: true, ROLE_PUNTO_VENTA: true, ROLE_VENDEDOR: true}
         },
         {
           path: 'venta-especial',
           name: 'Venta Especial',
-          component: SellNewPoliceSpecial
+          component: SellNewPoliceSpecial,
+          meta: {requiresAuth: true, ROLE_ADMIN: true, ROLE_PUNTO_VENTA: true, ROLE_VENDEDOR: true}
+        },
+        {
+          path: 'venta-cliente',
+          name: 'Venta Cliente',
+          component: SellNewPoliceClient,
+          meta: {requiresAuth: true, ROLE_ADMIN: true, ROLE_PUNTO_VENTA: true, ROLE_VENDEDOR: true}
         }
       ]
     },
@@ -240,9 +250,9 @@ const router = new Router({
       component: Login
     },
     {
-      path: '/recoverpassword/:token',
+      path: '/resetpassword/:token',
       name: 'Recover',
-      component: RecoverPass
+      component: ResetPass
     }
   ]
 })
@@ -285,27 +295,27 @@ const router = new Router({
 // })
 
 router.beforeEach((to, from, next) => {
+  const authUser = JSON.parse(localStorage.getItem('UserLog'))
+  const token = localStorage.getItem('authorization')
 
   if (to.name === 'Recover') {
     next()
+  } else if (to.name === 'Login') {
+    if (authUser && token) {
+      store.dispatch('redirectROLE')
+      next(false)
+    } else {
+      next()
+    }
   } else if (to.meta.requiresAuth) {
-    // alert('META!!!!')
-    console.log('META')
-    console.log(to.meta)
-    const authUser = JSON.parse(localStorage.getItem('UserLog'))
-    const token = localStorage.getItem('authorization')
-    console.log(authUser)
-    console.log(token)
+    // alert('rick')
     if (!authUser || !token) {
-      // alert('no pasa')
       next({name: 'Login'})
     } else {
       let localRole = authUser.authorities[0].authority
       if (to.meta[localRole] !== undefined && to.meta[localRole]) {
-        // alert('tiene accesso')
         next()
       } else {
-        // alert('no pasa')
         store.dispatch('redirectROLE')
         next(false)
       }
@@ -321,9 +331,14 @@ router.afterEach((to, from) => {
   if (to.name === 'Recover') return false
   let isLogged = store.state.Login.user.isLogged
   if (!isLogged) {
-    // alert('sethHeaders')
-    store.commit('setAuthHeader')
-    store.dispatch('getDataUser')
+    const authUser = JSON.parse(localStorage.getItem('UserLog'))
+    const token = localStorage.getItem('authorization')
+    if (authUser && token) {
+      // alert('sethHeaders')
+      store.commit('setAuthHeader')
+      store.dispatch('getDataUser')
+    }
+    // if (to.name === 'Login') return false
   } else {
     // alert('getDATAUSER')
     // store.dispatch('getDataUser')

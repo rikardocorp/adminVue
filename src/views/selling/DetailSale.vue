@@ -1,180 +1,203 @@
 <template>
   <div id="contentDetailSale">
-
-    <div class="col-md-11 col-sm-12 col-lg-9 col-xl-7 m-auto">
+    <div id="formDetailSale" class="col-md-11 col-sm-12 col-lg-9 col-xl-7 m-auto">
       <b-card>
-      <div slot="header" class="text-left">
-        <button @click="returnMain" title="Regresar" class="btn btn-in-title-left bg-primary"><i class="fa fa-arrow-left"></i></button>
-        <strong>Detalles de la Venta</strong> - Pagos
-        <button @click="imprimir" title="Imprimir" class="btn btn-in-title-right bg-info"><i class="fa fa-print"></i></button>
-      </div>
-      <div class="row">
-        <div class="col-md-6 borderChild">
-          <!--<h6>SEGURO SOAT - 2017</h6>-->
-          <div class="row">
-            <div class="col-md-5 text-center">
-              <avatar :username="item2.insurancePolicy.insuranceCompany.name" :rounded="true" :size="7.5" sizeUnid="em"
-              :src="path + '/' + item2.insurancePolicy.insuranceCompany.image" :alt="item2.insurancePolicy.insuranceCompany.name"
-              :border="true" colorBorder="#f4f3ef" color="#ecedef" :localSrc="false"
-              backgroundColor="orange" :sizeBorder="0.5"></avatar>
-            </div>
-            <div class="col-md-7 text-center infoPolicy">
-              <p class="xsTitle">{{ item2.insurancePolicy.insuranceCompany.name }}</p>
-              <P>TIPO DE SEGURO SOAT</P>
-              <P>{{ item2.date }}</P>
-              <p class="xsTitle">VENDEDOR</p>
-              <P>{{ item2.insurancePolicy.user.firstName ? item2.insurancePolicy.user.firstName + ' ' + item2.insurancePolicy.user.lastName : 'vendedor de tienda' }}</P>
-              <P>{{ item2.insurancePolicy.user.email }}</P>
+        <div slot="header" class="text-left">
+          <button @click="returnMain" title="Regresar" class="btn btn-in-title-left bg-primary"><i class="fa fa-arrow-left"></i></button>
+          <strong>Detalles de la Venta</strong> - Pagos
+
+          <!-- POSITIVA ID=1 -->
+          <div v-if="item2.insurancePolicy.insuranceCompany.id == 1" style="display: inline;">
+            <button @click="optionPrint = !optionPrint" title="Imprimir" class="btn btn-in-title-right bg-info"><i class="fa fa-print"></i></button>
+            <div v-show="optionPrint" class="btn-in-title-right" style="width: 68px;padding: 0;padding-right: 4px;">
+              <button v-b-tooltip.bottom @click="imprimir(true)" title="Manual"  class="btn btn-in-title-right bg-danger"><i class="fa fa-adjust"></i></button>
+              <button v-b-tooltip.bottom @click="imprimir(false)" title="Web" class="btn btn-in-title-right bg-success"><i class="fa fa-adjust fa-rotate-180"></i></button>
             </div>
           </div>
-          <div class="py-2">
-            <p class="title">INFORMACION DEL CERTIFICADO</p>
-            <p class="fa-2x" style="padding-bottom: 0.4em; padding-top: 0.3em;"># <span class="numberPolicy">{{ item2.insurancePolicy.number }}</span></p>
-            <p class="subtitle value text-center"><span>DESDE:</span>  {{ item2.validityStart }}</p>
-            <p class="subtitle value text-center"><span>HASTA:</span>  {{ validityEnd }}</p>
-            <p :class="{'subtitle value text-center vigente':true, 'vencido': daysContract < 0}"><span>{{ daysContract >= 0 ? daysContract + ' dias vigentes' : (daysContract*-1) + ' dias vencidos' }}</span></p>
-          </div>
-          <div class="borderChild py-3">
-            <p class="title">DATOS DEL CONTRATANTE</p>
-            <div class="row pt-2">
-              <div class="col-md-12 container-subtitle">
-                <p class="subtitle text-left"><span>NOMBRE COMPLETO O RAZON SOCIAL</span></p>
-                <p class="value">{{ item2.purchaser.razonSocial }}</p>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-6 container-subtitle">
-                <p class="subtitle text-left"><span>DNI / RUC</span></p>
-                <p class="value">{{ item2.purchaser.dniRuc }}</p>
-              </div>
-              <div class="col-md-6 container-subtitle">
-                <p class="subtitle text-left"><span>TELEFONO</span></p>
-                <p class="value">{{ item2.purchaser.cellPhone }}</p>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-12">
-                <p class="subtitle text-left"><span>DIRECCION</span></p>
-                <p class="value">{{ item2.purchaser.address }}</p>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-12">
-                <p class="subtitle text-left"><span>AMBITO DE APLICACION</span></p>
-                <p class="value">{{ item2.region.name }}</p>
-              </div>
+
+          <!-- AFOCAT ID=6 y 7 -->
+          <div v-else-if="item2.insurancePolicy.insuranceCompany.id == 6 || item2.insurancePolicy.insuranceCompany.id == 7" style="display: inline;">
+            <button @click="optionPrint = !optionPrint" title="Imprimir" class="btn btn-in-title-right bg-info"><i class="fa fa-print"></i></button>
+            <div v-show="optionPrint" class="btn-in-title-right" style="width: 68px;padding: 0;padding-right: 4px;">
+              <button v-b-tooltip.bottom @click="imprimir(true)" title="Centrado"  class="btn btn-in-title-right bg-danger"><i class="fa fa-adjust"></i></button>
+              <button v-b-tooltip.bottom @click="imprimir(false)" title="No centrado" class="btn btn-in-title-right bg-success"><i class="fa fa-adjust fa-rotate-180"></i></button>
             </div>
           </div>
+
+          <!-- AFOCAT ID=6 y 7 -->
+          <div v-else="" style="display: inline;">
+            <button v-b-tooltip.bottom @click="imprimir()" title="Imprimir" class="btn btn-in-title-right bg-info"><i class="fa fa-print"></i></button>
+          </div>
+
+
         </div>
-        <div class="col-md-6">
-          <p class="title" style="margin-top: 0.6em">DATOS DEL VEHICULO</p>
-          <div class="borderChild pt-2">
+        <div class="row">
+          <div class="col-md-6 borderChild">
+            <!--<h6>SEGURO SOAT - 2017</h6>-->
             <div class="row">
-              <div class="col-md-6 container-subtitle">
-                <p class="subtitle text-left"><span>PLACA</span></p>
-                <p class="value">{{ item2.vehicle.licensePlate }}</p>
+              <div class="col-md-5 text-center">
+                <avatar :username="item2.insurancePolicy.insuranceCompany.name" :rounded="true" :size="7.5" sizeUnid="em"
+                :src="path + '/' + item2.insurancePolicy.insuranceCompany.image" :alt="item2.insurancePolicy.insuranceCompany.name"
+                :border="true" colorBorder="#f4f3ef" color="#ecedef" :localSrc="false"
+                backgroundColor="orange" :sizeBorder="0.5"></avatar>
               </div>
-              <div class="col-md-6 container-subtitle">
-                <p class="subtitle text-left"><span>NRO DE SERIE</span></p>
-                <p class="value">{{ item2.vehicle.engineNumber }}</p>
+              <div class="col-md-7 text-center infoPolicy">
+                <p class="xsTitle">{{ item2.insurancePolicy.insuranceCompany.name }}</p>
+                <P>TIPO DE SEGURO SOAT</P>
+                <P>{{ item2.date }}</P>
+                <p class="xsTitle">VENDEDOR</p>
+                <P>{{ item2.insurancePolicy.user.firstName ? item2.insurancePolicy.user.firstName + ' ' + item2.insurancePolicy.user.lastName : 'vendedor de tienda' }}</P>
+                <P>{{ item2.insurancePolicy.user.email }}</P>
               </div>
             </div>
-            <div class="row">
-              <div class="col-md-6 container-subtitle">
-                <p class="subtitle text-left"><span>AÑO FABRICACION</span></p>
-                <p class="value">{{ item2.vehicle.manufacturingYear }}</p>
-              </div>
-              <div class="col-md-6 container-subtitle">
-                <p class="subtitle text-left"><span>USO DEL VEHICULO</span></p>
-                <p class="value">{{ item2.vehicle.useType.name }}</p>
-              </div>
+            <div class="py-2">
+              <p class="title">INFORMACION DEL CERTIFICADO</p>
+              <p class="fa-2x" style="padding-bottom: 0.4em; padding-top: 0.3em;"># <span class="numberPolicy">{{ item2.insurancePolicy.number }}</span></p>
+              <p class="subtitle value text-center"><span>DESDE:</span>  {{ item2.validityStart }}</p>
+              <p class="subtitle value text-center"><span>HASTA:</span>  {{ validityEnd }}</p>
+              <p :class="{'subtitle value text-center vigente':true, 'vencido': daysContract < 0}"><span>{{ daysContract >= 0 ? daysContract + ' dias vigentes' : (daysContract*-1) + ' dias vencidos' }}</span></p>
             </div>
-            <div class="row">
-              <div class="col-md-6 container-subtitle">
-                <p class="subtitle text-left"><span>MARCA-MODELO</span></p>
-                <p class="value">{{ item2.vehicle.vehicleTypeCategory.vehicleType.vehicleBrand + '-' + item2.vehicle.vehicleTypeCategory.vehicleType.vehicleModel }}</p>
-              </div>
-              <div class="col-md-6 container-subtitle">
-                <p class="subtitle text-left"><span>CATEGORIA/CLASE</span></p>
-                <p class="value">{{ item2.vehicle.vehicleTypeCategory.vehicleCategory.description + '/' + item2.vehicle.vehicleTypeCategory.vehicleClass.description }}</p>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-6 container-subtitle pt-2">
-                <p class="subtitle text-left"><span>NRO ASIENTOS</span></p>
-                <p class="value">{{ item2.vehicle.seatNumber }}</p>
-              </div>
-              <div class="col-md-6 container-subtitle pt-2">
-                <p class="subtitle text-left"><span>CHASIS</span></p>
-                <p class="value">{{ item2.bodywork }}</p>
-              </div>
-            </div>
-          </div>
-          <div class="row pt-2 detailPay">
-            <div v-if="item2.cart==null" class="col-md-12 borderChild">
-              <p class="title">PAGOS</p>
+            <div class="borderChild py-3">
+              <p class="title">DATOS DEL CONTRATANTE</p>
               <div class="row pt-2">
-                <div class="col-md-6 container-subtitle">
-                  <p class="subtitle text-left"><span class="bg-success">COSTO POLIZA</span></p>
-                  <p class="value"><span>s/.</span> {{ item2.amount | currency }}</p>
-                </div>
-                <div class="col-md-6 container-subtitle">
-                  <p class="subtitle text-left"><span class="bg-info">TOTAL PAGADO</span></p>
-                  <p class="value"><span>s/.</span> {{ countTotal | currency }}</p>
+                <div class="col-md-12 container-subtitle">
+                  <p class="subtitle text-left"><span>NOMBRE COMPLETO O RAZON SOCIAL</span></p>
+                  <p class="value">{{ item2.purchaser.razonSocial }}</p>
                 </div>
               </div>
               <div class="row">
-                <div class="col-md-6 container-subtitle pb-3">
-                  <p class="subtitle text-left"><span class="bg-danger">DESCUENTO</span></p>
-                  <p class="value"><span>s/.</span> {{ item2.discount | currency }}</p>
+                <div class="col-md-6 container-subtitle">
+                  <p class="subtitle text-left"><span>DNI / RUC</span></p>
+                  <p class="value">{{ item2.purchaser.dniRuc }}</p>
                 </div>
-                <div class="col-md-6 container-subtitle pb-3">
-                  <p class="subtitle text-left"><span class="bg-warning">A CREDITO</span></p>
-                  <p class="value"><span>s/.</span> {{ countCredito | currency }}</p>
+                <div class="col-md-6 container-subtitle">
+                  <p class="subtitle text-left"><span>TELEFONO</span></p>
+                  <p class="value">{{ item2.purchaser.cellPhone }}</p>
                 </div>
               </div>
-              <div class="formPay row">
-                <p class="title" style="border: none">
-                  <span>Ingresar Pago</span>
-                  <toggle-button :labels="{checked: 'Ejectivo', unchecked: 'Tarjeta'}" :color="{checked: 'rgb(78, 188, 117)', unchecked: 'rgb(99, 193, 222)'}"
-                                 :disabled="isLoading" :width="75" :height="25" :sync="true" v-model="payment.paymentType"
-                                 class="ml-2 mt-2"></toggle-button>
-                </p>
-                <div class="col-md-6 container-subtitle">
-                  <input type="number" class="form-control" placeholder="Monto" v-model="payment.amount" :disabled="isLoading">
-                </div>
-                <div class="col-md-6 container-subtitle">
-                  <input type="text" class="form-control" placeholder="#Comprobante" v-model="payment.numFactura" :disabled="isLoading">
-                </div>
-                <div class="col-md-12 container-subtitle">
-                  <b-button @click="addPay" class="float-right w-100" :disabled="isLoading" type="submit" size="sm" variant="primary"><i class="fa fa-dot-circle-o"></i> Pagar</b-button>
+              <div class="row">
+                <div class="col-md-12">
+                  <p class="subtitle text-left"><span>DIRECCION</span></p>
+                  <p class="value">{{ item2.purchaser.address }}</p>
                 </div>
               </div>
-            </div>
-
-            <div v-else="" class="col-md-12 borderChild">
-              <p class="title">PAGOS</p>
-              <div class="row pt-2">
-                <div class="col-md-6 container-subtitle">
-                  <p class="subtitle text-left"><span class="bg-danger">COMPROBANTE</span></p>
-                  <p class="value">{{ item2.numFactura == '' ? 'S/N' : item2.numFactura }}</p>
+              <div class="row">
+                <div class="col-md-12">
+                  <p class="subtitle text-left"><span>AMBITO DE APLICACION</span></p>
+                  <p class="value">{{ item2.region.name }}</p>
                 </div>
-                <div class="col-md-6 container-subtitle">
-                  <p class="subtitle text-left"><span class="bg-success">COSTO POLIZA</span></p>
-                  <p class="value"><span>s/.</span> {{ item2.amount | currency }}</p>
-                </div>
-              </div>
-              <p class="title bg-info mt-2">SUBIR PDF</p>
-              <p v-if="item2.policy!==null" class="text-center text-info py-2"><a :href="pathDocs + '/' + item2.policy" target="_blank">{{ 'ver archivo de Poliza >>' }} {{item2.policy}}</a></p>
-              <div class="upload-content">
-                <upload-simple :url="urlFile" :path="pathDocs" :multiple="false" @emitCallback="uploadCallBack"></upload-simple>
               </div>
             </div>
           </div>
+          <div class="col-md-6">
+            <p class="title" style="margin-top: 0.6em">DATOS DEL VEHICULO</p>
+            <div class="borderChild pt-2">
+              <div class="row">
+                <div class="col-md-6 container-subtitle">
+                  <p class="subtitle text-left"><span>PLACA</span></p>
+                  <p class="value">{{ item2.vehicle.licensePlate }}</p>
+                </div>
+                <div class="col-md-6 container-subtitle">
+                  <p class="subtitle text-left"><span>NRO DE SERIE</span></p>
+                  <p class="value">{{ item2.vehicle.engineNumber }}</p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6 container-subtitle">
+                  <p class="subtitle text-left"><span>AÑO FABRICACION</span></p>
+                  <p class="value">{{ item2.vehicle.manufacturingYear }}</p>
+                </div>
+                <div class="col-md-6 container-subtitle">
+                  <p class="subtitle text-left"><span>USO DEL VEHICULO</span></p>
+                  <p class="value">{{ item2.vehicle.useType.name }}</p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6 container-subtitle">
+                  <p class="subtitle text-left"><span>MARCA-MODELO</span></p>
+                  <p class="value">{{ item2.vehicle.vehicleTypeCategory.vehicleType.vehicleBrand + '-' + item2.vehicle.vehicleTypeCategory.vehicleType.vehicleModel }}</p>
+                </div>
+                <div class="col-md-6 container-subtitle">
+                  <p class="subtitle text-left"><span>CATEGORIA/CLASE</span></p>
+                  <p class="value">{{ item2.vehicle.vehicleTypeCategory.vehicleCategory.description + '/' + item2.vehicle.vehicleTypeCategory.vehicleClass.description }}</p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6 container-subtitle pt-2">
+                  <p class="subtitle text-left"><span>NRO ASIENTOS</span></p>
+                  <p class="value">{{ item2.vehicle.seatNumber }}</p>
+                </div>
+                <div class="col-md-6 container-subtitle pt-2">
+                  <p class="subtitle text-left"><span>CHASIS</span></p>
+                  <p class="value">{{ item2.bodywork }}</p>
+                </div>
+              </div>
+            </div>
+            <div class="row pt-2 detailPay">
+              <div v-if="item2.cart==null" class="col-md-12 borderChild">
+                <p class="title">PAGOS</p>
+                <div class="row pt-2">
+                  <div class="col-md-6 container-subtitle">
+                    <p class="subtitle text-left"><span class="bg-success">COSTO POLIZA</span></p>
+                    <p class="value"><span>s/.</span> {{ item2.amount | currency }}</p>
+                  </div>
+                  <div class="col-md-6 container-subtitle">
+                    <p class="subtitle text-left"><span class="bg-info">TOTAL PAGADO</span></p>
+                    <p class="value"><span>s/.</span> {{ countTotal | currency }}</p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 container-subtitle pb-3">
+                    <p class="subtitle text-left"><span class="bg-danger">DESCUENTO</span></p>
+                    <p class="value"><span>s/.</span> {{ item2.discount | currency }}</p>
+                  </div>
+                  <div class="col-md-6 container-subtitle pb-3">
+                    <p class="subtitle text-left"><span class="bg-warning">A CREDITO</span></p>
+                    <p class="value"><span>s/.</span> {{ countCredito | currency }}</p>
+                  </div>
+                </div>
+                <div class="formPay row">
+                  <p class="title" style="border: none">
+                    <span>Ingresar Pago</span>
+                    <toggle-button :labels="{checked: 'Ejectivo', unchecked: 'Tarjeta'}" :color="{checked: 'rgb(78, 188, 117)', unchecked: 'rgb(99, 193, 222)'}"
+                                   :disabled="isLoading" :width="75" :height="25" :sync="true" v-model="payment.paymentType"
+                                   class="ml-2 mt-2"></toggle-button>
+                  </p>
+                  <div class="col-md-6 container-subtitle">
+                    <input type="number" class="form-control" placeholder="Monto" v-model="payment.amount" :disabled="isLoading">
+                  </div>
+                  <div class="col-md-6 container-subtitle">
+                    <input type="text" class="form-control" placeholder="#Comprobante" v-model="payment.numFactura" :disabled="isLoading">
+                  </div>
+                  <div class="col-md-12 container-subtitle">
+                    <b-button @click="addPay" class="float-right w-100" :disabled="isLoading" type="submit" size="sm" variant="primary"><i class="fa fa-dot-circle-o"></i> Pagar</b-button>
+                  </div>
+                </div>
+              </div>
+
+              <div v-else="" class="col-md-12 borderChild">
+                <p class="title">PAGOS</p>
+                <div class="row pt-2">
+                  <div class="col-md-6 container-subtitle">
+                    <p class="subtitle text-left"><span class="bg-danger">COMPROBANTE</span></p>
+                    <p class="value">{{ item2.numFactura == '' ? 'S/N' : item2.numFactura }}</p>
+                  </div>
+                  <div class="col-md-6 container-subtitle">
+                    <p class="subtitle text-left"><span class="bg-success">COSTO POLIZA</span></p>
+                    <p class="value"><span>s/.</span> {{ item2.amount | currency }}</p>
+                  </div>
+                </div>
+                <p class="title bg-info mt-2">SUBIR PDF</p>
+                <p v-if="item2.policy!==null" class="text-center text-info py-2"><a :href="pathDocs + '/' + item2.policy" target="_blank">{{ 'ver archivo de Poliza >>' }} {{item2.policy}}</a></p>
+                <div class="upload-content">
+                  <upload-simple :url="urlFile" :path="pathDocs" :multiple="false" @emitCallback="uploadCallBack"></upload-simple>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!--<pre>{{ item2 }}</pre>-->
         </div>
-        <!--<pre>{{ item2 }}</pre>-->
-      </div>
-    </b-card>
+      </b-card>
     </div>
     <div class="card-insurance row d-flex justify-content-center">
       <div v-for="(x, index) in listPayment" :key="x.id"  :class="{'ticket absolute cardWrap m-2 mb-3 hvr-bounce-in':true, 'pickOption': x.pick}">
@@ -207,7 +230,7 @@
         </div>
       </div>
     </div>
-    <!--<pre>{{ payment}}</pre>-->
+    <pre>{{ item }}</pre>
 
   </div>
 </template>
@@ -254,7 +277,8 @@
         listPayment: [],
         payment: dataPay.post,
         urlPayment: dataPay.name,
-        urlFile: ''
+        urlFile: '',
+        optionPrint: false
       }
     },
     watch: {
@@ -262,6 +286,7 @@
         this.item2 = newVal
         this.listPayment = await this.getPayments(newVal.id)
         this.urlFile = 'sales/' + newVal.id + '/uploadpolicydocument'
+        this.optionPrint = false
       }
     },
     computed: {
@@ -379,9 +404,27 @@
           console.log('Success')
         }
       },
-      imprimir () {
+      getUrlPrint (idCompany, idSale, typePrint) {
+        let url = ''
+        let type = ''
+        if (idCompany === 1) {
+          type = typePrint ? 1 : 2
+          url = 'sales/' + idSale + '/printpolicy?positiva=' + type
+        } else if (idCompany === 6 || idCompany === 7) {
+          type = typePrint ? 1 : 2
+          url = 'sales/' + idSale + '/printpolicy?afocat_manual_centrado=' + type
+        } else {
+          url = 'sales/' + idSale + '/printpolicy'
+        }
+        return url
+      },
+      imprimir (typePrint = null) {
         let idSale = this.item.id
-        let url = 'sales/' + idSale + '/printpolicy?positiva=1&afocat_manual_centrado=1'
+        let idCompany = this.item.insurancePolicy.insuranceCompany.id
+        let url = this.getUrlPrint(idCompany, idSale, typePrint)
+        console.log(idSale, idCompany)
+        console.log(url)
+
         let self = this.$store.dispatch('dispatchHTTP', {type: 'LOAD_PDF', url: url})
         self.then((response) => {
           let data = response.content
@@ -533,10 +576,8 @@
       font-weight: 500;
       font-size: 0.8em;
       text-align: justify;
-      p span.text-italic {
-        color: #64c1de;
-        padding: 10px;
-        font-size: 1em;
+      .upload-file form ap.text-italic {
+        color: red !important;
       }
     }
 

@@ -6,7 +6,7 @@
                      v-model="item.typeDocument" @change="dniRUC" class="mr-2">
       </toggle-button>
 
-      <toggle-button :labels="{checked: 'Email', unchecked: 'Email'}" :color="{checked: 'rgb(99, 193, 222)', unchecked: 'rgb(181, 181, 181)'}"
+      <toggle-button v-if="!hiddenEmail" :labels="{checked: 'Email', unchecked: 'Email'}" :color="{checked: 'rgb(99, 193, 222)', unchecked: 'rgb(181, 181, 181)'}"
                      :disabled="isLoading || restricted" :width="75" :height="28"
                      v-model="item.hasEmail" class="ml-2" @change="changeEmail">
       </toggle-button>
@@ -154,7 +154,8 @@
         titledniRuc: 'DNI',
         titleSwitch: 1,
         lCols: 3,
-        owner: null
+        owner: null,
+        hiddenEmail: false
       }
     },
     computed: {
@@ -166,6 +167,9 @@
       },
       usernameU () {
         return this.itemU.firstName ? this.itemU.firstName + ' ' + this.itemU.lastName : this.itemU.email
+      },
+      isClient () {
+        return this.$store.state.user.isClient
       }
     },
     validations () {
@@ -221,9 +225,6 @@
           this.item.email = this.$store.state.user.data.email
           this.searchUser(this.$store.state.user.data.email)
         }
-//        console.log(value)
-//        console.log(this.$store.state.user.data.email)
-        // alert(value.value)
       },
       dniRUC (value) {
         if (this.item.typeDocument === 1) {
@@ -335,6 +336,10 @@
       this.optInput.birthDate.params.disabled.to = new Date(1900, month, day)
       this.optInput.birthDate.params.disabled.from = new Date(year - 17, month, day)
       // this.birthDate = new Date(1900, 0, 1)
+      if (this.isClient) {
+        this.item.hasEmail = false
+        this.hiddenEmail = true
+      }
     }
   }
 </script>

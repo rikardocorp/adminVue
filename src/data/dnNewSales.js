@@ -58,7 +58,7 @@ export const DATA_VEHICLE = {
       // },
       engineNumber: {
         required
-      },
+      }
       // vehicleTypeCategory: {
       //   required
       // }
@@ -235,6 +235,9 @@ export const DATA_PURCHASER = {
   },
   validate2: {
     item: {
+      razonSocial: {
+        required
+      },
       dniRuc: {
         required,
         numeric,

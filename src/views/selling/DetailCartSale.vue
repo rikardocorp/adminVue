@@ -1,7 +1,8 @@
 <template>
   <div id="contentDetailSale">
-    <!--<pre>{{item2.user}}</pre>-->
     <div class="col-md-11 col-sm-12 col-lg-10 col-xl-7 m-auto">
+      <!--<pre>{{item}}</pre>-->
+      <!--<pre>{{itemCart}}</pre>-->
       <b-card>
         <div slot="header" class="text-left">
           <button @click="returnMain" title="Regresar" class="btn btn-in-title-left bg-primary"><i class="fa fa-arrow-left"></i></button>
@@ -13,7 +14,7 @@
             <!--<h6>SEGURO SOAT - 2017</h6>-->
             <div class="row">
               <div class="col-md-5 text-center">
-                <avatar :username="item2.insuranceCompany.name" :rounded="true" :size="7.5" sizeUnid="em"
+                <avatar v-if="item2.insuranceCompany.id" :username="item2.insuranceCompany.name" :rounded="true" :size="7.5" sizeUnid="em"
                         :src="path + '/' + item2.insuranceCompany.image" :alt="item2.insuranceCompany.name"
                         :border="true" colorBorder="#f4f3ef" color="#ecedef" :localSrc="false"
                         backgroundColor="orange" :sizeBorder="0.5"></avatar>
@@ -31,7 +32,10 @@
             </div>
             <div class="py-2">
               <p class="title">INFORMACION DEL CERTIFICADO</p>
-              <p class="fa-2x" style="padding-bottom: 0.4em; padding-top: 0.3em;"># <span class="numberPolicy">{{ 'Sin Asignar' }}</span></p>
+
+              <p v-if="item2.insurancePolicy" class="fa-2x" style="padding-bottom: 0.4em; padding-top: 0.3em;"># <span class="numberPolicy"><router-link :to="'/polizas-vendidas/' + item2.id + '/1'">{{ item2.insurancePolicy.number }}</router-link></span></p>
+              <p v-else="" class="fa-2x" style="padding-bottom: 0.4em; padding-top: 0.3em;"># <span class="numberPolicy">{{ 'Sin Asignar' }}</span></p>
+
               <p class="subtitle value text-center"><span>DESDE:</span>  {{ today }}</p>
               <p class="subtitle value text-center"><span>HASTA:</span>  {{ validityEnd(today) }}</p>
               <p :class="{'subtitle value text-center vigente':true, 'vencido': daysContract < 0}"><span>{{ daysContract >= 0 ? daysContract + ' dias vigentes' : (daysContract*-1) + ' dias vencidos' }}</span></p>
@@ -126,27 +130,27 @@
                   </div>
                 </div>
                 <!--<div class="row">-->
-                  <!--<div class="col-md-6 container-subtitle pb-3">-->
-                    <!--<p class="subtitle text-left"><span class="bg-danger">DESCUENTO</span></p>-->
-                    <!--<p class="value"><span>s/.</span> {{ 120 | currency }}</p>-->
-                  <!--</div>-->
-                  <!--<div class="col-md-6 container-subtitle pb-3">-->
-                    <!--<p class="subtitle text-left"><span class="bg-warning">A CREDITO</span></p>-->
-                    <!--<p class="value"><span>s/.</span> {{ countCredito | currency }}</p>-->
-                  <!--</div>-->
+                <!--<div class="col-md-6 container-subtitle pb-3">-->
+                <!--<p class="subtitle text-left"><span class="bg-danger">DESCUENTO</span></p>-->
+                <!--<p class="value"><span>s/.</span> {{ 120 | currency }}</p>-->
+                <!--</div>-->
+                <!--<div class="col-md-6 container-subtitle pb-3">-->
+                <!--<p class="subtitle text-left"><span class="bg-warning">A CREDITO</span></p>-->
+                <!--<p class="value"><span>s/.</span> {{ countCredito | currency }}</p>-->
+                <!--</div>-->
                 <!--</div>-->
                 <div class="formPayCart row mt-3">
                   <p class="title bg-info" style="border: none">
-                    <span>Registrar Venta</span>
+                    <span>Asignar Poliza</span>
                     <!--<toggle-button :labels="{checked: 'Ejectivo', unchecked: 'Tarjeta'}" :color="{checked: 'rgb(78, 188, 117)', unchecked: 'rgb(99, 193, 222)'}"-->
-                                   <!--:disabled="isLoading" :width="75" :height="25" :sync="true"-->
-                                   <!--class="ml-2 mt-2"></toggle-button>-->
+                    <!--:disabled="isLoading" :width="75" :height="25" :sync="true"-->
+                    <!--class="ml-2 mt-2"></toggle-button>-->
                   </p>
                   <div class="col-md-12 container-subtitle mt-2">
                     <input type="text" class="form-control" v-model="numberPolicy" placeholder="Numero de poliza" :disabled="isLoading">
                   </div>
                   <div class="col-md-12 container-subtitle mt-2">
-                    <b-button @click="eventAddSalebyCart" class="float-right w-100 p-2" :disabled="isLoading" type="submit" size="sm" variant="primary"><i class="fa fa-dot-circle-o"></i> Registrar</b-button>
+                    <b-button @click="eventAssignPolicy" class="float-right w-100 p-2" :disabled="isLoading" type="submit" size="sm" variant="primary"><i class="fa fa-dot-circle-o"></i> Registrar</b-button>
                   </div>
                 </div>
               </div>
@@ -162,7 +166,7 @@
 <script>
   import ToggleButton from '../../components/ToggleButton.vue'
   import Avatar from '../../components/Avatar.vue'
-//  import {DATA_PAYMENT as dataPay} from '../../data/dnSales'
+  //  import {DATA_PAYMENT as dataPay} from '../../data/dnSales'
   import FileSaver from 'file-saver'
 
   // import {DATA_FORM_PAYMENT as _payment} from '../../data/dnSales'
@@ -199,12 +203,14 @@
         },
         today: '',
         numberPolicy: '',
-        newSale: {}
+        newSale: {},
+        itemCart: {}
       }
     },
     watch: {
       async item (newVal) {
         this.item2 = newVal
+        this.itemCart = newVal.cart
         if (!this.item2.user) this.item2.user = this.$store.state.user.data
         let date = this.$store.getters.getDateTime.date
         this.today = this.$moment(date, 'DD/MM/YYYY').format('DD/MM/YYYY')
@@ -217,6 +223,9 @@
       },
       path () {
         return this.$store.state.Login.IMAGES_URL
+      },
+      date () {
+        return this.$store.state.user.date
       },
       daysContract () {
         let date = this.$store.getters.getDateTime.date
@@ -268,21 +277,21 @@
         let self = await this.$store.dispatch('dispatchHTTP', {type: 'GET', url: url})
         return self.status ? self.content : []
       },
-      eventAddSalebyCart () {
+      eventAssignPolicy () {
+        if (this.numberPolicy === '') {
+          this.$store.commit('sendNotification', {status: null, message: 'Debe registrar un numero de poliza digital.'})
+          return false
+        }
         this.$dialog.confirm('¿Esta seguro de registrar esta venta?').then((dialog) => {
-          this.addSalebyCart()
+          this.assignPolicy()
           dialog.close()
         }).catch(() => {
           console.log('Clicked on cancel')
         })
       },
-      async addSalebyCart () {
-        if (this.item.state) {
-          this.$store.commit('sendNotification', {status: null, message: 'Esta venta ya fue procesada, realizar la busqueda en ventas.'})
-          return false
-        }
-        if (this.numberPolicy === '') {
-          this.$store.commit('sendNotification', {status: null, message: 'Debe registrar un numero de poliza digital.'})
+      async assignPolicy () {
+        if (this.item.state !== 0) {
+          this.$store.commit('sendNotification', {status: null, message: 'Esta venta ya fue procesada, realizar la busqueda en Poliza Vendida.'})
           return false
         }
 
@@ -310,12 +319,7 @@
           user: {id: this.item2.user.id}
         }
         this.newSale = newSale
-        // alert('newSale')
-        console.log(newSale)
-        console.log(policy)
         console.log('INSERT SALE')
-
-        // return false
         // INSERT POLICY
         let self1 = await this.insertPolicy(policy)
         console.log(self1)
@@ -323,12 +327,16 @@
         console.log('INSERT POLICY')
         newSale.insurancePolicy = {id: self1.content.id}
 
-        // INSERT SALE
-        let self2 = await this.insertSale(newSale)
+        // UPDATE SALE
+        this.item.insurancePolicy = {id: self1.content.id}
+        this.item.state = 4
+        this.item.active = 1
+        this.item.validityStart = this.date
+        let self2 = await this.updateSaleCart(this.item)
         console.log(self2)
         if (!self2.status) return false
         let idSale = self2.content.id
-        console.log('INSERT SALE')
+        console.log('UPDATE SALE')
 
         // UPDATE CART
         let self3 = await this.updateCart()
@@ -336,12 +344,20 @@
         this.$set(this.item, 'state', self3.content.state)
         console.log('UPDATE CART')
 
-        this.$router.push('/polizas-vendidas/' + idSale)
+        this.$router.push('/polizas-vendidas/' + idSale + '/1')
       },
       async insertPolicy (policy) {
         let url = 'insurancepolicies'
         let dataLocal = policy
         let self = await this.$store.dispatch('dispatchHTTP', {type: 'INSERT', url: url, data: dataLocal})
+        return self
+      },
+      async updateSaleCart (sale) {
+        console.log('SALES')
+        console.log(sale)
+        let url = 'sales' + '/' + sale.id
+        let dataLocal = sale
+        let self = await this.$store.dispatch('dispatchHTTP', {type: 'UPDATE', url: url, data: dataLocal})
         return self
       },
       async insertSale (sale) {
@@ -351,8 +367,8 @@
         return self
       },
       async updateCart () {
-        let dataLocal = JSON.parse(JSON.stringify(this.item))
-        dataLocal.state = 1
+        let dataLocal = JSON.parse(JSON.stringify(this.itemCart))
+        dataLocal.state = 2
         let url = 'carts/' + dataLocal.id
         let self = await this.$store.dispatch('dispatchHTTP', {type: 'UPDATE', url: url, data: dataLocal})
         return self

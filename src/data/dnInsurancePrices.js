@@ -170,8 +170,8 @@ export const DATA_FORM_PRICE = {
         variant: 'primary',
         size: 'sm',
         options: [
-          { text: 'Movil', value: '0' },
-          { text: 'PuntoVenta', value: '1' }
+          { text: 'Movil', value: '1' },
+          { text: 'PuntoVenta', value: '0' }
         ]
       }
     },

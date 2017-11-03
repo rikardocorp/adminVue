@@ -281,7 +281,7 @@
         return self.status ? self.content : null
       },
       async getSalesCart () {
-        this.listSaleCart = await this.getData('carts')
+        this.listSaleCart = await this.getData('carts?state=1')
         console.log(this.listSaleCart)
       }
     },

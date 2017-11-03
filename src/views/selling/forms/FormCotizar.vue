@@ -138,6 +138,9 @@
     computed: {
       isLoading () {
         return this.$store.state.isLoading
+      },
+      isClient () {
+        return this.$store.state.user.isClient
       }
     },
     methods: {
@@ -175,7 +178,10 @@
         if (!invalid) {
           this.isSearch = true
           this.$emit('isSearching', true)
-          let myUrl = 'insuranceprices/cotizar?regionId=' + this.item['regionId'] + '&useTypeId=' + this.item['useTypeId'] + '&brand=' + this.item['brand'] + '&model=' + this.item['model']
+          let myUrl = ''
+          let priceType = this.isClient ? 1 : 0
+          myUrl = 'insuranceprices/cotizar?priceType=' + priceType + '&regionId=' + this.item['regionId'] + '&useTypeId=' + this.item['useTypeId'] + '&brand=' + this.item['brand'] + '&model=' + this.item['model']
+
           let self = this.$store.dispatch('dispatchHTTP', {type: 'GET', url: myUrl})
           self.then((data) => {
             if (data.status) {

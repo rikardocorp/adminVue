@@ -17,19 +17,23 @@
       </div>
       <div class="card-ticket cardCenter">
         <div class="xtitle">
-          Poliza #{{  data.sale.item.insurancePolicy ? data.sale.item.insurancePolicy.number : '???'  }}
+          Poliza #{{ data.sale.item.insurancePolicy ? data.sale.item.insurancePolicy.number : '[PENDIENTE]'  }}
         </div>
         <div class="xcontent">
           <div class="title">
-            <h2>{{ data.sale.item.purchaser ? data.sale.item.purchaser.razonSocial: 'xxxxx' }}</h2>
+            <h2>{{ data.purchaser.item ? data.purchaser.item.razonSocial: 'xxxxx' }}</h2>
             <span>Contratante</span>
           </div>
           <div class="seat">
             <h2>{{ data.vehicle.item.seatNumber }}</h2>
             <span>Asientos</span>
           </div>
-          <div class="time">
+          <div v-if="!isClient" class="time">
             <h2>{{ data.sale.item.validityStart ? data.sale.item.validityStart: 'xx/xx/xxxx' }}</h2>
+            <span>Fecha Inicio</span>
+          </div>
+          <div v-else="" class="time">
+            <h2>{{ localDate }}</h2>
             <span>Fecha Inicio</span>
           </div>
         </div>
@@ -46,7 +50,7 @@
         <!--</div>-->
       <!--</div>-->
     </div>
-    <div class="container abstractPrice pt-3 pb-4">
+    <div v-if="!isClient" class="container abstractPrice pt-3 pb-4">
       <div v-if="data.sale.item.discount > 0">
         <div class="row text-success">
           <div class="col-6">Precio s/.</div>
@@ -76,25 +80,27 @@
               class="mr-1 mt-3 mb-0 btn-pay hvr-shadow-radial hvr-bob" style="background: #36a113;">
       <i :class="{'fa fa-money': data.pay.item.paymentType===1, 'fa fa-credit-card':  data.pay.item.paymentType==0}" aria-hidden="true"></i> PAGAR
     </b-button>
-    <b-button @click="imprimir" :pressed="false" variant="primary"
-              class="mr-1 my-1 btn-pay hvr-shadow-radial hvr-bob" style="background: #ffa505;">
-      <i class="fa fa-print" aria-hidden="true"></i> IMPRIMIR
-    </b-button>
+    <div v-if="!isClient">
+      <b-button @click="imprimir" :pressed="false" variant="primary"
+                class="mr-1 my-1 btn-pay hvr-shadow-radial hvr-bob" style="background: #ffa505;">
+        <i class="fa fa-print" aria-hidden="true"></i> IMPRIMIR
+      </b-button>
 
-    <!-- PARA LA POSITIVA -->
-    <div v-if="data.pickPolice.item.insuranceCompanyId==1" class="text-center mt-3">
-      <toggle-button :labels="{checked: 'Manual', unchecked: 'WEB'}" :color="{checked: 'rgb(239, 123, 34)', unchecked: 'rgb(181, 181, 181)'}"
-                     :width="85" :height="32" :sync="true"
-                     v-model="typePositiva" class="mr-2">
-      </toggle-button>
-    </div>
+      <!-- PARA LA POSITIVA -->
+      <div v-if="data.pickPolice.item.insuranceCompanyId==1" class="text-center mt-3">
+        <toggle-button :labels="{checked: 'Manual', unchecked: 'WEB'}" :color="{checked: 'rgb(239, 123, 34)', unchecked: 'rgb(181, 181, 181)'}"
+                       :width="85" :height="32" :sync="true"
+                       v-model="typePositiva" class="mr-2">
+        </toggle-button>
+      </div>
 
-    <!-- PARA LA AFOCAT 6Y7 -->
-    <div v-if="data.pickPolice.item.insuranceCompanyId==6 || data.pickPolice.item.insuranceCompanyId==7" class="text-center mt-3">
-      <toggle-button :labels="{checked: 'Centrado', unchecked: 'otro'}" :color="{checked: 'rgb(239, 123, 34)', unchecked: 'rgb(181, 181, 181)'}"
-                     :width="85" :height="32" :sync="true"
-                     v-model="typeAfocat" class="mr-2">
-      </toggle-button>
+      <!-- PARA LA AFOCAT 6Y7 -->
+      <div v-if="data.pickPolice.item.insuranceCompanyId==6 || data.pickPolice.item.insuranceCompanyId==7" class="text-center mt-3">
+        <toggle-button :labels="{checked: 'Centrado', unchecked: 'otro'}" :color="{checked: 'rgb(239, 123, 34)', unchecked: 'rgb(181, 181, 181)'}"
+                       :width="85" :height="32" :sync="true"
+                       v-model="typeAfocat" class="mr-2">
+        </toggle-button>
+      </div>
     </div>
 
     <!--<p><a :href="pdf" target="_blank">Link pdf >></a></p>-->
@@ -113,7 +119,6 @@
                      <!--v-model="hasEmail" class="ml-2" @change="changeEmail">-->
       <!--</toggle-button>-->
     <!--</div>-->
-    <pre>{{ data.pickPolice }}</pre>
   </div>
 
 </template>
@@ -156,6 +161,12 @@
       },
       path () {
         return this.$store.state.Login.IMAGES_URL
+      },
+      isClient () {
+        return this.$store.state.user.isClient
+      },
+      localDate () {
+        return this.$store.state.user.date
       }
     },
     methods: {
@@ -193,7 +204,11 @@
         })
       },
       paySale () {
-        this.$emit('paySale')
+        if (!this.isClient) {
+          this.$emit('paySale')
+        } else {
+          this.$store.commit('sendNotification', {status: null, message: 'Solo se pueden realizar pagos desde el aplicativo movil, puede desacar la app desde el Pla.'})
+        }
       },
       getUrlPrint (idCompany, idSale) {
         let url = ''

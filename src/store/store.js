@@ -21,7 +21,8 @@ export default new Vuex.Store({
       role: '',
       data: '',
       date: '',
-      time: ''
+      time: '',
+      isClient: false
     }
   },
   getters: {

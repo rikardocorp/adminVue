@@ -51,6 +51,7 @@
   import FormError from '../../../components/FormError.vue'
   import Avatar from '../../../components/Avatar.vue'
   import {DATA_VEHICLE as _vehicle} from '../../../data/dnNewSales'
+  import { required,between } from 'vuelidate/lib/validators'
 
   export default {
     components: {
@@ -59,7 +60,7 @@
       FormError,
       Avatar
     },
-    props: ['urlRest', 'item', 'update', 'horizontal', 'index', 'keyname', 'restricted', 'dispatch'],
+    props: ['urlRest', 'item', 'pickPolice', 'update', 'horizontal', 'index', 'keyname', 'restricted', 'dispatch'],
     data () {
       return {
         optInput: _vehicle.input,
@@ -75,9 +76,18 @@
       },
       isInvalid () {
         return this.$v.item.$invalid
+      },
+      isClient () {
+        return this.$store.state.user.isClient
       }
     },
     validations () {
+      if (this.isClient) {
+        _vehicle.validate.item.seatNumber = {
+          required,
+          between: between(this.pickPolice.seatNumber, this.pickPolice.seatNumberTo)
+        }
+      }
       return _vehicle.validate
     },
     methods: {
