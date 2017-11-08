@@ -17,8 +17,8 @@
             <!--<img src="static/img/avatars/6.jpg" class="img-avatar" alt="admin@bootstrapmaster.com">-->
             <span class="d-md-down-none">{{ username }}</span>
           </template>
-          <b-dropdown-header tag="div" class="text-center"><strong>Account</strong></b-dropdown-header>
-          <b-dropdown-item><i class="fa fa-bell-o"></i> Updates<span class="badge badge-info">42</span></b-dropdown-item>
+          <b-dropdown-header tag="div" class="text-center"><strong>Cuenta</strong></b-dropdown-header>
+          <!--<b-dropdown-item><i class="fa fa-bell-o"></i> Updates<span class="badge badge-info">42</span></b-dropdown-item>-->
           <!--<b-dropdown-item><i class="fa fa-envelope-o"></i> Messages<span class="badge badge-success">42</span></b-dropdown-item>-->
           <!--<b-dropdown-item><i class="fa fa-tasks"></i> Tasks<span class="badge badge-danger">42</span></b-dropdown-item>-->
           <!--<b-dropdown-item><i class="fa fa-comments"></i> Comments<span class="badge badge-warning">42</span></b-dropdown-item>-->
@@ -29,11 +29,11 @@
           <!--<b-dropdown-item><i class="fa fa-file"></i> Projects<span class="badge badge-primary">42</span></b-dropdown-item>-->
           <!--<b-dropdown-divider></b-dropdown-divider>-->
           <!--<b-dropdown-item><i class="fa fa-shield"></i> Lock Account</b-dropdown-item>-->
-          <b-dropdown-item @click="logout"><i class="fa fa-lock"></i> Logout</b-dropdown-item>
+          <b-dropdown-item @click="logout"><i class="fa fa-lock"></i> Salir</b-dropdown-item>
         </b-nav-item-dropdown>
       </b-nav>
 
-      <button class="navbar-toggler aside-menu-toggler d-md-down-none" type="button" @click="asideToggle">&#9776;</button>
+      <button v-if="!isClient" class="navbar-toggler aside-menu-toggler d-md-down-none" type="button" @click="asideToggle">&#9776;</button>
     </header>
 </template>
 <script>
@@ -55,6 +55,9 @@
         let firtName = this.user.data.firstName ? this.user.data.firstName : ''
         let lastName = this.user.data.lastName ? this.user.data.lastName : ''
         return firtName + ' ' + lastName
+      },
+      isClient () {
+        return this.$store.state.user.isClient
       }
     },
     methods: {

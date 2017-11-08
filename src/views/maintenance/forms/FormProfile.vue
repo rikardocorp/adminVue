@@ -23,8 +23,8 @@
                 <p>TIPO DE USUARIO</p>
                 <p class="xsTitle">{{ role }}</p>
                 <h6 class="mt-1"><b-badge class="px-2 py-1 text-white" :variant="item.enabled == 1 ? 'primary' : ''">{{ item.enabled == 1 ? 'Activo' : 'Inactivo' }}</b-badge></h6>
-                <p>{{ item.office.description }}</p>
-                <p>{{ item.office.officeType.description }}</p>
+                <p>{{ item.office ? item.office.description : '' }}</p>
+                <p>{{ item.office ? item.office.officeType.description : '' }}</p>
               </div>
             </div>
             <div class="row pt-2 auxHeight">

@@ -71,7 +71,6 @@
           <!--<pre style="font-size: 0.7em">{{ data.pickPolice }}</pre>-->
           <!--<pre style="font-size: 0.7em">{{ data.pay }}</pre>-->
           <!--<pre style="font-size: 0.7em">{{ data.sale }}</pre>-->
-          <pre>{{ data.cart }}</pre>
           <!--<br>-->
           <!--<pre>{{ data.vehicle }}</pre>-->
           <!--<br><br>-->

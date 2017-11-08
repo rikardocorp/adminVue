@@ -4,7 +4,7 @@
       <!--<i class="fa fa-tags" aria-hidden="true"></i>-->
     <!--</span>-->
     <div slot="header" class="text-center">
-      <button @click="switchForm" title="Registrar en grupo" class="btn btn-in-title-left"><i class="fa fa-tags" aria-hidden="true"></i></button>
+      <button @click="switchForm" v-b-tooltip.hover.auto title="Registrar en grupo" class="btn btn-in-title-left"><i class="fa fa-tags" aria-hidden="true"></i></button>
       <strong>Registrar</strong> una Poliza
     </div>
     <b-form :id="name + urlRest">

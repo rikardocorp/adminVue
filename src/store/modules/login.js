@@ -188,6 +188,7 @@ const actions = {
       router.push('/login')
     } else {
       let role = data.authorities[0].authority
+      // alert(role)
       switch (role) {
         case 'ROLE_ADMIN':
           router.push('/')
@@ -196,6 +197,9 @@ const actions = {
           router.push('/dashboard')
           break
         case 'ROLE_VENDEDOR':
+          router.push('/dashboard')
+          break
+        case 'ROLE_USUARIO':
           router.push('/dashboard')
           break
         default:

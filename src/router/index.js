@@ -31,6 +31,7 @@ import Purchaser from '../views/vehicle/Purchaser.vue'
 
 // Selling
 import Sales from '../views/selling/Sales.vue'
+import CartClient from '../views/selling/CartClient.vue'
 import Sale from '../views/selling/Sale.vue'
 import SellNewPolice from '../views/selling/NewSale.vue'
 import SellNewPoliceSpecial from '../views/selling/NewSaleSpecial.vue'
@@ -72,7 +73,7 @@ const router = new Router({
           path: 'dashboard',
           name: 'Dashboard',
           component: Dashboard,
-          meta: {requiresAuth: true, ROLE_ADMIN: true, ROLE_PUNTO_VENTA: true, ROLE_VENDEDOR: true}
+          meta: {requiresAuth: true, ROLE_ADMIN: true, ROLE_PUNTO_VENTA: true, ROLE_VENDEDOR: true, ROLE_USUARIO: true}
         },
         {
           path: 'mantenimiento',
@@ -83,16 +84,16 @@ const router = new Router({
           },
           meta: {requiresAuth: true, ROLE_ADMIN: false, ROLE_PUNTO_VENTA: false, ROLE_VENDEDOR: false},
           children: [
-            {
-              path: 'ciudad',
-              name: 'Ciudad',
-              component: City
-            },
+            // {
+            //   path: 'ciudad',
+            //   name: 'Ciudad',
+            //   component: City
+            // },
             {
               path: 'aseguradoras',
               name: 'Aseguradoras',
               component: Aseguradoras,
-              meta: {requiresAuth: true, ROLE_ADMIN: true, ROLE_PUNTO_VENTA: false, ROLE_VENDEDOR: false}
+              meta: {requiresAuth: true, ROLE_ADMIN: true}
             },
             {
               path: 'oficinas',
@@ -122,7 +123,7 @@ const router = new Router({
               path: 'contratantes',
               name: 'Contratante',
               component: Purchaser,
-              meta: {requiresAuth: true, ROLE_ADMIN: true}
+              meta: {requiresAuth: true, ROLE_ADMIN: true, ROLE_PUNTO_VENTA: true}
             }
           ]
         },
@@ -205,7 +206,8 @@ const router = new Router({
         {
           path: 'poliza-vendida',
           name: 'Poliza Vendida',
-          component: PolicySold
+          component: PolicySold,
+          meta: {requiresAuth: true, ROLE_ADMIN: true, ROLE_PUNTO_VENTA: true, ROLE_VENDEDOR: true, ROLE_USUARIO: true}
         },
         {
           path: 'polizas-vendidas',
@@ -214,10 +216,16 @@ const router = new Router({
           meta: {requiresAuth: true, ROLE_ADMIN: true, ROLE_PUNTO_VENTA: true}
         },
         {
+          path: 'carrito-compras',
+          name: 'Carrito',
+          component: CartClient,
+          meta: {requiresAuth: true, ROLE_USUARIO: true}
+        },
+        {
           path: 'polizas-vendidas/:idSale/:type',
           name: 'VentasId',
           component: Sale,
-          meta: {requiresAuth: true, ROLE_ADMIN: true, ROLE_PUNTO_VENTA: true}
+          meta: {requiresAuth: true, ROLE_ADMIN: true, ROLE_PUNTO_VENTA: true, ROLE_VENDEDOR: true}
         },
         {
           path: 'cotizar-admin',
@@ -240,7 +248,7 @@ const router = new Router({
           path: 'venta-cliente',
           name: 'Venta Cliente',
           component: SellNewPoliceClient,
-          meta: {requiresAuth: true, ROLE_ADMIN: true, ROLE_PUNTO_VENTA: true, ROLE_VENDEDOR: true}
+          meta: {requiresAuth: true, ROLE_USUARIO: true}
         }
       ]
     },

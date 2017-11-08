@@ -1,10 +1,10 @@
 <template>
   <b-card class="exception">
-    <span class="btn-tool-left input-group-addon bg-primary" @click="resetForm(name + urlRest)" title="Reset">
-      <i class="fa fa-eraser" aria-hidden="true"></i>
-    </span>
+    <!--<span class="btn-tool-left input-group-addon bg-primary" @click="resetForm(name + urlRest)" title="Reset">-->
+      <!--<i class="fa fa-eraser" aria-hidden="true"></i>-->
+    <!--</span>-->
     <div slot="header" class="text-center">
-      <!--<button title="Regresar" class="btn btn-in-title-left bg-primary"><i class="fa fa-arrow-left"></i></button>-->
+      <button v-b-tooltip.hover.auto title="Reset" class="btn btn-in-title-right bg-primary"  @click="resetForm(name + urlRest)"><i class="fa fa-eraser"></i></button>
       <strong>Cotizar</strong> Seguros
     </div>
 

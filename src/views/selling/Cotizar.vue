@@ -22,8 +22,9 @@
           </div>
 
           <div v-if="items.length" class="card-insurance row d-flex justify-content-center">
-            <div v-for="x in items" :key="x.id"  class="ticket cardWrap m-3 hvr-bounce-in"
-                 v-b-tooltip.html.top :title="convertDescription(x.description, x.exception)">
+            <!--<div v-for="x in items" :key="x.id"  class="ticket cardWrap m-3 hvr-bounce-in"-->
+                 <!--v-b-tooltip.html.top :title="convertDescription(x.description, x.exception)">-->
+            <div v-for="x in items" :key="x.id"  class="ticket cardWrap m-3 hvr-bounce-in">
               <div class="card-ticket cardLeft">
                 <avatar :username="x.insuranceCompanyName" :rounded="true" :size="6.4" sizeUnid="em"
                         :src="path + '/' + x.insuranceCompanyImage" :alt="x.insuranceCompanyName"

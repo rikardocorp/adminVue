@@ -26,10 +26,10 @@
     <b-card class="myCard">
       <div slot="header" class="text-center">Tabla de <strong>Precios</strong></div>
       <div class="col-md-7 mt-1">
-        <datepicker ref="datepicker" v-model="datepicker.params.value" :format="datepicker.params.format" language="es" :placeholder="datepicker.placeholder"
-                    :clear-button="false" :bootstrapStyling="true" class="float-left"
-                    :disabled-picker="isLoading" @input="selectDate" :disabled="datepicker.params.disabled"
-                    calendar-class="myDatepicker-style" wrapper-class="myDatepicker-content"></datepicker>
+        <!--<datepicker ref="datepicker" v-model="datepicker.params.value" :format="datepicker.params.format" language="es" :placeholder="datepicker.placeholder"-->
+                    <!--:clear-button="false" :bootstrapStyling="true" class="float-left"-->
+                    <!--:disabled-picker="isLoading" @input="selectDate" :disabled="datepicker.params.disabled"-->
+                    <!--calendar-class="myDatepicker-style" wrapper-class="myDatepicker-content"></datepicker>-->
         <!--<b-button v-if="btnForm.switchForm"  class="float-left ml-2" @click="saveTable" :disabled="isLoading" size="sm" variant="success"><i class="fa fa-ban"></i> Actualizar</b-button>-->
         <b-button class="float-left ml-2" @click="saveTable" :disabled="isLoading" size="sm" variant="primary"><i class="fa fa-ban"></i> Guardar</b-button>
         <b-button class="float-left ml-2" @click="copyPrices" :disabled="isLoading" size="sm" variant="info"><i class="fa fa-ban"></i> Copiar</b-button>
@@ -111,17 +111,17 @@
         <div v-if="pickRowItem.exception===1" class="pt-2 content-list-car">
           <b-badge v-for="car in filteredCars" pill
                    :key="car.id" :class="{'hvr-pulse-grow': true, 'bg-danger': listDescription[car.id] ? true : false}"
-                   @click="addItemDescription(car)">{{ car.vehicleType.vehicleBrand }}-{{ car.vehicleType.vehicleModel }}</b-badge>
+                   @click="addItemDescription(car, true)">{{ car.vehicleType.vehicleBrand }}-{{ car.vehicleType.vehicleModel }}</b-badge>
         </div>
         <div v-else="" class="pt-2 content-list-car">
           <b-badge v-for="car in filteredCars" pill v-if="listDescriptionHidden[car.id] || itemsIndex[auxIDItems]==undefined"
                    :key="car.id" :class="{'hvr-pulse-grow': true, 'bg-success': listDescription[car.id] ? true : false}"
-                   @click="addItemDescription(car)">{{ car.vehicleType.vehicleBrand }}-{{ car.vehicleType.vehicleModel }}</b-badge>
+                   @click="addItemDescription(car, false)">{{ car.vehicleType.vehicleBrand }}-{{ car.vehicleType.vehicleModel }}</b-badge>
         </div>
       </div>
     </b-modal>
 
-    <!--<pre>{{ itemPrice }}</pre>-->
+    <pre>{{ items }}</pre>
     <!--<pre>{{ rick }}</pre>-->
     <!--<pre>{{ itemsIndex }}</pre>-->
   </div>
@@ -461,9 +461,20 @@
           this.items[index]._vehicle['description_' + exception] = description
         }
       },
-      addItemDescription (car) {
+      addItemDescription (car, exception) {
         console.log(car)
         if (this.listDescription[car.id]) {
+          if (exception) {
+            let auxID = this.generateVCCId(this.pickRowItem, 0)
+            let description0 = JSON.parse(this.items[this.itemsIndex[auxID]]._vehicle['description_0'])
+            let idDelete = car.id
+            this.$delete(description0, idDelete)
+//            console.log('DELETE')
+//            console.log(description0)
+//            console.log(idDelete)
+            this.items[this.itemsIndex[auxID]]._vehicle['description_0'] = JSON.stringify(description0)
+            this.activeRowPrices(auxID)
+          }
           this.$delete(this.listDescription, car.id)
 // RCORP A
 //          if (this.pickRowItem.exception === 1 && this.auxDeleteItemDescription === 0) {
@@ -505,10 +516,10 @@
           return false
         }
 
-        if (this.datepicker.params.value === '') {
-          this.$store.commit('sendNotification', {status: null, message: 'Debe ingresar la fecha de caducidad para los precios.'})
-          return false
-        }
+//        if (this.datepicker.params.value === '') {
+//          this.$store.commit('sendNotification', {status: null, message: 'Debe ingresar la fecha de caducidad para los precios.'})
+//          return false
+//        }
 
         let obj = {
           priceCalendarId: this.item.priceCalendar.id,

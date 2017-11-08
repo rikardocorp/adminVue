@@ -16,59 +16,59 @@ export default {
     {
       name: 'General',
       url: '/mantenimiento',
-      icon: 'icon-puzzle',
+      icon: 'fa fa-diamond',
       children: [
         {
           name: 'Aseguradoras',
           url: '/mantenimiento/aseguradoras',
-          icon: 'icon-puzzle'
+          icon: 'fa fa-tags'
         },
         {
           name: 'Oficinas',
           url: '/mantenimiento/oficinas',
-          icon: 'icon-puzzle'
+          icon: 'fa fa-building'
         },
         {
           name: 'Usuarios',
           url: '/mantenimiento/usuarios',
-          icon: 'icon-puzzle'
+          icon: 'fa fa-users'
         },
         {
           name: 'Tipos de Uso',
           url: '/mantenimiento/tipo-uso',
-          icon: 'icon-puzzle'
+          icon: 'fa fa-gavel'
         },
         {
           name: 'Tipos de Seguro',
           url: '/mantenimiento/tipo-seguro',
-          icon: 'icon-puzzle'
+          icon: 'fa fa-thumbs-up'
         },
         {
           name: 'Contratante',
           url: '/mantenimiento/contratantes',
-          icon: 'fa fa-map-marker'
+          icon: 'fa fa-male '
         }
       ]
     },
     {
       name: 'Precios',
       url: '/precios',
-      icon: 'fa fa-gears',
+      icon: 'fa fa-money',
       children: [
         {
           name: 'Tipos de Vehiculo',
           url: '/precios/tipo-vehiculo',
-          icon: 'icon-puzzle'
+          icon: 'fa fa-taxi'
         },
         {
           name: 'Categ. de Vehiculo',
           url: '/precios/categoria-vehiculo',
-          icon: 'icon-puzzle'
+          icon: 'fa fa-rocket'
         },
         {
           name: 'Clases de Vehiculo',
           url: '/precios/clases-vehiculo',
-          icon: 'icon-puzzle'
+          icon: 'fa fa-pencil-square-o'
         },
         // {
         //   name: 'Nueva venta',
@@ -103,7 +103,7 @@ export default {
     {
       name: 'VCC',
       url: '/precios/tipo-categoria-vehiculo',
-      icon: 'icon-puzzle'
+      icon: 'fa fa-car'
     },
     // {
     //   name: 'Precios',
@@ -113,7 +113,7 @@ export default {
     {
       name: 'Precios',
       url: '/precios/precio-poliza-full',
-      icon: 'fa fa-money'
+      icon: 'fa fa-usd'
     },
     // {
     //   name: 'Precio Full2',
@@ -127,7 +127,7 @@ export default {
     {
       name: 'Polizas',
       url: '/insertar-poliza',
-      icon: 'fa fa-money',
+      icon: 'fa fa-balance-scale',
       badge: {
         variant: 'danger',
         text: 'NEW'
@@ -136,7 +136,7 @@ export default {
     {
       name: 'Asignacion',
       url: '/asignar-poliza',
-      icon: 'fa fa-money',
+      icon: 'fa fa-hand-o-right',
       badge: {
         variant: 'success',
         text: 'NEW'
@@ -176,7 +176,7 @@ export default {
     {
       name: 'Poliza Vendida',
       url: '/polizas-vendidas',
-      icon: 'icon-speedometer',
+      icon: 'fa fa-handshake-o',
       badge: {
         variant: 'warning',
         text: 'NEW'
@@ -185,7 +185,7 @@ export default {
     {
       name: 'Cotizacion',
       url: '/cotizar-admin',
-      icon: 'icon-speedometer',
+      icon: 'fa fa-money',
       badge: {
         variant: 'warning',
         text: 'NEW'
@@ -194,7 +194,7 @@ export default {
     {
       name: 'Nueva Venta',
       url: '/nueva-venta',
-      icon: 'icon-speedometer',
+      icon: 'fa fa-plus',
       badge: {
         variant: 'info',
         text: 'NEW'
@@ -203,7 +203,7 @@ export default {
     {
       name: 'Venta Especial',
       url: '/venta-especial',
-      icon: 'icon-speedometer',
+      icon: 'fa fa-star-o',
       badge: {
         variant: 'success',
         text: 'NEW'
@@ -212,7 +212,7 @@ export default {
     {
       name: 'Venta Cliente',
       url: '/venta-cliente',
-      icon: 'icon-speedometer',
+      icon: 'fa fa-mobile',
       badge: {
         variant: 'info',
         text: 'NEW'
