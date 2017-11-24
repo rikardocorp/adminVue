@@ -5,7 +5,7 @@
         <button @click="$store.state.isLoading = true">LOAding</button>
         <button type="button" @click="toggleFullscreen" >Fullscreen</button>
         <div class="col-md-12">
-          <app-fullscreen ref="fullscreen" :fullscreen.sync="fullscreen" background="white" @change="commitFullscreen">
+          <!--<app-fullscreen ref="fullscreen" :fullscreen.sync="fullscreen" background="white" @change="commitFullscreen">-->
             <form-wizard  @on-complete="onComplete" @on-change="onChange" @on-loading="setLoading" color="#20a8d8">
               <tab-content title="Personal details" icon="fa fa-user-circle-o" >
                 <div class="col-md-6 mx-auto">
@@ -33,7 +33,7 @@
               </tab-content>
               <div class="loader" v-if="loadingWizard"></div>
             </form-wizard>
-          </app-fullscreen>
+          <!--</app-fullscreen>-->
         </div>
       </div>
 
@@ -61,7 +61,7 @@
   import Vehicle from './forms/FormVehicle.vue'
   import Purchaser from './forms/FormPurchaser.vue'
   import Table from '../../components/xTable.vue'
-  import Fullscreen from "vue-fullscreen/src/component.vue"
+//  import Fullscreen from "vue-fullscreen/src/component.vue"
 //  @/
 
   export default {
@@ -71,7 +71,7 @@
       appVehicle: Vehicle,
       appPurchaser: Purchaser,
       appTable: Table,
-      appFullscreen: Fullscreen
+//      appFullscreen: Fullscreen
     },
     data: function () {
       return {

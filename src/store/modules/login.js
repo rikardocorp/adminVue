@@ -62,15 +62,23 @@ const mutations = {
     Vue.set(state.user, 'isLogged', true)
   },
   logout: (state) => {
-    console.log('EXIT!!!')
+    let redirect = ''
+    if (localStorage.getItem('ROLE') === 'ROLE_USUARIO') {
+      redirect = 'webpage'
+    } else {
+      redirect = 'Login'
+    }
+
     localStorage.removeItem('authorization')
     localStorage.removeItem('username')
     localStorage.removeItem('date')
     localStorage.removeItem('time')
+    localStorage.removeItem('ROLE')
+    localStorage.removeItem('UserLog')
     // localStorage.clear()
     // localStorage.clear()
     Vue.set(state.user, 'isLogged', false)
-    router.push('/login')
+    router.push({name: redirect})
   },
   setLoadTable: (state, value) => {
     Vue.set(state.LOAD_TABLE[value.key], 'data', value.data)
@@ -101,6 +109,62 @@ const actions = {
         commit('switchLoading', false)
         let state = response.data.success
         let message = response.data.message
+        commit('sendNotification', {status: state, message: message})
+
+        let result = {}
+        result.status = response.data.success
+        result.content = response.body.data
+        resolve(result)
+      }).catch(error => {
+        console.log(error)
+        commit('switchLoading', false)
+        commit('sendNotification', {status: false, message: 'Ocurrio un problema, vuelva a intentarlo.'})
+
+        let result = {}
+        result.status = false
+        result.content = error
+        reject(result)
+      })
+    })
+    return promise
+  },
+  contactanos: ({ commit, state, dispatch }, data) => {
+    commit('switchLoading', true)
+    let promise = new Promise((resolve, reject) => {
+      Vue.http.post(state.API_URL + 'contactanos', data).then(response => {
+        commit('switchLoading', false)
+        console.log(response)
+        let state = response.data.success
+        let message = response.data.message
+        commit('sendNotification', {status: state, message: message})
+
+        let result = {}
+        result.status = response.data.success
+        result.content = response.body.data
+        resolve(result)
+      }).catch(error => {
+        console.log(error)
+        commit('switchLoading', false)
+        commit('sendNotification', {status: false, message: 'Ocurrio un problema, vuelva a intentarlo.'})
+
+        let result = {}
+        result.status = false
+        result.content = error
+        reject(result)
+      })
+    })
+    return promise
+  },
+  register: ({ commit, state, dispatch }, data) => {
+    commit('switchLoading', true)
+    let promise = new Promise((resolve, reject) => {
+      Vue.http.post(state.API_URL + 'signup', data).then(response => {
+        commit('switchLoading', false)
+        console.log(response)
+        let state = response.data.success
+        let message = response.data.message
+
+        message = state ? 'Su cuenta de usuario se ha creado exitosamente, ahora puede iniciar sesion.' : message
         commit('sendNotification', {status: state, message: message})
 
         let result = {}
@@ -185,25 +249,25 @@ const actions = {
     console.log(data)
     if (data === null || data === undefined) {
       console.log('data.authorities[0]')
-      router.push('/login')
+      router.push({name: 'Login'})
     } else {
       let role = data.authorities[0].authority
       // alert(role)
       switch (role) {
         case 'ROLE_ADMIN':
-          router.push('/')
+          router.push({name: 'admin'})
           break
         case 'ROLE_PUNTO_VENTA':
-          router.push('/dashboard')
+          router.push({name: 'admin'})
           break
         case 'ROLE_VENDEDOR':
-          router.push('/dashboard')
+          router.push({name: 'admin'})
           break
         case 'ROLE_USUARIO':
-          router.push('/dashboard')
+          router.push({name: 'admin'})
           break
         default:
-          router.push('/login')
+          router.push({name: 'Login'})
       }
     }
     // } else if (data.authorities[0].authority === 'ADMIN') {

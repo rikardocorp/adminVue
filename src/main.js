@@ -13,8 +13,17 @@ import lodash from 'lodash'
 import moment from 'moment'
 import VueFormWizard from 'vue-form-wizard'
 import VueScrollTo from 'vue-scrollto'
+import VueScroll from 'vue-scroll'
 import VuejsDialog from 'vuejs-dialog'
 import {names} from './data/GlobalNames'
+import * as VueGoogleMaps from 'vue2-google-maps'
+Vue.use(VueGoogleMaps, {
+  load: {
+    key: 'AIzaSyCM6wTEeZChbwEFw-2PRba89eXfIBWBhds',
+    libraries: 'places', // This is required if you use the Autocomplete plugin
+    v: '3.26'
+  }
+})
 
 Vue.prototype.$lodash = lodash
 Vue.prototype.$moment = moment
@@ -35,6 +44,7 @@ Vue.use(BootstrapVue)
 Vue.use(VueRosource)
 Vue.use(VueFormWizard)
 Vue.use(Notifications, { velocity })
+Vue.use(VueScroll)
 Vue.use(VueScrollTo, {
   container: 'body',
   duration: 500,

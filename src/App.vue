@@ -18,7 +18,7 @@
   $fa-font-path: "~font-awesome/fonts/";
   /*@import url('https://fonts.googleapis.com/css?family=Muli:200,200i,300,300i,400,700,800i,900i');*/
 
-  @import '~bootstrap/dist/css/bootstrap.css';
+  // @import '~bootstrap/dist/css/bootstrap.css';
   @import '~bootstrap-vue/dist/bootstrap-vue.css';
   @import "~font-awesome/css/font-awesome.min.css";
   @import "~vue-multiselect/dist/vue-multiselect.min.css";

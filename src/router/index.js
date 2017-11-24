@@ -7,7 +7,9 @@ import Full from '@/containers/Full'
 
 // Views
 import Dashboard from '@/views/Dashboard'
+import WebPage from '@/views/WebPage'
 import Login from '@/views/Login'
+import Register from '@/views/Register'
 import ResetPass from '@/views/ResetPass'
 import Profile from '../views/maintenance/Profile.vue'
 
@@ -58,15 +60,17 @@ const roles = {
   cliente: 'ROLE_USUARIO'
 }
 
+const preFijo = '/jmc/'
 const router = new Router({
   mode: 'hash',
+  // mode: 'history',
   linkActiveClass: 'open active',
   scrollBehavior: () => ({ y: 0 }),
   routes: [
     {
-      path: '/',
-      redirect: '/dashboard',
-      name: 'Home',
+      path: preFijo,
+      redirect: preFijo + 'dashboard',
+      name: 'admin',
       component: Full,
       children: [
         {
@@ -77,7 +81,7 @@ const router = new Router({
         },
         {
           path: 'mantenimiento',
-          redirect: '/mantenimiento/aseguradoras',
+          redirect: preFijo + 'mantenimiento/aseguradoras',
           name: 'Mantenimiento',
           component: {
             render (c) { return c('router-view') }
@@ -128,9 +132,9 @@ const router = new Router({
           ]
         },
         {
-          path: 'precios',
-          redirect: '/precios/tipo-vehiculo',
-          name: 'Precios',
+          path: 'vehiculos',
+          redirect: preFijo + 'vehiculos/tipo-vehiculo',
+          name: 'Vehiculos',
           component: {
             render (c) { return c('router-view') }
           },
@@ -213,7 +217,7 @@ const router = new Router({
           path: 'polizas-vendidas',
           name: 'Ventas',
           component: Sales,
-          meta: {requiresAuth: true, ROLE_ADMIN: true, ROLE_PUNTO_VENTA: true}
+          meta: {requiresAuth: true, ROLE_ADMIN: true, ROLE_PUNTO_VENTA: true, ROLE_VENDEDOR: true}
         },
         {
           path: 'carrito-compras',
@@ -261,6 +265,16 @@ const router = new Router({
       path: '/resetpassword/:token',
       name: 'Recover',
       component: ResetPass
+    },
+    {
+      path: '/registrar',
+      name: 'register',
+      component: Register
+    },
+    {
+      path: '/',
+      name: 'webpage',
+      component: WebPage
     }
   ]
 })

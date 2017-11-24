@@ -44,7 +44,7 @@
         <b-button v-if="optionPick.name === btnOption.changeKey.name" @click="changePassword" :variant="optionPick.variant">Cambiar</b-button>
       </template>
     </b-modal>
-    <pre>{{items}}</pre>
+    <pre>{{item}}</pre>
   </div>
 </template>
 

@@ -1,3 +1,5 @@
+const preFijo = '/jmc/'
+
 export default {
   items: [
     {
@@ -51,23 +53,23 @@ export default {
       ]
     },
     {
-      name: 'Precios',
-      url: '/precios',
-      icon: 'fa fa-money',
+      name: 'Vehiculos',
+      url: '/vehiculos',
+      icon: 'fa fa-bus',
       children: [
         {
           name: 'Tipos de Vehiculo',
-          url: '/precios/tipo-vehiculo',
+          url: '/vehiculos/tipo-vehiculo',
           icon: 'fa fa-taxi'
         },
         {
           name: 'Categ. de Vehiculo',
-          url: '/precios/categoria-vehiculo',
+          url: '/vehiculos/categoria-vehiculo',
           icon: 'fa fa-rocket'
         },
         {
           name: 'Clases de Vehiculo',
-          url: '/precios/clases-vehiculo',
+          url: '/vehiculos/clases-vehiculo',
           icon: 'fa fa-pencil-square-o'
         },
         // {
@@ -102,7 +104,7 @@ export default {
     },
     {
       name: 'VCC',
-      url: '/precios/tipo-categoria-vehiculo',
+      url: '/vehiculos/tipo-categoria-vehiculo',
       icon: 'fa fa-car'
     },
     // {
@@ -112,7 +114,7 @@ export default {
     // },
     {
       name: 'Precios',
-      url: '/precios/precio-poliza-full',
+      url: '/vehiculos/precio-poliza-full',
       icon: 'fa fa-usd'
     },
     // {

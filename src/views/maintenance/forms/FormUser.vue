@@ -115,6 +115,13 @@
         let invalid = this.$v.item.$invalid
         let url = !this.item.id ? this.urlRest : this.urlRest + '/' + this.item.id
         if (!invalid) {
+          this.item.role = {
+            email: this.item.email,
+            role: this.item._role.name
+          }
+          console.log(this.item)
+          // return false
+
           let self = this.$store.dispatch('dispatchHTTP', {type: action, url: url, data: this.item})
           self.then((data) => {
             if (data.status) {

@@ -280,10 +280,11 @@
     },
     methods: {
       routePerfil () {
-        this.$router.push('/perfil')
+        this.$router.push({name: 'PerfilUsuario'})
       },
       routerToSaleCart (id) {
-        this.$router.push('/polizas-vendidas/' + id + '/0')
+        this.$router.push({name: 'VentasId', params: { idSale: id, type: 0 }})
+//        this.$router.push('/polizas-vendidas/' + id + '/0')
       },
       async getData (url) {
         console.log('GET SALE')

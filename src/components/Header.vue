@@ -5,7 +5,7 @@
       <b-link class="navbar-brand" to="#"></b-link>
       <button class="navbar-toggler sidebar-toggler d-md-down-none mr-auto" type="button" @click="sidebarMinimize">&#9776;</button>
 
-      <b-nav is-nav-bar class="ml-auto">
+      <b-navbar-nav class="ml-auto">
         <b-nav-item-dropdown right>
           <template slot="button-content">
             <avatar class="avatar-header" :username="username" :rounded="true" :size="3.1" sizeUnid="em"
@@ -31,7 +31,7 @@
           <!--<b-dropdown-item><i class="fa fa-shield"></i> Lock Account</b-dropdown-item>-->
           <b-dropdown-item @click="logout"><i class="fa fa-lock"></i> Salir</b-dropdown-item>
         </b-nav-item-dropdown>
-      </b-nav>
+      </b-navbar-nav>
 
       <button v-if="!isClient" class="navbar-toggler aside-menu-toggler d-md-down-none" type="button" @click="asideToggle">&#9776;</button>
     </header>

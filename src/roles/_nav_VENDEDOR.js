@@ -11,11 +11,16 @@ export default {
     },
     {
       title: true,
-      name: 'UI elements'
+      name: 'POLIZA'
     },
     {
-      title: true,
-      name: 'POLIZA'
+      name: 'Mis polizas',
+      url: '/asignar-poliza',
+      icon: 'fa fa-hand-o-right',
+      badge: {
+        variant: 'success',
+        text: 'NEW'
+      }
     },
     {
       title: true,
@@ -23,17 +28,17 @@ export default {
     },
     {
       name: 'Poliza Vendida',
-      url: '/poliza-vendida',
-      icon: 'icon-speedometer',
+      url: '/polizas-vendidas',
+      icon: 'fa fa-handshake-o',
       badge: {
-        variant: 'danger',
+        variant: 'warning',
         text: 'NEW'
       }
     },
     {
       name: 'Cotizacion',
       url: '/cotizar-admin',
-      icon: 'icon-speedometer',
+      icon: 'fa fa-money',
       badge: {
         variant: 'warning',
         text: 'NEW'
@@ -42,9 +47,18 @@ export default {
     {
       name: 'Nueva Venta',
       url: '/nueva-venta',
-      icon: 'icon-speedometer',
+      icon: 'fa fa-plus',
       badge: {
         variant: 'info',
+        text: 'NEW'
+      }
+    },
+    {
+      name: 'Venta Especial',
+      url: '/venta-especial',
+      icon: 'fa fa-star-o',
+      badge: {
+        variant: 'success',
         text: 'NEW'
       }
     }
