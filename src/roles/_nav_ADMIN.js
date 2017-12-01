@@ -12,6 +12,11 @@ export default {
       }
     },
     {
+      name: 'Reportes',
+      url: '/reportes',
+      icon: 'fa fa-book'
+    },
+    {
       title: true,
       name: 'Mantenimiento'
     },
@@ -210,15 +215,15 @@ export default {
         variant: 'success',
         text: 'NEW'
       }
-    },
-    {
-      name: 'Venta Cliente',
-      url: '/venta-cliente',
-      icon: 'fa fa-mobile',
-      badge: {
-        variant: 'info',
-        text: 'NEW'
-      }
     }
+    // {
+    //   name: 'Venta Cliente',
+    //   url: '/venta-cliente',
+    //   icon: 'fa fa-mobile',
+    //   badge: {
+    //     variant: 'info',
+    //     text: 'NEW'
+    //   }
+    // }
   ]
 }

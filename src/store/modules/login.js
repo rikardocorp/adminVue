@@ -19,7 +19,9 @@ const state = {
     provinces: {url: 'provinces', data: []},
     cities: {url: 'cities', data: []},
     roles: {url: 'roles', data: []}
-  }
+  },
+  provider: null,
+  logOut: false
 }
 
 const getters = {
@@ -41,6 +43,9 @@ const getters = {
 }
 
 const mutations = {
+  setLogOut: (state, value) => {
+    Vue.set(state, 'logOut', value)
+  },
   initLogin: (state, payload) => {
     console.log('InitLogin')
     state.API_URL = payload.API_URL
@@ -65,8 +70,14 @@ const mutations = {
     let redirect = ''
     if (localStorage.getItem('ROLE') === 'ROLE_USUARIO') {
       redirect = 'webpage'
+      if (localStorage.getItem('facebook') === '1') {
+        Vue.set(state, 'logOut', true)
+      } else {
+        Vue.set(state, 'logOut', false)
+      }
     } else {
       redirect = 'Login'
+      Vue.set(state, 'logOut', false)
     }
 
     localStorage.removeItem('authorization')
@@ -74,6 +85,7 @@ const mutations = {
     localStorage.removeItem('date')
     localStorage.removeItem('time')
     localStorage.removeItem('ROLE')
+    localStorage.removeItem('facebook')
     localStorage.removeItem('UserLog')
     // localStorage.clear()
     // localStorage.clear()
@@ -93,7 +105,7 @@ const actions = {
       localStorage.setItem('authorization', authKey)
       commit('setAuthHeader')
       dispatch('getDataUser', {router: true})
-      commit('switchLoading', false)
+      // commit('switchLoading', false)
     })
     inquiry.catch(error => {
       commit('switchLoading', false)
@@ -101,6 +113,29 @@ const actions = {
       console.log(error)
       commit('sendNotification', {status: false, message: 'Ocurrio un problema, vuelva a intentarlo.'})
     })
+  },
+  xlogin: ({ commit, state, dispatch }, data) => {
+    commit('switchLoading', true)
+    let result = {}
+    let promise = new Promise((resolve, reject) => {
+      Vue.http.post(state.LOGIN_URL, data).then(response => {
+        let authKey = response.data.Authorization
+        localStorage.setItem('authorization', authKey)
+        commit('setAuthHeader')
+        dispatch('getDataUser', {router: true})
+        // commit('switchLoading', false)
+        result.status = true
+        resolve(result)
+      }).catch(error => {
+        commit('switchLoading', false)
+        console.log('ERROR')
+        console.log(error)
+        commit('sendNotification', {status: false, message: 'Ocurrio un problema, vuelva a intentarlo.'})
+        result.status = false
+        resolve(result)
+      })
+    })
+    return promise
   },
   recoverPassword: ({ commit, state, dispatch }, data) => {
     commit('switchLoading', true)
@@ -220,6 +255,7 @@ const actions = {
       let data = response.data.data
       localStorage.setItem('UserLog', JSON.stringify(data))
       localStorage.setItem('ROLE', data.authorities[0].authority)
+      localStorage.setItem('facebook', data.user.facebook)
       localStorage.setItem('username', data.username)
       localStorage.setItem('date', data.date)
       localStorage.setItem('time', data.time)

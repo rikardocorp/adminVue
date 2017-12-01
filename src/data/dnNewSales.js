@@ -3,6 +3,92 @@ import { required, minLength, maxLength, between, numeric, email, alphaNum } fro
 export const DATA_VEHICLE = {
   name: 'vehicles',
   post: {
+    insurancePolicy: '',
+    licensePlate: '',
+    manufacturingYear: '',
+    seatNumber: '',
+    useType: '',
+    engineNumber: '',
+    vehicleTypeCategory: '',
+    user: ''
+  },
+  input: {
+    insurancePolicy: {
+      label: 'Poliza',
+      placeholder: 'Polizas disponibles',
+      type: 'text',
+      icon: 'fa fa-hashtag',
+      input: 'multiselect',
+      params: {
+        url: 'insurancepolicies',
+        key: 'insurancePolicy',
+        label: 'number',
+        options: [],
+        activate: false,
+        loadData: false,
+        value: ''
+      }
+    },
+    licensePlate: {
+      label: 'Placa',
+      placeholder: 'Ingrese su placa',
+      type: 'text',
+      icon: 'fa fa-hashtag',
+      input: 'input-search'
+    },
+    engineNumber: {
+      label: 'Nro. Serie',
+      placeholder: 'Ingrese numero de serie',
+      type: 'text',
+      icon: 'fa fa-hashtag'
+    },
+    seatNumber: {
+      label: 'Nro. Asientos',
+      placeholder: 'Ingrese numero de asientos',
+      type: 'number',
+      icon: 'fa fa-hashtag'
+    },
+    manufacturingYear: {
+      label: 'Año Fabric',
+      placeholder: 'Ingrese año de fabricacion',
+      type: 'number',
+      icon: 'fa fa-calendar-o'
+    }
+  },
+  validate: {
+    item: {
+      insurancePolicy: {
+        required
+      },
+      licensePlate: {
+        required
+      },
+      manufacturingYear: {
+        required,
+        numeric,
+        maxLength: maxLength(4)
+      },
+      seatNumber: {
+        required,
+        numeric,
+        maxLength: maxLength(3)
+      },
+      // useType: {
+      //   required
+      // },
+      engineNumber: {
+        required
+      }
+      // vehicleTypeCategory: {
+      //   required
+      // }
+    }
+  }
+}
+
+export const DATA_VEHICLE2 = {
+  name: 'vehicles',
+  post: {
     licensePlate: '',
     manufacturingYear: '',
     seatNumber: '',

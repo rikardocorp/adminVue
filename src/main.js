@@ -17,9 +17,11 @@ import VueScroll from 'vue-scroll'
 import VuejsDialog from 'vuejs-dialog'
 import {names} from './data/GlobalNames'
 import * as VueGoogleMaps from 'vue2-google-maps'
+import GSignInButton from 'vue-google-signin-button'
+Vue.use(GSignInButton)
 Vue.use(VueGoogleMaps, {
   load: {
-    key: 'AIzaSyCM6wTEeZChbwEFw-2PRba89eXfIBWBhds',
+    key: 'AIzaSyDz4RIhRYSyaU06tOfPRAGgAEU9YEst3ow',
     libraries: 'places', // This is required if you use the Autocomplete plugin
     v: '3.26'
   }

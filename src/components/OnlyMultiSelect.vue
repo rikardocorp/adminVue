@@ -156,8 +156,6 @@
           })
           newLocation.push(obj[0])
         })
-        console.log('MARCELA TE AMO')
-        console.log(newLocation)
         return newLocation
       }
     },

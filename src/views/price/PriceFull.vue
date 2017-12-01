@@ -121,7 +121,7 @@
       </div>
     </b-modal>
 
-    <pre>{{ items }}</pre>
+    <!--<pre>{{ items }}</pre>-->
     <!--<pre>{{ rick }}</pre>-->
     <!--<pre>{{ itemsIndex }}</pre>-->
   </div>
@@ -683,6 +683,7 @@
         background: #717171;
         border: none;
         div{
+          width: 80px !important;
           margin-top: 7%;
           text-align: center;
         }

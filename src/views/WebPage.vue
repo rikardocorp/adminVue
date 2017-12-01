@@ -1,86 +1,62 @@
 <template>
-  <div id="page-wraper" v-scroll="onScroll">
+  <div ref="pageWraper" id="page-wraper" v-scroll="onScroll" v-resize="onResize">
     <div>
-      <!-- Header -->
-      <header id="header" :class="{'header': true, 'header-prepare':prepare, 'header-fixed':fixed}">
+      <b-navbar fixed="top" toggleable="md" type="light" :variant="null" :class="{'navbar-prepare': prepare}">
         <div class="progress-line" v-if="isLoading"></div>
-        <div class="header-inner">
+        <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
+        <!--<b-navbar-brand href="#">NavBar</b-navbar-brand>-->
+        <b-navbar-brand href="/"><img src="static/img/logo2.png" alt="BV"></b-navbar-brand>
+        <b-collapse is-nav id="nav_collapse">
 
-          <!-- Logo -->
-          <div class="logo">
-            <a href="index.html">
-              <img class="logo-light" src="static/img/logo2.png" alt="Apollo" style="height: 60px; width: 175px;" />
-              <img class="logo-dark" src="static/img/logo2.png" alt="Apollo" />
-            </a>
-          </div>
-          <!-- End Logo -->
+          <!-- Right aligned nav items -->
+          <b-navbar-nav class="ml-auto">
+            <b-nav-item href="#" v-scroll-to="{ el: '#intro' }" right>Inicio</b-nav-item>
 
-          <!-- Mobile Navbar Icon -->
-          <div class="nav-mobile nav-bar-icon">
-            <span></span>
-          </div>
-          <!-- End Mobile Navbar Icon -->
-          <!-- Navbar Navigation -->
-          <div class="nav-menu singlepage-nav">
-            <ul class="nav-menu-inner">
-              <li>
-                <a class="current"  v-scroll-to="{ el: '#intro' }">Inicio</a>
-              </li>
-              <li>
-                <a class="external menu-has-sub myDropdown">Servicios
-                  <i class="fa fa-angle-down"></i>
-                </a>
-                <ul class="sub-dropdown dropdown">
-                  <li>
-                    <a  v-scroll-to="{ el: '#blog' }" class="menu-has-sub">Seguros
-                      <i class="fa fa-angle-right"></i>
-                    </a>
-                  </li>
-                  <li>
-                    <a v-scroll-to="{ el: '#features' }" class="menu-has-sub">Nuestros Servicios
-                      <i class="fa fa-angle-right"></i>
-                    </a>
-                  </li>
-                  <li>
-                    <a v-scroll-to="{ el: '#service' }" class="menu-has-sub">Nuestro Cotizador
-                      <i class="fa fa-angle-right"></i>
-                    </a>
-                  </li>
-                </ul>
-              </li>
-              <li>
-                <a v-scroll-to="{ el: '#about' }" href="index.html#about">Nosotros</a>
-              </li>
+            <b-nav-item-dropdown text="Servicios" right>
+              <b-dropdown-item href="#" v-scroll-to="{ el: '#blog' }">Seguros</b-dropdown-item>
+              <b-dropdown-item href="#" v-scroll-to="{ el: '#features' }">Nuestros Servicios</b-dropdown-item>
+              <b-dropdown-item href="#" v-scroll-to="{ el: '#service' }">Nuestro Cotizador</b-dropdown-item>
+            </b-nav-item-dropdown>
 
-              <li>
-                <a v-scroll-to="{ el: '#contact-us' }" href="index.html#contact-us">Contactanos</a>
-              </li>
-              <li>
-                <a v-scroll-to="{ el: '#map' }" href="index.html#map">Ubicanos</a>
-              </li>
-            </ul>
-          </div>
-          <!-- End Navbar Navigation -->
-        </div>
-      </header>
+            <b-nav-item href="#" v-scroll-to="{ el: '#about' }" right>Nosotros</b-nav-item>
+            <b-nav-item href="#" v-scroll-to="{ el: '#contact-us' }" >Contactanos</b-nav-item>
+            <b-nav-item href="#" v-scroll-to="{ el: '#map' }" >Ubicanos</b-nav-item>
+
+          </b-navbar-nav>
+
+        </b-collapse>
+      </b-navbar>
 
       <!-- Intro  Slider -->
       <section id="intro" class="intro black-bg">
-        <agile :arrows="false" :speed="750" :timing="'linear'" :fade="true" :autoplay="false" :pauseOnHover="false" :pauseOnDotsHover="true">
-          <parallax :speedFactor="0.6">
-            <div class="slide slide--1"></div>
-          </parallax>
-          <parallax :speedFactor="0.4">
+        <carousel :perPage="1" :loop="true" :autoplay="false" :speed="500" :autoplayTimeout="5000">
+          <slide>
+            <parallax>
+              <div class="slide slide--1"></div>
+            </parallax>
+          </slide>
+          <slide>
             <div class="slide slide--2"></div>
-          </parallax>
-          <parallax :speedFactor="0.6">
+          </slide>
+          <slide>
             <div class="slide slide--3"></div>
-          </parallax>
-        </agile>
+          </slide>
+        </carousel>
+        <!--<agile :arrows="false" :speed="750" :timing="'linear'" :fade="true" :autoplay="false" :pauseOnHover="false" :pauseOnDotsHover="true">-->
+          <!--<parallax :speedFactor="0.6">-->
+            <!--<div class="slide slide&#45;&#45;1"></div>-->
+          <!--</parallax>-->
+          <!--<parallax :speedFactor="0.4">-->
+            <!--<div class="slide slide&#45;&#45;2"></div>-->
+          <!--</parallax>-->
+          <!--<parallax :speedFactor="0.6">-->
+            <!--<div class="slide slide&#45;&#45;3"></div>-->
+          <!--</parallax>-->
+        <!--</agile>-->
         <div class="mylogin container">
           <div class="row">
-            <div class="col-lg-8 d-none d-lg-block"></div>
-            <div class="col-lg-4 ">
+            <div class="col-xl-8 col-lg-7 col-md-1 d-none d-lg-block"></div>
+            <div class="col-xl-4 col-lg-5 col-md-11 ">
               <div class="card text-dark light card-form">
                 <transition name="fade" mode="out-in">
                   <div v-if="form==0" key="div1" class="card-body text-dark ">
@@ -105,10 +81,29 @@
                         <input v-model="credentials.password" class="form-control" type="password" placeholder="Ingrese Contraseña" style="text-transform: none;">
                       </div>
                       <form-error :data="$v.credentials.password? $v.credentials.password : {} "></form-error>
-                      <button @click.prevent="login" class="btn form-control" style="background-color:#F07B1D;color:white; margin-top:15px">
+                      <button :disabled="isLoading" @click.prevent="login" class="btn form-control" style="background-color:#F07B1D;color:white; margin-top:15px">
                         <i class="fa fa-sign-in fa-lg"></i> Iniciar Sesión
                       </button>
-                      <hr style="border-color:#F58634;width:75%;margin-top:30px;">
+                      <hr class="separator">
+
+                      <facebook-login ref="facebookLog" class="button"
+                                      appId="1743259215715457"
+                                      @login="onLogin"
+                                      @logout="onLogout"
+                                      @sdk-loaded="sdkLoaded">
+                      </facebook-login>
+
+                      <!--<googleLogin :params="googleSignInParams"></googleLogin>-->
+
+                      <g-signin-button
+                        :params="googleSignInParams"
+                        @success="onSignInSuccess"
+                        @error="onSignInError">
+                        <div class="icoSocial">
+                          <i class="fa fa-google" aria-hidden="true"></i>
+                        </div>
+                        Sign in with Google
+                      </g-signin-button>
 
                       <!--     <div class="fb-login-button" data-max-rows="1" data-size="large" data-button-type="continue_with"
                       data-show-faces="false" data-auto-logout-link="false" data-use-continue-as="false" scope="public_profile,email"
@@ -123,13 +118,13 @@
 
 
                     </form>
-                    <form id="face-form" role="form" autocomplete="off"></form>
-                    <div class="form-group " style="margin-top:8%">
-                      <div class="form-group input-group fb-login-button" data-max-rows="1" data-size="large" data-button-type="login_with" data-show-faces="false"
-                           data-auto-logout-link="false" data-use-continue-as="true" scope="public_profile,email" onlogin="checkLoginState();"></div>
-                    </div>
+                    <!--<form id="face-form" role="form" autocomplete="off"></form>-->
+                    <!--<div class="form-group " style="margin-top:8%">-->
+                      <!--<div class="form-group input-group fb-login-button" data-max-rows="1" data-size="large" data-button-type="login_with" data-show-faces="false"-->
+                           <!--data-auto-logout-link="false" data-use-continue-as="true" scope="public_profile,email" onlogin="checkLoginState();"></div>-->
+                    <!--</div>-->
 
-                    <div class="g-signin2" data-onsuccess="onSignIn"></div>
+                    <!--<div class="g-signin2" data-onsuccess="onSignIn"></div>-->
 
                     <!-- <button class="btn form-control " style="background:red;color: white;"><i class="fa fa-google-plus-square fa-lg"></i>Continuar con Google</button>
                     -->
@@ -458,20 +453,26 @@
         <div class="page-triangle white-bg"></div>
         <!-- End page triangle shape -->
         <div class="container py-4">
-          <agile :arrows="false" :speed="750" :timing="'linear'" :fade="false" :autoplay="true" :pauseOnHover="true">
-            <div class="item pb-5">
-              <div class="testimonial text-center max-width-700">
-                <div class="page-icon-sm">
-                  <i class="icon-badge"></i>
+          <!--<agile :arrows="false" :speed="750" :timing="'linear'" :fade="false" :autoplay="true" :pauseOnHover="true">-->
+          <carousel :perPage="1" :loop="true" :autoplay="true"
+                    :speed="500" :paginationEnabled="true"
+                    :autoplayTimeout="5000">
+            <slide>
+              <div class="item pb-5">
+                <div class="testimonial text-center max-width-700">
+                  <div class="page-icon-sm">
+                    <i class="icon-badge"></i>
+                  </div>
+                  <h2>¿Que dicen nuestros clientes?</h2>
+                  <p class="lead-lg">Un servicio asombroso, me ayudaron y me asesoraron muy bien.</p>
+                  <h6 class="quote-author alt-title">Carlos Arbieto
+                    <span class="text-regular">Unsa</span>
+                  </h6>
                 </div>
-                <h2>¿Que dicen nuestros clientes?</h2>
-                <p class="lead-lg">Un servicio asombroso, me ayudaron y me asesoraron muy bien.</p>
-                <h6 class="quote-author alt-title">Carlos Arbieto
-                  <span class="text-regular">Unsa</span>
-                </h6>
               </div>
-            </div>
-            <div class="item pb-5">
+            </slide>
+            <slide>
+              <div class="item pb-5">
               <div class="testimonial text-center max-width-700">
                 <div class="page-icon-sm">
                   <i class="icon-badge"></i>
@@ -483,7 +484,9 @@
                 </h6>
               </div>
             </div>
-            <div class="item pb-5">
+            </slide>
+            <slide>
+              <div class="item pb-5">
               <div class="testimonial text-center max-width-700">
                 <div class="page-icon-sm">
                   <i class="icon-badge"></i>
@@ -495,7 +498,8 @@
                 </h6>
               </div>
             </div>
-          </agile>
+            </slide>
+          </carousel>
         </div>
       </section>
       <!-- Service Section -->
@@ -695,7 +699,7 @@
                 <div class="col-md-6">
                   <div class="form-field-wrapper">
                     <input v-model="item.nombre" class="input-lg form-full input-fancy" style="text-transform:capitalize;" type="text" name="form-name"
-                           placeholder="Tu nombre" title="Tu nombre" v-b-tooltip.auto />
+                           placeholder="Tu nombre" title="Tu nombre" />
                     <form-error :data="$v.item.nombre? $v.item.nombre : {} "></form-error>
                   </div>
                 </div>
@@ -703,7 +707,7 @@
                 <div class="col-md-6">
                   <div class="form-field-wrapper">
                     <input v-model="item.email" class="input-lg form-full input-fancy" style="text-transform:none;" type="email" name="form-email"
-                           placeholder="Email" title="Tu email" v-b-tooltip.auto />
+                           placeholder="Email" title="Tu email"/>
                     <form-error :data="$v.item.email? $v.item.email : {} "></form-error>
                   </div>
                 </div>
@@ -711,7 +715,7 @@
                 <div class="col-md-12">
                   <div class="form-field-wrapper">
                     <input v-model="item.titulo" class="input-lg form-full input-fancy" style="text-transform:capitalize;" type="text" name="form-subject"
-                           placeholder="Titulo" title="Titulo del mensaje" v-b-tooltip.auto />
+                           placeholder="Titulo" title="Titulo del mensaje" />
                     <form-error :data="$v.item.titulo? $v.item.titulo : {} "></form-error>
                   </div>
                 </div>
@@ -719,7 +723,7 @@
                 <div class="col-md-12">
                   <div class="form-field-wrapper">
                     <textarea v-model="item.mensaje" class="home-contact-txt-msg input-lg form-full input-fancy" style="text-transform:none;" rows="7"
-                            name="message" placeholder="Tu mensaje" title="Tu mensaje" v-b-tooltip.auto></textarea>
+                            name="message" placeholder="Tu mensaje" title="Tu mensaje"></textarea>
                     <form-error :data="$v.item.mensaje? $v.item.mensaje : {} "></form-error>
 
                   </div>
@@ -757,39 +761,62 @@
         <div class="page-triangle white-bg "></div>
         <!-- End page triangle shape -->
         <div class="container text-center ">
-          <agile :arrows="false" :speed="450" :timing="'linear'" :fade="false" :autoplay="true" :pauseOnHover="false" :dots="false">
+          <carousel :perPageCustom="[[480, 2],[768, 3],[1024, 4]]" :paginationEnabled="false" :loop="true" :autoplay="true">
+            <slide>
+              <img src="static/img/full/log1.png" alt="" />
+            </slide>
+            <slide>
+              <img src="static/img/full/log2.png" alt="" />
+            </slide>
+            <slide>
+              <img src="static/img/full/log3.png" alt="" />
+            </slide>
+            <slide>
+              <img src="static/img/full/log4.png" alt="" />
+            </slide>
+            <slide>
+              <img src="static/img/full/log5.png" alt="" />
+            </slide>
+            <slide>
+              <img src="static/img/full/log6.png" alt="" />
+            </slide>
+            <slide>
+              <img src="static/img/full/log7.png" alt="" />
+            </slide>
+          </carousel>
+          <!--<agile :arrows="false" :speed="450" :timing="'linear'" :fade="false" :autoplay="true" :pauseOnHover="false" :dots="false">-->
 
-            <div class="item">
-              <div class="client-logo row">
-                <div class="col-4">
-                  <img src="static/img/full/log1.png" alt="" />
-                </div>
-                <div class="col-4">
-                  <img src="static/img/full/log2.png" alt="" />
-                </div>
-                <div class="col-4">
-                  <img src="static/img/full/log3.png" alt="" />
-                </div>
-              </div>
-            </div>
+            <!--<div class="item">-->
+              <!--<div class="client-logo row">-->
+                <!--<div class="col-4">-->
+                  <!--<img src="static/img/full/log1.png" alt="" />-->
+                <!--</div>-->
+                <!--<div class="col-4">-->
+                  <!--<img src="static/img/full/log2.png" alt="" />-->
+                <!--</div>-->
+                <!--<div class="col-4">-->
+                  <!--<img src="static/img/full/log3.png" alt="" />-->
+                <!--</div>-->
+              <!--</div>-->
+            <!--</div>-->
 
-            <div class="item">
-              <div class="client-logo row">
-                <div class="col-3">
-                  <img src="static/img/full/log4.png" alt="" />
-                </div>
-                <div class="col-3">
-                  <img src="static/img/full/log5.png" alt="" />
-                </div>
-                <div class="col-3">
-                  <img src="static/img/full/log6.png" alt="" />
-                </div>
-                <div class="col-3">
-                  <img src="static/img/full/log7.png" alt="" />
-                </div>
-              </div>
-            </div>
-          </agile>
+            <!--<div class="item">-->
+              <!--<div class="client-logo row">-->
+                <!--<div class="col-3">-->
+                  <!--<img src="static/img/full/log4.png" alt="" />-->
+                <!--</div>-->
+                <!--<div class="col-3">-->
+                  <!--<img src="static/img/full/log5.png" alt="" />-->
+                <!--</div>-->
+                <!--<div class="col-3">-->
+                  <!--<img src="static/img/full/log6.png" alt="" />-->
+                <!--</div>-->
+                <!--<div class="col-3">-->
+                  <!--<img src="static/img/full/log7.png" alt="" />-->
+                <!--</div>-->
+              <!--</div>-->
+            <!--</div>-->
+          <!--</agile>-->
 
         </div>
       </section>
@@ -829,9 +856,13 @@
   import VueScrollTo from 'vue-scrollto'
   import Parallax from 'vue-parallaxy'
   import FormError from '../components/FormError.vue'
-  import {Agile} from 'vue-agile'
   import {DATA_CONTACT as _data} from '../data/dataWeb'
-  import { required, minLength, maxLength, between, numeric, email, sameAs } from 'vuelidate/lib/validators'
+  import { required, email, sameAs } from 'vuelidate/lib/validators'
+  import facebookLogin from '../components/facebookLogin/facebook-login.vue'
+//  import googleLogin from '../components/GoogleLogin/GoogleLogin.vue'
+  import { Carousel, Slide } from 'vue-carousel'
+  import resize from 'vue-resize-directive'
+//  import GSignInButton from 'vue-google-signin-button'
 
   Vue.use(VueScrollTo, {
     container: '#page-wraper',
@@ -847,13 +878,39 @@
 
   export default {
     name: 'WebPage',
+    directives: {
+      resize
+    },
     components: {
-      Agile,
       Parallax,
-      FormError
+      FormError,
+      facebookLogin,
+//      googleLogin,
+      Carousel,
+      Slide
     },
     data () {
       return {
+        // Facebook
+        FB: undefined,
+        isConnected: false,
+        dataFb: {
+          name: '',
+          email: '',
+          personalID: '',
+          token: ''
+        },
+        dataG: {
+          name: '',
+          email: '',
+          personalID: '',
+          token: ''
+        },
+
+        // Google
+        googleSignInParams: {
+          client_id: '833712505628-imprrpljbf80th9nsek1q4hmcp2gqjll.apps.googleusercontent.com'
+        },
         center: {lat: -16.404388, lng: -71.543704},
         markers: [{
           position: {lat: -16.404357, lng: -71.543634}
@@ -880,8 +937,10 @@
         flag1: false,
         flag2: false,
         flag3: false,
+        isMobile: false,
         panel1: false,
-        panel2: false
+        panel2: false,
+        parallaxPosition: ''
       }
     },
     validations () {
@@ -933,6 +992,86 @@
       }
     },
     methods: {
+      // Google
+      onSignInSuccess (googleUser) {
+        const profile = googleUser.getBasicProfile()
+        this.dataG.personalID = googleUser.El
+        this.dataG.email = profile.U3
+        this.dataG.name = profile.ig
+        this.dataG.token = googleUser.Zi.access_token
+        this.xloginGoogle('google')
+
+        console.log('Google')
+        console.log(this.dataG)
+        console.log(profile)
+        console.log(googleUser)
+      },
+      onSignInError (error) {
+        console.log('OH NOES', error)
+      },
+      // Facebook
+      getUserData () {
+        this.FB.api('/me', 'GET', { fields: 'id,name,email' },
+          userInformation => {
+            console.log(userInformation)
+            this.dataFb.personalID = userInformation.id
+            this.dataFb.email = userInformation.email
+            this.dataFb.name = userInformation.name
+            this.dataFb.token = this.FB.getAuthResponse()['accessToken']
+            this.xlogin('facebook')
+          }
+        )
+      },
+      sdkLoaded (payload) {
+        this.isConnected = payload.isConnected
+        this.FB = payload.FB
+        if (this.isConnected) {
+          this.getUserData()
+        }
+        if (this.$store.state.Login.logOut) {
+          this.$store.commit('switchLoading', true)
+          this.$refs.facebookLog.logout()
+          this.$store.commit('setLogOut', false)
+        }
+      },
+      onLogin () {
+        this.$store.commit('switchLoading', true)
+        this.isConnected = true
+        this.getUserData()
+      },
+      onLogout (response) {
+        this.$store.commit('switchLoading', false)
+        console.log('LOGOUT FACEBOOK')
+        console.log(response)
+        this.isConnected = false
+        this.dataFb = {
+          name: '',
+          email: '',
+          personalID: '',
+          token: ''
+        }
+      },
+      async xlogin (provider) {
+        let data = {
+          email: this.dataFb.email,
+          provider: provider,
+          token: this.dataFb.token
+        }
+        let self = await this.$store.dispatch('xlogin', data)
+        if (!self.status) {
+          this.$refs.facebookLog.logout()
+        }
+      },
+      async xloginGoogle (provider) {
+        let data = {
+          email: this.dataG.email,
+          provider: provider,
+          token: this.dataG.token
+        }
+        let self = await this.$store.dispatch('xlogin', data)
+        if (!self.status) {
+        }
+      },
       async login () {
         let invalid = this.$v.credentials.$invalid
         if (!invalid) {
@@ -990,22 +1129,41 @@
         this.prepare = posTop > 150
         this.fixed = posTop > 1
 
-        if (posTop >= 350) {
+        if (!this.isMobile) {
+          if (posTop >= 350) {
+            this.flag1 = true
+          } else {
+            this.flag1 = false
+          }
+
+          if (posTop >= 1050) {
+            this.flag2 = true
+          } else {
+            this.flag2 = false
+          }
+
+          if (posTop >= 2100) {
+            this.flag3 = true
+          } else {
+            this.flag3 = false
+          }
+        } else {
           this.flag1 = true
-        } else {
-          this.flag1 = false
-        }
-
-        if (posTop >= 1050) {
           this.flag2 = true
-        } else {
-          this.flag2 = false
+          this.flag3 = true
         }
-
-        if (posTop >= 2100) {
+      },
+      onResize: function (a) {
+        let screen = a.offsetWidth
+        if (screen <= 767) {
+//          alert('isMobile')
+          this.isMobile = true
+          this.flag1 = true
+          this.flag2 = true
           this.flag3 = true
         } else {
-          this.flag3 = false
+//          alert('isNotMobile')
+          this.isMobile = false
         }
       },
       resetForm (formId) {
@@ -1035,6 +1193,17 @@
           type: type
         })
       }
+    },
+    mounted () {
+      let screen = this.$refs.pageWraper.offsetWidth
+      if (screen <= 767) {
+        this.isMobile = true
+        this.flag1 = true
+        this.flag2 = true
+        this.flag3 = true
+      } else {
+        this.isMobile = false
+      }
     }
   }
 </script>
@@ -1045,9 +1214,50 @@
     background-color: #fff;
     overflow: hidden;
 
+    .g-signin-button {
+      background: #e04931;
+      border-radius: 0.5em;
+      margin-top: 0.3em;
+      text-align: center;
+      position: relative;
+      padding: 5px;
+      border: none;
+      line-height: 34px;
+      font-size: 1em;
+      color: #FFF;
+      width: 100%;
+      .icoSocial{
+        display: inline;
+        font-size: 1.5em;
+        position: relative;
+        margin-right: 40px;
+        i {
+          position: absolute;
+          top: 5px;
+          font-size: 1em;
+        }
+      }
+    }
+
+    .separator{
+      border: 1px solid #f07b1e;
+      width: 98%;
+      margin-top: 10px !important;
+      margin-bottom: 10px !important;
+    }
+
     #page-wraper {
       height: 100vh;
       overflow: scroll;
+      #intro{
+        .Masthead{
+          height: 100vh !important;
+        }
+      }
+
+      .card{
+        box-shadow: 4px 9px 15px -5px rgba(0, 0, 0, 0.66);
+      }
       label {
         margin-bottom: 2px;
       }
@@ -1076,7 +1286,6 @@
         color: #000000;
       }
     }
-
     #page-wraper {
       /* css */
       .page-content {
@@ -1508,22 +1717,22 @@
       /*------------------------------------------------------------------*/
       /* Form Style */
       /*------------------------------------------------------------------*/
-      form {
-        position: relative;
-      }
+      /*form {*/
+        /*position: relative;*/
+      /*}*/
 
-      button {
-        outline: none;
-      }
+      /*button {*/
+        /*outline: none;*/
+      /*}*/
 
-      button, html input[type="button"], input[type="reset"], input[type="submit"] {
-        cursor: pointer;
-        display: inline-block;
-      }
+      /*button, html input[type="button"], input[type="reset"], input[type="submit"] {*/
+        /*!*cursor: pointer;*!*/
+        /*!*display: inline-block;*!*/
+      /*}*/
 
-      button, input, textarea, select {
-        font-size: 12px;
-      }
+      /*button, input, textarea, select {*/
+        /*font-size: 12px;*/
+      /*}*/
 
       input, input[type="text"], input[type="email"], input[type="tel"], input[type="number"], input[type="password"], input[type="radio"], input[type="checkbox"], textarea, select {
         appearance: none;
@@ -1639,6 +1848,31 @@
 
       @media (max-width: 767px) {
         /*extra small medium*/
+        .navbar-brand {
+          img {
+            width: 100px !important;
+          }
+        }
+
+        .mylogin{
+          max-width: none;
+          .row .card{
+            padding: 0;
+            margin-top: 80px;
+          }
+          .card-form{
+            background: rgba(255, 255, 255, 0.92);
+            .card-body{
+              h3{
+                font-size: 22px;
+                line-height: 1.2em;
+              }
+              > div {
+                margin-top: 15px !important;
+              }
+            }
+          }
+        }
 
         /*padding*/
         .section-padding {
@@ -1821,465 +2055,6 @@
         }
       }
 
-      /*------------------------------------------------------------------*/
-      /* Header Style */
-      /*------------------------------------------------------------------*/
-      .header {
-        position: absolute;
-        text-align: center;
-        top: 0px;
-        z-index: 1000;
-        color: #fff;
-        width: 100%;
-        height: 85px;
-        transition: all 0.27s cubic-bezier(0, 0, 0.58, 1) 0s;
-        -o-transition: all 0.27s cubic-bezier(0, 0, 0.58, 1) 0s;
-        -moz-transition: all 0.27s cubic-bezier(0, 0, 0.58, 1) 0s;
-        -webkit-transition: all 0.27s cubic-bezier(0, 0, 0.58, 1) 0s;
-      }
-
-      .header.header-prepare, .header.header-light.header-prepare {
-        background-color: rgba(255, 255, 255, 0.95);
-        border-bottom: 1px solid #f0f0f0;
-      }
-
-      .header.header-dark.header-prepare {
-        background-color: rgba(34, 34, 34, 0.95);
-        border-bottom: 0px none;
-      }
-
-      .header.header-fixed {
-        display: block;
-        margin-top: 0 !important;
-        position: fixed;
-        height: 58px;
-      }
-
-      .header-inner {
-        padding-left: 30px;
-        padding-right: 30px;
-        position: relative;
-      }
-
-      .header-fixed .logo a {
-        margin-top: 15px;
-        margin-bottom: 15px;
-        transition: all 0.27s cubic-bezier(0, 0, 0.58, 1) 0s;
-        -o-transition: all 0.27s cubic-bezier(0, 0, 0.58, 1) 0s;
-        -moz-transition: all 0.27s cubic-bezier(0, 0, 0.58, 1) 0s;
-        -webkit-transition: all 0.27s cubic-bezier(0, 0, 0.58, 1) 0s;
-
-      }
-
-      .header-fixed .header.header-fixed .nav-menu ul.nav-menu-inner > li > a {
-        padding-top: 24px;
-        padding-bottom: 23px;
-      }
-
-      /*header Logo style*/
-      .header.header-prepare .logo a img.logo-light,
-      .header .logo a img.logo-dark {
-        opacity: 0;
-      }
-
-      .header .logo a img.logo-light,
-      .header.header-prepare .logo a img.logo-dark,
-      .header.header-light .logo a img.logo-dark {
-        opacity: 1;
-      }
-
-      .header.header-dark.header-prepare .logo a img.logo-dark,
-      .header.header-dark .logo a img.logo-dark {
-        opacity: 0;
-      }
-
-      .header.header-dark.header-prepare .logo a img.logo-light,
-      .header.header-dark .logo a img.logo-light {
-        opacity: 1;
-      }
-
-      @media all and (min-width: 1025px) {
-
-        /*header nav style*/
-        .header.header-prepare .nav-menu ul.nav-menu-inner > li > a {
-          color: rgba(34,34,34,0.60);
-        }
-
-        .header.header-prepare .nav-menu ul.nav-menu-inner > li:hover > a,
-        .header.header-prepare .nav-menu ul.nav-menu-inner > li > a:hover {
-          color: rgba(34,34,34,1);
-        }
-
-        .header.header-dark.header-prepare .nav-menu ul.nav-menu-inner > li > a {
-          color: rgba(255,255,255,0.75);
-        }
-
-        .header.header-dark.header-prepare .nav-menu ul.nav-menu-inner > li:hover > a,
-        .header.header-dark.header-prepare .nav-menu ul.nav-menu-inner > li > a:hover {
-          color: rgba(255,255,255,1);
-        }
-      }
-
-      @media all and (max-width: 1024px) {
-        .header {
-          height: 58px;
-        }
-
-        .header-inner {
-          padding-left: 30px;
-          padding-right: 30px;
-          position: relative;
-          display: table;
-          width: 100%;
-        }
-
-        .header .logo a {
-          margin-top: 15px;
-          margin-bottom: 15px;
-          width: 100px;
-          transition: all 0.3s ease 0s;
-          -o-transition: all 0.3s ease 0s;
-          -moz-transition: all 0.3s ease 0s;
-          -webkit-transition: all 0.3s ease 0s;
-        }
-      }
-
-
-      /*------------------------------------------------------------------*/
-      /* Logo Style */
-      /*------------------------------------------------------------------*/
-      .logo {
-        float: left;
-        text-align: left;
-        display: inline-block;
-      }
-
-      .logo a {
-        width: 100px;
-        display: block;
-        margin-top: 29px;
-        margin-bottom: 28px;
-        transition: all 0.27s cubic-bezier(0, 0, 0.58, 1) 0s;
-        -o-transition: all 0.27s cubic-bezier(0, 0, 0.58, 1) 0s;
-        -moz-transition: all 0.27s cubic-bezier(0, 0, 0.58, 1) 0s;
-        -webkit-transition: all 0.27s cubic-bezier(0, 0, 0.58, 1) 0s;
-        position: relative;
-      }
-
-      .logo a img {
-        width: 100%;
-        position: absolute;
-        top: 0;
-        left: 0;
-        transition: all 0.27s cubic-bezier(0, 0, 0.58, 1) 0s;
-        -o-transition: all 0.27s cubic-bezier(0, 0, 0.58, 1) 0s;
-        -moz-transition: all 0.27s cubic-bezier(0, 0, 0.58, 1) 0s;
-        -webkit-transition: all 0.27s cubic-bezier(0, 0, 0.58, 1) 0s;
-      }
-
-
-
-      /*------------------------------------------------------------------*/
-      /* Navigation Menu Style */
-      /*------------------------------------------------------------------*/
-      .nav-menu {
-        position: static;
-        float: right;
-        display: block;
-      }
-
-      .nav-menu.active {
-        display: block;
-      }
-
-      .nav-menu ul.nav-menu-inner {
-        margin: 0;
-        padding: 0;
-        list-style: none;
-      }
-
-      .nav-menu ul.nav-menu-inner li {
-        display: inline-block;
-        list-style: none;
-        text-align: left;
-      }
-
-      .nav-menu ul.nav-menu-inner > li > a {
-        color: rgba(255,255,255,0.60);
-      }
-
-      .header-light .nav-menu ul.nav-menu-inner > li > a {
-        color: rgba(34, 34, 34, 0.6);
-      }
-
-
-
-
-      .nav-menu ul.nav-menu-inner li a {
-        font-family: inherit;
-        display: block;
-        font-size: 11px;
-        line-height: 1;
-        font-weight: 400;
-        text-transform: uppercase;
-        letter-spacing: 1.6px;
-        transition: all 0.27s cubic-bezier(0, 0, 0.58, 1) 0s;
-        -o-transition: all 0.27s cubic-bezier(0, 0, 0.58, 1) 0s;
-        -moz-transition: all 0.27s cubic-bezier(0, 0, 0.58, 1) 0s;
-        -webkit-transition: all 0.27s cubic-bezier(0, 0, 0.58, 1) 0s;
-        color: #F5833F;
-      }
-
-      .nav-menu ul.nav-menu-inner > li > a {
-        padding: 37px 15px;
-      }
-
-      .header .nav-menu ul.nav-menu-inner > li.active a,
-      .header .nav-menu ul.nav-menu-inner > li a.active,
-      .header .nav-menu ul.nav-menu-inner > li:hover > a,
-      .header .nav-menu ul.nav-menu-inner > li > a:hover,
-      .header.header-dark .nav-menu ul.nav-menu-inner > li.active a,
-      .header.header-dark .nav-menu ul.nav-menu-inner > li a.active,
-      .header.header-dark .nav-menu ul.nav-menu-inner > li:hover > a,
-      .header.header-dark .nav-menu ul.nav-menu-inner > li > a:hover,
-      .header.header-dark.header-prepare .nav-menu ul.nav-menu-inner li a.current,
-      .header.header-dark.header-prepare .nav-menu ul.nav-menu-inner li.current a {
-        color: #626262;
-      }
-
-      .header.header-light .nav-menu ul.nav-menu-inner > li:hover > a,
-      .header.header-light .nav-menu ul.nav-menu-inner > li > a:hover,
-      .header.header-prepare .nav-menu ul.nav-menu-inner li a.current,
-      .header.header-prepare .nav-menu ul.nav-menu-inner li.current a {
-        color: #F5833F;
-      }
-
-      /* Mobile bar icon */
-      .nav-mobile.nav-bar-icon {
-        display: none;
-      }
-
-      .nav-bar-icon {
-        display: inline-block;
-        float: right;
-        position: relative;
-        height: 16px;
-        width: 20px;
-        margin-top: 34px;
-        margin-bottom: 35px;
-        margin-left: 15px;
-        transition: all 0.27s cubic-bezier(0, 0, 0.58, 1) 0s;
-        -moz-transition: all 0.27s cubic-bezier(0, 0, 0.58, 1) 0s;
-        -o-transition: all 0.27s cubic-bezier(0, 0, 0.58, 1) 0s;
-        -webkit-transition: all 0.27s cubic-bezier(0, 0, 0.58, 1) 0s;
-        cursor: pointer;
-      }
-
-      .header-fixed .nav-bar-icon {
-        margin-top: 21px;
-        margin-bottom: 21px;
-      }
-
-      .nav-bar-icon a {
-        color: #fff;
-        display: block;
-        font-size: 17px;
-        padding: 19px 0;
-      }
-
-      .nav-bar-icon.active a, .nav-bar-icon a.active,
-      .nav-bar-icon:hover a, .nav-bar-icon a:hover {
-        color: #17a697;
-      }
-
-      .nav-bar-icon > span {
-        position: absolute;
-        top: 50%;
-        display: block;
-        width: 20px;
-        height: 2px;
-        margin-top: -1px;
-        background-color: #222;
-        -webkit-transition: -webkit-transform 0.3s, background 0.25s ease;
-        -webkit-transition: background 0.25s ease, -webkit-transform 0.3s;
-        transition: background 0.25s ease, -webkit-transform 0.3s;
-        transition: transform 0.3s, background 0.25s ease;
-        transition: transform 0.3s, background 0.25s ease, -webkit-transform 0.3s;
-      }
-
-      .nav-bar-icon > span:before,
-      .nav-bar-icon > span:after {
-        content: "";
-        position: absolute;
-        left: 0;
-        width: 100%;
-        height: 100%;
-
-        background-color: #222;
-        -webkit-transition: -webkit-transform 0.3s, background 0.25s ease;
-        -webkit-transition: background 0.25s ease, -webkit-transform 0.3s;
-        transition: background 0.25s ease, -webkit-transform 0.3s;
-        transition: transform 0.3s, background 0.25s ease;
-        transition: transform 0.3s, background 0.25s ease, -webkit-transform 0.3s;
-      }
-
-      header .nav-bar-icon > span,
-      header .nav-bar-icon > span:before,
-      header .nav-bar-icon > span::after,
-      header.header-dark .nav-bar-icon > span,
-      header.header-dark .nav-bar-icon > span:before,
-      header.header-dark .nav-bar-icon > span::after,
-      header.header-dark.header-prepare .nav-bar-icon > span,
-      header.header-dark.header-prepare .nav-bar-icon > span:before,
-      header.header-dark.header-prepare .nav-bar-icon > span::after {
-        background-color: #F07B1D;
-      }
-
-      header.header-light .nav-bar-icon > span,
-      header.header-light .nav-bar-icon > span:before,
-      header.header-light .nav-bar-icon > span::after,
-      header.header-prepare .nav-bar-icon > span,
-      header.header-prepare .nav-bar-icon > span:before,
-      header.header-prepare .nav-bar-icon > span::after {
-        background-color: #F07B1D;
-      }
-
-
-      .nav-bar-icon > span:before {
-        -webkit-transform: translateY(-7px);
-        transform: translateY(-7px);
-        -o-transform: translateY(-7px);
-        -ms-transform: translateY(-7px);
-        -moz-transform: translateY(-7px);
-      }
-
-      .nav-bar-icon > span:after {
-        -webkit-transform: translateY(7px);
-        transform: translateY(7px);
-        -o-transform: translateY(7px);
-        -ms-transform: translateY(7px);
-        -moz-transform: translateY(7px);
-      }
-
-      .nav-bar-icon.active {
-        transform: rotate(45deg);
-        -moz-transform: rotate(45deg);
-        -ms-transform: rotate(45deg);
-        -o-transform: rotate(45deg);
-        -webkit-transform: rotate(45deg);
-      }
-
-      .nav-bar-icon.active > span:before {
-        transform: rotate(90deg);
-        -moz-transform: rotate(90deg);
-        -ms-transform: rotate(90deg);
-        -o-transform: rotate(90deg);
-        -webkit-transform: rotate(90deg);
-      }
-
-      .nav-bar-icon.active > span:after {
-        transform: rotate(90deg);
-        -moz-transform: rotate(90deg);
-        -ms-transform: rotate(90deg);
-        -o-transform: rotate(90deg);
-        -webkit-transform: rotate(90deg);
-      }
-
-      /* Dropdown-menu */
-      .nav-menu > ul li {
-        position: relative;
-      }
-
-      .sub-dropdown.dropdown {
-        top: 100%;
-        left: 0;
-      }
-
-      .sub-dropdown {
-        position: absolute;
-        left: 100%;
-        top: 0;
-        display: none;
-        background: rgba(34,34,34,0.90);
-        padding: 0;
-        width: 200px;
-      }
-
-      .sub-dropdown li {
-        width: 100%;
-      }
-
-      .sub-dropdown > li > a {
-        padding: 13px 15px;
-        display: block;
-        color: rgba(255, 255, 255, 0.75);
-      }
-
-      .sub-dropdown > li:hover > a {
-        background: rgba(255,255,255,0.05);
-        color: #fff;
-      }
-
-      .sub-dropdown i {
-        float: right;
-      }
-
-      @media all and (max-width: 1024px) {
-        .nav-menu ul.nav-menu-inner li {
-          display: block;
-          width: 100%;
-        }
-
-        .nav-menu {
-          position: static;
-          left: 0;
-          top: 100%;
-          float: none;
-          display: none;
-          width: 100%;
-          background: rgba(34,34,34,0.85);
-          overflow-y: auto;
-          z-index: 999;
-        }
-
-        .nav-bar-icon, .nav-mobile.nav-bar-icon, .header-fixed .nav-bar-icon {
-          display: inline-block;
-          float: right;
-          margin-top: 21px;
-          margin-bottom: 21px;
-        }
-
-        .nav-menu ul.nav-menu-inner li a, .header-fixed .nav-menu ul.nav-menu-inner li a {
-          padding: 15px 12px;
-          border-top: 1px solid #444;
-        }
-
-
-        /* Dropdown */
-        .sub-dropdown.dropdown, .sub-dropdown {
-          top: 100%;
-          position: relative;
-          left: 0;
-          width: 100%;
-        }
-
-        .sub-dropdown a {
-          padding-left: 30px !important;
-        }
-
-        .header .nav-menu ul.nav-menu-inner li a.current,
-        .header .nav-menu ul.nav-menu-inner li.current a,
-        .header.header-light .nav-menu ul.nav-menu-inner > li:hover > a,
-        .header.header-light .nav-menu ul.nav-menu-inner > li > a:hover,
-        .header.header-prepare .nav-menu ul.nav-menu-inner li a.current,
-        .header.header-prepare .nav-menu ul.nav-menu-inner li.current a {
-          color: #fff;
-        }
-
-        .header-light .nav-menu ul.nav-menu-inner > li > a {
-          color: rgba(255,255,255,0.60);
-        }
-      }
 
       /*------------------------------------------------------------------*/
       /* Intro */
@@ -2287,7 +2062,6 @@
 
       #intro {
         position: relative;
-        overflow: hidden;
       }
 
       .intro-media-wraper {
@@ -2380,8 +2154,6 @@
       .content-box, .content-box-with-bg {
         position: relative;
       }
-
-
 
       .content-box.left {
         padding-left: 100px;
@@ -2524,9 +2296,6 @@
         font-size: 35px;
         line-height: 1;
         transition: all 0.3s ease-in-out 0s;
-        -o-transition: all 0.3s ease-in-out 0s;
-        -moz-transition: all 0.3s ease-in-out 0s;
-        -webkit-transition: all 0.3s ease-in-out 0s;
       }
 
       .alt-icon-top {
@@ -2540,9 +2309,6 @@
         font-size: 25px;
         line-height: 1;
         transition: all 0.3s ease-in-out 0s;
-        -o-transition: all 0.3s ease-in-out 0s;
-        -moz-transition: all 0.3s ease-in-out 0s;
-        -webkit-transition: all 0.3s ease-in-out 0s;
       }
 
       .alt-icon-sm-top {
@@ -2727,18 +2493,6 @@
 
 
     }
-
-    .my-parallax {
-      left: 0;
-      position: absolute;
-      will-change: transform;
-      right: 0;
-      top: 0;
-      width: 100%;
-      overflow: hidden;
-      height: 120%;
-    }
-
     .myDropdown:hover ~ ul.sub-dropdown{ display: block; }
     ul.sub-dropdown:hover{display: block;}
   }
@@ -2747,6 +2501,7 @@
       position: center;
       size: cover;
     }
+    //transition: all 0.1s ease;
     /*height: 700px;*/
     height: 100vh;
 
@@ -2777,77 +2532,111 @@
 <style lang="scss">
 
   #page-wraper{
-    .agile {
-      &__dots {
-        align-items: center;
-        display: flex;
-        justify-content: center;
-        list-style: none;
-        margin: 20px 0;
-        padding: 0;
-        text-align: center;
-        white-space: nowrap;
-        bottom: 0;
-        left: 50%;
-        position: absolute;
-        transform: translateX(-50%);
-      }
-      &__dot {
-        margin: 0;
-
-        button {
-          margin: 0 10px;
-          border-radius: 50%;
-          cursor: pointer;
-          display: block;
-          height: 7px;
-          font-size: 0;
-          line-height: 0;
-          transition-duration: .3s;
-          width: 7px;
-          background-color: white;
-          border: 1px solid #fff;
-          padding: 0;
-
+    #intro {
+      .VueCarousel{
+        .VueCarousel-pagination{
+          position: absolute;
+          bottom: 20px;
         }
-
-        &--current,
-        &:hover {
-          button {
-            background-color: transparent;
-            height: 13px;
-            width: 13px;
-            margin: 0 7px;
+      }
+    }
+    .VueCarousel{
+      .VueCarousel-pagination{
+        .VueCarousel-dot--active, .VueCarousel-dot:hover{
+          padding: 7px !important;
+          .VueCarousel-dot-inner{
+            width: 15px !important;
+            height: 15px !important;
+            background: none !important;
+            border: 1px solid white;
           }
         }
       }
-      &__arrow {
-        height: 100%;
-        top: 0;
-        width: 80px;
-        position: absolute;
-        background: none;
-        border: none;
+    }
 
-        &.agile__arrow--next{
-          right: 0;
+    .navbar-prepare{
+      background-color: rgba(255, 255, 255, 0.95);
+      border-bottom: 1px solid #f0f0f0;
+      .navbar-brand {
+        margin-top: 0 !important;
+        margin-left: 0 !important;
+        img {
+        width: 100px !important;}
+      }
+      .nav-item > a, .nav-item > a.dropdown-toggle span{
+        color: rgba(34,34,34,0.60) !important;
+      }
+    }
+    .navbar{
+      .navbar-brand {
+        transition: all 0.4s ease;
+        margin-top: 10px;
+        margin-left: 30px;
+        img {
+          transition: all 0.7s ease;
+          width: 160px;
         }
+      }
+      .nav-item > a, .nav-item > a.dropdown-toggle span{
+        padding: 0px 15px;
+        text-transform: uppercase;
+        color: #F5833F;
+        font-weight: 400;
+      }
+      a:focus{
+        color: #F5833F !important;
+      }
+    }
 
-        &:hover {
-          background-color: rgba(#000, .5);
+    #social_section {
+      img {
+        width: 166px;
+        height: 98px;
+      }
+    }
 
-          #arrow-svg {
-            fill: #fff;
+    @media (max-width: 767px) {
+      .navbar-prepare {
+        background: #ff8201e3;
+        border-bottom: 1px solid #d26b00;
+        .navbar-collapse {
+          background: none;
+        }
+      }
+      .navbar-collapse {
+        background: rgba(0, 0, 0, 0.79);
+        border-radius: 0.5em;
+        padding: 10px;
+
+        li {
+          padding: 10px 0px;
+          .dropdown-menu {
+            background: none;
+            border: none;
+            box-shadow: none;
+            a {
+              border: none;
+              color: #f0803d;
+              padding-left: 3em;
+            }
+            .dropdown-item:focus, .dropdown-item:hover{
+              background: #ec803f;
+              border-radius: 0.5em;
+              color: white;
+              font-weight: 500;
+            }
           }
-        }
-
-        &[disabled] {
-          display: none;
-        }
-
-        #arrow-svg {
-          fill: rgba(#fff, .4);
-          height: 25px;
+          span{
+            padding: 0 !important;
+          }
+          &:not(.dropdown):hover {
+            background: #ec803f;
+            border-radius: 0.5em;
+            a {
+              color: white;
+              font-weight: 500;
+            }
+          }
         }
       }
     }
@@ -2872,6 +2661,7 @@
     position: absolute;
     z-index: 1;
     top: 0;
+    left: 0;
 
   }
   .progress-line {

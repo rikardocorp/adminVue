@@ -91,6 +91,12 @@
   }
 </script>
 
+<style>
+  .navbar-brand{
+    /*background-image: url('../../../static/img/logo2.png');*/
+  }
+</style>
+
 <style lang="scss">
   .avatar-header{
     display: inline;
@@ -100,6 +106,8 @@
   header,
   .navbar-brand{
     /*overflow: hidden;*/
+    /*background-image: url(../../../static/img/logo2.86aa719.png);*/
+    /*background-image: url('../../static/img/logo2.png');*/
     border-bottom: 1px solid #e0e0e0 !important;
   }
 

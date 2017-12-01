@@ -20,6 +20,7 @@ import InsuranceType from '../views/maintenance/InsuranceTypes.vue'
 import User from '../views/maintenance/User.vue'
 import Aseguradoras from '../views/maintenance/InsuranceCompanies.vue'
 import Store from '../views/maintenance/Office.vue'
+import Report from '../views/maintenance/Report.vue'
 
 // Views vehicle
 import VehicleType from '../views/vehicle/VehicleType.vue'
@@ -62,8 +63,8 @@ const roles = {
 
 const preFijo = '/jmc/'
 const router = new Router({
-  mode: 'hash',
-  // mode: 'history',
+  // mode: 'hash',
+  mode: 'history',
   linkActiveClass: 'open active',
   scrollBehavior: () => ({ y: 0 }),
   routes: [
@@ -253,6 +254,12 @@ const router = new Router({
           name: 'Venta Cliente',
           component: SellNewPoliceClient,
           meta: {requiresAuth: true, ROLE_USUARIO: true}
+        },
+        {
+          path: 'reportes',
+          name: 'reportes',
+          component: Report,
+          meta: {requiresAuth: true, ROLE_ADMIN: true}
         }
       ]
     },

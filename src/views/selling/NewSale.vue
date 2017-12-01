@@ -5,6 +5,7 @@
         <div v-if="!mySwitch" class="row justify-content-center" key="div1">
           <div class="col-10">
             <b-card>
+              <!--<div class="cover"></div>-->
               <button id="cancelSale" class="input-group-addon bg-primary"
                       @click="eventCancelSale"
                       :disabled="isLoading || disableBtn"
@@ -12,14 +13,23 @@
                 <i class="fa fa-ban" aria-hidden="true"></i>
               </button>
 
+              <!--<button :class="{-->
+                        <!--'input-group-addon btn-wizard':true,-->
+                        <!--'bg-info': data.pickPolice.item.exception==0,-->
+                        <!--'bg-danger': data.pickPolice.item.exception==1,-->
+                        <!--'bg-primary': data.pickPolice.item.description=='',-->
+                      <!--}" v-b-tooltip.html.right-->
+                      <!--:title="convertDescription(data.pickPolice.item.description, data.pickPolice.item.exception)">-->
+                <!--&lt;!&ndash;:disabled="data.pickPolice.item.description == ''"&ndash;&gt;-->
+                <!--<i class="fa fa-info" aria-hidden="true"></i>-->
+              <!--</button>-->
+
               <button :class="{
                         'input-group-addon btn-wizard':true,
                         'bg-info': data.pickPolice.item.exception==0,
                         'bg-danger': data.pickPolice.item.exception==1,
                         'bg-primary': data.pickPolice.item.description=='',
-                      }" v-b-tooltip.html.right
-                      :title="convertDescription(data.pickPolice.item.description, data.pickPolice.item.exception)">
-                <!--:disabled="data.pickPolice.item.description == ''"-->
+                      }">
                 <i class="fa fa-info" aria-hidden="true"></i>
               </button>
 
@@ -37,7 +47,7 @@
                            :subtitle="'Seguro ' + data.pickPolice.item.insuranceTypeName">
                 <tab-content title="Automovil" icon="fa fa-car" :before-change="stage0">
 
-                  <form-vehicle :item="data.vehicle.item"
+                  <form-vehicle :item="data.vehicle.item" :pickPolice="data.pickPolice.item"
                                 :urlRest="data.vehicle.urlRest" :restricted="data.vehicle.formFill"
                                 :keyname="data.vehicle.name" :index="0" :update="update"  :horizontal="true"
                                 @connection="connectionVehicle"
@@ -158,7 +168,7 @@
           </div>
         </div>
       </transition-group>
-      <!--<pre>{{ data.pickPolice }}</pre>-->
+      <!--<pre>{{ data.sale.item }}</pre>-->
 
       <!--<button @click="mySwitch = !mySwitch">Cambio</button>-->
       <!--<input type="number" v-model="data.vehicle.validate">-->
@@ -168,7 +178,7 @@
 </template>
 
 <script>
-  import FormVehicle from './forms/FormVehicle.vue'
+  import FormVehicle from './forms/FormVehicleNS.vue'
   import FormPurchaser from './forms/FormPurchaser.vue'
   import FormPay from './forms/FormPay.vue'
   import FormSuccess from './forms/FormSuccess.vue'
@@ -310,26 +320,38 @@
         let saleId = this.data.sale.item.id
         console.log(saleId)
         if (saleId !== undefined) {
+          let oldSale = JSON.parse(localStorage.getItem('sale'))
           this.setFormFill('sale', true)
+          if (this.data.vehicle.item.insurancePolicy.id === oldSale.insurancePolicy.id) {
+            alert('mismo')
+          } else {
+            this.data.sale.item.insurancePolicy = this.data.vehicle.item.insurancePolicy
+            let updateSale = await this.updateSale(saleId)
+            if (!updateSale.status) return false
+            localStorage.setItem('sale', JSON.stringify(this.data.sale.item))
+            alert('diferente')
+          }
           localStorage.setItem('vehicle', JSON.stringify(this.data.vehicle.item))
+          console.log('this.data.vehicle.item')
+          console.log(this.data.vehicle.item)
           return true
         }
         localStorage.setItem('vehicle', JSON.stringify(this.data.vehicle.item))
 
         // GET POLICY NUMBER
-        let policyObject = ''
-        let policy = await this.getInsurancePolicy()
-        console.log('My LIST POLICIES')
-        console.log(policy)
-        if (!policy.status) return false
-        else {
-          if (policy.content.length === 0) {
-            // mandar mensaje
-            this.$store.commit('sendNotification', {status: false, message: 'No cuenta con polizas asignadas'})
-            return false
-          }
-          policyObject = policy.content[0]
-        }
+        let policyObject = this.data.vehicle.item.insurancePolicy
+//        let policy = await this.getInsurancePolicy()
+//        console.log('My LIST POLICIES')
+//        console.log(policy)
+//        if (!policy.status) return false
+//        else {
+//          if (policy.content.length === 0) {
+//            // mandar mensaje
+//            this.$store.commit('sendNotification', {status: false, message: 'No cuenta con polizas asignadas'})
+//            return false
+//          }
+//          policyObject = policy.content[0]
+//        }
         console.log(policyObject)
         // INSERT SALE
         this.data.sale.item.insurancePolicy = policyObject
@@ -342,6 +364,7 @@
         if (!r1.status) return false
         else this.data.sale.item = r1.content
         console.log('CREATED LOCALSTORAGE: SALE')
+        // this.data.sale.item.insurancePolicy = policyObject
         localStorage.setItem('sale', JSON.stringify(this.data.sale.item))
         return true
       },
@@ -396,6 +419,7 @@
         }
 
         // INSERT VEHICLE
+        let policyObject = this.data.vehicle.item.insurancePolicy
         let vehicleId = this.data.vehicle.item.id
         if (vehicleId === undefined) {
           this.$delete(this.data.vehicle.item, 'user')
@@ -403,7 +427,10 @@
           console.log('R2: ')
           console.log(r2)
           if (!r2.status) return false
-          else this.data.vehicle.item = r2.content
+          else {
+            this.data.vehicle.item = r2.content
+            this.data.vehicle.item.insurancePolicy = policyObject
+          }
         } else {
           // alert('Recuperando Datos del VEHICLE')
           console.log('DEFINED ' + userId)
@@ -728,6 +755,7 @@
 
         // GET VEHICLE
         let vehicle = JSON.parse(localStorage.getItem('vehicle'))
+        console.log('GET VEHICLE')
         if (vehicle) {
           this.data.vehicle.item = vehicle
           if (this.data.vehicle.item.id !== undefined) {
@@ -802,6 +830,13 @@
   }
 </script>
 
+<style lang="scss" scoped="">
+  .cover{
+    border-radius: 0.8em;
+    background: rgba(255, 135, 0, 0.85);
+    border: 2px solid #ef7c21;
+  }
+</style>
 
 <style lang="scss">
   .card-insurance {

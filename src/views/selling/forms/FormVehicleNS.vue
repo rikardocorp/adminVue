@@ -9,11 +9,11 @@
                   :horizontal="horizontal">
 
       <!--<b-form-group class=""-->
-                    <!--label="Color:"-->
-                    <!--feedback="feedback"-->
-                    <!--:state="null"-->
-                    <!--:horizontal="horizontal" :label-cols="lCols" >-->
-        <!--<picker-color :disabled="isLoading || owner" v-model="item.color" :options="options" :size="1.2" :iconShow="true"></picker-color>-->
+      <!--label="Color:"-->
+      <!--feedback="feedback"-->
+      <!--:state="null"-->
+      <!--:horizontal="horizontal" :label-cols="lCols" >-->
+      <!--<picker-color :disabled="isLoading || owner" v-model="item.color" :options="options" :size="1.2" :iconShow="true"></picker-color>-->
       <!--</b-form-group>-->
 
       <!-- INPUT -->
@@ -26,17 +26,17 @@
       </b-input-group>
 
       <!-- MULTISELECT -->
-      <!--<b-input-group v-else-if="option.input=='multiselect'">-->
-        <!--<b-input-group-addon class="bg-primary"><i :class="'fa ' + option.icon"></i></b-input-group-addon>-->
-        <!--<multiselect :close-on-select="true" :hide-selected="true" :preserve-search="false" :taggable="false" select-label=""-->
-                     <!--:placeholder="option.placeholder"  class="special_radius"-->
-                     <!--:label="option.params.label" :track-by="option.params.label"-->
-                     <!--:loading="!option.params.activate"-->
-                     <!--:disabled="!option.params.activate || isLoading || restricted"-->
-                     <!--v-model="item[_index]"-->
-                     <!--:options="option.params.options"-->
-                     <!--@blur.native="$v.item[_index]? $v.item[_index].$touch(): false"></multiselect>-->
-      <!--</b-input-group>-->
+      <b-input-group v-else-if="option.input=='multiselect'">
+        <b-input-group-addon class="bg-primary"><i :class="'fa ' + option.icon"></i></b-input-group-addon>
+        <multiselect :close-on-select="true" :hide-selected="true" :preserve-search="false" :taggable="false" select-label=""
+                     :placeholder="option.placeholder"  class="special_radius"
+                     :label="option.params.label" :track-by="option.params.label"
+                     :loading="!option.params.activate"
+                     :disabled="!option.params.activate || isLoading || restricted"
+                     v-model="item[_index]"
+                     :options="option.params.options"
+                     @blur.native="$v.item[_index]? $v.item[_index].$touch(): false"></multiselect>
+      </b-input-group>
 
       <!-- INPUT-SEARCH -->
       <b-input-group v-if="option.input=='input-search'">
@@ -64,7 +64,7 @@
   import Multiselect from 'vue-multiselect'
   import FormError from '../../../components/FormError.vue'
   import Avatar from '../../../components/Avatar.vue'
-  import {DATA_VEHICLE2 as _vehicle} from '../../../data/dnNewSales'
+  import {DATA_VEHICLE as _vehicle} from '../../../data/dnNewSales'
   import { required,between } from 'vuelidate/lib/validators'
 
   export default {
@@ -107,6 +107,16 @@
       return _vehicle.validate
     },
     methods: {
+      getOption (urlRest, index) {
+        let self = this.$store.dispatch('dispatchHTTP', {type: 'LOAD_TABLE', url: urlRest, data: {key: this.optInput[index].params.localData}})
+        self.then((data) => {
+          console.log(data)
+          if (data.status) {
+            this.optInput[index].params.options = data.content
+            this.optInput[index].params.activate = true
+          }
+        })
+      },
       searchPlate () {
         console.log('CONSULTA PLACA?')
         let plate = this.item.licensePlate
@@ -151,6 +161,14 @@
     created () {
       console.log('this.pickPolice')
       console.log(this.pickPolice)
+      if (this.pickPolice !== undefined) {
+        let companyId = this.pickPolice.insuranceCompanyId
+        // let myUserID = this.$store.state.user.data.id
+        let user = JSON.parse(localStorage.getItem('UserLog'))
+        // this.item['insurancePolicy'] = ''
+        let url = 'insurancepolicies?insuranceCompanyId=' + companyId + '&sold=0&userId=' + user.user.id
+        this.getOption(url, 'insurancePolicy')
+      }
     }
 
   }
@@ -159,11 +177,11 @@
 <style lang="scss">
 
   /*.optionColor{*/
-    /*position: absolute;*/
-    /*right: 0;*/
-    /*top: 0;*/
-    /*height: 40px;*/
-    /*width: 100%;*/
+  /*position: absolute;*/
+  /*right: 0;*/
+  /*top: 0;*/
+  /*height: 40px;*/
+  /*width: 100%;*/
   /*}*/
 
   .owner-card{

@@ -160,7 +160,7 @@
   import FormPay from './forms/FormPay.vue'
   import FormSuccess from './forms/FormSuccess.vue'
   import {DATA_INSURANCEPRICES as _pickPolice} from '../../data/dataNames'
-  import {DATA_VEHICLE as _vehicle, DATA_VEHICLETYPE as _vehicleType, DATA_USER as _user, DATA_PURCHASER as _purchaser, DATA_PAY as _pay, DATA_PAYMENT as _payment, DATA_SALE as _sale} from '../../data/dnNewSales'
+  import {DATA_VEHICLE2 as _vehicle, DATA_VEHICLETYPE as _vehicleType, DATA_USER as _user, DATA_PURCHASER as _purchaser, DATA_PAY as _pay, DATA_PAYMENT as _payment, DATA_SALE as _sale} from '../../data/dnNewSales'
   import Avatar from '../../components/Avatar.vue'
 
   //  import Fullscreen from "vue-fullscreen/src/component.vue"

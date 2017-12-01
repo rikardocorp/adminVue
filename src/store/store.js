@@ -23,7 +23,8 @@ export default new Vuex.Store({
       date: '',
       time: '',
       isClient: false
-    }
+    },
+    logOut: false
   },
   getters: {
     arrayToObject: (state, getters) => (value) => {
