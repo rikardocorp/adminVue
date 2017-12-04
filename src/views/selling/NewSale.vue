@@ -286,6 +286,7 @@
     },
     methods: {
       recotizar () {
+        this.$set(this.$store.state, 'visibleNewSale', false)
         localStorage.removeItem('insurance')
         this.$router.push('cotizar-admin')
       },

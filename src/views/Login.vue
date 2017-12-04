@@ -10,24 +10,24 @@
             <div class="card p-4">
               <div v-if="!changePass" class="card-body">
                 <h1>JMC</h1>
-                <p class="text-muted">Iniciar Sesion</p>
+                <p class="text-muted">Iniciar Sesión</p>
                 <div class="alert alert-danger" v-if="error">
                   <p>{{ error }}</p>
                 </div>
                 <div class="input-group mb-3">
                   <span class="input-group-addon"><i class="icon-user"></i></span>
-                  <input type="text" class="form-control" placeholder="Username" v-model="credentials.username">
+                  <input type="text" class="form-control" placeholder="Usuario" v-model="credentials.username">
                 </div>
                 <div class="input-group mb-4">
                   <span class="input-group-addon"><i class="icon-lock"></i></span>
-                  <input type="password" class="form-control" placeholder="Password" v-model="credentials.password" @keyup.enter="submit">
+                  <input type="password" class="form-control" placeholder="Contraseña" v-model="credentials.password" @keyup.enter="submit">
                 </div>
                 <div class="row">
                   <div class="col-6">
                     <button type="button" class="btn btn-primary px-4" @click="submit">Ingresar</button>
                   </div>
                   <div class="col-6 text-right">
-                    <button @click="changePass=true" type="button" class="btn btn-link px-0">olvidaste tu password?</button>
+                    <button @click="changePass=true" type="button" class="btn btn-link px-0">Olvidaste tu contraseña?</button>
                   </div>
                 </div>
               </div>
@@ -39,13 +39,13 @@
                   <!-- INPUT -->
                   <b-input-group>
                     <b-input-group-addon class=""><i class="fa fa-envelope-o"></i></b-input-group-addon>
-                    <b-form-input type="email" v-model.trim="recoverEmail" placeholder="Correo Electronico.."></b-form-input>
+                    <b-form-input type="email" v-model.trim="recoverEmail" placeholder="Correo Electrónico.."></b-form-input>
                   </b-input-group>
                 </b-form-group>
                 <br>
                 <div class="row">
                   <div class="col-6 text-left">
-                    <button type="button" class="btn bg-inverse px-4" @click.prevent="changePass=false">Regresar</button>
+                    <button type="button" class="btn bg-light px-4" @click.prevent="changePass=false">Regresar</button>
                   </div>
                   <div class="col-6 text-right">
                     <button type="button" class="btn btn-primary px-4" @click.prevent="recoverPassword">Cambiar</button>

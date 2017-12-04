@@ -300,7 +300,7 @@ const actions = {
           router.push({name: 'admin'})
           break
         case 'ROLE_USUARIO':
-          router.push({name: 'admin'})
+          router.push({name: 'Cliente'})
           break
         default:
           router.push({name: 'Login'})

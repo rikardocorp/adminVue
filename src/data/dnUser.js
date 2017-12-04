@@ -52,22 +52,34 @@ export const DATA_FORM = {
     firstName: {
       label: 'Nombres',
       placeholder: 'Nombre del usuario',
-      type: 'text'
+      type: 'text',
+      params: {
+        editDisable: false
+      }
     },
     lastName: {
       label: 'Apellidos',
       placeholder: 'Apellidos del usuario',
-      type: 'text'
+      type: 'text',
+      params: {
+        editDisable: false
+      }
     },
     email: {
       label: 'Email',
       placeholder: 'Correo electronico',
-      type: 'email'
+      type: 'email',
+      params: {
+        editDisable: true
+      }
     },
     phone: {
       label: 'Telefono',
       placeholder: 'Numero celular',
-      type: 'number'
+      type: 'number',
+      params: {
+        editDisable: false
+      }
     },
     office: {
       label: 'Oficina',
@@ -124,6 +136,81 @@ export const DATA_FORM = {
       _role: {
         required
       }
+    }
+  }
+}
+
+export const DATA_FORM_CLIENT = {
+  input: {
+    firstName: {
+      label: 'Nombres',
+      placeholder: 'Nombre del usuario',
+      type: 'text',
+      params: {
+        editDisable: false
+      }
+    },
+    lastName: {
+      label: 'Apellidos',
+      placeholder: 'Apellidos del usuario',
+      type: 'text',
+      params: {
+        editDisable: false
+      }
+    },
+    email: {
+      label: 'Email',
+      placeholder: 'Correo electronico',
+      type: 'email',
+      params: {
+        editDisable: true
+      }
+    },
+    phone: {
+      label: 'Telefono',
+      placeholder: 'Numero celular',
+      type: 'number',
+      params: {
+        editDisable: false
+      }
+    },
+    // _role: {
+    //   label: 'ROLES',
+    //   placeholder: 'ROLES',
+    //   type: 'text',
+    //   input: 'multiselect',
+    //   params: {
+    //     url: 'roles',
+    //     key: '_role',
+    //     label: 'name',
+    //     options: [],
+    //     activate: false,
+    //     loadData: true,
+    //     localData: 'roles',
+    //     value: '',
+    //     editDisable: true
+    //   }
+    // }
+  },
+  validate: {
+    item: {
+      firstName: {
+        required
+      },
+      lastName: {
+        required
+      },
+      email: {
+        required,
+        email
+      },
+      phone: {
+        required,
+        numeric
+      },
+      // _role: {
+      //   required
+      // }
     }
   }
 }

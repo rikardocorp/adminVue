@@ -30,7 +30,7 @@
               </SidebarNavDropdown>
             </template>
             <template v-else>
-              <SidebarNavLink :name="item.name" :url="prefijo + item.url" :icon="item.icon" :badge="item.badge"/>
+              <SidebarNavLink v-if="item.display== undefined || visible" :class="{'bg-primary': item.display}" :name="item.name" :url="prefijo + item.url" :icon="item.icon" :badge="item.badge"/>
             </template>
           </template>
         </li>
@@ -56,7 +56,12 @@ export default {
   },
   data () {
     return {
-      prefijo: '/jmc'
+      prefijo: ''
+    }
+  },
+  computed: {
+    visible () {
+      return this.$store.state.visibleNewSale
     }
   },
   components: {
@@ -69,6 +74,10 @@ export default {
       e.preventDefault()
       e.target.parentElement.classList.toggle('open')
     }
+  },
+  mounted () {
+    let visible = localStorage.getItem('insurance') !== null
+    this.$set(this.$store.state, 'visibleNewSale', visible)
   }
 }
 </script>

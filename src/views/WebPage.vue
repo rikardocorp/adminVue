@@ -1,5 +1,5 @@
 <template>
-  <div ref="pageWraper" id="page-wraper" v-scroll="onScroll" v-resize="onResize">
+  <div class="wrapper" ref="pageWraper" id="page-wraper" v-scroll="onScroll" v-resize="onResize">
     <div>
       <b-navbar fixed="top" toggleable="md" type="light" :variant="null" :class="{'navbar-prepare': prepare}">
         <div class="progress-line" v-if="isLoading"></div>
@@ -10,17 +10,17 @@
 
           <!-- Right aligned nav items -->
           <b-navbar-nav class="ml-auto">
-            <b-nav-item href="#" v-scroll-to="{ el: '#intro' }" right>Inicio</b-nav-item>
+            <b-nav-item href="#" v-scroll-to="{ el: '#intro',container: '#page-wraper' }" right>Inicio</b-nav-item>
 
             <b-nav-item-dropdown text="Servicios" right>
-              <b-dropdown-item href="#" v-scroll-to="{ el: '#blog' }">Seguros</b-dropdown-item>
-              <b-dropdown-item href="#" v-scroll-to="{ el: '#features' }">Nuestros Servicios</b-dropdown-item>
-              <b-dropdown-item href="#" v-scroll-to="{ el: '#service' }">Nuestro Cotizador</b-dropdown-item>
+              <b-dropdown-item href="#" v-scroll-to="{ el: '#blog',container: '#page-wraper' }">Seguros</b-dropdown-item>
+              <b-dropdown-item href="#" v-scroll-to="{ el: '#features',container: '#page-wraper' }">Nuestros Servicios</b-dropdown-item>
+              <b-dropdown-item href="#" v-scroll-to="{ el: '#service',container: '#page-wraper' }">Nuestro Cotizador</b-dropdown-item>
             </b-nav-item-dropdown>
 
-            <b-nav-item href="#" v-scroll-to="{ el: '#about' }" right>Nosotros</b-nav-item>
-            <b-nav-item href="#" v-scroll-to="{ el: '#contact-us' }" >Contactanos</b-nav-item>
-            <b-nav-item href="#" v-scroll-to="{ el: '#map' }" >Ubicanos</b-nav-item>
+            <b-nav-item href="#" v-scroll-to="{ el: '#about',container: '#page-wraper' }" right>Nosotros</b-nav-item>
+            <b-nav-item href="#" v-scroll-to="{ el: '#contact-us',container: '#page-wraper' }" >Contactanos</b-nav-item>
+            <b-nav-item href="#" v-scroll-to="{ el: '#map',container: '#page-wraper' }" >Ubicanos</b-nav-item>
 
           </b-navbar-nav>
 
@@ -29,7 +29,7 @@
 
       <!-- Intro  Slider -->
       <section id="intro" class="intro black-bg">
-        <carousel :perPage="1" :loop="true" :autoplay="false" :speed="500" :autoplayTimeout="5000">
+        <carousel :perPage="1" :loop="true" :autoplay="true" :speed="500" :autoplayTimeout="3000">
           <slide>
             <parallax>
               <div class="slide slide--1"></div>
@@ -848,33 +848,18 @@
                    animation-type="velocity"
                    :speed="500" :duration="3000" :max="5">
     </notifications>
+    <pre>{{google}}</pre>
   </div>
 </template>
 
 <script>
-  import Vue from 'vue'
-  import VueScrollTo from 'vue-scrollto'
   import Parallax from 'vue-parallaxy'
   import FormError from '../components/FormError.vue'
   import {DATA_CONTACT as _data} from '../data/dataWeb'
   import { required, email, sameAs } from 'vuelidate/lib/validators'
   import facebookLogin from '../components/facebookLogin/facebook-login.vue'
-//  import googleLogin from '../components/GoogleLogin/GoogleLogin.vue'
   import { Carousel, Slide } from 'vue-carousel'
   import resize from 'vue-resize-directive'
-//  import GSignInButton from 'vue-google-signin-button'
-
-  Vue.use(VueScrollTo, {
-    container: '#page-wraper',
-    duration: 500,
-    easing: 'ease',
-    offset: 0,
-    cancelable: true,
-    onDone: false,
-    onCancel: false,
-    x: false,
-    y: true
-  })
 
   export default {
     name: 'WebPage',
@@ -885,12 +870,12 @@
       Parallax,
       FormError,
       facebookLogin,
-//      googleLogin,
       Carousel,
       Slide
     },
     data () {
       return {
+        google: '',
         // Facebook
         FB: undefined,
         isConnected: false,
@@ -909,7 +894,8 @@
 
         // Google
         googleSignInParams: {
-          client_id: '833712505628-imprrpljbf80th9nsek1q4hmcp2gqjll.apps.googleusercontent.com'
+           client_id: '833712505628-imprrpljbf80th9nsek1q4hmcp2gqjll.apps.googleusercontent.com'
+//          client_id: '54563486287-d3ccvubvf768a4p1hgubvs1h3ktv2jo2.apps.googleusercontent.com' // JMC Integral
         },
         center: {lat: -16.404388, lng: -71.543704},
         markers: [{
@@ -940,7 +926,19 @@
         isMobile: false,
         panel1: false,
         panel2: false,
-        parallaxPosition: ''
+        parallaxPosition: '',
+
+        option: {
+          container: '#page-wraper',
+          duration: 500,
+          easing: 'ease',
+          offset: 0,
+          cancelable: true,
+          onDone: false,
+          onCancel: false,
+          x: false,
+          y: true
+        }
       }
     },
     validations () {
@@ -994,6 +992,7 @@
     methods: {
       // Google
       onSignInSuccess (googleUser) {
+        this.google = googleUser
         const profile = googleUser.getBasicProfile()
         this.dataG.personalID = googleUser.El
         this.dataG.email = profile.U3

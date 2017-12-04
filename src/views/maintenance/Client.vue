@@ -10,7 +10,7 @@
       <div class="row">
         <div class="col-12">
           <app-table :fields="fields" :items="items" :btnOption="btnOption" @pickItem="pickItem" >
-            <template slot="title">Lista de Usuarios del Sistema</template>
+            <template slot="title">Lista de Clientes del Sistema</template>
           </app-table>
         </div><!--/.col-->
       </div><!--/.row-->
@@ -50,7 +50,7 @@
 
 <script>
   import {DATA as nDATA, DATA_FORM_PASSWORD as dataFormPass} from '../../data/dnUser'
-  import Form from './forms/FormUser.vue'
+  import Form from './forms/FormClient.vue'
   import Table from '../../components/xTable.vue'
   import FormError from '../../components/FormError.vue'
 
@@ -140,7 +140,7 @@
         this.indexSelected = null
       },
       getData () {
-        let self = this.$store.dispatch('dispatchHTTP', {type: 'GET', url: this.urlRest + '?system=1'})
+        let self = this.$store.dispatch('dispatchHTTP', {type: 'GET', url: this.urlRest + '?system=0'})
         self.then((data) => {
           console.log(data)
           this.items = data.status ? data.content : []

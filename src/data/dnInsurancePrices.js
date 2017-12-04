@@ -52,7 +52,7 @@ export const DATA_FORM = {
     },
     insuranceCompany: {
       label: 'Aseguradoras',
-      placeholder: 'Compañia de Seguro',
+      placeholder: 'Compañía de Seguro',
       type: 'text',
       input: 'multiselect',
       params: {

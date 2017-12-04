@@ -23,11 +23,25 @@
 </template>
 
 <script>
+  import Vue from 'vue'
+  import VueScrollTo from 'vue-scrollto'
   import navADMIN from '../roles/_nav_ADMIN'
   import navPUNTOVENTA from '../roles/_nav_PUNTO_VENTA'
   import navVENDEDOR from '../roles/_nav_VENDEDOR'
   import navUSUARIO from '../roles/_nav_USUARIO'
   import { Header as AppHeader, Sidebar, Aside as AppAside, Footer as AppFooter, Breadcrumb } from '../components/'
+
+  Vue.use(VueScrollTo, {
+    container: '.app',
+    duration: 500,
+    easing: 'ease',
+    offset: 0,
+    cancelable: true,
+    onDone: false,
+    onCancel: false,
+    x: false,
+    y: true
+  })
 
   const _user = JSON.parse(localStorage.getItem('UserLog'))
   const _ROLE = _user ? _user.authorities[0].authority : ''

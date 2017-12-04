@@ -4,7 +4,7 @@
     <div class="col-md-12 col-sm-12 col-lg-9 col-xl-7 m-auto">
       <b-card>
         <div slot="header" class="text-left">
-          <strong>Perfil</strong> de Usuario | {{edit}}
+          <strong>Perfil</strong> de Usuario
           <toggle-button :labels="{checked: 'Editar', unchecked: ''}" :color="{checked: '#63c1de', unchecked: 'rgb(239, 123, 34)'}"
                          :width="75" :height="28" :sync="true"
                          v-model="edit" class="float-right">

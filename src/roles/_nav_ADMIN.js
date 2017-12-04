@@ -38,6 +38,11 @@ export default {
         {
           name: 'Usuarios',
           url: '/mantenimiento/usuarios',
+          icon: 'fa fa-user'
+        },
+        {
+          name: 'Clientes',
+          url: '/mantenimiento/clientes',
           icon: 'fa fa-users'
         },
         {
@@ -50,11 +55,11 @@ export default {
           url: '/mantenimiento/tipo-seguro',
           icon: 'fa fa-thumbs-up'
         },
-        {
-          name: 'Contratante',
-          url: '/mantenimiento/contratantes',
-          icon: 'fa fa-male '
-        }
+        // {
+        //   name: 'Contratante',
+        //   url: '/mantenimiento/contratantes',
+        //   icon: 'fa fa-male '
+        // }
       ]
     },
     {
@@ -202,6 +207,7 @@ export default {
       name: 'Nueva Venta',
       url: '/nueva-venta',
       icon: 'fa fa-plus',
+      display: true,
       badge: {
         variant: 'info',
         text: 'NEW'

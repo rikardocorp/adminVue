@@ -90,22 +90,20 @@
           if (this.$route.params.type == 0) {
             url = 'sales?cartId=' + this.$route.params.idSale
             data = await this.getData(url)
-            data[0]['insuranceCompany'] = data[0].cart.insuranceCompany
-            console.log('CART')
             console.log(data[0])
-            this.selectedItemCart = data[0]
-            this.isSale = false
-            console.log('his.selectedItemCart')
-            console.log(this.selectedItemCart)
+            if (data[0].insurancePolicy == null) {
+              data[0]['insuranceCompany'] = data[0].cart.insuranceCompany
+              this.selectedItemCart = data[0]
+              this.isSale = false
+            } else {
+              this.selectedItem = data[0]
+              this.isSale = true
+            }
           } else {
             url = 'sales/' + this.$route.params.idSale
             data = await this.getData(url)
-            console.log('SALES')
-            console.log(data)
             this.selectedItem = data
             this.isSale = true
-            console.log('his.selectedItem')
-            console.log(this.selectedItem)
           }
         }
       }

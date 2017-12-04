@@ -32,7 +32,6 @@
           <b-dropdown-item @click="logout"><i class="fa fa-lock"></i> Salir</b-dropdown-item>
         </b-nav-item-dropdown>
       </b-navbar-nav>
-
       <button v-if="!isClient" class="navbar-toggler aside-menu-toggler d-md-down-none" type="button" @click="asideToggle">&#9776;</button>
     </header>
 </template>
@@ -91,13 +90,35 @@
   }
 </script>
 
-<style>
-  .navbar-brand{
-    /*background-image: url('../../../static/img/logo2.png');*/
-  }
-</style>
-
 <style lang="scss">
+  .btn-circle {
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    padding: 6px 0;
+    font-size: 12px;
+    line-height: 1.428571429;
+    border-radius: 15px;
+  }
+  .btn-circle.btn-lg {
+    width: 50px;
+    height: 50px;
+    padding: 10px 16px;
+    font-size: 18px;
+    line-height: 1.33;
+    border-radius: 25px;
+  }
+  .btn-circle.btn-xl {
+    width: 70px;
+    height: 70px;
+    padding: 10px 16px;
+    font-size: 24px;
+    line-height: 1.33;
+    border-radius: 35px;
+  }
+
+
+
   .avatar-header{
     display: inline;
     margin: 0 5px;

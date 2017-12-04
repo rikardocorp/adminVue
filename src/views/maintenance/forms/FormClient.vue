@@ -1,7 +1,7 @@
 <template>
   <b-card>
     <div slot="header" class="text-center">
-      <strong>Usuarios</strong> del Sistema
+      <strong>Clientes</strong> del Sistema
     </div>
     <b-form :id="name + urlRest">
 
@@ -43,15 +43,10 @@
       </b-form-group>
 
       <div class="row mb-4">
-        <div class="col-md-6 text-right">
+        <div class="col-md-6 mx-auto text-center">
           <toggle-button :labels="{checked: 'Activo', unchecked: 'Inactivo'}" :color="{checked: 'rgb(239, 123, 34)', unchecked: 'rgb(181, 181, 181)'}"
                          :disabled="isLoading" :width="85" :height="28" :sync="true"
                          v-model="item.enabled" class="mr-2"></toggle-button>
-        </div>
-        <div class="col-md-6 text-left">
-          <toggle-button :labels="{checked: 'Gastos', unchecked: 'Sin Gastos'}" :color="{checked: 'rgb(239, 123, 34)', unchecked: 'rgb(181, 181, 181)'}"
-                         :disabled="isLoading" :width="90" :height="28" :sync="true"
-                         v-model="item.expense" class="mr-2"></toggle-button>
         </div>
       </div>
 
@@ -77,7 +72,7 @@
 
 <script>
   import cSwitch from '../../../components/Switch'
-  import {DATA_FORM as dataForm} from '../../../data/dnUser'
+  import {DATA_FORM_CLIENT as dataForm} from '../../../data/dnUser'
   import FormError from '../../../components/FormError.vue'
   import Multiselect from 'vue-multiselect'
   import ToggleButton from '../../../components/ToggleButton.vue'
@@ -121,12 +116,11 @@
           if (!this.item.role) {
             this.item.role = {
               email: this.item.email,
-              role: this.item._role.name
+              role: 'ROLE_USUARIO'
             }
           }
-          console.log('this.item')
           console.log(this.item)
-          // return false
+//          return false
 
           let self = this.$store.dispatch('dispatchHTTP', {type: action, url: url, data: this.item})
           self.then((data) => {
@@ -158,11 +152,6 @@
         let self = this.$store.dispatch('dispatchHTTP', {type: 'LOAD_TABLE', url: urlRest, data: {key: this.optInput[index].params.localData}})
         self.then((data) => {
           if (data.status) {
-            console.log(index)
-            console.log(data.content)
-            if (index == '_role') {
-              data.content.splice(2, 1)
-            }
             this.optInput[index].params.options = data.content
             this.optInput[index].params.activate = true
           }
@@ -193,10 +182,6 @@
 </script>
 
 <style lang="scss">
-  .vue-js-switch .v-switch-label{
-    z-index: 0 !important;
-  }
-
   .switch-left{
     float: left;
   }

@@ -128,6 +128,7 @@
           localStorage.setItem('insurance', JSON.stringify(data))
           localStorage.setItem('seller', this.$store.state.user.data.id)
           localStorage.setItem('typeSell', 0)
+          this.$set(this.$store.state, 'visibleNewSale', true)
           if (this.isClient) {
             this.$router.push('venta-cliente')
           } else {

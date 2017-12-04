@@ -48,7 +48,7 @@
 
       <div slot="footer">
         <b-form-group :horizontal="true" :label-cols="2">
-          <b-button @click.stop="cotizar" :disabled="isLoading" type="submit" variant="warning" class="p-3 btn-block color-theme-1" style="color: white">
+          <b-button @click.prevent="cotizar" :disabled="isLoading" type="submit" variant="warning" class="p-3 btn-block color-theme-1" style="color: white">
             <i v-if="isLoading" class='fa fa-circle-o-notch fa-spin fa-2x fa-fw text-white'></i>
             COTIZAR
           </b-button>

@@ -230,7 +230,7 @@
         </div>
       </div>
     </div>
-    <pre>{{ item }}</pre>
+    <!--<pre>{{ item }}</pre>-->
 
   </div>
 </template>

@@ -44,11 +44,6 @@
 
         <!-- CALENDARIO -->
         <calendar-inline v-model="item.date" :disabled="isLoading" :range="true" :error="$v.item['date']? $v.item['date'].$error : false"></calendar-inline>
-        <div slot="footer" class="text-right mt-2">
-          <b-button class="float-left" @click="resetForm(id)" :disabled="isLoading" size="sm" variant="outline-secondary"><i class="fa fa-ban"></i> {{$global.reset}}</b-button>
-          <b-button v-if="!update" class="float-right" @click.prevent="processData('INSERT')" :disabled="isLoading" type="submit" size="sm" variant="primary"><i class="fa fa-dot-circle-o"></i> Añadir</b-button>
-          <b-button v-else="update" class="float-right" @click.prevent="processData('UPDATE')" :disabled="isLoading" type="submit" size="sm" variant="primary"><i class="fa fa-dot-circle-o"></i> {{ $global.update }}</b-button>
-        </div>
       </div>
       <!-- FORM SELECT VALUES-->
       <div class="col-md-5 col-lg-6">
@@ -68,10 +63,10 @@
                   <span @click="pickItem(x,index)">{{ x.description }}</span>
                 </p>
                 <p v-if="x.active==0" class="col-4" >
-                  <button v-b-tooltip.hover.auto title="Eliminar" @click="modalDelete(x,index)" :disabled="isLoading"
+                  <button v-b-tooltip.hover.auto title="Eliminar" @click.prevent="modalDelete(x,index)" :disabled="isLoading"
                           class="btn btn-in-title-right btn-small bg-danger" ><i class="fa fa-times" aria-hidden="true"></i>
                   </button>
-                  <button v-b-tooltip.hover.auto title="Seleccionar" @click="updateItem(x,index)" :disabled="isLoading"
+                  <button v-b-tooltip.hover.auto title="Seleccionar" @click.prevent="updateItem(x,index)" :disabled="isLoading"
                           class="btn btn-in-title-right btn-small bg-success" ><i class="fa fa-check" aria-hidden="true"></i>
                   </button>
                 </p>
@@ -85,6 +80,11 @@
               </div>
             </li>
           </ul>
+        </div>
+        <div slot="footer" class="text-right mt-2">
+          <b-button class="float-left" @click="resetForm(id)" :disabled="isLoading" size="sm" variant="outline-secondary"><i class="fa fa-ban"></i> {{$global.reset}}</b-button>
+          <b-button v-if="!update" class="float-right" @click.prevent="processData('INSERT')" :disabled="isLoading" type="submit" size="sm" variant="primary"><i class="fa fa-dot-circle-o"></i> Añadir</b-button>
+          <b-button v-else="update" class="float-right" @click.prevent="processData('UPDATE')" :disabled="isLoading" type="submit" size="sm" variant="primary"><i class="fa fa-dot-circle-o"></i> {{ $global.update }}</b-button>
         </div>
       </div>
     </b-form>
@@ -334,7 +334,7 @@
     font-size: 0.85em;
     text-align: center;
     overflow: scroll;
-    height: 340px;
+    height: 300px;
     border-bottom: 1px solid #e0e0e0;
     ul{
       li{

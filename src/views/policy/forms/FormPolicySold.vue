@@ -132,7 +132,6 @@
           })
         } else {
           this.$v.item.$touch()
-          alert('ERROR')
         }
       },
       getOption (urlRest, index) {

@@ -12,12 +12,14 @@ import Login from '@/views/Login'
 import Register from '@/views/Register'
 import ResetPass from '@/views/ResetPass'
 import Profile from '../views/maintenance/Profile.vue'
+import Cliente from '../views/Cliente.vue'
 
 // Views Maintenance
 import City from '../views/maintenance/City.vue'
 import UseType from '../views/maintenance/UseType.vue'
 import InsuranceType from '../views/maintenance/InsuranceTypes.vue'
 import User from '../views/maintenance/User.vue'
+import Client from '../views/maintenance/Client.vue'
 import Aseguradoras from '../views/maintenance/InsuranceCompanies.vue'
 import Store from '../views/maintenance/Office.vue'
 import Report from '../views/maintenance/Report.vue'
@@ -40,6 +42,7 @@ import SellNewPolice from '../views/selling/NewSale.vue'
 import SellNewPoliceSpecial from '../views/selling/NewSaleSpecial.vue'
 import SellNewPoliceClient from '../views/selling/NewSaleClient.vue'
 import Cotizar from '../views/selling/Cotizar.vue'
+import SeguroVehicular from '../views/selling/SeguroVehicular.vue'
 
 // Price
 import Price from '../views/price/Price.vue'
@@ -61,7 +64,7 @@ const roles = {
   cliente: 'ROLE_USUARIO'
 }
 
-const preFijo = '/jmc/'
+const preFijo = '/'
 const router = new Router({
   // mode: 'hash',
   mode: 'history',
@@ -78,7 +81,7 @@ const router = new Router({
           path: 'dashboard',
           name: 'Dashboard',
           component: Dashboard,
-          meta: {requiresAuth: true, ROLE_ADMIN: true, ROLE_PUNTO_VENTA: true, ROLE_VENDEDOR: true, ROLE_USUARIO: true}
+          meta: {requiresAuth: true, ROLE_ADMIN: true, ROLE_PUNTO_VENTA: true, ROLE_VENDEDOR: true}
         },
         {
           path: 'mantenimiento',
@@ -113,6 +116,12 @@ const router = new Router({
               meta: {requiresAuth: true, ROLE_ADMIN: true, ROLE_PUNTO_VENTA: true}
             },
             {
+              path: 'clientes',
+              name: 'Clientes',
+              component: Client,
+              meta: {requiresAuth: true, ROLE_ADMIN: true, ROLE_PUNTO_VENTA: true}
+            },
+            {
               path: 'tipo-uso',
               name: 'Tipos de Uso',
               component: UseType,
@@ -124,12 +133,12 @@ const router = new Router({
               component: InsuranceType,
               meta: {requiresAuth: true, ROLE_ADMIN: true}
             },
-            {
-              path: 'contratantes',
-              name: 'Contratante',
-              component: Purchaser,
-              meta: {requiresAuth: true, ROLE_ADMIN: true, ROLE_PUNTO_VENTA: true}
-            }
+            // {
+            //   path: 'contratantes',
+            //   name: 'Contratante',
+            //   component: Purchaser,
+            //   meta: {requiresAuth: true, ROLE_ADMIN: true, ROLE_PUNTO_VENTA: true}
+            // }
           ]
         },
         {
@@ -227,6 +236,12 @@ const router = new Router({
           meta: {requiresAuth: true, ROLE_USUARIO: true}
         },
         {
+          path: 'seguro-vehicular',
+          name: 'Seguro',
+          component: SeguroVehicular,
+          meta: {requiresAuth: true, ROLE_USUARIO: true}
+        },
+        {
           path: 'polizas-vendidas/:idSale/:type',
           name: 'VentasId',
           component: Sale,
@@ -260,6 +275,12 @@ const router = new Router({
           name: 'reportes',
           component: Report,
           meta: {requiresAuth: true, ROLE_ADMIN: true}
+        },
+        {
+          path: 'cliente',
+          name: 'Cliente',
+          component: Cliente,
+          meta: {requiresAuth: true, ROLE_USUARIO: true}
         }
       ]
     },
@@ -279,7 +300,7 @@ const router = new Router({
       component: Register
     },
     {
-      path: '/',
+      path: '/jmc',
       name: 'webpage',
       component: WebPage
     }
@@ -326,8 +347,10 @@ const router = new Router({
 router.beforeEach((to, from, next) => {
   const authUser = JSON.parse(localStorage.getItem('UserLog'))
   const token = localStorage.getItem('authorization')
-
-  if (to.name === 'Recover') {
+  if (to.name === 'Dashboard' && localStorage.getItem('authorization') === null) {
+    // alert(localStorage.getItem('authorization'))
+    next({name: 'webpage'})
+  } else if (to.name === 'Recover') {
     next()
   } else if (to.name === 'Login') {
     if (authUser && token) {

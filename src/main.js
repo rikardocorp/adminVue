@@ -12,7 +12,7 @@ import store from './store/store'
 import lodash from 'lodash'
 import moment from 'moment'
 import VueFormWizard from 'vue-form-wizard'
-import VueScrollTo from 'vue-scrollto'
+// import VueScrollTo from 'vue-scrollto'
 import VueScroll from 'vue-scroll'
 import VuejsDialog from 'vuejs-dialog'
 import {names} from './data/GlobalNames'
@@ -21,8 +21,9 @@ import GSignInButton from 'vue-google-signin-button'
 Vue.use(GSignInButton)
 Vue.use(VueGoogleMaps, {
   load: {
-    key: 'AIzaSyDz4RIhRYSyaU06tOfPRAGgAEU9YEst3ow',
-    libraries: 'places', // This is required if you use the Autocomplete plugin
+    // key: 'AIzaSyDz4RIhRYSyaU06tOfPRAGgAEU9YEst3ow', //
+    key: 'AIzaSyA1AWOuARSiYX7cvIeZ2S8dh_dh3eSy0dA', // JMC Integral
+    //libraries: 'places', // This is required if you use the Autocomplete plugin
     v: '3.26'
   }
 })
@@ -47,24 +48,36 @@ Vue.use(VueRosource)
 Vue.use(VueFormWizard)
 Vue.use(Notifications, { velocity })
 Vue.use(VueScroll)
-Vue.use(VueScrollTo, {
-  container: 'body',
-  duration: 500,
-  easing: 'ease',
-  offset: 0,
-  cancelable: true,
-  onDone: false,
-  onCancel: false,
-  x: false,
-  y: true
-})
+// Vue.use(VueScrollTo, {
+//   container: 'body',
+//   duration: 500,
+//   easing: 'ease',
+//   offset: 0,
+//   cancelable: true,
+//   onDone: false,
+//   onCancel: false,
+//   x: false,
+//   y: true
+// })
+// Vue.use(VueScrollTo, {
+//   container: 'body',
+//   duration: 500,
+//   easing: 'ease',
+//   offset: 0,
+//   cancelable: true,
+//   onDone: false,
+//   onCancel: false,
+//   x: false,
+//   y: true
+// })
 
 // Peticiones al servidor
-// Vue.http.options.root = 'http://192.168.1.7:8070/jmc/rest/v1/'
+// Vue.http.options.root = 'http://45.55.154.15:8080/jmc/rest/v1/'
 Vue.http.options.root = 'http://174.138.48.60:8080/jmc/rest/v1/'
 Vue.http.headers.common['Content-Type'] = 'application/json'
 
 // Login and SignUp
+// const API_URL = 'http://45.55.154.15:8080/jmc/'
 const API_URL = 'http://174.138.48.60:8080/jmc/'
 const URL_LOG = {
   API_URL: API_URL,

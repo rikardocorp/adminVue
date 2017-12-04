@@ -291,7 +291,12 @@
       },
       async assignPolicy () {
         if (this.item.state !== 0) {
+          let self3 = await this.updateCart()
+          if (!self3.status) return false
+          this.$set(this.item, 'state', self3.content.state)
+          console.log('UPDATE CART')
           this.$store.commit('sendNotification', {status: null, message: 'Esta venta ya fue procesada, realizar la busqueda en Poliza Vendida.'})
+          this.$router.push('/polizas-vendidas/' + this.item.id + '/1')
           return false
         }
 

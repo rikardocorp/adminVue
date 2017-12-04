@@ -1,7 +1,7 @@
 export const names = {
   submit: 'Insertar',
   update: 'Actualizar',
-  reset: 'Reset',
+  reset: 'Limpiar',
   cancel: 'Cancel',
   filter: 'Filtrar',
   delete: 'Eliminar',

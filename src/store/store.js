@@ -9,6 +9,7 @@ export default new Vuex.Store({
     Login
   },
   state: {
+    visibleNewSale: false,
     isLogged: false,
     isLoading: false,
     isLoadingModal: false,

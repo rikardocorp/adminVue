@@ -13,15 +13,15 @@
           </li>
           <li class="list-group-item justify-content-between">
             <span class="badge badge-pill" style="border: 1px solid #FF9800; background: #ffe956;">&nbsp;&nbsp;</span>
-            <span class="float-left">Carrito de Compras.</span>
+            <span class="float-left">Carrito de compras.</span>
           </li>
           <li class="list-group-item justify-content-between">
             <span class="badge badge-danger badge-pill">&nbsp;&nbsp;</span>
-            <span>Venta en Proceso - Poliza asignada.</span>
+            <span>Venta en proceso - Poliza asignada.</span>
           </li>
           <li class="list-group-item justify-content-between">
             <span class="badge badge-primary badge-pill">&nbsp;&nbsp;</span>
-            <span>Venta en Proceso - Contratante.</span>
+            <span>Venta en proceso - Contratante.</span>
           </li>
           <li class="list-group-item justify-content-between">
             <span class="badge badge-info badge-pill">&nbsp;&nbsp;</span>
@@ -37,7 +37,7 @@
           </li>
           <li class="list-group-item justify-content-between">
             <span class="badge badge-pill" style="background: #454545">&nbsp;&nbsp;</span>
-            <span>Contrato Vencido</span>
+            <span>Contrato vencido</span>
           </li>
           <!--<li class="list-group-item justify-content-between">-->
             <!--<span class="badge badge-default badge-pill">5</span>-->
@@ -112,7 +112,6 @@
         </div>
       </div>
     </b-form>
-    <!--<pre>{{item}}</pre>-->
   </b-card>
 </template>
 

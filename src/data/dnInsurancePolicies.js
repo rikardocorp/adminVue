@@ -64,7 +64,7 @@ export const DATA_FORM = {
     },
     insuranceCompany: {
       label: 'Aseguradoras',
-      placeholder: 'Compañia de Seguro',
+      placeholder: 'Compañía de Seguro',
       type: 'text',
       input: 'multiselect',
       params: {
@@ -79,7 +79,7 @@ export const DATA_FORM = {
     },
     policyType: {
       label: 'Tipo de Poliza',
-      placeholder: 'Tipo de la Poliza',
+      placeholder: 'Tipo de la Póliza',
       type: 'text',
       input: 'multiselect',
       params: {

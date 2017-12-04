@@ -1,7 +1,7 @@
 <template>
   <footer class="app-footer">
-    <a href="http://coreui.io">Rcorp</a> &copy; 2017 ApqAPP.
-    <span class="float-right">Desarrolado por <a href="http://coreui.io">Admin Aqp</a></span>
+    <a href="http://coreui.io">JMC INTEGRAL SAC</a> &copy; 2017 AREQUIPA.
+    <span class="float-right">Desarrolado por <a href="http://www.devaqpgroup.com">Devaqpgroup</a></span>
   </footer>
 </template>
 <script>

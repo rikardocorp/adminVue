@@ -299,6 +299,7 @@
       width: 21em;
       cursor: pointer;
       font-size: 0.9em;
+      overflow: visible;
       .cardCenter{
         width: 18em;
       }

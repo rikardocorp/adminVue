@@ -4,7 +4,7 @@
       <slot name="title"></slot>
     </div>
 
-    <b-form :id="id">
+    <b-form :id="id" class="first-full-price-form">
       <b-form-group v-for="(option, index) in optInput" :key="index" :label-sr-only="option.srOnly"
                     :class="{ 'form-group--error': $v.item[index]? $v.item[index].$error : false, 'text-left': true}"
                     :label-cols="option.srOnly ? null : lCols"
@@ -73,7 +73,7 @@
 
         <form-error :data="$v.item[index]? $v.item[index] : {} "></form-error>
       </b-form-group>
-      <div slot="footer" class="text-right">
+      <div slot="footer" class="text-right ">
         <b-button v-if="restricted" class="float-left" @click="resetForm(id, true)" :disabled="isLoading" size="sm" variant="danger"><i class="fa fa-ban"></i> Cancel</b-button>
         <b-button v-else="" class="float-left" @click="resetForm(id)" :disabled="isLoading" size="sm" variant="outline-secondary"><i class="fa fa-ban"></i> {{$global.reset}}</b-button>
         <b-button class="float-right" @click.prevent="eventForm" :disabled="isLoading || restricted" type="submit" size="sm" variant="primary"><i class="fa fa-dot-circle-o"></i> Generar</b-button>
@@ -183,6 +183,9 @@
 
 <style lang="scss">
   .fullPrice{
+    .first-full-price-form .form-row{
+      /*margin-top: 0.3em;*/
+    }
     .vdp-datepicker{
       width: auto;
     }

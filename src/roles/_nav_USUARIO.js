@@ -1,17 +1,9 @@
 export default {
   items: [
     {
-      name: 'Dashboard',
-      url: '/dashboard',
-      icon: 'icon-speedometer',
-      badge: {
-        variant: 'warning',
-        text: 'NEW'
-      }
-    },
-    {
-      title: true,
-      name: 'Perfil'
+      name: 'Pagina Principal',
+      url: '/cliente',
+      icon: 'icon-speedometer'
     },
     {
       name: 'Perfil de Usuario',
@@ -19,17 +11,9 @@ export default {
       icon: 'fa fa-user'
     },
     {
-      title: true,
-      name: 'Mis Compras'
-    },
-    {
       name: 'Carrito',
       url: '/carrito-compras',
       icon: 'fa fa-handshake-o',
-      badge: {
-        variant: 'warning',
-        text: 'NEW'
-      }
     },
     // {
     //   name: 'Poliza Vendida',
@@ -49,18 +33,23 @@ export default {
       url: '/cotizar-admin',
       icon: 'fa fa-money',
       badge: {
-        variant: 'warning',
-        text: 'NEW'
+        variant: 'success',
+        text: 'online'
       }
     },
     {
-      name: 'Venta Cliente',
+      name: 'Nueva Compra',
       url: '/venta-cliente',
       icon: 'fa fa-mobile',
+      display: true,
       badge: {
-        variant: 'info',
-        text: 'NEW'
+        variant: 'success'
       }
+    },
+    {
+      name: 'Seguro Vehicular',
+      url: '/seguro-vehicular',
+      icon: 'fa fa-car'
     }
   ]
 }
