@@ -62,7 +62,6 @@ const mutations = {
   },
   setAuthHeader: (state) => {
     console.log('HEADER')
-    // alert('HEADER')
     Vue.http.headers.common['Authorization'] = localStorage.getItem('authorization')
     Vue.set(state.user, 'isLogged', true)
   },
@@ -253,21 +252,7 @@ const actions = {
       console.log('response: IDENTITY')
       console.log(response)
       let data = response.data.data
-      localStorage.setItem('UserLog', JSON.stringify(data))
-      localStorage.setItem('ROLE', data.authorities[0].authority)
-      localStorage.setItem('facebook', data.user.facebook)
-      localStorage.setItem('username', data.username)
-      localStorage.setItem('date', data.date)
-      localStorage.setItem('time', data.time)
-
-      let user = {
-        role: data.authorities[0].authority,
-        data: data.user,
-        date: data.date,
-        time: data.time,
-        isClient: data.authorities[0].authority === 'ROLE_USUARIO'
-      }
-      commit('setUser', user)
+      dispatch('setDataUser', data)
 
       if (payload.router) dispatch('redirectROLE')
       commit('switchLoading', false)
@@ -276,8 +261,39 @@ const actions = {
       commit('switchLoading', false)
       console.log('ERROR: IDENTITY')
       console.log(error)
+      alert('error getData')
       commit('logout')
     })
+  },
+  setDataUser: ({ commit, state }, data) => {
+    localStorage.setItem('UserLog', JSON.stringify(data))
+    localStorage.setItem('ROLE', data.authorities[0].authority)
+    localStorage.setItem('facebook', data.user.facebook)
+    localStorage.setItem('username', data.username)
+    localStorage.setItem('date', data.date)
+    localStorage.setItem('time', data.time)
+    let user = {
+      role: data.authorities[0].authority,
+      data: data.user,
+      date: data.date,
+      time: data.time,
+      isClient: data.authorities[0].authority === 'ROLE_USUARIO'
+    }
+    console.log(user)
+    commit('setUser', user)
+  },
+  validToken: ({ commit, state }, data) => {
+    commit('switchLoading', true)
+    let promise = new Promise((resolve, reject) => {
+      Vue.http.get(state.DATAUSER_URL).then(response => {
+        commit('switchLoading', false)
+        resolve(response.data.success)
+      }).catch(error => {
+        commit('switchLoading', false)
+        resolve(false)
+      })
+    })
+    return promise
   },
   redirectROLE: function () {
     /// alert('auth')

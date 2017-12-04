@@ -835,9 +835,9 @@
             <a class="copy-link scroll-top" href="#">&copy; Desarrollado por
               <b>DevAqp Group</b>
             </a>
-            <br /> Todos los derechos reservados por
+            <br /> Todos los derechos reservados por <br>
             <a target="_blank" href="#">
-              <b> JMC INTEGRAL</b>
+              <b>JMC INTEGRAL S.A.C. ASESORES Y CORREDORES DE SEGUROS</b>
             </a>
           </p>
         </div>
@@ -894,8 +894,8 @@
 
         // Google
         googleSignInParams: {
-           client_id: '833712505628-imprrpljbf80th9nsek1q4hmcp2gqjll.apps.googleusercontent.com'
-//          client_id: '54563486287-d3ccvubvf768a4p1hgubvs1h3ktv2jo2.apps.googleusercontent.com' // JMC Integral
+//           client_id: '833712505628-imprrpljbf80th9nsek1q4hmcp2gqjll.apps.googleusercontent.com'
+          client_id: '54563486287-d3ccvubvf768a4p1hgubvs1h3ktv2jo2.apps.googleusercontent.com' // JMC Integral
         },
         center: {lat: -16.404388, lng: -71.543704},
         markers: [{

@@ -24,7 +24,8 @@
             <!--ALL SALES -->
             <div v-if="items.length" class="card-insurance row d-flex justify-content-center pt-3">
               <!-- SALES LIST -->
-              <div v-for="(x, index) in items" :key="x.id" >
+              <div v-for="(x, index) in items" :key="x.id"
+                   :class="{'state-1': x.state==1, 'state-2': x.state==2, 'state-3': x.state==3, 'state-4': x.state==4, 'state-5': x.state==5}">
 
                 <!-- SALES -->
                 <div v-if="x.insurancePolicy !== undefined"
@@ -47,7 +48,7 @@
 
                   <div class="card-ticket cardCenter dashed">
                     <div :class="{'xtitle': true, 'bg-danger': x.state==1, 'bg-primary': x.state==2, 'bg-info': x.state==3, 'bg-success': x.state==4, 'bg-blue': x.state==5}">
-                      Placa {{ x.vehicle ? x.vehicle.licensePlate : 'S/N' }}
+                      Placa: {{ x.vehicle ? x.vehicle.licensePlate : 'S/N' }}
                       <!--<button class="btn btn-danger"><i class="fa fa-trash"></i></button>-->
                     </div>
                     <div class="xcontent">
@@ -78,7 +79,7 @@
                   </div>
                   <div class="card-ticket cardCenter dashed">
                     <div :class="{'xtitle': true, 'bg-cart': true}">
-                      Placa {{ x.vehicle.licensePlate }}
+                      Placa: {{ x.vehicle.licensePlate }}
                       <!--<button class="btn btn-danger"><i class="fa fa-trash"></i></button>-->
                     </div>
                     <div class="xcontent">
@@ -194,16 +195,16 @@
         }
       },
       selectedSale (item, isSale) {
-        alert(isSale)
+        // alert(isSale)
         console.log('item.state')
         console.log(item)
         if (item.state === 1 || item.state === 0 || item.state === null) return false
 
         if (isSale) {
-          alert('sale')
+          // alert('sale')
           this.selectedItem = item
         } else {
-          alert('cart')
+          // alert('cart')
           this.selectedItemCart = item
         }
         this.isSale = isSale
@@ -285,7 +286,12 @@
           color: #4ebc75;
           transform: rotate(0deg);
           font-size: 3em;
-          left: 5.9em;
+          left: 6.2em;
+        }
+      }
+      .state-5 {
+        .icon-cart{
+          color: #2e85e8;
         }
       }
     }

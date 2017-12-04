@@ -347,8 +347,17 @@ const router = new Router({
 router.beforeEach((to, from, next) => {
   const authUser = JSON.parse(localStorage.getItem('UserLog'))
   const token = localStorage.getItem('authorization')
-  if (to.name === 'Dashboard' && localStorage.getItem('authorization') === null) {
-    // alert(localStorage.getItem('authorization'))
+
+  let isLogged = store.state.Login.user.isLogged
+  let loggedAux = isLogged
+  if (!isLogged) {
+    if (authUser && token) {
+      store.commit('setAuthHeader')
+      store.dispatch('setDataUser', authUser)
+    }
+  }
+
+  if (to.name === 'Dashboard' && token === null) {
     next({name: 'webpage'})
   } else if (to.name === 'Recover') {
     next()
@@ -360,20 +369,28 @@ router.beforeEach((to, from, next) => {
       next()
     }
   } else if (to.meta.requiresAuth) {
-    // alert('rick')
     if (!authUser || !token) {
       next({name: 'Login'})
     } else {
       let localRole = authUser.authorities[0].authority
       if (to.meta[localRole] !== undefined && to.meta[localRole]) {
-        next()
+        if (!loggedAux) next()
+        store.dispatch('validToken').then(response => {
+          console.log('response')
+          console.log(response)
+          if (!response) {
+            store.commit('sendNotification', {message: 'Su sesion ha expirado, vuelva a ingresar al sistema', status: null})
+            next(false)
+          } else {
+            next()
+          }
+        })
       } else {
         store.dispatch('redirectROLE')
         next(false)
       }
     }
   } else {
-    // alert('NO META')
     console.log('No META')
     next()
   }
@@ -381,20 +398,21 @@ router.beforeEach((to, from, next) => {
 
 router.afterEach((to, from) => {
   if (to.name === 'Recover') return false
-  let isLogged = store.state.Login.user.isLogged
-  if (!isLogged) {
-    const authUser = JSON.parse(localStorage.getItem('UserLog'))
-    const token = localStorage.getItem('authorization')
-    if (authUser && token) {
-      // alert('sethHeaders')
-      store.commit('setAuthHeader')
-      store.dispatch('getDataUser')
-    }
-    // if (to.name === 'Login') return false
-  } else {
-    // alert('getDATAUSER')
-    // store.dispatch('getDataUser')
-  }
+  // let isLogged = store.state.Login.user.isLogged
+
+  // if (!isLogged) {
+  //   const authUser = JSON.parse(localStorage.getItem('UserLog'))
+  //   const token = localStorage.getItem('authorization')
+  //   if (authUser && token) {
+  //     alert('sethHeaders')
+  //     store.commit('setAuthHeader')
+  //     store.dispatch('getDataUser')
+  //   }
+  //   // if (to.name === 'Login') return false
+  // } else {
+  //   // alert('getDATAUSER')
+  //   // store.dispatch('getDataUser')
+  // }
 })
 
 // router.afterEach((to, from) => {

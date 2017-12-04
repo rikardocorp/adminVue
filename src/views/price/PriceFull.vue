@@ -682,7 +682,7 @@
       tr td:first-child{
         background: #717171;
         border: none;
-        div{
+        div:not(.union-line){
           width: 80px !important;
           margin-top: 7%;
           text-align: center;
