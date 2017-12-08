@@ -196,7 +196,8 @@ export const DATA_FILTER = {
     number: '',
     dniRuc: '',
     dateFrom: '',
-    dateTo: ''
+    dateTo: '',
+    user: ''
   }
 }
 
@@ -267,6 +268,22 @@ export const DATA_FORM_FILTER = {
       placeholder: '#Documento de Identidad',
       type: 'number',
       srOnly: true
+    },
+    user: {
+      label: 'Vendedor',
+      placeholder: 'Usuario-venta',
+      type: 'text',
+      input: 'multiselect',
+      srOnly: true,
+      params: {
+        url: 'users',
+        key: 'user',
+        label: 'email',
+        options: [],
+        activate: false,
+        loadData: true,
+        value: ''
+      }
     }
   },
   validate: {

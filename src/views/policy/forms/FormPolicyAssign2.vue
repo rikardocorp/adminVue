@@ -55,7 +55,7 @@
 
     <b-input-group class="mb-3 passDelete">
       <b-input-group-addon class="bg-primary"><i class="fa fa-key"></i></b-input-group-addon>
-      <b-form-input v-model="password" type="password" placeholde="Password para eliminar" title="Password para eliminar"></b-form-input>
+      <b-form-input v-model="password" type="password" placeholder="Password para eliminar" title="Password para eliminar"></b-form-input>
       <b-input-group-button>
         <b-btn variant="danger" @click="deletePolicies">{{$global.delete}}</b-btn>
       </b-input-group-button>
@@ -74,7 +74,7 @@
 <script>
   import Multiselect from 'vue-multiselect'
   import FormError from '../../../components/FormError.vue'
-  import {DATA_FORM_USER as dataForm} from '../../../data/dnPolicyAssign'
+  import {DATA_FORM_USER as dataForm, DATA_FORM_USER2 as dataForm2} from '../../../data/dnPolicyAssign'
   import EventBus from '../../../event-bus'
   export default {
     props: ['horizontal', 'item', 'nameForm', 'list'],
@@ -86,7 +86,7 @@
       return {
         name: 'form-',
         lCols: 3,
-        optInput: dataForm.input,
+        optInput: null,
         selectedKey: '',
         multiselectKeys: [],
         pickAll: {
@@ -106,6 +106,9 @@
     computed: {
       isLoading () {
         return this.$store.state.isLoading
+      },
+      isPuntoVenta () {
+        return this.$store.state.user.isPuntoVenta
       }
     },
     methods: {
@@ -191,9 +194,11 @@
         let officeId = this.item.office ? this.item.office.id : ''
         let roleName = this.item.role ? this.item.role.name : ''
 
-        if (officeId !== '' && roleName !== '' && key !== 'user') {
-          let url = 'users?role=' + roleName + '&officeId=' + officeId
-          this.getOption(url, 'user')
+        if (!this.isPuntoVenta) {
+          if (officeId !== '' && roleName !== '' && key !== 'user') {
+            let url = 'users?role=' + roleName + '&officeId=' + officeId
+            this.getOption(url, 'user')
+          }
         }
       },
       openSelect (id) {
@@ -210,6 +215,11 @@
       }
     },
     created () {
+      if (this.isPuntoVenta) {
+        this.optInput = dataForm2.input
+      } else {
+        this.optInput = dataForm.input
+      }
       let vm = this
       this.$lodash.forEach(this.optInput, function (value, key) {
         if (vm.optInput[key].input === 'multiselect') {

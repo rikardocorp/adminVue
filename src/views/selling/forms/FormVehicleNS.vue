@@ -1,6 +1,12 @@
 <template>
 
   <b-form class="col-md-8 col-lg-6 col-xl-5 m-auto pt-3 pb-4" :id="'form' + index">
+    <div class="d-flex justify-content-center mb-2 mySwitch">
+      <toggle-button :labels="{checked: 'Web', unchecked: 'Manual'}" :color="{checked: 'rgb(239, 123, 34)', unchecked: 'rgb(99, 193, 222)'}"
+                     :disabled="isLoading || restricted" :width="85" :height="28" :sync="true"
+                     v-model="item.policyType" @change="changePolicy" class="mr-2">
+      </toggle-button>
+    </div>
 
     <b-form-group v-for="(option, _index) in optInput" :key="_index"
                   :class="{ 'form-group--error': $v.item[_index]? $v.item[_index].$error : false, 'text-left': true}"
@@ -63,16 +69,18 @@
   import Datepicker from 'vuejs-datepicker'
   import Multiselect from 'vue-multiselect'
   import FormError from '../../../components/FormError.vue'
+  import ToggleButton from '../../../components/ToggleButton.vue'
   import Avatar from '../../../components/Avatar.vue'
   import {DATA_VEHICLE as _vehicle} from '../../../data/dnNewSales'
-  import { required,between } from 'vuelidate/lib/validators'
+  import { required, between } from 'vuelidate/lib/validators'
 
   export default {
     components: {
       Datepicker,
       Multiselect,
       FormError,
-      Avatar
+      Avatar,
+      ToggleButton
     },
     props: ['urlRest', 'item', 'pickPolice', 'update', 'horizontal', 'index', 'keyname', 'restricted', 'dispatch'],
     data () {
@@ -83,7 +91,8 @@
         value: [],
         color: '',
         selectedKey: '',
-        multiselectKeys: []
+        multiselectKeys: [],
+        policyType: ''
       }
     },
     computed: {
@@ -107,6 +116,16 @@
       return _vehicle.validate
     },
     methods: {
+      changePolicy () {
+        if (this.pickPolice !== undefined) {
+          this.item.insurancePolicy = ''
+          let companyId = this.pickPolice.insuranceCompanyId
+          let user = JSON.parse(localStorage.getItem('UserLog'))
+          let policyType = this.item.policyType === 1 ? 'W' : 'M'
+          let url = 'insurancepolicies?insuranceCompanyId=' + companyId + '&sold=0&userId=' + user.user.id + '&policyType=' + policyType
+          this.getOption(url, 'insurancePolicy')
+        }
+      },
       getOption (urlRest, index) {
         let self = this.$store.dispatch('dispatchHTTP', {type: 'LOAD_TABLE', url: urlRest, data: {key: this.optInput[index].params.localData}})
         self.then((data) => {
@@ -161,14 +180,11 @@
     created () {
       console.log('this.pickPolice')
       console.log(this.pickPolice)
-      if (this.pickPolice !== undefined) {
-        let companyId = this.pickPolice.insuranceCompanyId
-        // let myUserID = this.$store.state.user.data.id
-        let user = JSON.parse(localStorage.getItem('UserLog'))
-        // this.item['insurancePolicy'] = ''
-        let url = 'insurancepolicies?insuranceCompanyId=' + companyId + '&sold=0&userId=' + user.user.id
-        this.getOption(url, 'insurancePolicy')
-      }
+      let companyId = this.pickPolice.insuranceCompanyId
+      let user = JSON.parse(localStorage.getItem('UserLog'))
+      let policyType = this.item.policyType === 1 ? 'W' : 'M'
+      let url = 'insurancepolicies?insuranceCompanyId=' + companyId + '&sold=0&userId=' + user.user.id + '&policyType=' + policyType
+      this.getOption(url, 'insurancePolicy')
     }
 
   }

@@ -29,7 +29,6 @@
             <button v-b-tooltip.bottom @click="imprimir()" title="Imprimir" class="btn btn-in-title-right bg-info"><i class="fa fa-print"></i></button>
           </div>
 
-
         </div>
         <div class="row">
           <div class="col-md-6 borderChild">
@@ -199,6 +198,7 @@
         </div>
       </b-card>
     </div>
+    <!-- List Pays -->
     <div class="card-insurance row d-flex justify-content-center">
       <div v-for="(x, index) in listPayment" :key="x.id"  :class="{'ticket absolute cardWrap m-2 mb-3 hvr-bounce-in':true, 'pickOption': x.pick}">
         <div class="card-ticket cardLeft">
@@ -229,6 +229,21 @@
           </div>
         </div>
       </div>
+    </div>
+
+    <!-- DELETE SALE -->
+    <div class="col-md-6 col-sm-12 col-lg-6 col-xl-5 m-auto pt-4">
+      <b-input-group class="mb-3 passDelete">
+        <b-input-group-addon class="bg-danger"><i class="fa fa-key"></i></b-input-group-addon>
+        <b-form-input v-model="password"
+                      type="password"
+                      style="border: 1px solid #f86c6b;"
+                      placeholder="Introduce tu contraseña para eliminar la venta"
+                      title="Password para eliminar"></b-form-input>
+        <b-input-group-button>
+          <b-btn variant="danger" @click="deleteSale">{{$global.delete}}</b-btn>
+        </b-input-group-button>
+      </b-input-group>
     </div>
     <!--<pre>{{ item }}</pre>-->
 
@@ -278,7 +293,8 @@
         payment: dataPay.post,
         urlPayment: dataPay.name,
         urlFile: '',
-        optionPrint: false
+        optionPrint: false,
+        password: ''
       }
     },
     watch: {
@@ -342,6 +358,10 @@
       }
     },
     methods: {
+      deleteSale () {
+        let saleId = this.item2.id
+        alert('DELETE ' + saleId)
+      },
       uploadCallBack (value) {
         this.item2.policy = value.policy
       },
@@ -442,123 +462,128 @@
 </script>
 
 <style lang="scss">
-  #saleDetail{
-    font-family: 'jmc';
+  .card-danger > .card-header{
+    background: #f86c6b !important;
+  }
 
-    .numberPolicy{
-      color: rgb(100, 193, 222);
-      padding-bottom: 0.4em;
-      text-decoration: underline;
-    }
+  /*#saleDetail{*/
+    /*font-family: 'jmc';*/
 
-    .infoPolicy{
-      p{
-        margin: 0;
-        padding: 0;
-        font-size: 0.85em;
-        &.xsTitle{
-          color: #f26f36;
-          font-size: 1.2em;
-        }
-      }
-    }
-    p.title{
-      width: 100%;
-      text-align: center;
-      //color: #ef7b21;
-      font-weight: 500;
-      border: 1px solid;
-      background: #ffa501;
-      color: white;
-      border-radius: 0.5em;
-      font-size: 1.1em;
-    }
-    p{
-      margin: 0;
-      padding: 0;
-      text-align: center;
-      width: 100%;
-    }
-    .bolder{
-      font-weight: bold;
-    }
+    /*.numberPolicy{*/
+      /*color: rgb(100, 193, 222);*/
+      /*padding-bottom: 0.4em;*/
+      /*text-decoration: underline;*/
+    /*}*/
 
-    .subtitle{
-      span{
-        font-size: 0.9em;
-        color: #9c9c9c;
-        background: #f4f3ef;
-        padding: 0 0.5em;
-      }
-    }
+    /**/
+    /*.infoPolicy{*/
+      /*p{*/
+        /*margin: 0;*/
+        /*padding: 0;*/
+        /*font-size: 0.85em;*/
+        /*&.xsTitle{*/
+          /*color: #f26f36;*/
+          /*font-size: 1.2em;*/
+        /*}*/
+      /*}*/
+    /*}*/
+    /*p.title{*/
+      /*width: 100%;*/
+      /*text-align: center;*/
+      /*//color: #ef7b21;*/
+      /*font-weight: 500;*/
+      /*border: 1px solid;*/
+      /*background: #ffa501;*/
+      /*color: white;*/
+      /*border-radius: 0.5em;*/
+      /*font-size: 1.1em;*/
+    /*}*/
+    /*p{*/
+      /*margin: 0;*/
+      /*padding: 0;*/
+      /*text-align: center;*/
+      /*width: 100%;*/
+    /*}*/
+    /*.bolder{*/
+      /*font-weight: bold;*/
+    /*}*/
 
-    .value{
-      text-align: right;
-      font-size: 1.1em;
-      color: #444444;
-      &.vigente{
-        margin-top: 10px;
-        font-size: 1.1em;
-        span{
-          background: #ef7b1f;
-          color: #ffffff;
-          padding: 0.2em 0.6em;
-          border-radius: 2em;
-        }
-        &.vencido{
-          font-size: 1.1em;
-          span{
-            background: red;
-            padding: 0.2em 0.6em;
-          }
-        }
-      }
-    }
+    /*.subtitle{*/
+      /*span{*/
+        /*font-size: 0.9em;*/
+        /*color: #9c9c9c;*/
+        /*background: #f4f3ef;*/
+        /*padding: 0 0.5em;*/
+      /*}*/
+    /*}*/
 
-    .borderChild{
-      >.row{
-        >div{
-          border: 1px dashed rgba(244, 243, 239, 0.62);
-          padding: 0.3em 1em;
-        }
-      }
-    }
+    /*.value{*/
+      /*text-align: right;*/
+      /*font-size: 1.1em;*/
+      /*color: #444444;*/
+      /*&.vigente{*/
+        /*margin-top: 10px;*/
+        /*font-size: 1.1em;*/
+        /*span{*/
+          /*background: #ef7b1f;*/
+          /*color: #ffffff;*/
+          /*padding: 0.2em 0.6em;*/
+          /*border-radius: 2em;*/
+        /*}*/
+        /*&.vencido{*/
+          /*font-size: 1.1em;*/
+          /*span{*/
+            /*background: red;*/
+            /*padding: 0.2em 0.6em;*/
+          /*}*/
+        /*}*/
+      /*}*/
+    /*}*/
 
-    .detailPay{
-      .subtitle{
-        span{
-          color: white;
-          padding: 0.1em 0.4em;
-          border-radius: 1em;
-          font-size: 0.9em;
-          font-weight: 600;
-        }
-      }
-      .value{
-        font-size: 1.3em;
-        span{
-          color: #a8a8a7;
-          font-size: 0.8em;
-        }
-      }
-      .col-md-12{
-        overflow: hidden;
-      }
-    }
+    /*.borderChild{*/
+      /*>.row{*/
+        /*>div{*/
+          /*border: 1px dashed rgba(244, 243, 239, 0.62);*/
+          /*padding: 0.3em 1em;*/
+        /*}*/
+      /*}*/
+    /*}*/
 
-    .formPay{
-      background: #ffa501;
-      padding: 0.5em 1em 1em;
-      border-radius: 0.51em;
-      div{
-        border: none !important;
-      }
-      .title{
-        color: white;
-        font-size: 1.4em;
-      }
-    }
-  },
+    /*.detailPay{*/
+      /*.subtitle{*/
+        /*span{*/
+          /*color: white;*/
+          /*padding: 0.1em 0.4em;*/
+          /*border-radius: 1em;*/
+          /*font-size: 0.9em;*/
+          /*font-weight: 600;*/
+        /*}*/
+      /*}*/
+      /*.value{*/
+        /*font-size: 1.3em;*/
+        /*span{*/
+          /*color: #a8a8a7;*/
+          /*font-size: 0.8em;*/
+        /*}*/
+      /*}*/
+      /*.col-md-12{*/
+        /*overflow: hidden;*/
+      /*}*/
+    /*}*/
+
+    /*.formPay{*/
+      /*background: #ffa501;*/
+      /*padding: 0.5em 1em 1em;*/
+      /*border-radius: 0.51em;*/
+      /*div{*/
+        /*border: none !important;*/
+      /*}*/
+      /*.title{*/
+        /*color: white;*/
+        /*font-size: 1.4em;*/
+      /*}*/
+    /*}*/
+  /*},*/
 
   #contentDetailSale{
 
@@ -623,6 +648,4 @@
       }
     }
   }
-
-
 </style>

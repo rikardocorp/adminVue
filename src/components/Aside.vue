@@ -37,7 +37,7 @@
         <!--<pre>{{ userLocal}}</pre>-->
       </b-tab>
 
-      <b-tab v-if="!isClient" title="<i class='fa fa-car'></i>" @click="getSalesCart" class="tab-cars-sales">
+      <b-tab v-if="!isClient && !isPuntoVenta" title="<i class='fa fa-car'></i>" @click="getSalesCart" class="tab-cars-sales">
         <!--<pre>{{ listSaleCart }}</pre>-->
         <Callout class="m-0 py-2 text-muted text-center bg-light text-uppercase">
           <small><b>Solicitudes de Venta</b></small>
@@ -271,6 +271,9 @@
       },
       isClient () {
         return this.$store.state.user.isClient
+      },
+      isPuntoVenta () {
+        return this.$store.state.user.isPuntoVenta
       }
     },
     watch: {

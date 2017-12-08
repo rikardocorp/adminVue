@@ -81,21 +81,6 @@ export const DATA_FORM = {
         editDisable: false
       }
     },
-    office: {
-      label: 'Oficina',
-      placeholder: 'Asignar a oficina',
-      type: 'text',
-      input: 'multiselect',
-      params: {
-        url: 'offices',
-        key: 'office',
-        label: 'description',
-        options: [],
-        activate: false,
-        loadData: true,
-        value: ''
-      }
-    },
     _role: {
       label: 'ROLES',
       placeholder: 'ROLES',
@@ -111,6 +96,21 @@ export const DATA_FORM = {
         localData: 'roles',
         value: '',
         editDisable: true
+      }
+    },
+    office: {
+      label: 'Oficina',
+      placeholder: 'Asignar a oficina',
+      type: 'text',
+      input: 'multiselect',
+      params: {
+        url: 'offices',
+        key: 'office',
+        label: 'description',
+        options: [],
+        activate: false,
+        loadData: true,
+        value: ''
       }
     }
   },
@@ -135,6 +135,61 @@ export const DATA_FORM = {
       },
       _role: {
         required
+      }
+    }
+  }
+}
+
+export const DATA_FORM2 = {
+  input: {
+    firstName: {
+      label: 'Nombres',
+      placeholder: 'Nombre del usuario',
+      type: 'text',
+      params: {
+        editDisable: false
+      }
+    },
+    lastName: {
+      label: 'Apellidos',
+      placeholder: 'Apellidos del usuario',
+      type: 'text',
+      params: {
+        editDisable: false
+      }
+    },
+    email: {
+      label: 'Email',
+      placeholder: 'Correo electronico',
+      type: 'email',
+      params: {
+        editDisable: true
+      }
+    },
+    phone: {
+      label: 'Telefono',
+      placeholder: 'Numero celular',
+      type: 'number',
+      params: {
+        editDisable: false
+      }
+    }
+  },
+  validate: {
+    item: {
+      firstName: {
+        required
+      },
+      lastName: {
+        required
+      },
+      email: {
+        required,
+        email
+      },
+      phone: {
+        required,
+        numeric
       }
     }
   }

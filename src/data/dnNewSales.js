@@ -3,6 +3,7 @@ import { required, minLength, maxLength, between, numeric, email, alphaNum } fro
 export const DATA_VEHICLE = {
   name: 'vehicles',
   post: {
+    policyType: 1,
     insurancePolicy: '',
     licensePlate: '',
     manufacturingYear: '',
@@ -473,6 +474,7 @@ export const DATA_VEHICLETYPE = {
   name: 'vehicletypecategories',
   post: {
     insuranceCompany: null,
+    policyType: null,
     insurancePolicy: null,
     insuranceType: null,
     useType: null,
@@ -501,6 +503,25 @@ export const DATA_VEHICLETYPE = {
         options: [],
         activate: false,
         loadData: true,
+        value: ''
+      }
+    },
+    policyType: {
+      label: 'Tipo de Poliza',
+      placeholder: 'Tipo de la Póliza',
+      type: 'text',
+      icon: 'fa fa-file-text',
+      input: 'multiselect',
+      params: {
+        url: 'policyTypes',
+        key: 'policyType',
+        label: 'name',
+        options: [
+          {id: 'W', name: 'WEB'},
+          {id: 'M', name: 'Manual'}
+        ],
+        activate: true,
+        loadData: false,
         value: ''
       }
     },
@@ -638,6 +659,9 @@ export const DATA_VEHICLETYPE = {
         required
       },
       insuranceCompany: {
+        required
+      },
+      policyType: {
         required
       },
       insurancePolicy: {

@@ -324,13 +324,13 @@
           let oldSale = JSON.parse(localStorage.getItem('sale'))
           this.setFormFill('sale', true)
           if (this.data.vehicle.item.insurancePolicy.id === oldSale.insurancePolicy.id) {
-            alert('mismo')
+//            alert('mismo')
           } else {
             this.data.sale.item.insurancePolicy = this.data.vehicle.item.insurancePolicy
             let updateSale = await this.updateSale(saleId)
             if (!updateSale.status) return false
             localStorage.setItem('sale', JSON.stringify(this.data.sale.item))
-            alert('diferente')
+//            alert('diferente')
           }
           localStorage.setItem('vehicle', JSON.stringify(this.data.vehicle.item))
           console.log('this.data.vehicle.item')
@@ -675,6 +675,7 @@
         this.data.purchaser.validate = false
         // this.mySwitch = true
         this.initData()
+        this.$set(this.$store.state, 'visibleNewSale', false)
         this.$router.push('cotizar-admin')
       },
       setDefault () {

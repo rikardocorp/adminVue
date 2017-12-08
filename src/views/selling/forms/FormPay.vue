@@ -13,7 +13,7 @@
     </div>
 
     <div class="d-flex justify-content-center mb-2 mySwitch">
-      <toggle-button :labels="{checked: 'Efectivo', unchecked: 'Targeta'}" :color="{checked: 'rgb(239, 123, 34)', unchecked: 'rgb(99, 193, 222)'}"
+      <toggle-button :labels="{checked: 'Efectivo', unchecked: 'Tarjeta'}" :color="{checked: 'rgb(239, 123, 34)', unchecked: 'rgb(99, 193, 222)'}"
                      :disabled="isLoading || restricted" :width="85" :height="28" :sync="true"
                      v-model="item.paymentType" @change="" class="mr-2">
       </toggle-button>

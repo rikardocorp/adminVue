@@ -33,7 +33,7 @@
                   <!--<i class="fa fa-thumb-tack" aria-hidden="true"></i>-->
                   <i v-if="x.cart" class="fa fa-shopping-cart icon-cart" aria-hidden="true"></i>
 
-                  <div class="card-ticket cardLeft" v-if="x.state !== 0 && x.state !== 1 && x.state !== null">
+                  <div class="card-ticket cardLeft" v-if="x.state !== 0 && x.state !== null">
                     <avatar :username="x.insurancePolicy.insuranceCompany.name" :rounded="true" :size="6.4" sizeUnid="em"
                             :src="path + '/' + x.insurancePolicy.insuranceCompany.image" :alt="x.insurancePolicy.insuranceCompany.name"
                             :border="true" colorBorder="#f4f3ef" color="#ecedef" :localSrc="false"
@@ -49,6 +49,7 @@
                   <div class="card-ticket cardCenter dashed">
                     <div :class="{'xtitle': true, 'bg-danger': x.state==1, 'bg-primary': x.state==2, 'bg-info': x.state==3, 'bg-success': x.state==4, 'bg-blue': x.state==5}">
                       Placa: {{ x.vehicle ? x.vehicle.licensePlate : 'S/N' }}
+                      <button v-if="(x.insurancePolicy.user.id == $store.state.user.data.id || $store.state.user.role=='ROLE_ADMIN') && x.state==1" @click="deleteSale(x)" class="btn btn-danger"><i class="fa fa-trash"></i></button>
                       <!--<button class="btn btn-danger"><i class="fa fa-trash"></i></button>-->
                     </div>
                     <div class="xcontent">
@@ -167,6 +168,18 @@
       }
     },
     methods: {
+      async deleteSale (item) {
+        let url = 'sales/' + item.id
+        console.log(url)
+        let self = await this.$store.dispatch('dispatchHTTP', {type: 'DELETE', url: url})
+        console.log(self)
+        if (!self.status) return false
+        else {
+          let indexSelected = this.$lodash.findIndex(this.items, item)
+          this.items.splice(indexSelected, 1)
+          console.log('Success')
+        }
+      },
       defaulValueForm1 () {
         this.itemForm1 = JSON.parse(JSON.stringify(dataSale.post))
       },
@@ -272,7 +285,7 @@
       .zoomPolicy:hover{
         zoom: 2;
       }
-      i {
+      i.icon-cart {
         position: absolute;
         color: #3db3e8;
         font-size: 3.3em;
@@ -281,13 +294,10 @@
         left: 5.5em;
         z-index: 2;
         display: block !important;
-
-        &.icon-cart{
-          color: #4ebc75;
-          transform: rotate(0deg);
-          font-size: 3em;
-          left: 6.2em;
-        }
+        color: #4ebc75;
+        transform: rotate(0deg);
+        font-size: 3em;
+        left: 6.2em;
       }
       .state-5 {
         .icon-cart{
@@ -318,7 +328,8 @@
             font-size: 0.9em;
             position: absolute;
             right: 10px;
-            top: 8px;
+            top: 4px;
+            border: 1px solid #de5555;
           }
         }
         .xcontent{

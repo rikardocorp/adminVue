@@ -848,7 +848,7 @@
                    animation-type="velocity"
                    :speed="500" :duration="3000" :max="5">
     </notifications>
-    <pre>{{google}}</pre>
+    <!--<pre>{{google}}</pre>-->
   </div>
 </template>
 
@@ -1212,6 +1212,10 @@
     max-height: 100vh;
     background-color: #fff;
     overflow: hidden;
+
+    /*.post-media{*/
+      /*border-radius: 3em;*/
+    /*}*/
 
     .g-signin-button {
       background: #e04931;

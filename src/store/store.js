@@ -23,7 +23,8 @@ export default new Vuex.Store({
       data: '',
       date: '',
       time: '',
-      isClient: false
+      isClient: false,
+      isPuntoVenta: false
     },
     logOut: false
   },

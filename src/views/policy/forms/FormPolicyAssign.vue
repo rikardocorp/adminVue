@@ -51,18 +51,18 @@
 
         </b-form-group>
 
-        <!--<b-form-group label="Numeros de Poliza:" :horizontal="false">-->
-          <!--<div class="row">-->
-            <!--<div class="col-sm-6 pr-1">-->
-              <!--<b-form-input :disabled="isLoading" type="text" v-model.trim="item['numberFrom']"-->
-                <!--placeholder="# Desde.."></b-form-input>-->
-            <!--</div>-->
-            <!--<div class="col-sm-6 pl-1">-->
-              <!--<b-form-input :disabled="isLoading" type="text" v-model.trim="item['numberTo']"-->
-                            <!--placeholder="# Hasta.."></b-form-input>-->
-            <!--</div>-->
-          <!--</div>-->
-        <!--</b-form-group>-->
+        <b-form-group label="Rango de Poliza:" :horizontal="false">
+          <div class="row">
+            <div class="col-sm-6 pr-1">
+              <b-form-input :disabled="isLoading" type="number" v-model="item['fromNumber']"
+                placeholder="# Desde.."></b-form-input>
+            </div>
+            <div class="col-sm-6 pl-1">
+              <b-form-input :disabled="isLoading" type="number" v-model="item['toNumber']"
+                            placeholder="# Hasta.."></b-form-input>
+            </div>
+          </div>
+        </b-form-group>
 
         <div slot="footer" class="text-right d-none d-md-block">
             <b-button class="float-left" @click="resetForm(name + nameForm)" :disabled="isLoading" size="sm" variant="outline-secondary"><i class="fa fa-ban"></i> {{$global.reset}}</b-button>
@@ -149,8 +149,10 @@
         let number = this.item.number
         let dateFrom = this.item.dateFrom
         let dateTo = this.item.dateTo
+        let fromNumber = this.item.fromNumber
+        let toNumber = this.item.toNumber
         // let url = 'insurancepolicies/mypolicies?sold=' + sold + '&insuranceCompanyId=' + idCompany
-        let url = 'insurancepolicies?number=' + number + '&insuranceCompanyId=' + idCompany + '&userId=' + idUser + '&sold=' + sold + '&free=' + assign + '&fromDate=' + dateFrom + '&toDate=' + dateTo
+        let url = 'insurancepolicies?fromNumber=' + fromNumber + '&toNumber=' + toNumber + '&number=' + number + '&insuranceCompanyId=' + idCompany + '&userId=' + idUser + '&sold=' + sold + '&free=' + assign + '&fromDate=' + dateFrom + '&toDate=' + dateTo
         console.log('URL-------')
         console.log(url)
         let self = await this.$store.dispatch('dispatchHTTP', {type: 'GET', url: url})

@@ -1,4 +1,4 @@
-<template>
+ <template>
   <div class="col-md-10 m-auto pt-3 pb-4 myPoliza">
     <!--<div class="title text-center h3 mb-3 text-primary">Venta Registrada</div>-->
 
@@ -87,12 +87,12 @@
       </b-button>
 
       <!-- PARA LA POSITIVA -->
-      <div v-if="data.pickPolice.item.insuranceCompanyId==1" class="text-center mt-3">
-        <toggle-button :labels="{checked: 'Manual', unchecked: 'WEB'}" :color="{checked: 'rgb(239, 123, 34)', unchecked: 'rgb(181, 181, 181)'}"
-                       :width="85" :height="32" :sync="true"
-                       v-model="typePositiva" class="mr-2">
-        </toggle-button>
-      </div>
+      <!--<div v-if="data.pickPolice.item.insuranceCompanyId==1" class="text-center mt-3">-->
+        <!--<toggle-button :labels="{checked: 'Manual', unchecked: 'WEB'}" :color="{checked: 'rgb(239, 123, 34)', unchecked: 'rgb(181, 181, 181)'}"-->
+                       <!--:width="85" :height="32" :sync="true"-->
+                       <!--v-model="typePositiva" class="mr-2">-->
+        <!--</toggle-button>-->
+      <!--</div>-->
 
       <!-- PARA LA AFOCAT 6Y7 -->
       <div v-if="data.pickPolice.item.insuranceCompanyId==6 || data.pickPolice.item.insuranceCompanyId==7" class="text-center mt-3">
@@ -119,6 +119,7 @@
                      <!--v-model="hasEmail" class="ml-2" @change="changeEmail">-->
       <!--</toggle-button>-->
     <!--</div>-->
+    <!--<pre>{{data.vehicle.item.insurancePolicy.policyType}}</pre>-->
   </div>
 
 </template>
@@ -194,6 +195,7 @@
         let idCompany = this.data.pickPolice.item.insuranceCompanyId
         let idSale = this.data.sale.item.id
         let url = this.getUrlPrint(idCompany, idSale)
+        console.log(url)
         let self = this.$store.dispatch('dispatchHTTP', {type: 'LOAD_PDF', url: url})
         self.then((response) => {
           let data = response.content
@@ -213,11 +215,12 @@
       getUrlPrint (idCompany, idSale) {
         let url = ''
         let type = ''
+        let typePositiva = this.data.vehicle.item.insurancePolicy.policyType
         if (idCompany === 1) {
-          type = this.typePositiva ? 1 : 2
+          type = typePositiva === 'M' ? 1 : 2
           url = 'sales/' + idSale + '/printpolicy?positiva=' + type
         } else if (idCompany === 6 || idCompany === 7) {
-          type = this.typePositiva ? 1 : 2
+          type = this.typeAfocat ? 1 : 2
           url = 'sales/' + idSale + '/printpolicy?afocat_manual_centrado=' + type
         } else {
           url = 'sales/' + idSale + '/printpolicy'

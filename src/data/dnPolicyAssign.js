@@ -10,8 +10,8 @@ export const DATA = {
     assign: '',
     dateFrom: '',
     dateTo: '',
-    numberFrom: '',
-    numberTo: ''
+    fromNumber: '',
+    toNumber: ''
   }
 }
 
@@ -146,6 +146,33 @@ export const DATA_FORM_USER = {
         options: [],
         activate: false,
         loadData: false,
+        value: ''
+      }
+    }
+  },
+  validate: {
+    item: {
+      user: {
+        required
+      }
+    }
+  }
+}
+
+export const DATA_FORM_USER2 = {
+  input: {
+    user: {
+      label: 'Usuarios',
+      placeholder: 'Usuarios',
+      type: 'text',
+      input: 'multiselect',
+      params: {
+        url: 'users',
+        key: 'user',
+        label: 'email',
+        options: [],
+        activate: false,
+        loadData: true,
         value: ''
       }
     }

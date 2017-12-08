@@ -112,6 +112,7 @@
         </div>
       </div>
     </b-form>
+    <!--<pre>{{item}}</pre>-->
   </b-card>
 </template>
 
@@ -172,6 +173,7 @@
         let dniRuc = this.item.dniRuc
         let dateFrom = this.item.dateFrom
         let dateTo = this.item.dateTo
+        let userId = this.item.user ? this.item.user.id : ''
         let url = ''
         let urlCart = ''
         let result = []
@@ -185,7 +187,7 @@
 //          result = result.concat(selfCart.content)
 //          console.log(result)
         } else {
-          url = 'sales?dateFrom='+dateFrom+'&dateTo='+dateTo+'&regionId='+regionId+'&insurancePolicyNumber='+number+'&purchaserDniRuc='+dniRuc+'&insuranceCompanyId='+idCompany+'&state='+state
+          url = 'sales?userId='+userId+'&dateFrom='+dateFrom+'&dateTo='+dateTo+'&regionId='+regionId+'&insurancePolicyNumber='+number+'&purchaserDniRuc='+dniRuc+'&insuranceCompanyId='+idCompany+'&state='+state
         }
         let self = await this.$store.dispatch('dispatchHTTP', {type: 'GET', url: url})
         if (!self.status) return false

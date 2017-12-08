@@ -22,7 +22,7 @@
                            color="#ef7b21" errorColor="#e84c3d"
                            :class="{'bg-white':true, 'saleComplete': isSale}"
                            :start-index="index"
-                           :title="'MODULO DE VENTA ESPECIAL'"
+                           :title="'COTIZADOR DE SEGURO VEHICULAR'"
                            :subtitle="'Venta Perzonalizada'">
 
                 <tab-content title="Caracteristicas" icon="fa fa-id-card-o" :before-change="stage" >
@@ -32,7 +32,6 @@
                                      :keyname="data.vehicleType.name" :index="-1" :update="update" :horizontal="true"
                                      @connection="connectionVehicleType"
                                      :dispatch="data.vehicleType.countAux"></form-vehicle-type>
-
                 </tab-content>
 
                 <tab-content title="Vehiculo" icon="fa fa-car" :before-change="stage0">
@@ -42,7 +41,6 @@
                                 :keyname="data.vehicle.name" :index="0" :update="update"  :horizontal="true"
                                 @connection="connectionVehicle"
                                 :dispatch="data.vehicle.countAux"></form-vehicle>
-
                 </tab-content>
                 <tab-content title="Contratante" icon="fa fa-male" :before-change="stage1">
 
@@ -51,7 +49,6 @@
                                   :name="data.purchaser.name" :index="1" :update="update" :horizontal="true"
                                   @connection="connectionUser"
                                   :dispatch="data.purchaser.countAux"></form-purchaser>
-
                 </tab-content>
               </form-wizard>
 
@@ -119,6 +116,8 @@
         </div>
       </transition-group>
       <!--<pre>{{data.vehicleType.item}}</pre>-->
+      <!--<pre>{{data.vehicle.item}}</pre>-->
+      <!--<pre>{{data.purchaser.item}}</pre>-->
 
       <!--<button @click="mySwitch = !mySwitch">Cambio</button>-->
       <!--<input type="number" v-model="data.vehicle.validate">-->
@@ -133,7 +132,7 @@
   import FormPay from './forms/FormPay.vue'
   import FormSuccess from './forms/FormSuccess.vue'
   import {DATA_INSURANCEPRICES as _pickPolice} from '../../data/dataNames'
-  import {DATA_VEHICLE2 as _vehicle, DATA_VEHICLETYPE as _vehicleType, DATA_USER as _user, DATA_PURCHASER as _purchaser, DATA_PAY as _pay, DATA_PAYMENT as _payment, DATA_SALE as _sale} from '../../data/dnSeguroVehicular'
+  import {DATA_VEHICLE as _vehicle, DATA_VEHICLETYPE as _vehicleType, DATA_USER as _user, DATA_PURCHASER as _purchaser, DATA_PAY as _pay, DATA_PAYMENT as _payment, DATA_SALE as _sale} from '../../data/dnSeguroVehicular'
   import Avatar from '../../components/Avatar.vue'
 
   //  import Fullscreen from "vue-fullscreen/src/component.vue"
@@ -269,32 +268,44 @@
         // Valida el formulario
         this.data.purchaser.countAux++
         if (!this.data.purchaser.validate) return false
+
+        // INSERT PURCHASER
+        let purchaserId = this.data.purchaser.item.id
+        if (purchaserId === undefined) {
+          let r3 = await this.insertPurchaser()
+          console.log('R2: ')
+          console.log(r3)
+          localStorage.setItem('purchaser', JSON.stringify(this.data.purchaser.item))
+          if (!r3.status) return false
+          else {
+            this.data.purchaser.item = r3.content
+          }
+        }
         localStorage.setItem('purchaser', JSON.stringify(this.data.purchaser.item))
+        let r4 = await this.submitSeguroVehicular()
+        if (!r4.status) return false
+        this.$store.commit('sendNotification', {status: true, message: 'Cotización Exitosa, Nos contactaremos con ud. dentro las proximas 24 horas, con su cotización.'})
         return true
       },
-      async paySale () {
-        let paymentId = this.data.payment.item.id
-        if (paymentId === undefined) {
-          let dataLocal = this.data.payment
-          let self = await this.$store.dispatch('dispatchHTTP', {type: 'INSERT', url: dataLocal.urlRest, data: dataLocal.item})
-          if (!self.status) return false
-          else {
-            this.data.payment.item = self.content
-            this.setFormFill('pay', true)
-          }
-          localStorage.setItem('payment', JSON.stringify(this.data.payment.item))
-          // UPDATE STATE SALE
-          let saleId = this.data.sale.item.id
-          let amountTotal = (this.data.sale.item.amount - this.data.pay.item.discount) - this.data.pay.item.amount
-          this.data.sale.item.state = amountTotal > 0 ? 3 : 4
-          let r1 = await this.updateSale(saleId)
-          console.log(r1)
-          if (!r1.status) return false
-          console.log('UPDATE SALE!!!!')
-          localStorage.setItem('sale', JSON.stringify(this.data.sale.item))
-        } else {
-          this.$store.commit('sendNotification', {status: true, message: 'El pago ya se encuentra registrado'})
+      async submitSeguroVehicular () {
+        let dataLocal = {
+          engineNumber: this.data.vehicle.item.engineNumber,
+          marketValue: this.data.vehicleType.item.amount,
+          manufacturingYear: this.data.vehicle.item.manufacturingYear,
+          seatNumber: this.data.vehicle.item.seatNumber,
+          vehicleType: {id: this.data.vehicleType.item.vehicleType.id},
+          vehicleCategory: {id: this.data.vehicleType.item.vehicleCategory.id},
+          vehicleClass: {id: this.data.vehicleType.item.vehicleClass.id},
+          useType: {id: this.data.vehicleType.item.useType.id},
+          purchaser: {id: this.data.purchaser.item.id}
         }
+        console.log('insurancevehicles')
+        console.log(dataLocal)
+        let self = await this.$store.dispatch('dispatchHTTP', {type: 'INSERT', url: 'insurancevehicles', data: dataLocal})
+        console.log('RIKAEDOCORO ppppppppp')
+        console.log(self)
+        console.log('INSERT insurancevehicles?')
+        return self
       },
       compareObject (obj1, obj2) {
         let cen = true
@@ -353,29 +364,10 @@
         let self = await this.$store.dispatch('dispatchHTTP', {type: 'INSERT', url: 'vehicletypecategories', data: data})
         return self
       },
-      async searchVehicleTypeCategory () {
-        let brand = this.data.vehicleType.item.vehicleType.vehicleBrand
-        let model = this.data.vehicleType.item.vehicleType.vehicleModel
-        let vehicleCategoryId = this.data.vehicleType.item.vehicleCategory.id
-        let vehicleClassId = this.data.vehicleType.item.vehicleClass.id
-        let seatNumber = this.data.vehicle.item.seatNumber
-        // let url = 'vehicletypecategories/filter?vehicleBrand='+brand+'&vehicleModel='+model
-        let url = 'vehicletypecategories/filter?vehicleBrand='+brand+'&vehicleModel='+model+'&vehicleCategoryId='+vehicleCategoryId+'&vehicleClassId='+vehicleClassId+'&seatNumber='+seatNumber
-        console.log(url)
-        let self = await this.$store.dispatch('dispatchHTTP', {type: 'GET', url: url})
-        return self
-      },
-      async insertVehicle () {
-        let dataLocal = this.data.vehicle
-        console.log('INSERT VEHICLE')
-        let self = await this.$store.dispatch('dispatchHTTP', {type: 'INSERT', url: dataLocal.urlRest, data: dataLocal.item})
-        console.log('RIKAEDOCORO VEHICLE')
-        console.log(self)
-        console.log('INSERT VEHICLE?')
-        return self
-      },
       async insertPurchaser () {
+        this.data.purchaser.item.email = this.$store.state.user.data.email
         let dataLocal = this.data.purchaser
+
         console.log('INSERT PURCHASER')
         let self = await this.$store.dispatch('dispatchHTTP', {type: 'INSERT', url: dataLocal.urlRest, data: dataLocal.item})
         console.log('RIKAEDOCORO PURCHASER')
@@ -411,8 +403,6 @@
           } else {
             console.log('NO ENTRA ' + name)
             this.data[name].item = Object.assign({}, this.data[name].defaultItem)
-            // this.$delete(this.data.vehicle.item, 'id')
-            // this.data.vehicle.item.user = ''
           }
           console.log('NAME ITEM' + name)
           console.log(this.data[name].item)
@@ -448,30 +438,9 @@
         console.log('prev: ' + prevIndex + ' next: ' + nextIndex)
       },
       onComplete: function () {
-//        localStorage.removeItem('sale')
-//        localStorage.removeItem('vehicle')
-//        localStorage.removeItem('user')
-//        localStorage.removeItem('purchaser')
-//        localStorage.removeItem('pickPolice')
-//        localStorage.removeItem('location')
-//        localStorage.removeItem('vehicleType')
-//        localStorage.removeItem('insurance')
-//        localStorage.removeItem('payment')
-//        localStorage.removeItem('pay')
-//
-//        this.data.pickPolice.item = JSON.parse(JSON.stringify(this.data.pickPolice.defaultItem))
-//        this.data.sale.item = JSON.parse(JSON.stringify(this.data.sale.defaultItem))
-//        this.data.vehicle.item = JSON.parse(JSON.stringify(this.data.vehicle.defaultItem))
-//        this.data.purchaser.item = JSON.parse(JSON.stringify(this.data.purchaser.defaultItem))
-//        this.data.pay.item = JSON.parse(JSON.stringify(this.data.pay.defaultItem))
-//        this.data.vehicleType.validate = false
-//        this.data.vehicle.validate = false
-//        this.data.purchaser.validate = false
-//        this.data.pay.validate = false
-//        // this.mySwitch = true
         this.setDefault()
         this.initData()
-        this.$router.push('cotizar-admin')
+        this.$router.push('cliente')
       },
       setDefault () {
         localStorage.removeItem('sale')
@@ -492,27 +461,15 @@
         this.data.vehicleType.validate = false
         this.data.vehicle.validate = false
         this.data.purchaser.validate = false
-        this.data.pay.validate = false
-        this.isSale = false
         this.setFormFill('vehicleType', false)
         this.setFormFill('vehicle', false)
         this.setFormFill('purchaser', false)
         this.setFormFill('pay', false)
       },
       async CancelSale () {
-        let dataLocal = this.data.sale
-        let saleId = dataLocal.item.id
-        if (saleId !== undefined) {
-          let self = await this.$store.dispatch('dispatchHTTP', {type: 'DELETE', url: dataLocal.urlRest + '/' + dataLocal.item.id})
-          if (!self.status) return false
-          this.setDefault()
-          this.initData()
-          localStorage.removeItem('insurance')
-        } else {
-          this.setDefault()
-          this.initData()
-        }
-        this.mySwitch = true
+        this.setDefault()
+        this.initData()
+        this.$router.push('cliente')
       },
       eventCancelSale () {
         this.$dialog.confirm('¿Desea cancelar esta venta en proceso?').then((dialog) => {
@@ -524,33 +481,11 @@
       },
       initData () {
         let notification = {}
-        let pickPolice = JSON.parse(localStorage.getItem('pickPolice'))
-        if (pickPolice) {
-          this.data.pickPolice.item = pickPolice
-          // SALE
-          // this.data.sale.item.region = insuranceObject.region
-        }
-
-        // GET SALE
-        let sale = JSON.parse(localStorage.getItem('sale'))
-        if (sale) {
-          this.data.sale.item = sale
-          if (this.data.sale.item.id !== undefined) {
-            this.setFormFill('sale', true)
-            notification.data = {message: 'Existe una venta en proceso', status: '', success: null, url: ''}
-            this.$store.commit('pushNotification', notification)
-          }
-        }
-
-        // GET USER
-        let user = JSON.parse(localStorage.getItem('user'))
-        if (user) {
-          this.data.user.item = user
-          if (this.data.user.item.id !== undefined) this.setFormFill('user', true)
-        }
 
         // GET VEHICLE
         let vehicle = JSON.parse(localStorage.getItem('vehicle'))
+        console.log('Vehicle')
+        console.log(vehicle)
         if (vehicle) {
           this.data.vehicle.item = vehicle
           if (this.data.vehicle.item.id !== undefined) {
@@ -574,64 +509,38 @@
         if (purchaser) {
           this.data.purchaser.item = purchaser
           if (this.data.purchaser.item.id !== undefined) {
-            this.isSale = true
             this.setFormFill('purchaser', true)
-            notification.data = {message: 'Existe una venta registrada sin finalizar', status: '', success: null, url: ''}
+            notification.data = {message: 'Existe una solicitud de seguro vehicular sin finalizar', status: '', success: null, url: ''}
             this.$store.commit('pushNotification', notification)
           } else this.setFormFill('purchaser', false)
           this.data.purchaser.validate = true
         }
-
-        // GET PAY
-        let pay = JSON.parse(localStorage.getItem('pay'))
-        if (pay) {
-//          alert('pay')
-          this.data.pay.item = pay
-          this.data.pay.validate = true
-        } else {
-          this.data.pay.item.amount = this.data.pickPolice.item.price
-        }
-
-        // GET PAYMENT
-        let payment = JSON.parse(localStorage.getItem('payment'))
-        if (payment) {
-          this.data.payment.item = payment
-          if (this.data.payment.item.id !== undefined) {
-            this.setFormFill('pay', true)
-          } else {
-            this.setFormFill('pay', false)
-          }
-        }
       }
     },
     created () {
-      //localStorage.setItem('seller', this.$store.state.user.data.id)
-      // localStorage.setItem('typeSell', 1)
-      let oldSellerId = localStorage.getItem('seller')
-      let newSellerId = JSON.parse(localStorage.getItem('UserLog')).user.id
-      let notification = {}
-      let typeSell = localStorage.getItem('typeSell')
-      let sale = JSON.parse(localStorage.getItem('sale'))
-      console.log('QWERTYYYYYY ')
-      console.log(typeSell)
-      console.log(sale)
-      if (sale !== null && typeSell == 0) {
-        this.mySwitch = true
-        notification.data = {message: 'Existe una nueva venta en proceso', status: '', success: null, url: ''}
-        this.$store.commit('pushNotification', notification)
-        let insurance = JSON.parse(localStorage.getItem('insurance')).insurance
-        this.data.pickPolice.item = insurance
-        this.switchMessage = 1
-      } else {
-        if (oldSellerId == newSellerId) {
-          this.initData()
-        } else {
-          this.setDefault()
-          localStorage.removeItem('insurance')
-          //localStorage.removeItem('vehicleType')
-          //localStorage.removeItem('pickPolice')
-        }
-      }
+      this.initData()
+//      let oldSellerId = localStorage.getItem('seller')
+//      let newSellerId = JSON.parse(localStorage.getItem('UserLog')).user.id
+//      let notification = {}
+//      let typeSell = localStorage.getItem('typeSell')
+//      let sale = JSON.parse(localStorage.getItem('sale'))
+//      if (sale !== null && typeSell == 0) {
+//        this.mySwitch = true
+//        notification.data = {message: 'Existe una nueva venta en proceso', status: '', success: null, url: ''}
+//        this.$store.commit('pushNotification', notification)
+//        let insurance = JSON.parse(localStorage.getItem('insurance')).insurance
+//        this.data.pickPolice.item = insurance
+//        this.switchMessage = 1
+//      } else {
+//        if (oldSellerId == newSellerId) {
+//          this.initData()
+//        } else {
+//          this.setDefault()
+//          localStorage.removeItem('insurance')
+//          //localStorage.removeItem('vehicleType')
+//          //localStorage.removeItem('pickPolice')
+//        }
+//      }
       // delete this.data.vehicle.defaultItem.licensePlate
     },
     mounted () {

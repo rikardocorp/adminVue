@@ -64,7 +64,7 @@
   import Multiselect from 'vue-multiselect'
   import FormError from '../../../components/FormError.vue'
   import Avatar from '../../../components/Avatar.vue'
-  import {DATA_VEHICLE2 as _vehicle} from '../../../data/dnSeguroVehicular'
+  import {DATA_VEHICLE as _vehicle} from '../../../data/dnSeguroVehicular'
   import { required, between } from 'vuelidate/lib/validators'
 
   export default {

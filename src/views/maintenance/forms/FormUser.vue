@@ -28,6 +28,16 @@
                          :rows="3" :max-rows="6"></b-form-textarea>
 
         <!-- MULTISELECT -->
+        <multiselect v-else-if="option.input=='multiselect' && index=='office' && isPuntoVenta"
+                     :close-on-select="true" :hide-selected="true" :preserve-search="false" :taggable="false" select-label=""
+                     :placeholder="option.placeholder"
+                     :label="option.params.label" :track-by="option.params.label"
+                     :loading="!option.params.activate"
+                     :disabled="true"
+                     v-model="item[index]"
+                     :options="option.params.options"
+                     @blur.native="$v.item[index]? $v.item[index].$touch(): false"></multiselect>
+
         <multiselect v-else-if="option.input=='multiselect'"
                      :close-on-select="true" :hide-selected="true" :preserve-search="false" :taggable="false" select-label=""
                      :placeholder="option.placeholder"
@@ -43,12 +53,12 @@
       </b-form-group>
 
       <div class="row mb-4">
-        <div class="col-md-6 text-right">
+        <div class="col-6 text-right">
           <toggle-button :labels="{checked: 'Activo', unchecked: 'Inactivo'}" :color="{checked: 'rgb(239, 123, 34)', unchecked: 'rgb(181, 181, 181)'}"
                          :disabled="isLoading" :width="85" :height="28" :sync="true"
                          v-model="item.enabled" class="mr-2"></toggle-button>
         </div>
-        <div class="col-md-6 text-left">
+        <div class="col-6 text-left">
           <toggle-button :labels="{checked: 'Gastos', unchecked: 'Sin Gastos'}" :color="{checked: 'rgb(239, 123, 34)', unchecked: 'rgb(181, 181, 181)'}"
                          :disabled="isLoading" :width="90" :height="28" :sync="true"
                          v-model="item.expense" class="mr-2"></toggle-button>
@@ -58,7 +68,7 @@
       <div slot="footer">
         <b-form-group :horizontal="horizontal" :label-cols="lCols">
           <template v-if="!update">
-            <b-button @click.prevent="processData('INSERT')" :disabled="isLoading" type="submit" size="sm" variant="primary"><i class="fa fa-dot-circle-o"></i> {{$global.submit}}</b-button>
+            <b-button @click.prevent="processData('INSERT')" :disabled="isLoading" size="sm" variant="primary"><i class="fa fa-dot-circle-o"></i> {{$global.submit}}</b-button>
             <b-button @click="resetForm(name + urlRest)" :disabled="isLoading" size="sm" variant="danger"><i class="fa fa-ban"></i> {{$global.reset}}</b-button>
           </template>
 
@@ -77,7 +87,7 @@
 
 <script>
   import cSwitch from '../../../components/Switch'
-  import {DATA_FORM as dataForm} from '../../../data/dnUser'
+  import {DATA_FORM as dataForm, DATA_FORM2 as dataForm2} from '../../../data/dnUser'
   import FormError from '../../../components/FormError.vue'
   import Multiselect from 'vue-multiselect'
   import ToggleButton from '../../../components/ToggleButton.vue'
@@ -94,17 +104,27 @@
       return {
         name: 'form-',
         lCols: 3,
-        optInput: dataForm.input,
+        optInput: null,
         selectedKey: '',
         multiselectKeys: []
       }
     },
     validations () {
-      return dataForm.validate
+      if (this.isPuntoVenta) {
+        return dataForm2.validate
+      } else {
+        return dataForm.validate
+      }
     },
     computed: {
       isLoading () {
         return this.$store.state.isLoading
+      },
+      office () {
+        return this.$store.state.user.data.office
+      },
+      isPuntoVenta () {
+        return this.$store.state.user.isPuntoVenta
       }
     },
     methods: {
@@ -117,8 +137,16 @@
         console.log(this.item)
         let invalid = this.$v.item.$invalid
         let url = !this.item.id ? this.urlRest : this.urlRest + '/' + this.item.id
+
+        if (this.isPuntoVenta) {
+          this.$set(this.item, 'office', this.office)
+          this.item._role = {
+            name: 'ROLE_VENDEDOR'
+          }
+        }
+
         if (!invalid) {
-          if (!this.item.role) {
+          if (action === 'INSERT') {
             this.item.role = {
               email: this.item.email,
               role: this.item._role.name
@@ -130,9 +158,13 @@
 
           let self = this.$store.dispatch('dispatchHTTP', {type: action, url: url, data: this.item})
           self.then((data) => {
+            console.log('DATA-CONTENT ' + action)
+            console.log(data.content)
             if (data.status) {
-              console.log('DATA-CONTENT ' + action)
-              console.log(data.content)
+              if (action === 'INSERT') {
+                data.content.facebook = 0
+                data.content.google = 0
+              }
               this.addRow(data.content)
               this.resetForm(this.name + this.urlRest)
             }
@@ -177,6 +209,11 @@
       }
     },
     created () {
+      if (this.isPuntoVenta) {
+        this.optInput = dataForm2.input
+      } else {
+        this.optInput = dataForm.input
+      }
       let vm = this
       this.$lodash.forEach(this.optInput, function (value, key) {
         if (vm.optInput[key].input === 'multiselect') {
@@ -188,6 +225,11 @@
           }
         }
       })
+    },
+    mounted () {
+      console.log('this.office')
+      console.log(this.office)
+      if (this.isPuntoVenta) this.item.office = this.office
     }
   }
 </script>

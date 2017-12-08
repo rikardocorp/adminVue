@@ -116,17 +116,22 @@
       selectOption (selectedOption) {
         let key = this.selectedKey
         console.log(selectedOption)
-        if (key === 'insuranceCompany') {
+        if (key === 'policyType') {
           if (selectedOption === null) {
             this.optInput['insurancePolicy'].params.options = []
             this.item['insurancePolicy'] = ''
           } else {
-            let companyId = selectedOption.id
+            let companyId = this.item.insuranceCompany.id
             let myUserID = this.$store.state.user.data.id
+            let policyType = selectedOption.id
             this.item['insurancePolicy'] = ''
-            let url = 'insurancepolicies?insuranceCompanyId=' + companyId + '&sold=0&userId=' + myUserID
+            let url = 'insurancepolicies?insuranceCompanyId=' + companyId + '&sold=0&userId=' + myUserID + '&policyType=' + policyType
             this.getOption(url, 'insurancePolicy')
           }
+        } else if (key === 'insuranceCompany') {
+          this.optInput['insurancePolicy'].params.options = []
+          this.item['insurancePolicy'] = ''
+          this.item['policyType'] = ''
         }
       },
       selectModelVehicle (selectedOption) {
