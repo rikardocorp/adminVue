@@ -48,11 +48,17 @@
 
             <div v-if="f.key==='actions'" >
               <template v-if="data.item._vehicle.exception===0">
-                <b-button v-b-tooltip.hover.auto :title="'Lista de autos'" variant="success" @click.stop="getListCar(data.item._vehicle)" size="sm" :disabled="isLoading">
+                <b-button v-b-tooltip.hover.auto
+                          :title="data.item._vehicle.exceptionBtn? 'Lista de excepcionados':'Lista de autos'"
+                          :variant="data.item._vehicle.exceptionBtn? 'danger':'success'"
+                          @click.stop="getListCar(data.item._vehicle)"
+                          size="sm" :disabled="isLoading">
                   <i class="fa fa-car" aria-hidden="false"></i>
                 </b-button>
-                <b-button  v-b-tooltip.hover.auto :title="'Agregar excepcion'" variant="danger" @click.stop="addException(data.item._vehicle)" size="sm" :disabled="isLoading">
-                  <i class="fa fa-fire" aria-hidden="false"></i>
+                <b-button  v-b-tooltip.hover.auto
+                           :ref="'btn_' + data.item._vehicle.id"
+                           :title="'Agregar excepcion'" variant="danger" @click.stop="addException(data.item._vehicle)" size="sm" :disabled="isLoading">
+                  <i class="fa fa-plus" aria-hidden="false"></i>
                 </b-button>
               </template>
               <template v-else="">
@@ -60,7 +66,7 @@
                 <b-button style="padding: 0px; background: none; font-size: 1.5em; width: 40px;" v-b-tooltip.hover.auto :title="'Lista de excepciones'" variant="secundary" @click.stop="getListCar(data.item._vehicle)" size="sm" :disabled="isLoading">
                   <span class="fa-stack fa-lg" style="font-size: 1.1em">
                     <i class="fa fa-car fa-stack-1x" style="color: white;"></i>
-                    <i class="fa fa-ban fa-stack-2x text-danger"></i>
+                    <i class="fa fa-circle-o fa-stack-2x text-success"></i>
                   </span>
                 </b-button>
               </template>
@@ -97,12 +103,12 @@
         </b-table>
       </div>
     </b-card>
-    <b-modal :title="pickRowItem.exception==0 ? 'Lista de Autos Excepcionados': 'Lista de Autos - Excepciones'"
-             :class="{'modal-success': (pickRowItem.exception==0), 'modal-danger': (pickRowItem.exception==1), 'modal-list-car': true}" v-model="showModal" :hide-footer="true">
+    <b-modal :title="pickRowItem.exception==0 ? 'Lista de Autos' + (pickRowItem.exceptionBtn? ' - Excepcionados':'') : 'Lista de Autos - Excepciones'"
+             :class="{'modal-success': (pickRowItem.exception==1 || !pickRowItem.exceptionBtn), 'modal-danger': (pickRowItem.exception==0 && pickRowItem.exceptionBtn), 'modal-list-car': true}" v-model="showModal" :hide-footer="true">
       <!--<template slot="modal-header">-->
       <!--</template>-->
       <div class="text-center">
-        <span :class="{'text-success': (pickRowItem.exception==0), 'text-danger': (pickRowItem.exception==1), 'pb-2 d-block h5': true}">
+        <span :class="{'text-success': (pickRowItem.exception==1 || !pickRowItem.exceptionBtn), 'text-danger': (pickRowItem.exception==0 && pickRowItem.exceptionBtn), 'pb-2 d-block h5': true}">
           {{ pickRowItem.vehicleClass ? pickRowItem.vehicleClass.description : ''}}-{{ pickRowItem.vehicleCategory ? pickRowItem.vehicleCategory.description: ''}}
           [{{pickRowItem.seatNumber}}{{pickRowItem.seatNumberTo === pickRowItem.seatNumber ? ']': '-' + pickRowItem.seatNumberTo + ']'}}
         </span>
@@ -110,8 +116,13 @@
                type="text" v-model="search" style="margin-bottom: 0.51em !important;background-color: #e5e5e5 !important;" placeholder="Buscar marca y modelo">
         <div v-if="pickRowItem.exception===1" class="pt-2 content-list-car">
           <b-badge v-for="car in filteredCars" pill
-                   :key="car.id" :class="{'hvr-pulse-grow': true, 'bg-danger': listDescription[car.id] ? true : false}"
+                   :key="car.id" :class="{'hvr-pulse-grow': true, 'bg-success': listDescription[car.id] ? true : false}"
                    @click="addItemDescription(car, true)">{{ car.vehicleType.vehicleBrand }}-{{ car.vehicleType.vehicleModel }}</b-badge>
+        </div>
+        <div v-else-if="pickRowItem.exceptionBtn" class="pt-2 content-list-car">
+          <b-badge v-for="car in filteredCars" pill v-if="listDescriptionHidden[car.id] || itemsIndex[auxIDItems]==undefined"
+                   :key="car.id" :class="{'hvr-pulse-grow': true, 'bg-danger': listDescription[car.id] ? true : false}"
+                   @click="addItemDescription(car, false)">{{ car.vehicleType.vehicleBrand }}-{{ car.vehicleType.vehicleModel }}</b-badge>
         </div>
         <div v-else="" class="pt-2 content-list-car">
           <b-badge v-for="car in filteredCars" pill v-if="listDescriptionHidden[car.id] || itemsIndex[auxIDItems]==undefined"
@@ -121,9 +132,9 @@
       </div>
     </b-modal>
 
-    <!--<pre>{{ items }}</pre>-->
-    <!--<pre>{{ rick }}</pre>-->
+    <!--<pre>{{ changeList }}</pre>-->
     <!--<pre>{{ itemsIndex }}</pre>-->
+    <!--<pre>{{ items }}</pre>-->
   </div>
 </template>
 
@@ -202,7 +213,9 @@
         copyDisabled: false,
         itemCopy: {},
         auxDeleteItemDescription: 0,
-        auxIDItems: ''
+        auxIDItems: '',
+        isFillTable: true,
+        isClickBadge: false
       }
     },
     computed: {
@@ -224,7 +237,10 @@
           this.pickRowItem['description_' + this.pickRowItem.exception] = JSON.stringify(this.listDescription)
           this.listDescription = {}
           this.listDescriptionHidden = {}
-          this.activeRowPrices(this.pickRowItem.id)
+          if (this.isClickBadge) {
+            this.activeRowPrices(this.pickRowItem.id)
+            this.isClickBadge = false
+          }
 //          RCORP A
 //          if (this.auxDeleteItemDescription !== 0) {
 //            alert('hidden delete delte')
@@ -239,8 +255,14 @@
             console.log('EXCEPITION 0')
             console.log(index)
             if (index !== undefined) {
+              // excepciones
               let row = this.items[index]._vehicle
               this.listDescriptionHidden = row['description_1'] ? JSON.parse(row['description_1']) : {}
+              this.listDescription = this.pickRowItem['description_0'] ? JSON.parse(this.pickRowItem['description_0']) : {}
+            } else {
+              // sin excepciones
+              id = this.generateVCCId(this.pickRowItem)
+              index = this.itemsIndex[id]
               this.listDescription = this.pickRowItem['description_0'] ? JSON.parse(this.pickRowItem['description_0']) : {}
             }
           } else {
@@ -344,17 +366,36 @@
       },
       // Generate Table
       copyPrices () {
-        this.copyDisabled = false
-        this.fillTable(this.prices, true)
-        this.restrictedCalendarPrices = false
+        let total = Object.keys(this.changeList).length
+        if (total > 0) {
+          this.$dialog.confirm('Existen modificaciones sin guardar, ¿Desea continuar?')
+            .then((dialog) => {
+              this.copyDisabled = false
+              this.fillTable(this.prices, true)
+              this.restrictedCalendarPrices = false
+              dialog.close()
+            })
+            .catch(() => {
+              console.log('Clicked on cancel')
+            })
+        } else {
+          this.copyDisabled = false
+          this.fillTable(this.prices, true)
+          this.restrictedCalendarPrices = false
+        }
       },
       fillTable (prices, copy = false) {
+        this.isFillTable = true
         let vm = this
         let id = 0
         let indexItems = 0
         if (!copy) {
           prices.forEach(function (item, index) {
-            if (item.exception === 1) vm.addException(item, false)
+            if (item.exception === 1) {
+              let idaux = vm.generateVCCId(item)
+              vm.$refs['btn_' + idaux][0].click()
+              // vm.addException(item, false)
+            }
             id = vm.generateVCCId(item, item.exception)
             indexItems = vm.itemsIndex[id]
             let data = {
@@ -366,7 +407,9 @@
           })
         } else {
           prices.forEach(function (item, index) {
-            if (item.exception === 1) vm.addException(item, false)
+//            if (item.exception === 1) {
+//              vm.addException(item, false)
+//            }
             id = vm.generateVCCId(item, item.exception)
             indexItems = vm.itemsIndex[id]
             let data = {
@@ -380,10 +423,10 @@
             vm.changeValue(id, item.region.id, item)
           })
         }
+        this.isFillTable = false
       },
       async searchTablePrices () {
         await this.generateItems()
-
         let obj = {
           priceCalendarId: this.item.priceCalendar.id,
           insuranceCompanyId: this.item.insuranceCompany.id,
@@ -462,7 +505,7 @@
         }
       },
       addItemDescription (car, exception) {
-        console.log(car)
+        this.isClickBadge = true
         if (this.listDescription[car.id]) {
           if (exception) {
             let auxID = this.generateVCCId(this.pickRowItem, 0)
@@ -491,21 +534,48 @@
           }
         }
       },
-      addException (item, alert = true) {
+      addException (item, _alert = true) {
+        item.exceptionBtn = true
+        if (!this.isFillTable) this.$set(item, 'description_0', '{}')
         let id = this.generateVCCId(item)
         let newId = this.generateVCCId(item, 1)
         let indexItems = this.itemsIndex[id]
+        let remove = true
         if (this.itemsIndex[newId] !== undefined) {
-          if (alert) this.$store.commit('sendNotification', {status: null, message: 'Ya existe una excepción para esta clase.'})
+          let vm = this
+          let newIndex = indexItems - 1
+          let idv = this.items[newIndex]._vehicle.id
+          this.$lodash.forEach(this.items[newIndex], function (value, key) {
+            if (key[0] !== '_') {
+              let auxID = key + '_' + idv
+              if (value.id === undefined) {
+                vm.$delete(vm.changeList, auxID)
+                vm.$delete(vm.items[newIndex], key)
+              } else {
+                remove = false
+              }
+            }
+          })
+
+          if (remove) {
+            this.$delete(this.items[indexItems], '_rowVariant')
+            this.items.splice(newIndex, 1)
+            this.generateIndexRow(this.items)
+            item.exceptionBtn = false
+          } else {
+            if (_alert && !this.isFillTable) this.$store.commit('sendNotification', {status: null, message: 'No podemos eliminar esta fila de exepciones, ya que cuenta con precios registrados.'})
+          }
           return false
         }
+
         let newRow = {
-          _rowVariant: 'danger',
-          // _cellVariants: {_vehicle: 'warning'},
+          _rowVariant: 'success',
           _vehicle: JSON.parse(JSON.stringify(item))
         }
         newRow._vehicle.id = newId
         newRow._vehicle.exception = 1
+        console.log(this.items, indexItems)
+        this.$set(this.items[indexItems], '_rowVariant', 'danger')
         this.items.splice(indexItems, 0, newRow)
         this.generateIndexRow(this.items)
       },
@@ -547,6 +617,7 @@
             this.changeList = {}
             this.datepicker.params.value = ''
             console.log(data.content)
+            this.searchTablePrices()
           } else {
             console.log('ERROR')
             console.log(data)
@@ -629,7 +700,7 @@
     width: 100%;
     overflow: scroll;
     table{
-      tr.table-danger{
+      tr.table-success{
         // background: #0170ba !important;
         td:first-child{
           position: relative;
