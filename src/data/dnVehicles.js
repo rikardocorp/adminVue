@@ -23,7 +23,7 @@ export const DATA = {
     },
     engineNumber: {label: 'Motor', 'class': 'text-center'},
     vehicleTypeCategory: {
-      label: 'Categoria-Tipo',
+      label: 'Categoría-Tipo',
       sortable: true,
       'class': 'text-center',
       formatter: (value) => { return value ? value.vehicleType.vehicleBrand + '-' + value.vehicleType.vehicleModel + ' / ' + value.vehicleClass.description + '-' + value.vehicleCategory.description : 'vacio' }
@@ -48,19 +48,19 @@ export const DATA_FORM = {
     },
     engineNumber: {
       label: 'Nro. Serie',
-      placeholder: 'Ingrese numero de serie',
+      placeholder: 'Ingrese número de serie',
       type: 'text',
       icon: 'fa fa-hashtag'
     },
     seatNumber: {
       label: 'Nro. Asientos',
-      placeholder: 'Ingrese numero de asientos',
+      placeholder: 'Ingrese número de asientos',
       type: 'number',
       icon: 'fa fa-hashtag'
     },
     manufacturingYear: {
       label: 'Año Fabric',
-      placeholder: 'Ingrese año de fabricacion',
+      placeholder: 'Ingrese año de fabricación',
       type: 'number',
       icon: 'fa fa-calendar-o'
     },
@@ -80,8 +80,8 @@ export const DATA_FORM = {
       }
     },
     vehicleTypeCategory: {
-      label: 'Categoria',
-      placeholder: 'Categoria y clase del vehiculo',
+      label: 'Categoría',
+      placeholder: 'Categoría y clase del vehículo',
       type: 'text',
       input: 'multiselect',
       params: {

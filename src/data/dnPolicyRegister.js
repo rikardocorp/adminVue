@@ -64,8 +64,8 @@ export const DATA_FORM = {
       }
     },
     policyType: {
-      label: 'Tipo de Poliza',
-      placeholder: 'Tipo de la Poliza',
+      label: 'Tipo de Póliza',
+      placeholder: 'Tipo de la Póliza',
       type: 'text',
       input: 'multiselect',
       params: {

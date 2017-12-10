@@ -9,7 +9,7 @@ export const DATA = {
   fieldsTable: {
     name: {label: 'Tipo de Uso', sortable: true, 'class': 'text-center'},
     description: {label: 'Descripción', sortable: true},
-    actions: {label: '', thStyle: 'width:75px'}
+    actions: {label: 'Acciones', thStyle: 'width:75px'}
   }
 }
 
@@ -21,8 +21,8 @@ export const DATA_FORM = {
       type: 'text'
     },
     description: {
-      label: 'Descripcion',
-      placeholder: 'Ingrese una descripcion',
+      label: 'Descripción',
+      placeholder: 'Ingrese una descripción',
       type: 'text',
       input: 'textarea'
     }

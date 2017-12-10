@@ -19,7 +19,7 @@ export const DATA_FORM = {
   input: {
     sold: {
       label: 'Vendidos',
-      placeholder: 'Estado de las polizas',
+      placeholder: 'Estado de las pólizas',
       type: 'text',
       input: 'radio-group',
       params: {
@@ -34,7 +34,7 @@ export const DATA_FORM = {
     },
     assign: {
       label: 'Asignados',
-      placeholder: 'Polizas asignadas',
+      placeholder: 'Pólizas asignadas',
       type: 'text',
       input: 'radio-group',
       params: {
@@ -80,8 +80,8 @@ export const DATA_FORM = {
       }
     },
     number: {
-      label: 'Numero Poliza',
-      placeholder: 'Numero de #poliza',
+      label: 'Número Póliza',
+      placeholder: 'Número de póliza',
       type: 'text',
       srOnly: true
     }
@@ -119,8 +119,8 @@ export const DATA_FORM_USER = {
       }
     },
     role: {
-      label: 'ROLES',
-      placeholder: 'ROLES',
+      label: 'ROL',
+      placeholder: 'ROL',
       type: 'text',
       input: 'multiselect',
       params: {

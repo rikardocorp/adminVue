@@ -13,7 +13,7 @@ export const DATA = {
   },
   fieldsTable: {
     number: {
-      label: 'Numero',
+      label: 'Número',
       sortable: true,
       'class': 'text-center',
     },
@@ -24,7 +24,7 @@ export const DATA = {
       formatter: (value) => { return value.name }
     },
     policyType: {
-      label: 'Tipo',
+      label: 'Tipo de Soat',
       sortable: true,
       class: 'text-center',
       formatter: (value) => {
@@ -46,7 +46,7 @@ export const DATA = {
       }
     },
     user: {
-      label: 'Usuario Venta',
+      label: 'Usuario',
       sortable: true,
       class: 'text-center',
       formatter: (value) => { return (value !== null && value.id !== 0) ? value.firstName + ' ' + value.lastName : 'LIBRE' }
@@ -58,7 +58,7 @@ export const DATA = {
 export const DATA_FORM = {
   input: {
     number: {
-      label: 'Poliza',
+      label: 'Póliza',
       placeholder: 'Ingrese numero de poliza',
       type: 'text'
     },
@@ -78,7 +78,7 @@ export const DATA_FORM = {
       }
     },
     policyType: {
-      label: 'Tipo de Poliza',
+      label: 'Tipo de Póliza',
       placeholder: 'Tipo de la Póliza',
       type: 'text',
       input: 'multiselect',

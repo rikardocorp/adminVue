@@ -14,7 +14,7 @@ export const DATA_FORM = {
   input: {
     brand: {
       label: 'Marca',
-      placeholder: 'MARCA',
+      placeholder: 'Seleccione Marca',
       type: 'text',
       input: 'multiselect',
       params: {
@@ -32,7 +32,7 @@ export const DATA_FORM = {
     },
     model: {
       label: 'Modelo',
-      placeholder: 'MODELO',
+      placeholder: 'Seleccione Modelo',
       type: 'text',
       input: 'multiselect',
       params: {
@@ -50,7 +50,7 @@ export const DATA_FORM = {
     },
     regionId: {
       label: 'Ciudad',
-      placeholder: 'CIUDAD',
+      placeholder: 'Seleccione Ciudad',
       type: 'text',
       input: 'multiselect',
       params: {
@@ -69,7 +69,7 @@ export const DATA_FORM = {
     },
     useTypeId: {
       label: 'Tipo de Uso',
-      placeholder: 'TIPO DE USO',
+      placeholder: 'Seleccione Tipo de Uso',
       type: 'text',
       input: 'multiselect',
       params: {

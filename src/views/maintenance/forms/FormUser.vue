@@ -190,11 +190,11 @@
         let self = this.$store.dispatch('dispatchHTTP', {type: 'LOAD_TABLE', url: urlRest, data: {key: this.optInput[index].params.localData}})
         self.then((data) => {
           if (data.status) {
-            console.log(index)
-            console.log(data.content)
-            if (index == '_role') {
-              data.content.splice(2, 1)
-            }
+//            console.log(index)
+//            console.log(data.content)
+//            if (index == '_role') {
+//              data.content.splice(2, 1)
+//            }
             this.optInput[index].params.options = data.content
             this.optInput[index].params.activate = true
           }
@@ -227,8 +227,6 @@
       })
     },
     mounted () {
-      console.log('this.office')
-      console.log(this.office)
       if (this.isPuntoVenta) this.item.office = this.office
     }
   }

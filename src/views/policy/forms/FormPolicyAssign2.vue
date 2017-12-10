@@ -55,9 +55,9 @@
 
     <b-input-group class="mb-3 passDelete">
       <b-input-group-addon class="bg-primary"><i class="fa fa-key"></i></b-input-group-addon>
-      <b-form-input v-model="password" type="password" placeholder="Password para eliminar" title="Password para eliminar"></b-form-input>
+      <b-form-input :disabled="disableDelete" v-model="password" type="password" placeholder="Contraseña para eliminar" title="Contraseña para eliminar"></b-form-input>
       <b-input-group-button>
-        <b-btn variant="danger" @click="deletePolicies">{{$global.delete}}</b-btn>
+        <b-btn :disabled="disableDelete" variant="danger" @click="deletePolicies">{{$global.delete}}</b-btn>
       </b-input-group-button>
     </b-input-group>
 
@@ -67,7 +67,6 @@
                         v-model="item.extra"
                         :options="pickAll.options">
     </b-form-radio-group>
-
   </div>
 </template>
 
@@ -77,7 +76,7 @@
   import {DATA_FORM_USER as dataForm, DATA_FORM_USER2 as dataForm2} from '../../../data/dnPolicyAssign'
   import EventBus from '../../../event-bus'
   export default {
-    props: ['horizontal', 'item', 'nameForm', 'list'],
+    props: ['horizontal', 'item', 'nameForm', 'list', 'disableDelete'],
     components: {
       FormError,
       Multiselect
@@ -149,6 +148,7 @@
             if (data.status) {
               console.log('SUCCESS')
               console.log(data.content)
+              this.password = ''
               EventBus.$emit('FILTER_POLICY')
             } else {
               console.log('ERROR')
@@ -156,7 +156,7 @@
             }
           })
         } else {
-          alert('vacio')
+          this.$store.commit('sendNotification', {status: null, message: 'Debe ingresar su contraseña.'})
         }
       },
       convertList (list) {

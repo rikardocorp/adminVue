@@ -12,9 +12,9 @@ export const DATA = {
     city: null
   },
   fieldsTable: {
-    description: {label: 'Descripcion', sortable: true, 'class': 'text-center'},
-    address: {label: 'Direccion', sortable: true, 'class': 'text-center'},
-    phone: {label: 'Telefono', sortable: true, 'class': 'text-center'},
+    description: {label: 'Nombre', sortable: true, 'class': 'text-center'},
+    address: {label: 'Dirección', sortable: true, 'class': 'text-center'},
+    phone: {label: 'Teléfono', sortable: true, 'class': 'text-center'},
     officeType: {
       label: 'Tipo',
       sortable: true,
@@ -39,7 +39,7 @@ export const DATA = {
       'class': 'text-center',
       formatter: (value) => { return value.name }
     },
-    actions: {label: '', thStyle: 'width:75px'}
+    actions: {label: 'Acciones', thStyle: 'width:75px'}
   }
 }
 
@@ -135,17 +135,17 @@ export const DATA_FORM = {
       // ]
     },
     address: {
-      label: 'Direccion',
+      label: 'Dirección',
       placeholder: 'Correo electronico',
       type: 'email'
     },
     phone: {
-      label: 'Telefono',
-      placeholder: 'Numero celular',
+      label: 'Teléfono',
+      placeholder: 'Numero de celular',
       type: 'number'
     },
     description: {
-      label: 'Descripcion',
+      label: 'Descripción',
       placeholder: 'Nombre de Sucursal',
       type: 'text',
       input: 'textarea'

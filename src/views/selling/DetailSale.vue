@@ -7,28 +7,27 @@
           <strong>Detalles de la Venta</strong> - Pagos
 
           <!-- POSITIVA ID=1 -->
-          <div v-if="item2.insurancePolicy.insuranceCompany.id == 1" style="display: inline;">
-            <button @click="optionPrint = !optionPrint" title="Imprimir" class="btn btn-in-title-right bg-info"><i class="fa fa-print"></i></button>
-            <div v-show="optionPrint" class="btn-in-title-right" style="width: 68px;padding: 0;padding-right: 4px;">
-              <button v-b-tooltip.bottom @click="imprimir(true)" title="Manual"  class="btn btn-in-title-right bg-danger"><i class="fa fa-adjust"></i></button>
-              <button v-b-tooltip.bottom @click="imprimir(false)" title="Web" class="btn btn-in-title-right bg-success"><i class="fa fa-adjust fa-rotate-180"></i></button>
+          <template v-if="item2.insurancePolicy.policyType!=='D'">
+            <div v-if="item2.insurancePolicy.insuranceCompany.id == 1" style="display: inline;">
+              <button @click="imprimir()" title="Imprimir" class="btn btn-in-title-right bg-info"><i class="fa fa-print"></i></button>
+              <!--<div v-show="optionPrint" class="btn-in-title-right" style="width: 68px;padding: 0;padding-right: 4px;">-->
+                <!--<button v-b-tooltip.bottom @click="imprimir()" title="Manual"  class="btn btn-in-title-right bg-danger"><i class="fa fa-adjust"></i></button>-->
+                <!--<button v-b-tooltip.bottom @click="imprimir()" title="Web" class="btn btn-in-title-right bg-success"><i class="fa fa-adjust fa-rotate-180"></i></button>-->
+              <!--</div>-->
             </div>
-          </div>
-
-          <!-- AFOCAT ID=6 y 7 -->
-          <div v-else-if="item2.insurancePolicy.insuranceCompany.id == 6 || item2.insurancePolicy.insuranceCompany.id == 7" style="display: inline;">
-            <button @click="optionPrint = !optionPrint" title="Imprimir" class="btn btn-in-title-right bg-info"><i class="fa fa-print"></i></button>
-            <div v-show="optionPrint" class="btn-in-title-right" style="width: 68px;padding: 0;padding-right: 4px;">
-              <button v-b-tooltip.bottom @click="imprimir(true)" title="Centrado"  class="btn btn-in-title-right bg-danger"><i class="fa fa-adjust"></i></button>
-              <button v-b-tooltip.bottom @click="imprimir(false)" title="No centrado" class="btn btn-in-title-right bg-success"><i class="fa fa-adjust fa-rotate-180"></i></button>
+            <!-- AFOCAT ID=6 y 7 -->
+            <div v-else-if="item2.insurancePolicy.insuranceCompany.id == 6 || item2.insurancePolicy.insuranceCompany.id == 7" style="display: inline;">
+              <button @click="optionPrint = !optionPrint" title="Imprimir" class="btn btn-in-title-right bg-info"><i class="fa fa-print"></i></button>
+              <div v-show="optionPrint" class="btn-in-title-right" style="width: 68px;padding: 0;padding-right: 4px;">
+                <button v-b-tooltip.bottom @click="imprimir(true)" title="Centrado"  class="btn btn-in-title-right bg-danger"><i class="fa fa-adjust"></i></button>
+                <button v-b-tooltip.bottom @click="imprimir(false)" title="No centrado" class="btn btn-in-title-right bg-success"><i class="fa fa-adjust fa-rotate-180"></i></button>
+              </div>
             </div>
-          </div>
-
-          <!-- AFOCAT ID=6 y 7 -->
-          <div v-else="" style="display: inline;">
-            <button v-b-tooltip.bottom @click="imprimir()" title="Imprimir" class="btn btn-in-title-right bg-info"><i class="fa fa-print"></i></button>
-          </div>
-
+            <!-- Diferent -->
+            <div v-else="" style="display: inline;">
+              <button v-b-tooltip.bottom @click="imprimir()" title="Imprimir" class="btn btn-in-title-right bg-info"><i class="fa fa-print"></i></button>
+            </div>
+          </template>
         </div>
         <div class="row">
           <div class="col-md-6 borderChild">
@@ -173,7 +172,6 @@
                   </div>
                 </div>
               </div>
-
               <div v-else="" class="col-md-12 borderChild">
                 <p class="title">PAGOS</p>
                 <div class="row pt-2">
@@ -428,7 +426,7 @@
         let url = ''
         let type = ''
         if (idCompany === 1) {
-          type = typePrint ? 1 : 2
+          type = typePrint === 'M' ? 1 : 2
           url = 'sales/' + idSale + '/printpolicy?positiva=' + type
         } else if (idCompany === 6 || idCompany === 7) {
           type = typePrint ? 1 : 2
@@ -438,12 +436,20 @@
         }
         return url
       },
-      imprimir (typePrint = null) {
+      imprimir (type = null) {
         let idSale = this.item.id
         let idCompany = this.item.insurancePolicy.insuranceCompany.id
+        let typePrint = this.item.insurancePolicy.policyType
+        if (type !== null) {
+          typePrint = type
+        }
+//        console.log(idSale)
+//        console.log(idCompany)
+        console.log(this.item.insurancePolicy.policyType)
+
         let url = this.getUrlPrint(idCompany, idSale, typePrint)
-        console.log(idSale, idCompany)
-        console.log(url)
+//        console.log(idSale, idCompany)
+//        console.log(url)
 
         let self = this.$store.dispatch('dispatchHTTP', {type: 'LOAD_PDF', url: url})
         self.then((response) => {
@@ -455,6 +461,7 @@
         })
       },
       returnMain () {
+        this.optionPrint = false
         this.$emit('returnMain', false)
       }
     }

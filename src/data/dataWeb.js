@@ -1,7 +1,7 @@
 import { required, minLength, maxLength, between, numeric, email } from 'vuelidate/lib/validators'
 
 export const DATA_CONTACT = {
-  name: 'contactanos',
+  name: 'Contáctanos',
   post: {
     nombre: '',
     email: '',

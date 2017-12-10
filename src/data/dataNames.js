@@ -14,7 +14,7 @@ export const DATA_CITY = {
     name: {label: 'Nombre Ciudad', sortable: true, 'class': 'text-center'},
     description: {label: 'Descripción', sortable: true},
     date: {label: 'Fecha', sortable: true},
-    actions: {label: '', thStyle: 'width:75px'}
+    actions: {label: 'Acciones', thStyle: 'width:75px'}
   }
 }
 
@@ -33,7 +33,7 @@ export const DATA_WERUSER2 = {
   fieldsTable: {
     firstName: {label: 'Nombres', sortable: true, 'class': 'text-center'},
     lastName: {label: 'Apellidos', sortable: true, 'class': 'text-center'},
-    phone: {label: 'Telefono', sortable: true},
+    phone: {label: 'Teléfono', sortable: true},
     email: {label: 'Email', sortable: true},
     username: {label: 'Username', sortable: true},
     actions: {label: '', thStyle: 'width:75px'}
@@ -64,7 +64,7 @@ export const DATA_WEBUSER = {
     lastName: {label: 'Apellidos', sortable: true, 'class': 'text-center'},
     dniRuc: {label: 'DNI', 'class': 'text-center'},
     email: {label: 'Email', 'class': 'text-center'},
-    address: {label: 'Direccion', sortable: true, 'class': 'text-center'},
+    address: {label: 'Dirección', sortable: true, 'class': 'text-center'},
     // departamento: {label: 'Departamento', sortable: true, 'class': 'text-center'},
     // provincia: {label: 'Provincia', sortable: true, 'class': 'text-center'},
     // distrito: {label: 'Distrito', sortable: true, 'class': 'text-center'},
@@ -127,7 +127,7 @@ export const DATA_VEHICLETYPE = {
     vehicleBrand: {label: 'Marca', sortable: true, 'class': 'text-center'},
     vehicleModel: {label: 'Modelo', sortable: true, 'class': 'text-center'},
     seatNumber: {label: 'Asientos', sortable: false, 'class': 'text-center'},
-    category: {label: 'Categoria', sortable: true, 'class': 'text-center'},
+    category: {label: 'Categoría', sortable: true, 'class': 'text-center'},
     actions: {label: '', thStyle: 'width:75px'}
   }
 }
@@ -151,14 +151,14 @@ export const DATA_PURCHASER = {
     typeDocument: 1
   },
   fieldsTable: {
-    razonSocial: {label: 'Razon Social', sortable: true, 'class': 'text-center'},
+    razonSocial: {label: 'Razón Social', sortable: true, 'class': 'text-center'},
     dniRuc: {label: 'DNI/RUC', 'class': 'text-center'},
     email: {label: 'Email', 'class': 'text-center'},
     address: {label: 'Dirección', 'class': 'text-center'},
     departamento: {label: 'Departamento', sortable: true, 'class': 'text-center'},
     distrito: {label: 'Distrito', sortable: true, 'class': 'text-center'},
     provincia: {label: 'Provincia', sortable: true, 'class': 'text-center'},
-    phone: {label: 'Telefono', 'class': 'text-center'},
+    phone: {label: 'Teléfono', 'class': 'text-center'},
     cellPhone: {label: 'Celular', 'class': 'text-center'},
     actions: {label: '', thStyle: 'width:75px'}
   }
@@ -188,8 +188,8 @@ export const DATA_USER = {
     username: {label: 'Username', sortable: true, 'class': 'text-center'},
     expense: {label: 'Gastos', sortable: true, 'class': 'text-center'},
     enabled: {label: 'Activo', sortable: true, 'class': 'text-center'},
-    role: {label: 'ROLE', sortable: true, 'class': 'text-center'},
-    actions: {label: '', thStyle: 'width:75px'}
+    role: {label: 'ROL', sortable: true, 'class': 'text-center'},
+    actions: {label: 'Acciones', thStyle: 'width:75px'}
   }
 }
 
@@ -205,10 +205,10 @@ export const DATA_ICOMPANIES = {
   },
   fieldsTable: {
     name: {label: 'Aseguradora', sortable: true, 'class': 'text-center'},
-    phone: {label: 'Telefono', 'class': 'text-center'},
+    phone: {label: 'Teléfono', 'class': 'text-center'},
     address: {label: 'Dirección', 'class': 'text-center'},
     email: {label: 'Email', 'class': 'text-center'},
-    actions: {label: '', thStyle: 'width:75px'}
+    actions: {label: 'Acciones', thStyle: 'width:75px'}
   }
 }
 
@@ -230,9 +230,9 @@ export const DATA_INSURANCEPRICES = {
     name: {label: 'Nombre', sortable: true, 'class': 'text-center'},
     price: {label: 'Precio', sortable: true, 'class': 'text-center'},
     insuranceCompanyId: {label: 'Aseguradora', sortable: true, 'class': 'text-center'},
-    insuranceTypeId: {label: 'Tipo Seguro', sortable: true, 'class': 'text-center'},
+    insuranceTypeId: {label: 'Tipo de Seguro', sortable: true, 'class': 'text-center'},
     regionId: {label: 'Ciudad', sortable: true, 'class': 'text-center'},
-    useTypeId: {label: 'Tipo Uso', sortable: true, 'class': 'text-center'},
+    useTypeId: {label: 'Tipo de Uso', sortable: true, 'class': 'text-center'},
     validityDate: {label: 'Fecha Valida', sortable: true, 'class': 'text-center'},
     actions: {label: '', thStyle: 'width:75px'}
   }
@@ -252,7 +252,7 @@ export const DATA_POLICIES = {
     // username: ''
   },
   fieldsTable: {
-    number: {label: 'Numero', sortable: true, 'class': 'text-center'},
+    number: {label: 'Número', sortable: true, 'class': 'text-center'},
     // validityStart: {label: 'Nombre', sortable: true, 'class': 'text-center'},
     // validityEnd: {label: 'Nombre', sortable: true, 'class': 'text-center'},
     // insuranceCompanyId: {label: 'Aseguradora', sortable: true, 'class': 'text-center'},
@@ -271,7 +271,7 @@ export const DATA_INSURANCETYPES = {
   },
   fieldsTable: {
     name: {label: 'Nombre', sortable: true, 'class': 'text-center'},
-    description: {label: 'Descripcion', 'class': 'text-center'},
+    description: {label: 'Descripción', 'class': 'text-center'},
     actions: {label: '', thStyle: 'width:75px'}
   }
 }
@@ -279,7 +279,7 @@ export const DATA_INSURANCETYPES = {
 // ------------------------------------
 
 export const DATA_COTIZAR = {
-  name: 'cotizar',
+  name: 'Cotizar',
   post: {
     ciudad: '',
     marca: '',
@@ -308,19 +308,19 @@ export const DATA_SALE = {
     seatNumber: ''
   },
   fieldsTable: {
-    insurancePolicyId: {label: 'Poliza', sortable: true, 'class': 'text-center'},
+    insurancePolicyId: {label: 'Póliza', sortable: true, 'class': 'text-center'},
     purchaserId: {label: 'Contratante', sortable: true, 'class': 'text-center'},
     vehicleId: {label: 'Auto', sortable: true, 'class': 'text-center'},
-    regionId: {label: 'Region', sortable: true, 'class': 'text-center'},
+    regionId: {label: 'Región', sortable: true, 'class': 'text-center'},
     seatNumber: {label: 'Asientos', sortable: true, 'class': 'text-center'},
     date: {label: 'Fecha', sortable: true, 'class': 'text-center'},
     amount: {label: 'Monto', sortable: true, 'class': 'text-center'},
     discount: {label: 'Descuento', sortable: true, 'class': 'text-center'},
     currency: {label: 'Moneda', sortable: true, 'class': 'text-center'},
     invoiceNumber: {label: 'Factura', sortable: true, 'class': 'text-center'},
-    observation: {label: 'Observ', sortable: true, 'class': 'text-center'},
+    observation: {label: 'Observación', sortable: true, 'class': 'text-center'},
     state: {label: 'Estado', sortable: true, 'class': 'text-center'},
     active: {label: 'Activo?', sortable: true, 'class': 'text-center'},
-    actions: {label: '', thStyle: 'width:75px'}
+    actions: {label: 'Acciones', thStyle: 'width:75px'}
   }
 }

@@ -2,7 +2,7 @@ export const names = {
   submit: 'Insertar',
   update: 'Actualizar',
   reset: 'Limpiar',
-  cancel: 'Cancel',
+  cancel: 'Cancelar',
   filter: 'Filtrar',
   delete: 'Eliminar',
   assign: 'Asignar'

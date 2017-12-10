@@ -21,7 +21,7 @@
           </li>
           <li class="list-group-item justify-content-between">
             <span class="badge badge-primary badge-pill">&nbsp;&nbsp;</span>
-            <span>Venta en proceso - Contratante.</span>
+            <span>Venta en proceso - Sin pagar.</span>
           </li>
           <li class="list-group-item justify-content-between">
             <span class="badge badge-info badge-pill">&nbsp;&nbsp;</span>
@@ -33,7 +33,7 @@
           </li>
           <li class="list-group-item justify-content-between">
             <span class="badge bg-blue badge-pill">&nbsp;&nbsp;</span>
-            <span>Documento PDF asignado</span>
+            <span>PDF asignado - Digital</span>
           </li>
           <li class="list-group-item justify-content-between">
             <span class="badge badge-pill" style="background: #454545">&nbsp;&nbsp;</span>

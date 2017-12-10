@@ -429,15 +429,18 @@
             if (item.exception === 1) {
               let idaux = vm.generateVCCId(item)
               vm.$refs['btn_' + idaux][0].click()
+              console.log(idaux)
             }
             id = vm.generateVCCId(item, item.exception)
             indexItems = vm.itemsIndex[id]
-            let data = {
-              id: item.id,
-              price: item.price
+            if (indexItems !== undefined) {
+              let data = {
+                id: item.id,
+                price: item.price
+              }
+              vm.$set(vm.items[indexItems], item.region.id, data)
+              vm.getDescription(indexItems, item.description, item.exception)
             }
-            vm.$set(vm.items[indexItems], item.region.id, data)
-            vm.getDescription(indexItems, item.description, item.exception)
           })
         } else {
           prices.forEach(function (item, index) {
@@ -615,7 +618,7 @@
         }
         newRow._vehicle.id = newId
         newRow._vehicle.exception = 1
-        console.log(this.items, indexItems)
+//        console.log(this.items, indexItems)
         this.$set(this.items[indexItems], '_rowVariant', 'danger')
         this.items.splice(indexItems, 0, newRow)
         this.generateIndexRow(this.items)

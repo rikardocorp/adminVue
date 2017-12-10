@@ -87,7 +87,6 @@
         </div>
       </div>
     </b-form>
-    <!--<pre>{{item}}</pre>-->
   </b-card>
 
 </template>

@@ -103,13 +103,13 @@ export const DATA_VEHICLE = {
       input: 'input-search'
     },
     engineNumber: {
-      label: 'Nro. Serie',
+      label: 'Nro. de Serie',
       placeholder: 'Ingrese numero de serie',
       type: 'text',
       icon: 'fa fa-hashtag'
     },
     seatNumber: {
-      label: 'Nro. Asientos',
+      label: 'Nro. de Asientos',
       placeholder: 'Ingrese numero de asientos',
       type: 'number',
       icon: 'fa fa-hashtag'
@@ -241,8 +241,8 @@ export const DATA_PURCHASER = {
       ]
     },
     phone: {
-      label: 'Telefono Fijo',
-      placeholder: 'Ingrese su telefono fijo',
+      label: 'Teléfono Fijo',
+      placeholder: 'Ingrese su teléfono fijo',
       type: 'number',
       icon: 'fa fa-phone',
       input: 'input'
@@ -402,15 +402,15 @@ export const DATA_PAY = {
       show: true
     },
     bodywork: {
-      label: 'Carroceria',
-      placeholder: 'Carroceria del vehiculo',
+      label: 'Carrocería',
+      placeholder: 'Carrocería del vehículo',
       type: 'text',
       icon: 'fa fa-car',
       show: true
     },
     observation: {
-      label: 'Observacion',
-      placeholder: 'Observacion en la venta',
+      label: 'Observación',
+      placeholder: 'Observación en la venta',
       type: 'text',
       icon: 'fa fa-user-o',
       input: 'textarea',
@@ -462,7 +462,7 @@ export const DATA_VEHICLETYPE = {
   input: {
     brand: {
       label: 'Marca',
-      placeholder: 'Marca de vehiculo',
+      placeholder: 'Marca de vehículo',
       type: 'text',
       icon: 'fa fa-bookmark',
       input: 'multiselect-tag',
@@ -480,7 +480,7 @@ export const DATA_VEHICLETYPE = {
     },
     vehicleType: {
       label: 'Modelo',
-      placeholder: 'Modelo de vehiculo',
+      placeholder: 'Modelo de vehículo',
       type: 'text',
       icon: 'fa fa-car',
       input: 'multiselect-tag',
@@ -497,7 +497,7 @@ export const DATA_VEHICLETYPE = {
       }
     },
     useType: {
-      label: 'Tipo uso',
+      label: 'Tipo de uso',
       placeholder: 'Tipo de uso',
       type: 'text',
       icon: 'fa fa-tag',
@@ -514,7 +514,7 @@ export const DATA_VEHICLETYPE = {
     },
     vehicleClass: {
       label: 'Clase',
-      placeholder: 'Clase de vehiculo',
+      placeholder: 'Clase de vehículo',
       type: 'text',
       icon: 'fa fa-tag',
       input: 'multiselect-tag',
@@ -529,8 +529,8 @@ export const DATA_VEHICLETYPE = {
       }
     },
     vehicleCategory: {
-      label: 'Categoria',
-      placeholder: 'Categoria de vehiculo',
+      label: 'Categoría',
+      placeholder: 'Categoría de vehículo',
       type: 'text',
       icon: 'fa fa-tag',
       input: 'multiselect',

@@ -13,7 +13,7 @@ export const DATA = {
   },
   fieldsTable: {
     vehicleType: {
-      label: 'Vehiculo',
+      label: 'Vehículo',
       sortable: true,
       'class': 'text-center',
       formatter: (value) => { return value ? value.vehicleBrand + '-' + value.vehicleModel : '-' }
@@ -25,14 +25,14 @@ export const DATA = {
       formatter: (value) => { return value ? value.description : 'vacio' }
     },
     vehicleCategory: {
-      label: 'Categoria',
+      label: 'Categoría',
       sortable: true,
       'class': 'text-center',
       formatter: (value) => { return value ? value.description : 'vacio' }
     },
-    seatNumber: {label: '#Asientos de', sortable: true, 'class': 'text-center'},
-    seatNumberTo: {label: '#Asientos a', sortable: true, 'class': 'text-center'},
-    actions: {label: '', thStyle: 'width:115px', 'class': 'text-center'}
+    seatNumber: {label: 'Desde', sortable: true, 'class': 'text-center'},
+    seatNumberTo: {label: 'Hasta', sortable: true, 'class': 'text-center'},
+    actions: {label: 'Acciones', thStyle: 'width:115px', 'class': 'text-center'}
   },
   fieldsTablePrice: {
     // vehicleType: {
@@ -48,14 +48,14 @@ export const DATA = {
       formatter: (value) => { return value ? value.description : 'vacio' }
     },
     vehicleCategory: {
-      label: 'Categoria',
+      label: 'Categoría',
       sortable: true,
       'class': 'text-center',
       formatter: (value) => { return value ? value.description : 'vacio' }
     },
-    seatNumber: {label: '#Asientos de', sortable: true, 'class': 'text-center'},
-    seatNumberTo: {label: '#Asientos a', sortable: true, 'class': 'text-center'},
-    actions: {label: '', thStyle: 'width:45px', 'class': 'text-center'}
+    seatNumber: {label: 'Desde', sortable: true, 'class': 'text-center'},
+    seatNumberTo: {label: 'Hasta', sortable: true, 'class': 'text-center'},
+    actions: {label: 'Acciones', thStyle: 'width:45px', 'class': 'text-center'}
   }
 }
 
@@ -78,7 +78,7 @@ export const DATA_FORM = {
     // },
     brand: {
       label: 'Marca',
-      placeholder: 'Marca de vehiculo',
+      placeholder: 'Marca de vehículo',
       type: 'text',
       input: 'multiselect-tag',
       params: {
@@ -95,7 +95,7 @@ export const DATA_FORM = {
     },
     vehicleType: {
       label: 'Modelo',
-      placeholder: 'Modelo de vehiculo',
+      placeholder: 'Modelo de vehículo',
       type: 'text',
       input: 'multiselect-tag',
       params: {
@@ -112,7 +112,7 @@ export const DATA_FORM = {
     },
     vehicleClass: {
       label: 'Clase',
-      placeholder: 'Clase de vehiculo',
+      placeholder: 'Clase de vehículo',
       type: 'text',
       input: 'multiselect',
       params: {
@@ -126,8 +126,8 @@ export const DATA_FORM = {
       }
     },
     vehicleCategory: {
-      label: 'Categoria',
-      placeholder: 'Categoria de vehiculo',
+      label: 'Categoría',
+      placeholder: 'Categoría de vehículo',
       type: 'text',
       input: 'multiselect',
       params: {
@@ -141,13 +141,13 @@ export const DATA_FORM = {
       }
     },
     seatNumber: {
-      label: 'Asientos De',
-      placeholder: 'Numero de asientos',
+      label: 'Asientos Desde',
+      placeholder: 'Número de asientos',
       type: 'number'
     },
     seatNumberTo: {
-      label: 'Asientos A',
-      placeholder: 'Numero de asientos',
+      label: 'Asientos Hasta',
+      placeholder: 'Número de asientos',
       type: 'number'
     }
   },

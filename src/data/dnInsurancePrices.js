@@ -23,12 +23,12 @@ export const DATA = {
     name: {label: 'Nombre', sortable: true, 'class': 'text-center'},
     price: {label: 'Precio', sortable: true, 'class': 'text-center'},
     insuranceCompanyName: {label: 'Aseguradora', sortable: true, 'class': 'text-center'},
-    insuranceTypeName: {label: 'Tipo Seguro', sortable: true, 'class': 'text-center'},
+    insuranceTypeName: {label: 'Tipo de Seguro', sortable: true, 'class': 'text-center'},
     regionName: {label: 'Ciudad', sortable: true, 'class': 'text-center'},
     useTypeName: {label: 'Tipo Uso', sortable: true, 'class': 'text-center'},
-    date: {label: 'Valida desde', sortable: true, 'class': 'text-center'},
-    validityDate: {label: 'Valida hasta', sortable: true, 'class': 'text-center'},
-    actions: {label: '', thStyle: 'width:75px'}
+    date: {label: 'Valida desde:', sortable: true, 'class': 'text-center'},
+    validityDate: {label: 'Valida hasta:', sortable: true, 'class': 'text-center'},
+    actions: {label: 'Acciones', thStyle: 'width:75px'}
   }
 }
 
@@ -66,7 +66,7 @@ export const DATA_FORM = {
       }
     },
     insuranceType: {
-      label: 'Tipo seguro',
+      label: 'Tipo de seguro',
       placeholder: 'Tipo de seguro',
       type: 'text',
       input: 'multiselect',
@@ -81,7 +81,7 @@ export const DATA_FORM = {
       }
     },
     useType: {
-      label: 'Tipo uso',
+      label: 'Tipo de uso',
       placeholder: 'Tipo de uso',
       type: 'text',
       input: 'multiselect',
@@ -170,7 +170,7 @@ export const DATA_FORM_PRICE = {
         variant: 'primary',
         size: 'sm',
         options: [
-          { text: 'Movil', value: '1' },
+          { text: 'Móvil', value: '1' },
           { text: 'PuntoVenta', value: '0' }
         ]
       }
@@ -276,8 +276,8 @@ export const DATA_FORM_PRICE = {
       }
     },
     vehicleCategory: {
-      label: 'Categoria',
-      placeholder: 'Categoria de vehiculo',
+      label: 'Categoría',
+      placeholder: 'Categoría de vehiculo',
       type: 'text',
       input: 'multiselect-restricted',
       srOnly: true,

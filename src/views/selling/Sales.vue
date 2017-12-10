@@ -28,7 +28,7 @@
                    :class="{'state-1': x.state==1, 'state-2': x.state==2, 'state-3': x.state==3, 'state-4': x.state==4, 'state-5': x.state==5}">
 
                 <!-- SALES -->
-                <div v-if="x.insurancePolicy !== undefined"
+                <div v-if="x.insurancePolicy !== undefined && x.state !== null"
                      :class="{'ticket cardWrap m-2 mb-3 hvr-bounce-in':true, 'pickOption': x.pick}" @click="selectedSale(x, true)">
                   <!--<i class="fa fa-thumb-tack" aria-hidden="true"></i>-->
                   <i v-if="x.cart" class="fa fa-shopping-cart icon-cart" aria-hidden="true"></i>
@@ -70,7 +70,7 @@
                   </div>
                 </div>
                 <!-- CARTS -->
-                <div v-else="" :class="{'ticket cardWrap m-2 mb-3 hvr-bounce-in':true, 'pickOption': x.pick}" @click="selectedCart(x, false)">
+                <div v-else-if="x.state !== null" :class="{'ticket cardWrap m-2 mb-3 hvr-bounce-in':true, 'pickOption': x.pick}" @click="selectedCart(x, false)">
                   <i class="fa fa-cart-plus" aria-hidden="true"></i>
                   <div class="card-ticket cardLeft">
                     <avatar :username="x.insuranceCompany.name" :rounded="true" :size="6.4" sizeUnid="em"

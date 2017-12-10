@@ -12,7 +12,7 @@
         <div class="col-md-4">
           <!--<app-form v-model="items" :item="item" :pickObject="pickObject" :horizontal="true" :urlRest="urlRest" @isSearching="isSearching"></app-form>-->
           <app-form2 :item="itemForm2" :nameForm="nameForm2"  :horizontal="false" :list="selectedList"
-                     @defaulValue="defaulValueForm2"></app-form2>
+                     @defaulValue="defaulValueForm2" :disableDelete="itemForm1.sold=='1'"></app-form2>
         </div>
       </div>
 

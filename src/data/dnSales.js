@@ -20,7 +20,7 @@ export const DATA = {
   },
   fieldsTable: {
     insurancePolicy: {
-      label: 'Poliza',
+      label: 'Póliza',
       sortable: true,
       'class': 'text-center',
       formatter: (value) => { return '#' + value.number }
@@ -38,7 +38,7 @@ export const DATA = {
       formatter: (value) => { return value ? value.licensePlate : '--' }
     },
     region: {
-      label: 'Region',
+      label: 'Región',
       sortable: true,
       'class': 'text-center',
       formatter: (value) => { return value ? value.name : '--' }
@@ -52,15 +52,15 @@ export const DATA = {
     observation: {label: 'Observ', sortable: true, 'class': 'text-center'},
     state: {label: 'Estado', sortable: true, 'class': 'text-center'},
     active: {label: 'Activo', sortable: true, 'class': 'text-center'},
-    actions: {label: '', 'class': 'text-center', thStyle: 'width:115px'}
+    actions: {label: 'Acciones', 'class': 'text-center', thStyle: 'width:115px'}
   }
 }
 
 export const DATA_FORM = {
   input: {
     insurancePolicy: {
-      label: 'Polizas',
-      placeholder: 'Numero de Polizas',
+      label: 'Pólizas',
+      placeholder: 'Numero de Pólizas',
       type: 'text',
       input: 'multiselect',
       params: {
@@ -75,7 +75,7 @@ export const DATA_FORM = {
     },
     purchaser: {
       label: 'Cotratante',
-      placeholder: 'Numero de asientos',
+      placeholder: 'Número de asientos',
       type: 'text',
       input: 'multiselect',
       params: {
@@ -89,8 +89,8 @@ export const DATA_FORM = {
       }
     },
     vehicle: {
-      label: 'Vehiculo',
-      placeholder: 'Vehiculo asegurado',
+      label: 'Vehículo',
+      placeholder: 'Vehículo asegurado',
       type: 'text',
       input: 'multiselect',
       params: {
@@ -151,7 +151,7 @@ export const DATA_FORM = {
       input: 'input'
     },
     observation: {
-      label: 'Observacion',
+      label: 'Observación',
       placeholder: 'Ingrese alguna observacion',
       type: 'text',
       input: 'textarea'
@@ -258,8 +258,8 @@ export const DATA_FORM_FILTER = {
       }
     },
     number: {
-      label: 'Numero Poliza',
-      placeholder: 'Numero de #poliza',
+      label: 'Número Póliza',
+      placeholder: 'Número de póliza',
       type: 'text',
       srOnly: true
     },

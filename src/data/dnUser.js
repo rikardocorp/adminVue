@@ -38,12 +38,12 @@ export const DATA = {
       formatter: (value) => { return value ? 'SI' : 'NO' }
     },
     role: {
-      label: 'ROLE',
+      label: 'ROL',
       sortable: true,
       'class': 'text-center',
       formatter: (value) => { return value.role }
     },
-    actions: {label: '', thStyle: 'width:115px', 'class': 'text-center'}
+    actions: {label: 'Acciones', thStyle: 'width:115px', 'class': 'text-center'}
   },
   fieldsTableClient: {
     firstName: {label: 'Nombres', sortable: true, 'class': 'text-center'},
@@ -63,12 +63,12 @@ export const DATA = {
       formatter: (value) => { return value ? 'SI' : 'NO' }
     },
     role: {
-      label: 'ROLE',
+      label: 'ROL',
       sortable: true,
       'class': 'text-center',
       formatter: (value) => { return value.role }
     },
-    actions: {label: '', thStyle: 'width:115px', 'class': 'text-center'}
+    actions: {label: 'Acciones', thStyle: 'width:115px', 'class': 'text-center'}
   }
 }
 
@@ -99,7 +99,7 @@ export const DATA_FORM = {
       }
     },
     phone: {
-      label: 'Telefono',
+      label: 'Teléfono',
       placeholder: 'Numero celular',
       type: 'number',
       params: {
@@ -107,8 +107,8 @@ export const DATA_FORM = {
       }
     },
     _role: {
-      label: 'ROLES',
-      placeholder: 'ROLES',
+      label: 'ROL',
+      placeholder: 'ROL',
       type: 'text',
       input: 'multiselect',
       params: {
@@ -193,7 +193,7 @@ export const DATA_FORM2 = {
       }
     },
     phone: {
-      label: 'Telefono',
+      label: 'Teléfono',
       placeholder: 'Numero celular',
       type: 'number',
       params: {
@@ -248,7 +248,7 @@ export const DATA_FORM_CLIENT = {
       }
     },
     phone: {
-      label: 'Telefono',
+      label: 'Teléfono',
       placeholder: 'Numero celular',
       type: 'number',
       params: {

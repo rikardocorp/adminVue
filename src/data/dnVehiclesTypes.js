@@ -11,7 +11,7 @@ export const DATA = {
     vehicleBrand: {label: 'Marca', sortable: true, 'class': 'text-center'},
     vehicleModel: {label: 'Modelo', sortable: true, 'class': 'text-center'},
     seatNumber: {label: 'Asientos', sortable: false, 'class': 'text-center'},
-    actions: {label: '', thStyle: 'width:75px'}
+    actions: {label: 'Acciones', thStyle: 'width:75px'}
   }
 }
 

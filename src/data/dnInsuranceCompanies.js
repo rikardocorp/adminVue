@@ -11,10 +11,10 @@ export const DATA = {
   },
   fieldsTable: {
     name: {label: 'Aseguradora', sortable: true, 'class': 'text-center'},
-    phone: {label: 'Telefono', 'class': 'text-center'},
+    phone: {label: 'Teléfono', 'class': 'text-center'},
     address: {label: 'Dirección', 'class': 'text-center'},
     email: {label: 'Email', 'class': 'text-center'},
-    actions: {label: '', 'class': 'text-center', thStyle: 'width:115px'}
+    actions: {label: 'Acciones', 'class': 'text-center', thStyle: 'width:115px'}
   }
 }
 
@@ -31,12 +31,12 @@ export const DATA_FORM = {
       type: 'text'
     },
     phone: {
-      label: 'Telefono',
+      label: 'Teléfono',
       placeholder: 'Ingrese numero telefono',
       type: 'number'
     },
     address: {
-      label: 'Direccion',
+      label: 'Dirección',
       placeholder: 'Ingrese una direccion',
       type: 'text'
     }
