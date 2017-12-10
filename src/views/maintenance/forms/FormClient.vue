@@ -125,6 +125,10 @@
           let self = this.$store.dispatch('dispatchHTTP', {type: action, url: url, data: this.item})
           self.then((data) => {
             if (data.status) {
+              if (action === 'INSERT') {
+                data.content.facebook = 0
+                data.content.google = 0
+              }
               console.log('DATA-CONTENT ' + action)
               console.log(data.content)
               this.addRow(data.content)

@@ -39,8 +39,23 @@
                      @open="openSelect(option.params.key)"
                      @blur.native="$v.item[index]? $v.item[index].$touch(): false"></multiselect>
 
+        <!-- MULTISELECT TAG -->
+        <multiselect v-else-if="option.input=='multiselect-tag'"
+                     class="text-uppercase"
+                     :close-on-select="true" :hide-selected="true" :preserve-search="true" :taggable="true" select-label=""
+                     :placeholder="option.placeholder" tag-placeholder="Presiona enter para agregar"
+                     :label="option.params.label" :track-by="option.params.label"
+                     :loading="!option.params.activate"
+                     :disabled="!option.params.activate || isLoading"
+                     v-model="item[index]"
+                     :options="option.params.options"
+                     @input="selectModelVehicle"
+                     @open="openSelect(option.params.key)"
+                     @tag="addTag"
+                     @blur.native="$v.item[index]? $v.item[index].$touch(): false"></multiselect>
+
         <!-- ERROR MESSAGE-->
-        <form-error :data="$v.item[index]? $v.item[index] : {} "></form-error>
+        <form-error :data="$v.item[index]? $v.item[index] : {} " :async="true"></form-error>
       </b-form-group>
 
       <div slot="footer">
@@ -68,6 +83,7 @@
   import {DATA_FORM as dataForm} from '../../../data/dnVehicleTypeCategories'
   import FormError from '../../../components/FormError.vue'
   import Multiselect from 'vue-multiselect'
+  import { required, numeric, minValue } from 'vuelidate/lib/validators'
 
   export default {
     props: ['urlRest', 'item', 'update', 'horizontal'],
@@ -86,6 +102,11 @@
       }
     },
     validations () {
+      dataForm.validate.item.seatNumberTo = {
+        required,
+        numeric,
+        minValue: minValue(this.item.seatNumber)
+      }
       return dataForm.validate
     },
     computed: {
@@ -94,13 +115,39 @@
       }
     },
     methods: {
+      addTag (newTag) {
+        newTag = newTag.toUpperCase()
+        console.log(newTag)
+        let key = this.selectedKey
+        let tag = {}
+        if (key === 'brand') {
+          tag = {
+            vehicleBrand: newTag,
+            vehicleModel: ''
+          }
+          this.optInput['vehicleType'].params.options = []
+          this.item['vehicleType'] = null
+        } else if (key === 'vehicleType') {
+          tag = {
+            vehicleBrand: '',
+            vehicleModel: newTag
+          }
+        }
+        this.optInput[key].params.options.push(tag)
+        this.item[key] = tag
+      },
+      async insertVehicleType (data) {
+        console.log('INSERT VEHICLE')
+        let self = await this.$store.dispatch('dispatchHTTP', {type: 'INSERT', url: 'vehicletypes', data: data})
+        return self
+      },
       addRow (newItem) {
         this.$emit('emit_addRow', newItem)
       },
       selectModelVehicle (selectedOption) {
         console.log(selectedOption)
         let key = this.selectedKey
-        if (key === 'brand') {
+        if (key === 'brand' && selectedOption !== null) {
           let vehicleBrand = selectedOption.vehicleBrand
           let url = this.optInput['vehicleType'].params.url + vehicleBrand
           this.getOption(url, 'vehicleType')
@@ -109,10 +156,20 @@
       openSelect (id) {
         this.selectedKey = id
       },
-      processData (action) {
+      async processData (action) {
         let invalid = this.$v.item.$invalid
-        let url = !this.item.id ? this.urlRest : this.urlRest + '/' + this.item.id
+        let url = !this.item.id ? 'vehicletypecategories' : 'vehicletypecategories/' + this.item.id
         if (!invalid) {
+          if (this.item.vehicleType.id === undefined) {
+            this.item.vehicleType = {
+              vehicleBrand: this.item.brand.vehicleBrand,
+              vehicleModel: this.item.vehicleType.vehicleModel
+            }
+            // INSERT NEW VEHICLE TYPE
+            let r1 = await this.insertVehicleType(this.item.vehicleType)
+            if (!r1.status) return false
+            this.item.vehicleType = r1.content
+          }
           let self = this.$store.dispatch('dispatchHTTP', {type: action, url: url, data: this.item})
           self.then((data) => {
             if (data.status) {
@@ -151,7 +208,7 @@
     created () {
       let vm = this
       this.$lodash.forEach(this.optInput, function (value, key) {
-        if (vm.optInput[key].input === 'multiselect') {
+        if (vm.optInput[key].input === 'multiselect' || vm.optInput[key].input === 'multiselect-tag') {
           vm.multiselectKeys.push(key)
           if (vm.optInput[key].params.loadData) {
             vm.getOption(value.params.url, key)

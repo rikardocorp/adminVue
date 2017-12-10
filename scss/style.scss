@@ -106,6 +106,9 @@ html{
     .separator {
       border-bottom: 1px dashed #ef7b22;
       font-size: 1.3em;
+      legend {
+        text-align: left;
+      }
       label {
         text-align: left;
         max-width: 100%;

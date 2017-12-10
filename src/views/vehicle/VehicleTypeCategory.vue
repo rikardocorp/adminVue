@@ -91,7 +91,7 @@
         })
       },
       deleteData () {
-        let self = this.$store.dispatch('dispatchHTTP', {type: 'DELETE', url: this.urlRest + '/' + this.items[this.indexSelected].id})
+        let self = this.$store.dispatch('dispatchHTTP', {type: 'DELETE', url: 'vehicletypecategories/' + this.items[this.indexSelected].id})
         self.then((data) => {
           console.log(data.content)
           if (data.status) {
@@ -112,6 +112,7 @@
 
         if (option.name === this.btnOption.editOpc.name) {
           this.item = {...this.item, ...item}
+          this.item.brand = this.item.vehicleType
           this.update = true
           this.$scrollTo('body')
         } else {

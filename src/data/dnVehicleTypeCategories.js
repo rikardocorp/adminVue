@@ -1,4 +1,4 @@
-import { required, minLength, maxLength, between, numeric, email, sameAs } from 'vuelidate/lib/validators'
+import { required, minLength, maxLength, between, numeric, email, sameAs, minValue } from 'vuelidate/lib/validators'
 
 export const DATA = {
   name: 'vehicletypecategories?type=',
@@ -80,9 +80,9 @@ export const DATA_FORM = {
       label: 'Marca',
       placeholder: 'Marca de vehiculo',
       type: 'text',
-      input: 'multiselect',
+      input: 'multiselect-tag',
       params: {
-        url: 'vehicletypes/filter?type=0',
+        url: 'vehicletypes?type=1',
         key: 'brand',
         keyValue: 'vehicleBrand',
         objectKey: 'vehicleType',
@@ -97,9 +97,9 @@ export const DATA_FORM = {
       label: 'Modelo',
       placeholder: 'Modelo de vehiculo',
       type: 'text',
-      input: 'multiselect',
+      input: 'multiselect-tag',
       params: {
-        url: 'vehicletypes/filter?type=1&vehicleBrand=',
+        url: 'vehicletypes?type=0&vehicleBrand=',
         key: 'vehicleType',
         keyValue: 'vehicleModel',
         objectKey: 'vehicleType',

@@ -44,6 +44,31 @@ export const DATA = {
       formatter: (value) => { return value.role }
     },
     actions: {label: '', thStyle: 'width:115px', 'class': 'text-center'}
+  },
+  fieldsTableClient: {
+    firstName: {label: 'Nombres', sortable: true, 'class': 'text-center'},
+    lastName: {label: 'Apellidos', sortable: true, 'class': 'text-center'},
+    email: {label: 'Email', sortable: true, 'class': 'text-center'},
+    phone: {label: 'Celular', sortable: true, 'class': 'text-center'},
+    enabled: {
+      label: 'Activo',
+      sortable: true,
+      'class': 'text-center',
+      formatter: (value) => { return value ? 'SI' : 'NO' }
+    },
+    expense: {
+      label: 'Gastos',
+      sortable: true,
+      'class': 'text-center',
+      formatter: (value) => { return value ? 'SI' : 'NO' }
+    },
+    role: {
+      label: 'ROLE',
+      sortable: true,
+      'class': 'text-center',
+      formatter: (value) => { return value.role }
+    },
+    actions: {label: '', thStyle: 'width:115px', 'class': 'text-center'}
   }
 }
 
@@ -110,7 +135,8 @@ export const DATA_FORM = {
         options: [],
         activate: false,
         loadData: true,
-        value: ''
+        value: '',
+        editDisable: true
       }
     }
   },

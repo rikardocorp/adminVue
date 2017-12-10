@@ -55,6 +55,7 @@
       <!-- ERROR MESSAGE-->
       <form-error :data="$v.item[index]? $v.item[index] : {} "></form-error>
     </b-form-group>
+    <!--<pre>{{ item }}</pre>-->
 
   </b-form>
 

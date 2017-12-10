@@ -51,7 +51,7 @@
     "vueisotope": "^3.1.0",
     "vuejs-datepicker": "^0.9.13",
     "vuejs-dialog": "^0.4.5",
-    "vuelidate": "^0.5.0",
+    "vuelidate": "^0.6.1",
     "vuex": "^2.4.0"
   },
   "devDependencies": {

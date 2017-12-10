@@ -8,7 +8,7 @@ export default {
       icon: 'icon-speedometer',
       badge: {
         variant: 'warning',
-        text: 'NEW'
+        text: 'Nuevo'
       }
     },
     {
@@ -50,11 +50,11 @@ export default {
           url: '/mantenimiento/tipo-uso',
           icon: 'fa fa-gavel'
         },
-        {
-          name: 'Tipos de Seguro',
-          url: '/mantenimiento/tipo-seguro',
-          icon: 'fa fa-thumbs-up'
-        },
+        // {
+        //   name: 'Tipos de Seguro',
+        //   url: '/mantenimiento/tipo-seguro',
+        //   icon: 'fa fa-thumbs-up'
+        // },
         // {
         //   name: 'Contratante',
         //   url: '/mantenimiento/contratantes',
@@ -67,11 +67,11 @@ export default {
       url: '/vehiculos',
       icon: 'fa fa-bus',
       children: [
-        {
-          name: 'Tipos de Vehiculo',
-          url: '/vehiculos/tipo-vehiculo',
-          icon: 'fa fa-taxi'
-        },
+        // {
+        //   name: 'Tipos de Vehiculo',
+        //   url: '/vehiculos/tipo-vehiculo',
+        //   icon: 'fa fa-taxi'
+        // },
         {
           name: 'Categ. de Vehiculo',
           url: '/vehiculos/categoria-vehiculo',
@@ -139,20 +139,12 @@ export default {
     {
       name: 'Polizas',
       url: '/insertar-poliza',
-      icon: 'fa fa-balance-scale',
-      badge: {
-        variant: 'danger',
-        text: 'NEW'
-      }
+      icon: 'fa fa-balance-scale'
     },
     {
       name: 'Asignacion',
       url: '/asignar-poliza',
-      icon: 'fa fa-hand-o-right',
-      badge: {
-        variant: 'success',
-        text: 'NEW'
-      }
+      icon: 'fa fa-hand-o-right'
     },
     {
       title: true,
@@ -188,39 +180,27 @@ export default {
     {
       name: 'Poliza Vendida',
       url: '/polizas-vendidas',
-      icon: 'fa fa-handshake-o',
-      badge: {
-        variant: 'warning',
-        text: 'NEW'
-      }
+      icon: 'fa fa-handshake-o'
     },
     {
       name: 'Cotizacion',
       url: '/cotizar-admin',
       icon: 'fa fa-money',
       badge: {
-        variant: 'warning',
-        text: 'NEW'
+        variant: 'info',
+        text: 'online'
       }
     },
     {
       name: 'Nueva Venta',
       url: '/nueva-venta',
       icon: 'fa fa-plus',
-      display: true,
-      badge: {
-        variant: 'info',
-        text: 'NEW'
-      }
+      display: true
     },
     {
       name: 'Venta Especial',
       url: '/venta-especial',
-      icon: 'fa fa-star-o',
-      badge: {
-        variant: 'success',
-        text: 'NEW'
-      }
+      icon: 'fa fa-star-o'
     }
     // {
     //   name: 'Venta Cliente',

@@ -24,14 +24,14 @@
             <h2>{{ data.purchaser.item ? data.purchaser.item.razonSocial: 'xxxxx' }}</h2>
             <span>Contratante</span>
           </div>
-          <div class="seat">
-            <h2>{{ data.vehicle.item.seatNumber }}</h2>
-            <span>Asientos</span>
-          </div>
-          <div v-if="!isClient" class="time">
+          <div v-if="!isClient" class="seat">
             <h2>{{ data.sale.item.validityStart ? data.sale.item.validityStart: 'xx/xx/xxxx' }}</h2>
             <span>Fecha Inicio</span>
           </div>
+          <!--<div v-if="!isClient" class="time">-->
+            <!--<h2>{{ data.sale.item.validityStart ? data.sale.item.validityStart: 'xx/xx/xxxx' }}</h2>-->
+            <!--<span>Fecha Inicio</span>-->
+          <!--</div>-->
           <div v-else="" class="time">
             <h2>{{ localDate }}</h2>
             <span>Fecha Inicio</span>
@@ -120,6 +120,9 @@
       <!--</toggle-button>-->
     <!--</div>-->
     <!--<pre>{{data.vehicle.item.insurancePolicy.policyType}}</pre>-->
+    <!--<pre>{{data.pickPolice.item}}</pre>-->
+    <!--<pre>{{data.vehicle.item.insurancePolicy}}</pre>-->
+    <!--<pre>{{ data.sale.item.insurancePolicy }}</pre>-->
   </div>
 
 </template>
@@ -172,6 +175,7 @@
     },
     methods: {
       imprimir () {
+        alert(2e12)
 //       1  positiva: /sales/{id}/printpolicy?positiva=(1: manual, 2: web)
 //          rimac: /sales/{id}/printpolicy
 //          mapfre: /sales/{id}/printpolicy
@@ -215,7 +219,7 @@
       getUrlPrint (idCompany, idSale) {
         let url = ''
         let type = ''
-        let typePositiva = this.data.vehicle.item.insurancePolicy.policyType
+        let typePositiva = this.data.sale.item.insurancePolicy.policyType
         if (idCompany === 1) {
           type = typePositiva === 'M' ? 1 : 2
           url = 'sales/' + idSale + '/printpolicy?positiva=' + type

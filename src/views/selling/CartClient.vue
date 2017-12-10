@@ -258,11 +258,8 @@
     }
   }
 </script>
-
-<style lang="scss">
-
+<style lang="scss" scoped="">
   #getSale {
-
     .bg-cart{
       background: #ffe956 !important;
       color: #ef7b22;
@@ -294,7 +291,11 @@
         }
       }
     }
+  }
+</style>
+<style lang="scss">
 
+  #getSale {
     .ticket {
       width: 21em;
       cursor: pointer;

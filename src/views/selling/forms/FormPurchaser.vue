@@ -321,9 +321,8 @@
       if (purchaser) {
         this.localidad = JSON.parse(localStorage.getItem('location'))
         let date = purchaser.birthDate
-        if (date) {
-          this.birthDate = this.getDateToDatepicker(date)
-        }
+        if (date) this.birthDate = this.getDateToDatepicker(date)
+        if (this.item.hasEmail) this.searchUser()
       }
       this.dniRUC()
 

@@ -22,6 +22,14 @@
             value: 'Campo requerido!',
             params: []
           },
+          minValue: {
+            value: 'El valor debe ser >= a $min!',
+            params: ['min']
+          },
+          maxValue: {
+            value: 'El valor debe ser <= a $max!',
+            params: ['max']
+          },
           minLength: {
             value: 'Al menos $min caracteres!',
             params: ['min']
@@ -85,6 +93,7 @@
         let vm = this
         let params = []
         let newText = ''
+        console.log(vm.data.$params)
         for (let [key, value] of Object.entries(this.data)) {
           if (key[0] !== '$') {
             newText = this.text[key].value
@@ -106,10 +115,10 @@
       }
     },
     created () {
-      // console.log('CREATED ERROR')
       this.createError()
-      // console.log(this.localData)
-      // console.log('-------------')
+//      console.log('CREATED ERROR')
+//      console.log(this.data.$params)
+//      console.log('-------------')
     }
   }
 </script>

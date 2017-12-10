@@ -51,7 +51,7 @@
                 <b-button v-b-tooltip.hover.auto
                           :title="data.item._vehicle.exceptionBtn? 'Lista de excepcionados':'Lista de autos'"
                           :variant="data.item._vehicle.exceptionBtn? 'danger':'success'"
-                          @click.stop="getListCar(data.item._vehicle)"
+                          @click.stop="getListCar(data.item._vehicle, true, false)"
                           size="sm" :disabled="isLoading">
                   <i class="fa fa-car" aria-hidden="false"></i>
                 </b-button>
@@ -63,10 +63,10 @@
               </template>
               <template v-else="">
                 <div class="union-line"></div>
-                <b-button style="padding: 0px; background: none; font-size: 1.5em; width: 40px;" v-b-tooltip.hover.auto :title="'Lista de excepciones'" variant="secundary" @click.stop="getListCar(data.item._vehicle)" size="sm" :disabled="isLoading">
+                <b-button style="padding: 0px; background: none; font-size: 1.5em; width: 40px;" v-b-tooltip.hover.auto :title="'Lista de excepciones'" variant="secundary" @click.stop="getListCar(data.item._vehicle, true, true)" size="sm" :disabled="isLoading">
                   <span class="fa-stack fa-lg" style="font-size: 1.1em">
                     <i class="fa fa-car fa-stack-1x" style="color: white;"></i>
-                    <i class="fa fa-circle-o fa-stack-2x text-success"></i>
+                    <i :class="'fa fa-circle-o fa-stack-2x ' + (data.item._vehicle.btnCircleCar ? 'text-warning':'text-success')"></i>
                   </span>
                 </b-button>
               </template>
@@ -116,23 +116,45 @@
                type="text" v-model="search" style="margin-bottom: 0.51em !important;background-color: #e5e5e5 !important;" placeholder="Buscar marca y modelo">
         <div v-if="pickRowItem.exception===1" class="pt-2 content-list-car">
           <b-badge v-for="car in filteredCars" pill
-                   :key="car.id" :class="{'hvr-pulse-grow': true, 'bg-success': listDescription[car.id] ? true : false}"
+                   :key="car.id" :class="{'hvr-pulse-grow': true, 'bg-success': listDescription[car.id] ? false : true}"
                    @click="addItemDescription(car, true)">{{ car.vehicleType.vehicleBrand }}-{{ car.vehicleType.vehicleModel }}</b-badge>
         </div>
         <div v-else-if="pickRowItem.exceptionBtn" class="pt-2 content-list-car">
           <b-badge v-for="car in filteredCars" pill v-if="listDescriptionHidden[car.id] || itemsIndex[auxIDItems]==undefined"
-                   :key="car.id" :class="{'hvr-pulse-grow': true, 'bg-danger': listDescription[car.id] ? true : false}"
-                   @click="addItemDescription(car, false)">{{ car.vehicleType.vehicleBrand }}-{{ car.vehicleType.vehicleModel }}</b-badge>
+                   :key="car.id" :class="{'hvr-pulse-grow': true, 'bg-danger': listDescription[car.id] ? true : false}">{{ car.vehicleType.vehicleBrand }}-{{ car.vehicleType.vehicleModel }}</b-badge>
         </div>
         <div v-else="" class="pt-2 content-list-car">
           <b-badge v-for="car in filteredCars" pill v-if="listDescriptionHidden[car.id] || itemsIndex[auxIDItems]==undefined"
                    :key="car.id" :class="{'hvr-pulse-grow': true, 'bg-success': listDescription[car.id] ? true : false}"
                    @click="addItemDescription(car, false)">{{ car.vehicleType.vehicleBrand }}-{{ car.vehicleType.vehicleModel }}</b-badge>
         </div>
+
+        <div v-if="pickRowItem.exception===1" class="mt-3 p-1 pt-2 row mx-auto w-100" style="border-top: 1px solid #4dbd74;">
+          <div class="col-6">
+            Todos los <b-badge pill class="bg-success" style="width: 20px;height: 20px; margin: 0;">&nbsp;</b-badge> se consideran como seleccionados.
+          </div>
+          <div class="col-6">
+            Todos los <b-badge pill style="width: 20px;height: 20px; margin: 0; background: #e2e2e2;">&nbsp;</b-badge> se consideran como excepciones.
+          </div>
+        </div>
+        <div v-else-if="pickRowItem.exceptionBtn" class="mt-3 p-1 pt-2 row mx-auto w-100" style="border-top: 1px solid #f86c6b;">
+          <div class="col-12">
+            Todos los <b-badge pill style="width: 20px;height: 20px; margin: 0;" class="bg-danger">&nbsp;</b-badge> se consideran como seleccionados.
+          </div>
+        </div>
+        <div v-else="" class="mt-3 p-1 pt-2 row mx-auto w-100" style="border-top: 1px solid #4dbd74;">
+          <div class="col-6">
+            Si todos son <b-badge pill style="width: 20px;height: 20px; margin: 0; background: #e2e2e2;">&nbsp;</b-badge>, todos son seleccionados.
+          </div>
+          <div class="col-6">
+            Si existe algun <b-badge pill style="width: 20px;height: 20px; margin: 0;" class="bg-success">&nbsp;</b-badge>, solo se consideran esos seleccionados.
+          </div>
+        </div>
       </div>
     </b-modal>
 
     <!--<pre>{{ changeList }}</pre>-->
+    <!--<pre>{{countWrong}}</pre>-->
     <!--<pre>{{ itemsIndex }}</pre>-->
     <!--<pre>{{ items }}</pre>-->
   </div>
@@ -200,6 +222,7 @@
         carsVTC: [],
         search: '',
         pickRowItem: {},
+        pickRowItemOther: {},
         changeList: {},
         pickCellId: '',
         rick: [],
@@ -215,7 +238,8 @@
         auxDeleteItemDescription: 0,
         auxIDItems: '',
         isFillTable: true,
-        isClickBadge: false
+        isClickBadge: false,
+        countWrong: 0
       }
     },
     computed: {
@@ -235,20 +259,30 @@
         if (!newVal) {
           // HIDDEN
           this.pickRowItem['description_' + this.pickRowItem.exception] = JSON.stringify(this.listDescription)
+          if (this.pickRowItem.exception === 1) {
+            this.pickRowItemOther['description_0'] = JSON.stringify(this.listDescription)
+            if (JSON.stringify(this.listDescription) === '{}') {
+              if (!this.pickRowItem.btnCircleCar) {
+                this.pickRowItem.btnCircleCar = true
+                this.countWrong = this.countWrong + 1
+              }
+            } else {
+              if (this.pickRowItem.btnCircleCar) {
+                this.pickRowItem.btnCircleCar = false
+                this.countWrong = this.countWrong - 1
+              }
+            }
+          }
           this.listDescription = {}
           this.listDescriptionHidden = {}
           if (this.isClickBadge) {
             this.activeRowPrices(this.pickRowItem.id)
+            if (this.pickRowItemOther.id) this.activeRowPrices(this.pickRowItemOther.id)
             this.isClickBadge = false
           }
-//          RCORP A
-//          if (this.auxDeleteItemDescription !== 0) {
-//            alert('hidden delete delte')
-//            this.activeRowPrices(this.auxDeleteItemDescription)
-//            this.auxDeleteItemDescription = 0
-//          }
         } else {
           // SHOW
+          console.log(this.filteredCars)
           if (this.pickRowItem.exception === 0) {
             let id = this.generateVCCId(this.pickRowItem, 1)
             let index = this.itemsIndex[id]
@@ -309,6 +343,7 @@
         this.carsVTC = []
         this.search = ''
         this.pickRowItem = {}
+        this.pickRowItemOther = {}
         this.changeList = {}
         this.pickCellId = ''
       },
@@ -394,7 +429,6 @@
             if (item.exception === 1) {
               let idaux = vm.generateVCCId(item)
               vm.$refs['btn_' + idaux][0].click()
-              // vm.addException(item, false)
             }
             id = vm.generateVCCId(item, item.exception)
             indexItems = vm.itemsIndex[id]
@@ -487,9 +521,21 @@
         this.items = items
         this.itemsIndex = itemsIndex
       },
-      async getListCar (item, async = true) {
+      async getListCar (item, async = true, exception = false) {
         this.pickRowItem = item
+        this.pickRowItemException = {}
         this.auxIDItems = this.generateVCCId(item, 1)
+
+        if (exception) {
+          let id0 = this.generateVCCId(item)
+          this.pickRowItemOther = this.items[this.itemsIndex[id0]]._vehicle
+        }
+
+        console.log(this.pickRowItemOther)
+        console.log(this.pickRowItem)
+
+        // return false
+
         this.search = ''
         if (async) {
           let url = 'vehicletypecategories?type=0&vehicleClassId='+item.vehicleClass.id+'&vehicleCategoryId'+item.vehicleCategory.id+'&seatNumber='+item.seatNumber+'&seatNumberTo='+item.seatNumberTo
@@ -502,6 +548,9 @@
         if (localDescription !== undefined) return false
         if (description !== '') {
           this.items[index]._vehicle['description_' + exception] = description
+          if (exception === 1) {
+            this.items[index + 1]._vehicle['description_0'] = description
+          }
         }
       },
       addItemDescription (car, exception) {
@@ -512,19 +561,9 @@
             let description0 = JSON.parse(this.items[this.itemsIndex[auxID]]._vehicle['description_0'])
             let idDelete = car.id
             this.$delete(description0, idDelete)
-//            console.log('DELETE')
-//            console.log(description0)
-//            console.log(idDelete)
             this.items[this.itemsIndex[auxID]]._vehicle['description_0'] = JSON.stringify(description0)
-            this.activeRowPrices(auxID)
           }
           this.$delete(this.listDescription, car.id)
-// RCORP A
-//          if (this.pickRowItem.exception === 1 && this.auxDeleteItemDescription === 0) {
-//            alert('delete descript item')
-//            let id = this.generateVCCId(this.pickRowItem)
-//            this.auxDeleteItemDescription = id
-//          }
         } else {
           this.$set(this.listDescription, car.id, car)
           this.listDescription[car.id] = [car.vehicleType.vehicleBrand, car.vehicleType.vehicleModel]
@@ -536,11 +575,12 @@
       },
       addException (item, _alert = true) {
         item.exceptionBtn = true
-        if (!this.isFillTable) this.$set(item, 'description_0', '{}')
         let id = this.generateVCCId(item)
         let newId = this.generateVCCId(item, 1)
         let indexItems = this.itemsIndex[id]
         let remove = true
+
+        if (!this.isFillTable) this.$set(item, 'description_0', '{}')
         if (this.itemsIndex[newId] !== undefined) {
           let vm = this
           let newIndex = indexItems - 1
@@ -562,6 +602,7 @@
             this.items.splice(newIndex, 1)
             this.generateIndexRow(this.items)
             item.exceptionBtn = false
+            this.countWrong = this.countWrong - 1
           } else {
             if (_alert && !this.isFillTable) this.$store.commit('sendNotification', {status: null, message: 'No podemos eliminar esta fila de exepciones, ya que cuenta con precios registrados.'})
           }
@@ -578,8 +619,23 @@
         this.$set(this.items[indexItems], '_rowVariant', 'danger')
         this.items.splice(indexItems, 0, newRow)
         this.generateIndexRow(this.items)
+
+        if (!this.items[indexItems]._vehicle.btnCircleCar && !this.isFillTable) {
+          this.items[indexItems]._vehicle.btnCircleCar = true
+          this.countWrong = this.countWrong + 1
+        }
       },
       saveTable () {
+        if (this.countWrong > 0) {
+          this.$store.commit('sendNotification', {
+            status: null,
+            message: 'Se han añadido listas de excepciones vacias. <span class="fa-stack fa-lg" style="font-size: 1.1em">\n' +
+            '                    <i class="fa fa-car fa-stack-1x" style="color: white;"></i>\n' +
+            '                    <i class="fa fa-circle-o fa-stack-2x text-warning"></i>\n' +
+            '                  </span>'})
+          return false
+        }
+
         let data = this.convertList(this.changeList)
         if (data.length === 0) {
           this.$store.commit('sendNotification', {status: null, message: 'No ha realizado ningun cambios en los precios.'})

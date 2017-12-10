@@ -15,9 +15,9 @@ import Profile from '../views/maintenance/Profile.vue'
 import Cliente from '../views/Cliente.vue'
 
 // Views Maintenance
-import City from '../views/maintenance/City.vue'
+// import City from '../views/maintenance/City.vue'
 import UseType from '../views/maintenance/UseType.vue'
-import InsuranceType from '../views/maintenance/InsuranceTypes.vue'
+// import InsuranceType from '../views/maintenance/InsuranceTypes.vue'
 import User from '../views/maintenance/User.vue'
 import Client from '../views/maintenance/Client.vue'
 import Aseguradoras from '../views/maintenance/InsuranceCompanies.vue'
@@ -29,10 +29,10 @@ import VehicleType from '../views/vehicle/VehicleType.vue'
 import VehicleCategory from '../views/vehicle/VehicleCategory.vue'
 import VehicleClass from '../views/vehicle/VehicleClass.vue'
 import VehicleTypeCategory from '../views/vehicle/VehicleTypeCategory.vue'
-import NewSale from '../views/vehicle/NewSale.vue'
-import WebUser from '../views/vehicle/WebUser.vue'
-import Vehicle from '../views/vehicle/Vehicle.vue'
-import Purchaser from '../views/vehicle/Purchaser.vue'
+// import NewSale from '../views/vehicle/NewSale.vue'
+// import WebUser from '../views/vehicle/WebUser.vue'
+// import Vehicle from '../views/vehicle/Vehicle.vue'
+// import Purchaser from '../views/vehicle/Purchaser.vue'
 
 // Selling
 import Sales from '../views/selling/Sales.vue'
@@ -45,13 +45,13 @@ import Cotizar from '../views/selling/Cotizar.vue'
 import SeguroVehicular from '../views/selling/SeguroVehicular.vue'
 
 // Price
-import Price from '../views/price/Price.vue'
+// import Price from '../views/price/Price.vue'
 import PriceFull from '../views/price/PriceFull.vue'
-import PriceFull2 from '../views/price/PriceFull2.vue'
+// import PriceFull2 from '../views/price/PriceFull2.vue'
 
 // Policy
 import Policy from '../views/policy/Policy.vue'
-import PolicyRegister from '../views/policy/PolicyRegister.vue'
+// import PolicyRegister from '../views/policy/PolicyRegister.vue'
 import PolicyAssign from '../views/policy/PolicyAssign.vue'
 import PolicySold from '../views/policy/PolicySold.vue'
 
@@ -127,12 +127,12 @@ const router = new Router({
               component: UseType,
               meta: {requiresAuth: true, ROLE_ADMIN: true}
             },
-            {
-              path: 'tipo-seguro',
-              name: 'Tipos de Seguro',
-              component: InsuranceType,
-              meta: {requiresAuth: true, ROLE_ADMIN: true}
-            },
+            // {
+            //   path: 'tipo-seguro',
+            //   name: 'Tipos de Seguro',
+            //   component: InsuranceType,
+            //   meta: {requiresAuth: true, ROLE_ADMIN: true}
+            // },
             // {
             //   path: 'contratantes',
             //   name: 'Contratante',
@@ -143,18 +143,18 @@ const router = new Router({
         },
         {
           path: 'vehiculos',
-          redirect: preFijo + 'vehiculos/tipo-vehiculo',
+          redirect: preFijo + 'vehiculos/categoria-vehiculo',
           name: 'Vehiculos',
           component: {
             render (c) { return c('router-view') }
           },
           children: [
-            {
-              path: 'tipo-vehiculo',
-              name: 'Tipos de Vehiculo',
-              component: VehicleType,
-              meta: {requiresAuth: true, ROLE_ADMIN: true}
-            },
+            // {
+            //   path: 'tipo-vehiculo',
+            //   name: 'Tipos de Vehiculo',
+            //   component: VehicleType,
+            //   meta: {requiresAuth: true, ROLE_ADMIN: true}
+            // },
             {
               path: 'categoria-vehiculo',
               name: 'Categ. de Vehiculo',

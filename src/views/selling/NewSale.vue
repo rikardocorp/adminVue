@@ -178,6 +178,7 @@
 </template>
 
 <script>
+  import 'vue-form-wizard/dist/vue-form-wizard.min.css'
   import FormVehicle from './forms/FormVehicleNS.vue'
   import FormPurchaser from './forms/FormPurchaser.vue'
   import FormPay from './forms/FormPay.vue'
@@ -440,12 +441,14 @@
         // INSERT PURCHASER
         purchaserId = this.data.purchaser.item.id
         if (purchaserId === undefined) {
+          let hasEmail = this.data.purchaser.item.hasEmail
           let r3 = await this.insertPurchaser()
           console.log('R2: ')
           console.log(r3)
           if (!r3.status) return false
           else {
             this.data.purchaser.item = r3.content
+            this.data.purchaser.item.hasEmail = hasEmail
             this.data.pay.item.amount = this.data.pickPolice.item.price
           }
         } else {

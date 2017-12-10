@@ -84,7 +84,7 @@
       return {
         urlRest: nDATA.name,
         item: JSON.parse(JSON.stringify(nDATA.post)),
-        fields: nDATA.fieldsTable,
+        fields: nDATA.fieldsTableClient,
         items: [],
         update: false,
         indexSelected: null,

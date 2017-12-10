@@ -476,7 +476,8 @@ export const DATA_VEHICLETYPE = {
     insuranceCompany: null,
     policyType: null,
     insurancePolicy: null,
-    insuranceType: null,
+    // insuranceType: null,
+    insuranceType: {id: 1},
     useType: null,
     brand: '',
     vehicleType: null,
@@ -541,22 +542,22 @@ export const DATA_VEHICLETYPE = {
         value: ''
       }
     },
-    insuranceType: {
-      label: 'Tipo seguro',
-      placeholder: 'Tipo de seguro',
-      type: 'text',
-      icon: 'fa fa-tag',
-      input: 'multiselect',
-      params: {
-        url: 'insurancetypes',
-        key: 'insuranceTypeId',
-        label: 'name',
-        options: [],
-        activate: false,
-        loadData: true,
-        value: ''
-      }
-    },
+    // insuranceType: {
+    //   label: 'Tipo seguro',
+    //   placeholder: 'Tipo de seguro',
+    //   type: 'text',
+    //   icon: 'fa fa-tag',
+    //   input: 'multiselect',
+    //   params: {
+    //     url: 'insurancetypes',
+    //     key: 'insuranceTypeId',
+    //     label: 'name',
+    //     options: [],
+    //     activate: false,
+    //     loadData: true,
+    //     value: ''
+    //   }
+    // },
     useType: {
       label: 'Tipo uso',
       placeholder: 'Tipo de uso',
@@ -667,9 +668,9 @@ export const DATA_VEHICLETYPE = {
       insurancePolicy: {
         required
       },
-      insuranceType: {
-        required
-      },
+      // insuranceType: {
+      //   required
+      // },
       useType: {
         required
       },

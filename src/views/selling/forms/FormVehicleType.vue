@@ -2,7 +2,7 @@
   <b-form :id="'forms-'+ urlRest" class="col-md-8 col-lg-8 col-xl-6 m-auto pt-3">
     <b-form-group v-for="(option, index) in optInput" :key="index"
                   :class="{ 'form-group--error': $v.item[index]? $v.item[index].$error : false, 'text-right': true, 'separator': option.input === 'separator'}"
-                  :label-cols="lCols"
+                  :label-cols="option.input === 'separator' ? null : lCols"
                   :label="option.label + ':'"
                   :horizontal="horizontal">
 
@@ -55,6 +55,7 @@
       <!-- ERROR MESSAGE-->
       <form-error :data="$v.item[index]? $v.item[index] : {} "></form-error>
     </b-form-group>
+    <!--<pre>{{ item }}</pre>-->
 
   </b-form>
 
