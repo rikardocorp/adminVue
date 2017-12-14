@@ -46,7 +46,7 @@
                      :placeholder="option.placeholder" tag-placeholder="Presiona enter para agregar"
                      :label="option.params.label" :track-by="option.params.label"
                      :loading="!option.params.activate"
-                     :disabled="!option.params.activate || isLoading"
+                     :disabled="!option.params.activate || isLoading || (option.params.editDisable && update)"
                      v-model="item[index]"
                      :options="option.params.options"
                      @input="selectModelVehicle"

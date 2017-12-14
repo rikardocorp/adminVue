@@ -5,8 +5,8 @@
       <b-card>
         <div slot="header" class="text-left">
           <strong>Perfil</strong> de Usuario
-          <toggle-button :labels="{checked: 'Editar', unchecked: ''}" :color="{checked: '#63c1de', unchecked: 'rgb(239, 123, 34)'}"
-                         :width="75" :height="28" :sync="true"
+          <toggle-button :labels="{checked: 'Editar', unchecked: 'En Edicion'}" :color="{checked: '#63c1de', unchecked: 'rgb(239, 123, 34)'}"
+                         :width="80" :height="28" :sync="true"
                          v-model="edit" class="float-right">
           </toggle-button>
         </div>

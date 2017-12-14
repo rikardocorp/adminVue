@@ -45,6 +45,11 @@ export const DATA = {
 
 export const DATA_FORM = {
   input: {
+    description: {
+      label: 'Nombre',
+      placeholder: 'Nombre de Sucursal',
+      type: 'text'
+    },
     officeType: {
       label: 'Tipo',
       placeholder: 'Tipo de oficina',
@@ -79,7 +84,7 @@ export const DATA_FORM = {
           //asyncData: false
         },
         {
-          url: 'provinces?regionId=',
+          url: 'provinces',
           options: [],
           pickID: null,
           id: 'province',
@@ -90,7 +95,7 @@ export const DATA_FORM = {
           //asyncData: true
         },
         {
-          url: 'cities?regionId=&provinceId=',
+          url: 'cities',
           options: [],
           pickID: null,
           id: 'city',
@@ -143,12 +148,6 @@ export const DATA_FORM = {
       label: 'Teléfono',
       placeholder: 'Numero de celular',
       type: 'number'
-    },
-    description: {
-      label: 'Descripción',
-      placeholder: 'Nombre de Sucursal',
-      type: 'text',
-      input: 'textarea'
     }
   },
   validate: {

@@ -26,8 +26,8 @@
                     calendar-class="myDatepicker-style" wrapper-class="myDatepicker-content"></datepicker>
 
         <div class="row pt-1">
-          <div class="col-6 col-sm-6 text-dark text-right"><span class="text-primary">Del: </span>{{item.dateFrom}}</div>
-          <div class="col-6 col-sm-6 text-dark"><span class="text-primary">Al: </span>{{item.dateTo}}</div>
+          <div class="col-6 col-sm-6 text-dark text-right"><span class="text-primary">Desde: </span>{{item.dateFrom}}</div>
+          <div class="col-6 col-sm-6 text-dark"><span class="text-primary">Hasta: </span>{{item.dateTo}}</div>
         </div>
         <div slot="footer" class="text-center pt-4">
           <b-button @click="resetForm(name + nameForm)" :disabled="isLoading" size="sm" variant="outline-secondary"><i class="fa fa-ban"></i> {{$global.reset}}</b-button>

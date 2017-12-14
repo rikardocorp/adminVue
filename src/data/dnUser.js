@@ -386,9 +386,9 @@ export const DATA_USER_PROFILE = {
       lastName: {
         required
       },
-      razonSocial: {
-        required
-      },
+      // razonSocial: {
+      //   required
+      // },
       dniRuc: {
         required
       },

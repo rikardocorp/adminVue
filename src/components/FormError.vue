@@ -93,7 +93,7 @@
         let vm = this
         let params = []
         let newText = ''
-        console.log(vm.data.$params)
+        // console.log(vm.data.$params)
         for (let [key, value] of Object.entries(this.data)) {
           if (key[0] !== '$') {
             newText = this.text[key].value

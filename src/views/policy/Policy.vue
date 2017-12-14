@@ -17,7 +17,7 @@
       <div class="row">
         <div class="col-12">
           <app-table :fields="fields" :items="items" :btnOption="btnOption" @pickItem="pickItem" >
-            <template slot="title">Polizas Ingresadas</template>
+            <template slot="title">Polizas Registradas</template>
           </app-table>
         </div><!--/.col-->
       </div><!--/.row-->

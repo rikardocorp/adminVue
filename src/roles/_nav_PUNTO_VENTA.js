@@ -88,7 +88,7 @@ export default {
       name: 'VENTAS'
     },
     {
-      name: 'Poliza Vendida',
+      name: 'Estado de Ventas',
       url: '/polizas-vendidas',
       icon: 'fa fa-handshake-o',
       badge: {
@@ -106,7 +106,7 @@ export default {
       }
     },
     {
-      name: 'Nueva Venta',
+      name: 'Venta en Proceso',
       url: '/nueva-venta',
       icon: 'fa fa-plus',
       display: true

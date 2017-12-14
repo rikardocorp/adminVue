@@ -220,7 +220,8 @@ export const DATA_FORM_FILTER = {
           { text: '&nbsp;', value: '3' },
           { text: '&nbsp;', value: '4' },
           { text: '&nbsp;', value: '5' },
-          { text: '&nbsp;', value: '6' }
+          { text: '&nbsp;', value: '6' },
+          { text: '&nbsp;', value: '-1' }
         ]
       }
     },

@@ -7,7 +7,7 @@ export const DATA = {
   },
   fieldsTable: {
     id: {label: 'ID', sortable: true, 'class': 'text-center'},
-    description: {label: 'Descripción', sortable: true},
+    description: {label: 'Nombre', sortable: true},
     actions: {label: 'Acciones', thStyle: 'width:75px'}
   }
 }
@@ -15,10 +15,9 @@ export const DATA = {
 export const DATA_FORM = {
   input: {
     description: {
-      label: 'Descripción',
-      placeholder: 'Ingrese una categoría',
-      type: 'text',
-      input: 'textarea'
+      label: 'Nombre',
+      placeholder: 'Ingrese nombre de categoría',
+      type: 'text'
     }
   },
   validate: {

@@ -20,7 +20,7 @@
 
             <b-nav-item href="#" v-scroll-to="{ el: '#about',container: '#page-wraper' }" right>Nosotros</b-nav-item>
             <b-nav-item href="#" v-scroll-to="{ el: '#contact-us',container: '#page-wraper' }" >Contactanos</b-nav-item>
-            <b-nav-item href="#" v-scroll-to="{ el: '#map',container: '#page-wraper' }" >Ubícanos</b-nav-item>
+            <b-nav-item href="#" v-scroll-to="{ el: '#map',container: '#page-wraper' }" >Ubicanos</b-nav-item>
 
           </b-navbar-nav>
 
@@ -65,12 +65,12 @@
                     <p style="color:black;"></p>
 
                     <form id="login-form" role="form" autocomplete="off">
-                      <label>Correo Electrónico</label>
+                      <label>Correo Electronico</label>
                       <div class="form-group input-group ">
                         <span class="input-group-addon ">
                           <i class="fa fa-envelope-o fa-fw" aria-hidden="true"></i>
                         </span>
-                        <input v-model="credentials.email" class="form-control" type="email" placeholder="Ingrese Correo Electrónico" style="text-transform: none;">
+                        <input v-model="credentials.email" class="form-control" type="email" placeholder="Ingrese Correo Electronico" style="text-transform: none;">
                       </div>
                       <form-error :data="$v.credentials.email? $v.credentials.email : {} "></form-error>
                       <label>Contraseña</label>
@@ -113,6 +113,10 @@
                       scope="public_profile,email"
                       onlogin="checkLoginState();">
                     </fb:login-button>-->
+
+
+
+
                     </form>
                     <!--<form id="face-form" role="form" autocomplete="off"></form>-->
                     <!--<div class="form-group " style="margin-top:8%">-->
@@ -132,7 +136,7 @@
                             <a style="color: #ef7b1f;text-decoration:underline" @click="form=2">Olvidaste tu contraseña</a>
                           </td>
                           <td style="text-align:right;width:50%;font-size:10pt;">
-                            <a style="color: #ef7b1f;text-decoration:underline" @click="form=1">Regístrate</a>
+                            <a style="color: #ef7b1f;text-decoration:underline" @click="form=1">Registrate</a>
                             <!--<router-link style="color:#0088D6;text-decoration:underline" tag="a" to="/registrar">Registrate</router-link>-->
                           </td>
                         </tr>
@@ -141,16 +145,16 @@
                   </div>
                   <div v-if="form==1" key="div2" class="card-body text-dark ">
                     <h3 class="text-center" style="color:#F58634;">Se parte de JMC
-                      <strong>Regístrate</strong> aqui</h3>
+                      <strong>Registrate</strong> aqui</h3>
                     <p style="color:black;"></p>
 
                     <form id="register-form" role="form" autocomplete="off">
-                      <label>Correo Electrónico</label>
+                      <label>Correo Electronico</label>
                       <div class="form-group input-group ">
                         <span class="input-group-addon ">
                           <i class="fa fa-envelope-o fa-fw" aria-hidden="true"></i>
                         </span>
-                        <input :disabled="isLoading" v-model="reg.email" class="form-control" type="email" placeholder="Ingrese Correo Electrónico" style="text-transform: none;">
+                        <input :disabled="isLoading" v-model="reg.email" class="form-control" type="email" placeholder="Ingrese Correo Electronico" style="text-transform: none;">
                       </div>
                       <form-error :data="$v.reg.email? $v.reg.email : {} "></form-error>
 
@@ -172,12 +176,12 @@
                       </div>
                       <form-error :data="$v.reg.rePassword? $v.reg.rePassword : {} "></form-error>
 
-                      <label>Numero Telefónico</label>
+                      <label>Numero Telefonico</label>
                       <div class="form-group input-group ">
                         <span class="input-group-addon ">
                           <i class="fa fa-phone fa-fw" aria-hidden="true"></i>
                         </span>
-                        <input :disabled="isLoading" v-model="reg.phone" class="form-control" type="number" placeholder="Ingrese numero telefónico" style="text-transform: none;">
+                        <input :disabled="isLoading" v-model="reg.phone" class="form-control" type="number" placeholder="Ingrese numero telefonico" style="text-transform: none;">
                       </div>
                       <form-error :data="$v.reg.phone? $v.reg.phone : {} "></form-error>
 
@@ -190,7 +194,7 @@
                       <table style="width:100%">
                         <tr>
                           <td style="text-align:right;width:50%;font-size:10pt;">
-                            <a style="color: #ef7b1f;text-decoration:underline" @click="form=0">Iniciar Sesión</a>
+                            <a style="color: #ef7b1f;text-decoration:underline" @click="form=0">Iniciar Sesion</a>
                           </td>
                         </tr>
                       </table>
@@ -202,12 +206,12 @@
                     <p style="color:black;"></p>
 
                     <form id="recover-form" role="form" autocomplete="off">
-                      <label>Correo Electrónico</label>
+                      <label>Correo Electronico</label>
                       <div class="form-group input-group ">
                         <span class="input-group-addon ">
                           <i class="fa fa-envelope-o fa-fw" aria-hidden="true"></i>
                         </span>
-                        <input :disabled="isLoading" v-model="recover.email" class="form-control" type="email" placeholder="Ingrese Correo Electrónico" style="text-transform: none;">
+                        <input :disabled="isLoading" v-model="recover.email" class="form-control" type="email" placeholder="Ingrese Correo Electronico" style="text-transform: none;">
                       </div>
                       <form-error :data="$v.recover.email? $v.recover.email : {} "></form-error>
 
@@ -220,12 +224,13 @@
                       <table style="width:100%">
                         <tr>
                           <td style="text-align:right;width:50%;font-size:10pt;">
-                            <a style="color: #ef7b1f;text-decoration:underline" @click="form=0">Iniciar Sesión</a>
+                            <a style="color: #ef7b1f;text-decoration:underline" @click="form=0">Iniciar Sesion</a>
                           </td>
                         </tr>
                       </table>
                     </div>
                   </div>
+
                 </transition>
               </div>
             </div>
@@ -259,7 +264,7 @@
 
                   <div class="post-header  text-center">
                     <h4 class="alt-title">
-                      <a href="">Seguro Vehícular</a>
+                      <a href="">Seguro Vehicular</a>
                     </h4>
                   </div>
 
@@ -289,12 +294,12 @@
           <div class="row">
             <button class="accordion" @click="panel1=!panel1">
               <i class="fa fa-user"></i>
-              <strong>Seguros Para Personas</strong>
+              <strong>Seguros Para Personas:</strong>
             </button>
             <div class="panel" style=" width: 100%; background: none" v-show="panel1">
               <div class="row">
                 <div class="col-sm-6">
-                  <h4 class="alt-title">Para ti y tu familia</h4>
+                  <h4 class="alt-title">Para ti y tu familia:</h4>
                   <table class="table table-sm table-hover table-striped text-left">
                     <tbody>
                     <tr>
@@ -320,11 +325,11 @@
                 </div>
 
                 <div class="col-sm-6">
-                  <h4 class="alt-title">Para tus bienes</h4>
+                  <h4 class="alt-title">Para tus bienes:</h4>
                   <table class="table table-sm table-hover table-striped text-left">
                     <tbody>
                     <tr>
-                      <td>Seguro Vehícular</td>
+                      <td>Seguro Vehicular</td>
                     </tr>
                     <tr>
                       <td>Domiciliario</td>
@@ -337,12 +342,12 @@
 
             <button class="accordion" @click="panel2=!panel2">
               <i class="fa fa-building-o"></i>
-              <strong>Seguros Para Empresas</strong>
+              <strong>Seguros Para Empresas:</strong>
             </button>
             <div class="panel" style=" width: 100%; background: none" v-show="panel2">
               <div class="row">
                 <div class="col-sm-6">
-                  <h4 class="alt-title">Para tu Patrimonio</h4>
+                  <h4 class="alt-title">Para tu Patrimonio:</h4>
                   <table class="table table-sm table-hover table-striped text-left">
                     <tbody>
                     <tr>
@@ -355,7 +360,7 @@
                       <td>Incendio</td>
                     </tr>
                     <tr>
-                      <td>Seguro Vehícular</td>
+                      <td>Seguro Vehicular</td>
                     </tr>
                     <tr>
                       <td>TREC - Todo Riesgo de Equipo Contratista</td>
@@ -386,7 +391,7 @@
                 </div>
 
                 <div class="col-sm-6">
-                  <h4 class="alt-title">Riesgos humanos</h4>
+                  <h4 class="alt-title">Riesgos humanos:</h4>
                   <table class="table table-sm table-hover table-striped text-left">
 
                     <tbody>
@@ -443,7 +448,60 @@
         </div>
       </section>
       <!-- Testimonials Section -->
-     
+      <section id="testimonials" class="section-padding bg-image dark-bg pos-section overlay-dark pt-5 pb-5" data-stellar-background-ratio="0.4">
+        <!-- page triangle shape -->
+        <div class="page-triangle white-bg"></div>
+        <!-- End page triangle shape -->
+        <div class="container py-4">
+          <!--<agile :arrows="false" :speed="750" :timing="'linear'" :fade="false" :autoplay="true" :pauseOnHover="true">-->
+          <carousel :perPage="1" :loop="true" :autoplay="true"
+                    :speed="500" :paginationEnabled="true"
+                    :autoplayTimeout="5000">
+            <slide>
+              <div class="item pb-5">
+                <div class="testimonial text-center max-width-700">
+                  <div class="page-icon-sm">
+                    <i class="icon-badge"></i>
+                  </div>
+                  <h2>¿Que dicen nuestros clientes?</h2>
+                  <p class="lead-lg">Un servicio asombroso, me ayudaron y me asesoraron muy bien.</p>
+                  <h6 class="quote-author alt-title">Carlos Arbieto
+                    <span class="text-regular">Unsa</span>
+                  </h6>
+                </div>
+              </div>
+            </slide>
+            <slide>
+              <div class="item pb-5">
+              <div class="testimonial text-center max-width-700">
+                <div class="page-icon-sm">
+                  <i class="icon-badge"></i>
+                </div>
+                <h2>¿Que dicen nuestros clientes?</h2>
+                <p class="lead-lg">El personal que me atendio muy profesional y amable, lo recomiendo.</p>
+                <h6 class="quote-author alt-title">Ricardo Coronado
+                  <span class="text-regular">Universidad Catolica DeSanta Maria</span>
+                </h6>
+              </div>
+            </div>
+            </slide>
+            <slide>
+              <div class="item pb-5">
+              <div class="testimonial text-center max-width-700">
+                <div class="page-icon-sm">
+                  <i class="icon-badge"></i>
+                </div>
+                <h2>¿Que dicen nuestros clientes?</h2>
+                <p class="lead-lg">Tuve un accidente, los llame y me ayudaron mucho, estoy agradecido.</p>
+                <h6 class="quote-author alt-title">Jhon Monroy
+                  <span class="text-regular">Gobierno Regional</span>
+                </h6>
+              </div>
+            </div>
+            </slide>
+          </carousel>
+        </div>
+      </section>
       <!-- Service Section -->
       <section id="service" class="section-padding bg-white">
         <div class="container text-center" style="min-height: 698px;">
@@ -456,7 +514,7 @@
                   <i class="icon-screen-desktop"></i>
                 </div>
                 <h4 class="alt-title">Amigable</h4>
-                <p>Con una interfaz, amigable, es muy sencillo realizar la cotización de tu
+                <p>Con una interfaz, amigable, es muy sencillo realizar la cotizacion de tu
                   <strong>Soat Digital</strong>
                 </p>
               </div>
@@ -465,7 +523,7 @@
                   <i class="icon-refresh"></i>
                 </div>
                 <h4 class="alt-title">Diseño limpio</h4>
-                <p>Limpio, rapido y simple, directo y sin demoras, tu Soat en 2 minutos.</p>
+                <p>Limpio, rapido y simple, directo y sin demoras, tu Soat en 2 minutos </p>
               </div>
               <div class="content-box alt-right">
                 <div class="alt-icon-right">
@@ -478,8 +536,8 @@
                 <div class="alt-icon-right">
                   <i class="icon-layers"></i>
                 </div>
-                <h4 class="alt-title">Mínimas pantallas</h4>
-                <p>Olvidate del papeleo, los documentos y las colas, compra tu Soat fácil.</p>
+                <h4 class="alt-title">Minimas pantallas</h4>
+                <p>Olvidate del papeleo, los documentos y las colas, compra tu Soat facil.</p>
               </div>
             </div>
             </transition>
@@ -497,21 +555,21 @@
                   <i class="icon-screen-tablet"></i>
                 </div>
                 <h4 class="alt-title">Seguro Vehicular</h4>
-                <p>Podrás comprar y recibir ayuda, para la compra de tus seguros vehículares al instante </p>
+                <p>Podras comprar y recibir ayuda, para la compra de tus seguros vehiculares al instante </p>
               </div>
               <div class="content-box alt-left">
                 <div class="alt-icon-left">
                   <i class="icon-tag"></i>
                 </div>
                 <h4 class="alt-title">Conectado con nuestros aliados</h4>
-                <p>Nuestros aliados son las mejores Aseguradoras del Pais, brindandote el mejor servicio</p>
+                <p>Nuestros aliados son las mejores Aseguradoras del Pais, brindote el mejor servicio</p>
               </div>
               <div class="content-box alt-left">
                 <div class="alt-icon-left">
                   <i class="icon-book-open"></i>
                 </div>
                 <h4 class="alt-title">Soat Digital en PDF</h4>
-                <p>Podrás recibir y ver tu Soat Digital en tu celular y en tu Correo Electrónico</p>
+                <p>Podras recibir y ver tu Soat en tu celular y en tu correo</p>
               </div>
               <div class="content-box alt-left">
                 <div class="alt-icon-left">
@@ -569,8 +627,8 @@
                 <i class="icon-direction"></i>
               </div>
               <h4 class="alt-title">Nuestra Misión</h4>
-              <p>Garantizar la mejor opción de seguro para nuestros clientes velando por la protección de sus bienes, familia y negocios, brindando un servicio óptimo, 
-                profesional y personalizado en la atención integral del siniestro</p>
+              <p>Garantizar un seguro rentable a nuestros clientes para la protección de su familia y negocios, brindando un servicio
+                óptimo profesional y personalizado en la atención integral de su siniestro.</p>
             </div>
             <div class="col-md-6 content-box mb-sm-85">
               <div class="alt-icon-top icon-gray">
@@ -585,7 +643,6 @@
         </div>
       </section>
       <!-- Contact Infobar Section -->
-
       <section class="py-5 black-bg text-center dark-bg">
         <div class="container">
           <div class="row">
@@ -613,7 +670,7 @@
                 <div class="alt-icon-top alt-icon-color">
                   <i class="icon-envelope  color-primary"></i>
                 </div>
-                <p class="large">soporte@jmcintegral.com</p>
+                <p class="large">contacto@jmcintegral.com</p>
               </div>
             </div>
           </div>
@@ -622,8 +679,8 @@
       <!-- Contact Form Section -->
       <section id="contact-us" class="section-padding">
         <div class="container text-center">
-          <h1>Contáctanos</h1>
-          <p class="lead-lg max-width-700 mb-60">Envíanos un mensaje con tus dudas y te responderemos a la brevedad, recuerda que puedes llamarnos al 054-206188.</p>
+          <h1>Contactanos</h1>
+          <p class="lead-lg max-width-700 mb-60">Envianos un mensaje con tus dudas, te responderemos lo mas antes posible recuerda que puedes llamarnos al (054) 206188.</p>
 
           <!-- Contact form -->
           <div class="row">
@@ -658,7 +715,7 @@
                 <div class="col-md-12">
                   <div class="form-field-wrapper">
                     <input v-model="item.titulo" class="input-lg form-full input-fancy" style="text-transform:capitalize;" type="text" name="form-subject"
-                           placeholder="Título" title="Título del mensaje" />
+                           placeholder="Titulo" title="Titulo del mensaje" />
                     <form-error :data="$v.item.titulo? $v.item.titulo : {} "></form-error>
                   </div>
                 </div>

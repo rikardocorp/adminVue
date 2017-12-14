@@ -27,7 +27,7 @@ export default {
       name: 'VENTAS'
     },
     {
-      name: 'Poliza Vendida',
+      name: 'Estado de Ventas',
       url: '/polizas-vendidas',
       icon: 'fa fa-handshake-o',
     },
@@ -37,7 +37,7 @@ export default {
       icon: 'fa fa-money',
     },
     {
-      name: 'Nueva Venta',
+      name: 'Venta en Proceso',
       url: '/nueva-venta',
       icon: 'fa fa-plus',
     },

@@ -72,7 +72,7 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    dispatchHTTP: ({commit, state, getters}, {type, url, data, notify = {success: false, error: false}}) => {
+    dispatchHTTP: ({commit, state, getters}, {type, url, data, notify = {success: true, error: true}}) => {
       console.log(type, url, data, notify)
       commit('switchLoading', true)
       let inquiry = ''
@@ -91,8 +91,8 @@ export default new Vuex.Store({
             break
           case 'INSERT':
             inquiry = Vue.http.post(url, data)
-            notify.success = true
-            notify.error = true
+            // notify.success = true
+            // notify.error = true
             break
           case 'UPDATE':
             inquiry = Vue.http.patch(url, data)
@@ -182,10 +182,5 @@ export default new Vuex.Store({
       })
       return promise
     }
-    // alert: (state, title) => {
-    //   console.log(state)
-    //   console.log(title + state.isLogged)
-    //   // console.log()
-    // }
   }
 })

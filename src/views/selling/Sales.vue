@@ -25,10 +25,10 @@
             <div v-if="items.length" class="card-insurance row d-flex justify-content-center pt-3">
               <!-- SALES LIST -->
               <div v-for="(x, index) in items" :key="x.id"
-                   :class="{'state-1': x.state==1, 'state-2': x.state==2, 'state-3': x.state==3, 'state-4': x.state==4, 'state-5': x.state==5}">
-
+                   :class="{'state-1': x.state==1, 'state-2': x.state==2, 'state-3': x.state==3, 'state-4': x.state==4, 'state-5': x.state==5, 'state-anulado': x.state==-1}">
+                <!--{{rick(x)}}-->
                 <!-- SALES -->
-                <div v-if="x.insurancePolicy !== undefined && x.state !== null"
+                <div v-if="x.insurancePolicy !== undefined && x.insurancePolicy !== null && x.state !== null"
                      :class="{'ticket cardWrap m-2 mb-3 hvr-bounce-in':true, 'pickOption': x.pick}" @click="selectedSale(x, true)">
                   <!--<i class="fa fa-thumb-tack" aria-hidden="true"></i>-->
                   <i v-if="x.cart" class="fa fa-shopping-cart icon-cart" aria-hidden="true"></i>
@@ -49,7 +49,7 @@
                   <div class="card-ticket cardCenter dashed">
                     <div :class="{'xtitle': true, 'bg-danger': x.state==1, 'bg-primary': x.state==2, 'bg-info': x.state==3, 'bg-success': x.state==4, 'bg-blue': x.state==5}">
                       Placa: {{ x.vehicle ? x.vehicle.licensePlate : 'S/N' }}
-                      <button v-if="(x.insurancePolicy.user.id == $store.state.user.data.id || $store.state.user.role=='ROLE_ADMIN') && x.state==1" @click="deleteSale(x)" class="btn btn-danger"><i class="fa fa-trash"></i></button>
+                      <button v-if="(x.insurancePolicy.user.id == $store.state.user.data.id || $store.state.user.role=='ROLE_ADMIN') && (x.state==1 || x.state==2)" @click.stop="deleteSale(x)" class="btn btn-danger"><i class="fa fa-trash"></i></button>
                       <!--<button class="btn btn-danger"><i class="fa fa-trash"></i></button>-->
                     </div>
                     <div class="xcontent">
@@ -58,19 +58,27 @@
                         <h2>{{ x.purchaser ? x.purchaser.razonSocial  : 'Sin asignar' }}</h2>
                         <span>Contratante</span>
                       </div>
-                      <div class="seat">
-                        <h2>{{ x.date.split(' ')[0] }}</h2>
-                        <span>Compra</span>
-                      </div>
-                      <div class="seat ml-2">
-                        <h2>{{ x.validityStart ? x.validityStart : '--/--/----' }}</h2>
-                        <span>Inicio</span>
-                      </div>
+                      <template v-if="x.state==1 || x.state==2">
+                        <div class="seat">
+                          <h2>{{ x.date }}</h2>
+                          <span>Fecha de Compra</span>
+                        </div>
+                      </template>
+                      <template v-else>
+                        <div class="seat">
+                          <h2>{{ x.date.split(' ')[0] }}</h2>
+                          <span>Compra</span>
+                        </div>
+                        <div class="seat ml-2">
+                          <h2>{{ x.validityStart ? x.validityStart : '--/--/----' }}</h2>
+                          <span>Inicio</span>
+                        </div>
+                      </template>
                     </div>
                   </div>
                 </div>
                 <!-- CARTS -->
-                <div v-else-if="x.state !== null" :class="{'ticket cardWrap m-2 mb-3 hvr-bounce-in':true, 'pickOption': x.pick}" @click="selectedCart(x, false)">
+                <div v-else-if="x.state !== null && x.insuranceCompany !== undefined && x.insuranceCompany !== null" :class="{'ticket cardWrap m-2 mb-3 hvr-bounce-in':true, 'pickOption': x.pick}" @click="selectedCart(x, false)">
                   <i class="fa fa-cart-plus" aria-hidden="true"></i>
                   <div class="card-ticket cardLeft">
                     <avatar :username="x.insuranceCompany.name" :rounded="true" :size="6.4" sizeUnid="em"
@@ -168,6 +176,9 @@
       }
     },
     methods: {
+      rick(x) {
+        console.log(x)
+      },
       async deleteSale (item) {
         let url = 'sales/' + item.id
         console.log(url)
@@ -303,6 +314,11 @@
         .icon-cart{
           color: #2e85e8;
         }
+      }
+
+      .state-anulado {
+        -webkit-filter: grayscale(1);
+        filter: grayscale(1);
       }
     }
 

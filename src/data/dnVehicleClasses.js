@@ -17,8 +17,7 @@ export const DATA_FORM = {
     description: {
       label: 'Nombre',
       placeholder: 'Ingrese nombre de la clase',
-      type: 'text',
-      input: 'textarea'
+      type: 'text'
     }
   },
   validate: {

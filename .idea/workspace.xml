@@ -2,36 +2,43 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="62a69400-10bc-4874-9705-83ba672de88f" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/data/GlobalNames.js" afterPath="$PROJECT_DIR$/src/data/GlobalNames.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/data/dataNames.js" afterPath="$PROJECT_DIR$/src/data/dataNames.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/data/dataWeb.js" afterPath="$PROJECT_DIR$/src/data/dataWeb.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/data/dnCotizar.js" afterPath="$PROJECT_DIR$/src/data/dnCotizar.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/data/dnInsuranceCompanies.js" afterPath="$PROJECT_DIR$/src/data/dnInsuranceCompanies.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/data/dnInsurancePolicies.js" afterPath="$PROJECT_DIR$/src/data/dnInsurancePolicies.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/data/dnInsurancePrices.js" afterPath="$PROJECT_DIR$/src/data/dnInsurancePrices.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/data/dnInsuranceTypes.js" afterPath="$PROJECT_DIR$/src/data/dnInsuranceTypes.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/data/dnNewSales.js" afterPath="$PROJECT_DIR$/src/data/dnNewSales.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/data/dnOffices.js" afterPath="$PROJECT_DIR$/src/data/dnOffices.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/data/dnPolicyAssign.js" afterPath="$PROJECT_DIR$/src/data/dnPolicyAssign.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/data/dnPolicyRegister.js" afterPath="$PROJECT_DIR$/src/data/dnPolicyRegister.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/data/dnSales.js" afterPath="$PROJECT_DIR$/src/data/dnSales.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/data/dnSeguroVehicular.js" afterPath="$PROJECT_DIR$/src/data/dnSeguroVehicular.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/data/dnUseTypes.js" afterPath="$PROJECT_DIR$/src/data/dnUseTypes.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/data/dnUser.js" afterPath="$PROJECT_DIR$/src/data/dnUser.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/data/dnVehicleCategories.js" afterPath="$PROJECT_DIR$/src/data/dnVehicleCategories.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/data/dnVehicleClasses.js" afterPath="$PROJECT_DIR$/src/data/dnVehicleClasses.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/data/dnVehicleTypeCategories.js" afterPath="$PROJECT_DIR$/src/data/dnVehicleTypeCategories.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/data/dnVehicles.js" afterPath="$PROJECT_DIR$/src/data/dnVehicles.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/data/dnVehiclesTypes.js" afterPath="$PROJECT_DIR$/src/data/dnVehiclesTypes.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/views/maintenance/forms/FormUser.vue" afterPath="$PROJECT_DIR$/src/views/maintenance/forms/FormUser.vue" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/views/policy/PolicyAssign.vue" afterPath="$PROJECT_DIR$/src/views/policy/PolicyAssign.vue" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/views/policy/forms/FormPolicyAssign.vue" afterPath="$PROJECT_DIR$/src/views/policy/forms/FormPolicyAssign.vue" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/views/policy/forms/FormPolicyAssign2.vue" afterPath="$PROJECT_DIR$/src/views/policy/forms/FormPolicyAssign2.vue" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/views/price/PriceFull.vue" afterPath="$PROJECT_DIR$/src/views/price/PriceFull.vue" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/views/selling/DetailSale.vue" afterPath="$PROJECT_DIR$/src/views/selling/DetailSale.vue" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/views/selling/Sales.vue" afterPath="$PROJECT_DIR$/src/views/selling/Sales.vue" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/views/selling/forms/FormSales.vue" afterPath="$PROJECT_DIR$/src/views/selling/forms/FormSales.vue" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change beforePath="$PROJECT_DIR$/src/components/FormError.vue" afterPath="$PROJECT_DIR$/src/components/FormError.vue" />
+      <change beforePath="$PROJECT_DIR$/src/components/xTable.vue" afterPath="$PROJECT_DIR$/src/components/xTable.vue" />
+      <change beforePath="$PROJECT_DIR$/src/data/dnNewSales.js" afterPath="$PROJECT_DIR$/src/data/dnNewSales.js" />
+      <change beforePath="$PROJECT_DIR$/src/data/dnOffices.js" afterPath="$PROJECT_DIR$/src/data/dnOffices.js" />
+      <change beforePath="$PROJECT_DIR$/src/data/dnSales.js" afterPath="$PROJECT_DIR$/src/data/dnSales.js" />
+      <change beforePath="$PROJECT_DIR$/src/data/dnUser.js" afterPath="$PROJECT_DIR$/src/data/dnUser.js" />
+      <change beforePath="$PROJECT_DIR$/src/data/dnVehicleCategories.js" afterPath="$PROJECT_DIR$/src/data/dnVehicleCategories.js" />
+      <change beforePath="$PROJECT_DIR$/src/data/dnVehicleClasses.js" afterPath="$PROJECT_DIR$/src/data/dnVehicleClasses.js" />
+      <change beforePath="$PROJECT_DIR$/src/data/dnVehicleTypeCategories.js" afterPath="$PROJECT_DIR$/src/data/dnVehicleTypeCategories.js" />
+      <change beforePath="$PROJECT_DIR$/src/roles/_nav_ADMIN.js" afterPath="$PROJECT_DIR$/src/roles/_nav_ADMIN.js" />
+      <change beforePath="$PROJECT_DIR$/src/roles/_nav_PUNTO_VENTA.js" afterPath="$PROJECT_DIR$/src/roles/_nav_PUNTO_VENTA.js" />
+      <change beforePath="$PROJECT_DIR$/src/roles/_nav_VENDEDOR.js" afterPath="$PROJECT_DIR$/src/roles/_nav_VENDEDOR.js" />
+      <change beforePath="$PROJECT_DIR$/src/store/modules/login.js" afterPath="$PROJECT_DIR$/src/store/modules/login.js" />
+      <change beforePath="$PROJECT_DIR$/src/store/store.js" afterPath="$PROJECT_DIR$/src/store/store.js" />
+      <change beforePath="$PROJECT_DIR$/src/views/WebPage.vue" afterPath="$PROJECT_DIR$/src/views/WebPage.vue" />
+      <change beforePath="$PROJECT_DIR$/src/views/maintenance/Office.vue" afterPath="$PROJECT_DIR$/src/views/maintenance/Office.vue" />
+      <change beforePath="$PROJECT_DIR$/src/views/maintenance/forms/FormProfile.vue" afterPath="$PROJECT_DIR$/src/views/maintenance/forms/FormProfile.vue" />
+      <change beforePath="$PROJECT_DIR$/src/views/maintenance/forms/FormReport.vue" afterPath="$PROJECT_DIR$/src/views/maintenance/forms/FormReport.vue" />
+      <change beforePath="$PROJECT_DIR$/src/views/policy/Policy.vue" afterPath="$PROJECT_DIR$/src/views/policy/Policy.vue" />
+      <change beforePath="$PROJECT_DIR$/src/views/policy/forms/FormPolicy.vue" afterPath="$PROJECT_DIR$/src/views/policy/forms/FormPolicy.vue" />
+      <change beforePath="$PROJECT_DIR$/src/views/policy/forms/FormPolicyAssign.vue" afterPath="$PROJECT_DIR$/src/views/policy/forms/FormPolicyAssign.vue" />
+      <change beforePath="$PROJECT_DIR$/src/views/policy/forms/FormPolicyRegister.vue" afterPath="$PROJECT_DIR$/src/views/policy/forms/FormPolicyRegister.vue" />
+      <change beforePath="$PROJECT_DIR$/src/views/selling/DetailSale.vue" afterPath="$PROJECT_DIR$/src/views/selling/DetailSale.vue" />
+      <change beforePath="$PROJECT_DIR$/src/views/selling/NewSale.vue" afterPath="$PROJECT_DIR$/src/views/selling/NewSale.vue" />
+      <change beforePath="$PROJECT_DIR$/src/views/selling/NewSaleSpecial.vue" afterPath="$PROJECT_DIR$/src/views/selling/NewSaleSpecial.vue" />
+      <change beforePath="$PROJECT_DIR$/src/views/selling/Sales.vue" afterPath="$PROJECT_DIR$/src/views/selling/Sales.vue" />
+      <change beforePath="$PROJECT_DIR$/src/views/selling/forms/FormPurchaser.vue" afterPath="$PROJECT_DIR$/src/views/selling/forms/FormPurchaser.vue" />
+      <change beforePath="$PROJECT_DIR$/src/views/selling/forms/FormPurchaserSeguro.vue" afterPath="$PROJECT_DIR$/src/views/selling/forms/FormPurchaserSeguro.vue" />
+      <change beforePath="$PROJECT_DIR$/src/views/selling/forms/FormSales.vue" afterPath="$PROJECT_DIR$/src/views/selling/forms/FormSales.vue" />
+      <change beforePath="$PROJECT_DIR$/src/views/selling/forms/FormSuccess.vue" afterPath="$PROJECT_DIR$/src/views/selling/forms/FormSuccess.vue" />
+      <change beforePath="$PROJECT_DIR$/src/views/selling/forms/FormVehicle.vue" afterPath="$PROJECT_DIR$/src/views/selling/forms/FormVehicle.vue" />
+      <change beforePath="$PROJECT_DIR$/src/views/selling/forms/FormVehicleNS.vue" afterPath="$PROJECT_DIR$/src/views/selling/forms/FormVehicleNS.vue" />
+      <change beforePath="$PROJECT_DIR$/src/views/selling/forms/FormVehicleSeguro.vue" afterPath="$PROJECT_DIR$/src/views/selling/forms/FormVehicleSeguro.vue" />
+      <change beforePath="$PROJECT_DIR$/src/views/vehicle/forms/FormVehicleTypeCategory.vue" afterPath="$PROJECT_DIR$/src/views/vehicle/forms/FormVehicleTypeCategory.vue" />
+      <change beforePath="$PROJECT_DIR$/static/img/full/back31.jpg" afterPath="$PROJECT_DIR$/static/img/full/back31.jpg" />
+      <change beforePath="$PROJECT_DIR$/static/img/full/mockup.png" afterPath="$PROJECT_DIR$/static/img/full/mockup.png" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -48,57 +55,35 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Sales.vue" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/views/selling/Sales.vue">
+      <file leaf-file-name="NewSale.vue" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/views/selling/NewSale.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="848">
-              <caret line="169" column="14" lean-forward="false" selection-start-line="169" selection-start-column="14" selection-end-line="169" selection-end-column="14" />
+            <state relative-caret-position="314">
+              <caret line="713" column="26" lean-forward="false" selection-start-line="713" selection-start-column="26" selection-end-line="713" selection-end-column="26" />
               <folding>
-                <element signature="e#6742#6802#0" expanded="true" />
+                <element signature="e#9600#9653#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="DetailCartSale.vue" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/views/selling/DetailCartSale.vue">
+      <file leaf-file-name="main.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2130">
-              <caret line="142" column="50" lean-forward="false" selection-start-line="142" selection-start-column="50" selection-end-line="142" selection-end-column="50" />
-              <folding>
-                <element signature="n#style#0;n#p#0;n#div#1;n#div#0;n#div#1;n#div#1;n#div#1;n#b-card#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-              </folding>
+            <state relative-caret-position="127">
+              <caret line="74" column="53" lean-forward="false" selection-start-line="74" selection-start-column="53" selection-end-line="74" selection-end-column="53" />
+              <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="PriceFull.vue" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/views/price/PriceFull.vue">
+      <file leaf-file-name="FormVehicleNS.vue" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/views/selling/forms/FormVehicleNS.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="149">
-              <caret line="156" column="23" lean-forward="false" selection-start-line="156" selection-start-column="23" selection-end-line="156" selection-end-column="23" />
+            <state relative-caret-position="379">
+              <caret line="61" column="0" lean-forward="false" selection-start-line="61" selection-start-column="0" selection-end-line="61" selection-end-column="0" />
               <folding>
-                <element signature="n#style#0;n#div#3;n#div#0;n#b-modal#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#4;n#div#0;n#b-modal#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#b-badge#0;n#div#0;n#div#4;n#div#0;n#b-modal#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-                <element signature="e#10419#10479#0" expanded="true" />
-                <element signature="e#12684#13031#0" expanded="false" />
-                <element signature="e#15789#15838#0" expanded="false" />
-                <element signature="e#15893#16036#0" expanded="false" />
-                <element signature="e#16080#16225#0" expanded="false" />
-                <element signature="e#16455#16682#0" expanded="false" />
-                <element signature="e#16721#16970#0" expanded="false" />
-                <element signature="e#17005#17089#0" expanded="false" />
-                <element signature="e#17203#17319#0" expanded="false" />
-                <element signature="e#17346#18181#0" expanded="false" />
-                <element signature="e#18216#18507#0" expanded="false" />
-                <element signature="e#18553#19191#0" expanded="false" />
-                <element signature="e#20761#21657#0" expanded="false" />
-                <element signature="e#21689#22184#0" expanded="false" />
-                <element signature="e#22215#23303#0" expanded="false" />
-                <element signature="e#23368#24099#0" expanded="false" />
-                <marker date="1512927667083" expanded="true" signature="27707:27723" ph="..." />
-                <marker date="1512927667083" expanded="true" signature="27804:27817" ph="..." />
+                <element signature="e#3420#3461#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -107,9 +92,20 @@
       <file leaf-file-name="FormSuccess.vue" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/views/selling/forms/FormSuccess.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="234">
-              <caret line="218" column="6" lean-forward="true" selection-start-line="218" selection-start-column="6" selection-end-line="232" selection-end-column="7" />
-              <folding />
+            <state relative-caret-position="297">
+              <caret line="200" column="38" lean-forward="false" selection-start-line="200" selection-start-column="38" selection-end-line="200" selection-end-column="38" />
+              <folding>
+                <element signature="n#div#0;n#div#2;n#div#0;n#template#0;n#!!top" expanded="false" />
+                <element signature="n#div#1;n#div#2;n#div#0;n#template#0;n#!!top" expanded="false" />
+                <element signature="n#div#2;n#div#2;n#div#0;n#template#0;n#!!top" expanded="false" />
+                <element signature="n#style#0;n#span#0;n#p#0;n#div#3;n#div#1;n#div#4;n#div#0;n#template#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#span#1;n#p#0;n#div#3;n#div#1;n#div#4;n#div#0;n#template#0;n#!!top" expanded="true" />
+                <element signature="e#11119#11182#0" expanded="true" />
+                <element signature="e#12408#12816#0" expanded="false" />
+                <element signature="e#12851#14300#0" expanded="false" />
+                <element signature="e#18871#19419#0" expanded="false" />
+                <element signature="e#21098#21479#0" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -117,25 +113,47 @@
       <file leaf-file-name="DetailSale.vue" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/views/selling/DetailSale.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="130">
-              <caret line="9" column="19" lean-forward="false" selection-start-line="9" selection-start-column="19" selection-end-line="9" selection-end-column="19" />
+            <state relative-caret-position="135">
+              <caret line="9" column="83" lean-forward="false" selection-start-line="9" selection-start-column="83" selection-end-line="9" selection-end-column="83" />
               <folding>
                 <element signature="n#div#0;n#template#0;n#div#0;n#b-card#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="false" />
                 <element signature="n#div#1;n#template#0;n#div#0;n#b-card#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="false" />
-                <element signature="n#div#2;n#template#0;n#div#0;n#b-card#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="false" />
-                <element signature="n#div#0;n#div#1;n#div#1;n#div#1;n#b-card#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="false" />
                 <element signature="n#div#1;n#div#1;n#div#1;n#div#1;n#b-card#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="FormSales.vue" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/views/selling/forms/FormSales.vue">
+      <file leaf-file-name="FormVehicle.vue" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/views/selling/forms/FormVehicle.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="281">
-              <caret line="22" column="76" lean-forward="true" selection-start-line="22" selection-start-column="76" selection-end-line="22" selection-end-column="76" />
+            <state relative-caret-position="-579">
+              <caret line="54" column="30" lean-forward="false" selection-start-line="54" selection-start-column="30" selection-end-line="54" selection-end-column="30" />
+              <folding>
+                <element signature="e#3138#3179#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="FormVehicleType.vue" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/views/selling/forms/FormVehicleType.vue">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="89">
+              <caret line="65" column="10" lean-forward="false" selection-start-line="65" selection-start-column="10" selection-end-line="65" selection-end-column="26" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="NewSaleSpecial.vue" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/views/selling/NewSaleSpecial.vue">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="126">
+              <caret line="149" column="46" lean-forward="false" selection-start-line="149" selection-start-column="46" selection-end-line="149" selection-end-column="46" />
+              <folding>
+                <element signature="e#8231#8280#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -152,36 +170,36 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>color: #3db3e8</find>
-      <find>.card-insurance</find>
-      <find>sale.item.insurancePolicy</find>
-      <find>DATA_VEHICLETYPE</find>
-      <find>getSale</find>
-      <find>card-insurance</find>
-      <find>filteredCars</find>
-      <find>addCarException</find>
-      <find>pickRowItem</find>
-      <find>getListCar</find>
-      <find>activeRowPrices</find>
-      <find>isClickBadge</find>
-      <find>refs</find>
-      <find>ref</find>
-      <find>vue-notification</find>
-      <find>addItemDescription</find>
-      <find>isFillTable</find>
-      <find>getDescription</find>
+      <find>insertSale</find>
+      <find>content</find>
+      <find>changePolicy</find>
+      <find>listPayment</find>
+      <find>isLoading</find>
+      <find>CancelSale</find>
+      <find>deleteSale</find>
+      <find>item2.id</find>
+      <find>item2</find>
+      <find>password</find>
+      <find>update</find>
       <find>alert</find>
-      <find>noti</find>
-      <find>notification</find>
-      <find>notifi</find>
-      <find>insurancePolicy</find>
-      <find>SUBIR PDF</find>
-      <find>optionPrint</find>
-      <find>returnMain</find>
-      <find>print</find>
-      <find>imprimir</find>
-      <find>generateIndexRow</find>
-      <find>typeAfocat</find>
+      <find>payment</find>
+      <find>purchaser</find>
+      <find>S/N</find>
+      <find>notify</find>
+      <find>insert</find>
+      <find>paySale</find>
+      <find>DATA_VEHICLE</find>
+      <find>searchPlate</find>
+      <find>owner</find>
+      <find>connectionVehicle</find>
+      <find>anularSale</find>
+      <find>name</find>
+      <find>connection</find>
+      <find>pagar</find>
+      <find>DATA_VEHICLETYP</find>
+      <find>DATA_VEHICLETYPE</find>
+      <find>this.amount</find>
+      <find>cancelSale</find>
     </findStrings>
     <dirStrings>
       <dir>$PROJECT_DIR$/node_modules</dir>
@@ -193,57 +211,57 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/views/selling/SeguroVehicular.vue" />
-        <option value="$PROJECT_DIR$/src/store/store.js" />
-        <option value="$PROJECT_DIR$/src/store/modules/login.js" />
-        <option value="$PROJECT_DIR$/src/views/selling/forms/FormVehicleNS.vue" />
-        <option value="$PROJECT_DIR$/src/roles/_nav_PUNTO_VENTA.js" />
-        <option value="$PROJECT_DIR$/src/roles/_nav_VENDEDOR.js" />
-        <option value="$PROJECT_DIR$/src/main.js" />
-        <option value="$PROJECT_DIR$/src/components/Aside.vue" />
-        <option value="$PROJECT_DIR$/src/views/selling/forms/FormPay.vue" />
-        <option value="$PROJECT_DIR$/package.json" />
-        <option value="$PROJECT_DIR$/src/components/FormError.vue" />
-        <option value="$PROJECT_DIR$/src/views/vehicle/VehicleTypeCategory.vue" />
-        <option value="$PROJECT_DIR$/src/views/selling/NewSale.vue" />
-        <option value="$PROJECT_DIR$/scss/style.scss" />
-        <option value="$PROJECT_DIR$/src/views/selling/forms/FormPurchaser.vue" />
-        <option value="$PROJECT_DIR$/src/views/vehicle/forms/FormVehicleTypeCategory.vue" />
-        <option value="$PROJECT_DIR$/src/views/maintenance/Client.vue" />
-        <option value="$PROJECT_DIR$/src/router/index.js" />
-        <option value="$PROJECT_DIR$/src/roles/_nav_ADMIN.js" />
-        <option value="$PROJECT_DIR$/src/views/selling/forms/FormVehicleTypeSeguro.vue" />
-        <option value="$PROJECT_DIR$/src/views/selling/forms/FormVehicleType.vue" />
-        <option value="$PROJECT_DIR$/src/views/selling/forms/FormSuccess.vue" />
-        <option value="$PROJECT_DIR$/src/views/maintenance/forms/FormClient.vue" />
-        <option value="$PROJECT_DIR$/src/views/selling/CartClient.vue" />
         <option value="$PROJECT_DIR$/src/views/maintenance/forms/FormUser.vue" />
         <option value="$PROJECT_DIR$/src/views/policy/PolicyAssign.vue" />
         <option value="$PROJECT_DIR$/src/views/policy/forms/FormPolicyAssign2.vue" />
-        <option value="$PROJECT_DIR$/src/views/policy/forms/FormPolicyAssign.vue" />
         <option value="$PROJECT_DIR$/src/data/dnCotizar.js" />
         <option value="$PROJECT_DIR$/src/data/dataNames.js" />
         <option value="$PROJECT_DIR$/src/data/dnInsuranceCompanies.js" />
         <option value="$PROJECT_DIR$/src/data/dnInsurancePrices.js" />
         <option value="$PROJECT_DIR$/src/data/dnInsuranceTypes.js" />
-        <option value="$PROJECT_DIR$/src/data/dnNewSales.js" />
-        <option value="$PROJECT_DIR$/src/data/dnOffices.js" />
         <option value="$PROJECT_DIR$/src/data/dnPolicyAssign.js" />
         <option value="$PROJECT_DIR$/src/data/dnPolicyRegister.js" />
         <option value="$PROJECT_DIR$/src/data/dnPriceCalendar.js" />
-        <option value="$PROJECT_DIR$/src/data/dnSales.js" />
-        <option value="$PROJECT_DIR$/src/data/dnUser.js" />
         <option value="$PROJECT_DIR$/src/data/dnUseTypes.js" />
-        <option value="$PROJECT_DIR$/src/data/dnVehicleCategories.js" />
-        <option value="$PROJECT_DIR$/src/data/dnVehicleClasses.js" />
         <option value="$PROJECT_DIR$/src/data/dnVehicles.js" />
         <option value="$PROJECT_DIR$/src/data/dnVehiclesTypes.js" />
-        <option value="$PROJECT_DIR$/src/data/dnVehicleTypeCategories.js" />
         <option value="$PROJECT_DIR$/src/data/GlobalNames.js" />
-        <option value="$PROJECT_DIR$/src/views/selling/Sales.vue" />
         <option value="$PROJECT_DIR$/src/views/price/PriceFull.vue" />
-        <option value="$PROJECT_DIR$/src/views/selling/DetailSale.vue" />
+        <option value="$PROJECT_DIR$/src/views/selling/forms/FormVehicleSeguro.vue" />
+        <option value="$PROJECT_DIR$/src/views/selling/forms/FormPurchaserSeguro.vue" />
+        <option value="$PROJECT_DIR$/src/views/selling/forms/FormPurchaser.vue" />
+        <option value="$PROJECT_DIR$/src/store/modules/login.js" />
+        <option value="$PROJECT_DIR$/src/data/dnSales.js" />
+        <option value="$PROJECT_DIR$/src/components/FormError.vue" />
+        <option value="$PROJECT_DIR$/src/views/vehicle/forms/FormVehicleTypeCategory.vue" />
+        <option value="$PROJECT_DIR$/src/data/dnVehicleTypeCategories.js" />
+        <option value="$PROJECT_DIR$/src/data/dnVehicleCategories.js" />
+        <option value="$PROJECT_DIR$/src/data/dnVehicleClasses.js" />
+        <option value="$PROJECT_DIR$/.htaccess" />
+        <option value="$PROJECT_DIR$/src/components/xTable.vue" />
+        <option value="$PROJECT_DIR$/src/views/policy/forms/FormPolicy.vue" />
+        <option value="$PROJECT_DIR$/src/views/policy/forms/FormPolicyRegister.vue" />
+        <option value="$PROJECT_DIR$/src/views/policy/Policy.vue" />
+        <option value="$PROJECT_DIR$/src/views/policy/forms/FormPolicyAssign.vue" />
         <option value="$PROJECT_DIR$/src/views/selling/forms/FormSales.vue" />
+        <option value="$PROJECT_DIR$/src/roles/_nav_ADMIN.js" />
+        <option value="$PROJECT_DIR$/src/roles/_nav_PUNTO_VENTA.js" />
+        <option value="$PROJECT_DIR$/src/roles/_nav_VENDEDOR.js" />
+        <option value="$PROJECT_DIR$/src/views/maintenance/forms/FormReport.vue" />
+        <option value="$PROJECT_DIR$/src/data/dnUser.js" />
+        <option value="$PROJECT_DIR$/src/views/maintenance/forms/FormProfile.vue" />
+        <option value="$PROJECT_DIR$/src/main.js" />
+        <option value="$PROJECT_DIR$/src/data/dnOffices.js" />
+        <option value="$PROJECT_DIR$/src/views/maintenance/Office.vue" />
+        <option value="$PROJECT_DIR$/src/store/store.js" />
+        <option value="$PROJECT_DIR$/src/views/selling/forms/FormVehicleNS.vue" />
+        <option value="$PROJECT_DIR$/src/views/selling/DetailSale.vue" />
+        <option value="$PROJECT_DIR$/src/views/selling/Sales.vue" />
+        <option value="$PROJECT_DIR$/src/views/selling/forms/FormVehicle.vue" />
+        <option value="$PROJECT_DIR$/src/views/selling/NewSale.vue" />
+        <option value="$PROJECT_DIR$/src/data/dnNewSales.js" />
+        <option value="$PROJECT_DIR$/src/views/selling/forms/FormSuccess.vue" />
+        <option value="$PROJECT_DIR$/src/views/selling/NewSaleSpecial.vue" />
       </list>
     </option>
   </component>
@@ -264,8 +282,9 @@
     <handled-path value="$PROJECT_DIR$/node_modules" />
   </component>
   <component name="ProjectFrameBounds" fullScreen="true">
+    <option name="y" value="23" />
     <option name="width" value="1440" />
-    <option name="height" value="900" />
+    <option name="height" value="877" />
   </component>
   <component name="ProjectView">
     <navigator currentView="ProjectPane" proportions="" version="1">
@@ -283,6 +302,7 @@
     </navigator>
     <panes>
       <pane id="Scope" />
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -301,31 +321,10 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="views" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="adminVue" type="b2602c69:ProjectViewProjectNode" />
-              <item name="adminVue" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="views" type="462c0819:PsiDirectoryNode" />
-              <item name="selling" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="adminVue" type="b2602c69:ProjectViewProjectNode" />
-              <item name="adminVue" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="views" type="462c0819:PsiDirectoryNode" />
-              <item name="selling" type="462c0819:PsiDirectoryNode" />
-              <item name="forms" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="adminVue" type="b2602c69:ProjectViewProjectNode" />
-              <item name="adminVue" type="462c0819:PsiDirectoryNode" />
-              <item name="static" type="462c0819:PsiDirectoryNode" />
-            </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -436,12 +435,15 @@
       <workItem from="1512617580405" duration="6378000" />
       <workItem from="1512624801923" duration="2574000" />
       <workItem from="1512694696522" duration="57223000" />
-      <workItem from="1512919141956" duration="7399000" />
+      <workItem from="1512919141956" duration="25536000" />
+      <workItem from="1512971760359" duration="270000" />
+      <workItem from="1513038546946" duration="10087000" />
+      <workItem from="1513217992908" duration="11899000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1751522000" />
+    <option name="totallyTimeSpent" value="1791915000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -457,16 +459,17 @@
     <editor active="true" />
     <layout>
       <window_info id="Gulp" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.21564482" sideWeight="0.15675676" order="4" side_tool="true" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.28259337" sideWeight="0.7172414" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.28259337" sideWeight="0.69004893" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32889965" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Docker" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.22823529" sideWeight="0.17569445" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32889965" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="npm" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.28259337" sideWeight="0.28275862" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.36396614" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32889965" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="npm" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.28259337" sideWeight="0.30995107" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2986699" sideWeight="0.82430553" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.21564482" sideWeight="0.15675676" order="3" side_tool="true" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25876662" sideWeight="0.82430553" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.21564482" sideWeight="0.15675676" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -496,322 +499,10 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/roles/_nav_ADMIN.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="412">
-          <caret line="52" column="0" lean-forward="false" selection-start-line="52" selection-start-column="0" selection-end-line="56" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/views/maintenance/Client.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="405">
-          <caret line="86" column="39" lean-forward="false" selection-start-line="86" selection-start-column="39" selection-end-line="86" selection-end-column="39" />
-          <folding>
-            <element signature="e#2538#2621#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/views/selling/forms/FormVehicleTypeSeguro.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="481">
-          <caret line="58" column="0" lean-forward="true" selection-start-line="58" selection-start-column="0" selection-end-line="58" selection-end-column="0" />
-          <folding>
-            <element signature="e#3463#3543#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/data/dnSeguroVehicular.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-7131">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/router/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-3221">
-          <caret line="20" column="28" lean-forward="false" selection-start-line="20" selection-start-column="28" selection-end-line="20" selection-end-column="28" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/views/maintenance/forms/FormClient.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="357">
-          <caret line="130" column="15" lean-forward="false" selection-start-line="130" selection-start-column="15" selection-end-line="130" selection-end-column="15" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/views/selling/Sale.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-27">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/views/selling/DetailCart.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-7701">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/views/selling/NewSaleSpecial.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="199">
-          <caret line="317" column="43" lean-forward="false" selection-start-line="317" selection-start-column="18" selection-end-line="317" selection-end-column="43" />
-          <folding>
-            <element signature="e#8154#8203#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/views/selling/forms/FormVehicleType.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-786">
-          <caret line="58" column="0" lean-forward="false" selection-start-line="58" selection-start-column="0" selection-end-line="58" selection-end-column="0" />
-          <folding>
-            <element signature="e#3540#3613#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/scss/style.scss">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="199">
-          <caret line="108" column="10" lean-forward="false" selection-start-line="108" selection-start-column="10" selection-end-line="108" selection-end-column="10" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/views/selling/CartClient.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="555">
-          <caret line="292" column="5" lean-forward="false" selection-start-line="292" selection-start-column="5" selection-end-line="292" selection-end-column="5" />
-          <folding>
-            <element signature="e#11147#11813#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/scss/_core-variables.scss">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/scss/_bootstrap-variables.scss">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/xTable.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="4" column="8" lean-forward="true" selection-start-line="4" selection-start-column="8" selection-end-line="4" selection-end-column="8" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="5" column="43" lean-forward="false" selection-start-line="5" selection-start-column="27" selection-end-line="5" selection-end-column="43" />
-          <folding>
-            <element signature="e#591#625#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/package.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="201">
-          <caret line="41" column="33" lean-forward="true" selection-start-line="41" selection-start-column="4" selection-end-line="41" selection-end-column="33" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/views/selling/forms/FormCotizar.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/views/selling/NewSale.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="816">
-          <caret line="748" column="24" lean-forward="false" selection-start-line="748" selection-start-column="12" selection-end-line="748" selection-end-column="24" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/views/policy/forms/FormPolicyAssign.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="425">
-          <caret line="89" column="0" lean-forward="false" selection-start-line="89" selection-start-column="0" selection-end-line="89" selection-end-column="0" />
-          <folding>
-            <element signature="e#5030#5071#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/views/policy/forms/FormPolicyAssign2.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="412">
-          <caret line="69" column="0" lean-forward="false" selection-start-line="69" selection-start-column="0" selection-end-line="69" selection-end-column="0" />
-          <folding>
-            <element signature="n#style#0;n#!!top" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/views/policy/PolicyAssign.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="14" column="78" lean-forward="false" selection-start-line="14" selection-start-column="78" selection-end-line="14" selection-end-column="78" />
-          <folding>
-            <element signature="e#3281#3341#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/views/maintenance/forms/FormUser.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="155">
-          <caret line="192" column="14" lean-forward="false" selection-start-line="192" selection-start-column="14" selection-end-line="196" selection-end-column="15" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/views/maintenance/User.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
-          <caret line="9" column="21" lean-forward="false" selection-start-line="9" selection-start-column="21" selection-end-line="9" selection-end-column="21" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/views/selling/Cotizar.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-27">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/data/dnCotizar.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="12" column="26" lean-forward="true" selection-start-line="12" selection-start-column="26" selection-end-line="12" selection-end-column="26" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/data/dataNames.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-32">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/data/dnCarts.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/data/dnInsuranceCompanies.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/data/dnInsurancePrices.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/data/dnInsuranceTypes.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/data/dnNewSales.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="10050">
-          <caret line="670" column="6" lean-forward="false" selection-start-line="670" selection-start-column="9" selection-end-line="672" selection-end-column="11" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/data/dnOffices.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/data/dnPolicyAssign.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/data/dnPolicyRegister.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/data/dnSales.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/data/dnUseTypes.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/data/dnVehicleCategories.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -819,7 +510,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -827,15 +517,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/data/dnVehicleTypeCategories.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="45">
-          <caret line="3" column="9" lean-forward="false" selection-start-line="3" selection-start-column="9" selection-end-line="3" selection-end-column="30" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -843,23 +524,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/data/dnVehicleClasses.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/data/dnUser.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="705">
-          <caret line="47" column="19" lean-forward="false" selection-start-line="47" selection-start-column="19" selection-end-line="47" selection-end-column="19" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -867,7 +531,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -875,59 +538,278 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="149">
           <caret line="156" column="23" lean-forward="false" selection-start-line="156" selection-start-column="23" selection-end-line="156" selection-end-column="23" />
-          <folding>
-            <element signature="n#style#0;n#div#3;n#div#0;n#b-modal#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#4;n#div#0;n#b-modal#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#b-badge#0;n#div#0;n#div#4;n#div#0;n#b-modal#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="e#10419#10479#0" expanded="true" />
-            <element signature="e#12684#13031#0" expanded="false" />
-            <element signature="e#15789#15838#0" expanded="false" />
-            <element signature="e#15893#16036#0" expanded="false" />
-            <element signature="e#16080#16225#0" expanded="false" />
-            <element signature="e#16455#16682#0" expanded="false" />
-            <element signature="e#16721#16970#0" expanded="false" />
-            <element signature="e#17005#17089#0" expanded="false" />
-            <element signature="e#17203#17319#0" expanded="false" />
-            <element signature="e#17346#18181#0" expanded="false" />
-            <element signature="e#18216#18507#0" expanded="false" />
-            <element signature="e#18553#19191#0" expanded="false" />
-            <element signature="e#20761#21657#0" expanded="false" />
-            <element signature="e#21689#22184#0" expanded="false" />
-            <element signature="e#22215#23303#0" expanded="false" />
-            <element signature="e#23368#24099#0" expanded="false" />
-            <marker date="1512927667083" expanded="true" signature="27707:27723" ph="..." />
-            <marker date="1512927667083" expanded="true" signature="27804:27817" ph="..." />
-          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/views/selling/forms/FormSuccess.vue">
+    <entry file="file://$PROJECT_DIR$/src/views/selling/forms/FormPurchaserSeguro.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="234">
-          <caret line="218" column="6" lean-forward="true" selection-start-line="218" selection-start-column="6" selection-end-line="232" selection-end-column="7" />
-          <folding />
+        <state relative-caret-position="217">
+          <caret line="261" column="0" lean-forward="false" selection-start-line="261" selection-start-column="0" selection-end-line="262" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/views/selling/forms/FormPurchaser.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="171">
+          <caret line="291" column="0" lean-forward="false" selection-start-line="291" selection-start-column="0" selection-end-line="291" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/views/selling/forms/FormVehicleSeguro.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="298">
+          <caret line="117" column="77" lean-forward="false" selection-start-line="117" selection-start-column="77" selection-end-line="117" selection-end-column="77" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/views/selling/DetailCartSale.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2130">
+        <state relative-caret-position="15">
           <caret line="142" column="50" lean-forward="false" selection-start-line="142" selection-start-column="50" selection-end-line="142" selection-end-column="50" />
           <folding>
-            <element signature="n#style#0;n#p#0;n#div#1;n#div#0;n#div#1;n#div#1;n#div#1;n#b-card#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#p#0;n#div#1;n#div#0;n#div#1;n#div#1;n#div#1;n#b-card#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/FormError.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="409">
+          <caret line="96" column="36" lean-forward="true" selection-start-line="96" selection-start-column="36" selection-end-line="96" selection-end-column="36" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/store/modules/login.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3208">
+          <caret line="303" column="6" lean-forward="false" selection-start-line="303" selection-start-column="6" selection-end-line="303" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/views/maintenance/forms/FormUser.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="179">
+          <caret line="75" column="57" lean-forward="false" selection-start-line="75" selection-start-column="51" selection-end-line="75" selection-end-column="57" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/views/vehicle/forms/FormVehicleTypeCategory.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="334">
+          <caret line="48" column="109" lean-forward="false" selection-start-line="48" selection-start-column="69" selection-end-line="48" selection-end-column="109" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/data/dnVehicleCategories.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="9" column="32" lean-forward="false" selection-start-line="9" selection-start-column="32" selection-end-line="9" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/data/dnVehicleClasses.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="285">
+          <caret line="19" column="18" lean-forward="false" selection-start-line="19" selection-start-column="18" selection-end-line="19" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/views/vehicle/forms/FormVehicleClass.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-94">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/views/vehicle/forms/FormVehicleCategory.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/views/maintenance/forms/FormOffice.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.htaccess">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="8" column="0" lean-forward="true" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/views/Login.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="179">
+          <caret line="13" column="39" lean-forward="false" selection-start-line="13" selection-start-column="34" selection-end-line="13" selection-end-column="39" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/views/policy/forms/FormPolicy.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="7" column="22" lean-forward="true" selection-start-line="7" selection-start-column="22" selection-end-line="7" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/views/policy/forms/FormPolicyRegister.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="7" column="22" lean-forward="false" selection-start-line="7" selection-start-column="22" selection-end-line="7" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/views/policy/Policy.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="173">
+          <caret line="19" column="54" lean-forward="false" selection-start-line="19" selection-start-column="54" selection-end-line="19" selection-end-column="54" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/views/policy/forms/FormPolicyAssign.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="230">
+          <caret line="81" column="80" lean-forward="false" selection-start-line="81" selection-start-column="80" selection-end-line="81" selection-end-column="80" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/views/selling/forms/FormSales.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="364">
+          <caret line="110" column="74" lean-forward="false" selection-start-line="110" selection-start-column="74" selection-end-line="110" selection-end-column="74" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/roles/_nav_VENDEDOR.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="183">
+          <caret line="29" column="29" lean-forward="false" selection-start-line="29" selection-start-column="29" selection-end-line="29" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/roles/_nav_PUNTO_VENTA.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="48">
+          <caret line="90" column="29" lean-forward="false" selection-start-line="90" selection-start-column="29" selection-end-line="90" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/roles/_nav_ADMIN.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="118">
+          <caret line="180" column="13" lean-forward="true" selection-start-line="180" selection-start-column="13" selection-end-line="180" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/views/maintenance/forms/FormReport.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="179">
+          <caret line="25" column="82" lean-forward="true" selection-start-line="25" selection-start-column="82" selection-end-line="25" selection-end-column="82" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/xTable.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="4" column="6" lean-forward="false" selection-start-line="4" selection-start-column="6" selection-end-line="4" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/views/maintenance/forms/FormProfile.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="103">
+          <caret line="8" column="35" lean-forward="false" selection-start-line="8" selection-start-column="35" selection-end-line="8" selection-end-column="35" />
+          <folding>
+            <element signature="e#7992#8055#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/data/dnUser.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="141">
+          <caret line="388" column="0" lean-forward="false" selection-start-line="388" selection-start-column="0" selection-end-line="390" selection-end-column="11" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/views/WebPage.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="n#template#0;n#!!top" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/data/dnOffices.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="357">
+          <caret line="100" column="21" lean-forward="true" selection-start-line="100" selection-start-column="21" selection-end-line="100" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/views/maintenance/Office.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="7" column="12" lean-forward="true" selection-start-line="7" selection-start-column="12" selection-end-line="7" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/views/WebPage2.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="n#template#0;n#!!top" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/store/store.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="265">
+          <caret line="70" column="41" lean-forward="true" selection-start-line="70" selection-start-column="41" selection-end-line="70" selection-end-column="41" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/views/selling/DetailSale.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="130">
-          <caret line="9" column="19" lean-forward="false" selection-start-line="9" selection-start-column="19" selection-end-line="9" selection-end-column="19" />
+        <state relative-caret-position="135">
+          <caret line="9" column="83" lean-forward="false" selection-start-line="9" selection-start-column="83" selection-end-line="9" selection-end-column="83" />
           <folding>
             <element signature="n#div#0;n#template#0;n#div#0;n#b-card#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="false" />
             <element signature="n#div#1;n#template#0;n#div#0;n#b-card#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="false" />
-            <element signature="n#div#2;n#template#0;n#div#0;n#b-card#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="false" />
-            <element signature="n#div#0;n#div#1;n#div#1;n#div#1;n#b-card#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="false" />
             <element signature="n#div#1;n#div#1;n#div#1;n#div#1;n#b-card#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="false" />
           </folding>
         </state>
@@ -935,18 +817,109 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/views/selling/Sales.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="848">
-          <caret line="169" column="14" lean-forward="false" selection-start-line="169" selection-start-column="14" selection-end-line="169" selection-end-column="14" />
+        <state relative-caret-position="127">
+          <caret line="29" column="30" lean-forward="true" selection-start-line="29" selection-start-column="30" selection-end-line="29" selection-end-column="30" />
           <folding>
-            <element signature="e#6742#6802#0" expanded="true" />
+            <element signature="n#div#0;n#div#0;n#div#2;n#div#1;n#div#0;n#transition-group#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/views/selling/forms/FormSales.vue">
+    <entry file="file://$PROJECT_DIR$/src/views/selling/forms/FormVehicleNS.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="281">
-          <caret line="22" column="76" lean-forward="true" selection-start-line="22" selection-start-column="76" selection-end-line="22" selection-end-column="76" />
+        <state relative-caret-position="379">
+          <caret line="61" column="0" lean-forward="false" selection-start-line="61" selection-start-column="0" selection-end-line="61" selection-end-column="0" />
+          <folding>
+            <element signature="e#3420#3461#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/views/selling/forms/FormVehicle.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-579">
+          <caret line="54" column="30" lean-forward="false" selection-start-line="54" selection-start-column="30" selection-end-line="54" selection-end-column="30" />
+          <folding>
+            <element signature="e#3138#3179#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/data/dnSales.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="201">
+          <caret line="210" column="19" lean-forward="true" selection-start-line="210" selection-start-column="19" selection-end-line="210" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/data/dnVehicleTypeCategories.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="122">
+          <caret line="84" column="33" lean-forward="false" selection-start-line="84" selection-start-column="27" selection-end-line="84" selection-end-column="33" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/data/dnNewSales.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="395">
+          <caret line="612" column="27" lean-forward="false" selection-start-line="612" selection-start-column="27" selection-end-line="612" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/views/selling/forms/FormSuccess.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="297">
+          <caret line="200" column="38" lean-forward="false" selection-start-line="200" selection-start-column="38" selection-end-line="200" selection-end-column="38" />
+          <folding>
+            <element signature="n#div#0;n#div#2;n#div#0;n#template#0;n#!!top" expanded="false" />
+            <element signature="n#div#1;n#div#2;n#div#0;n#template#0;n#!!top" expanded="false" />
+            <element signature="n#div#2;n#div#2;n#div#0;n#template#0;n#!!top" expanded="false" />
+            <element signature="n#style#0;n#span#0;n#p#0;n#div#3;n#div#1;n#div#4;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#1;n#p#0;n#div#3;n#div#1;n#div#4;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="e#11119#11182#0" expanded="true" />
+            <element signature="e#12408#12816#0" expanded="false" />
+            <element signature="e#12851#14300#0" expanded="false" />
+            <element signature="e#18871#19419#0" expanded="false" />
+            <element signature="e#21098#21479#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/views/selling/forms/FormVehicleType.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="89">
+          <caret line="65" column="10" lean-forward="false" selection-start-line="65" selection-start-column="10" selection-end-line="65" selection-end-column="26" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/views/selling/NewSaleSpecial.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="126">
+          <caret line="149" column="46" lean-forward="false" selection-start-line="149" selection-start-column="46" selection-end-line="149" selection-end-column="46" />
+          <folding>
+            <element signature="e#8231#8280#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/views/selling/NewSale.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="314">
+          <caret line="713" column="26" lean-forward="false" selection-start-line="713" selection-start-column="26" selection-end-line="713" selection-end-column="26" />
+          <folding>
+            <element signature="e#9600#9653#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="127">
+          <caret line="74" column="53" lean-forward="false" selection-start-line="74" selection-start-column="53" selection-end-line="74" selection-end-column="53" />
           <folding />
         </state>
       </provider>

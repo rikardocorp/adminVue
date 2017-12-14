@@ -62,7 +62,7 @@
 
                 </tab-content>
                 <tab-content title="Venta" icon="fa fa-check" :before-change="stage3">
-                  <form-success :item="data.payment.item" :data="data" :horizontal="true" :index="3" @paySale="paySale"></form-success>
+                  <form-success :item="data.payment.item" :data="data" :horizontal="true" :index="3" @paySale="paySale" @cancelSale="cancelSale" ></form-success>
                 </tab-content>
               </form-wizard>
 
@@ -146,7 +146,7 @@
           </div>
         </div>
       </transition-group>
-
+      <!--<pre>{{ data.vehicleType.item }}</pre>-->
       <!--<button @click="mySwitch = !mySwitch">Cambio</button>-->
       <!--<input type="number" v-model="data.vehicle.validate">-->
     </div>
@@ -743,10 +743,10 @@
         this.setFormFill('purchaser', false)
         this.setFormFill('pay', false)
       },
-      async CancelSale () {
+      async cancelSale (type = true) {
         let dataLocal = this.data.sale
         let saleId = dataLocal.item.id
-        if (saleId !== undefined) {
+        if (saleId !== undefined && type) {
           let self = await this.$store.dispatch('dispatchHTTP', {type: 'DELETE', url: dataLocal.urlRest + '/' + dataLocal.item.id})
           if (!self.status) return false
           this.setDefault()
@@ -760,7 +760,7 @@
       },
       eventCancelSale () {
         this.$dialog.confirm('¿Desea cancelar esta venta en proceso?').then((dialog) => {
-          this.CancelSale()
+          this.cancelSale()
           dialog.close()
         }).catch(() => {
           console.log('Clicked on cancel')

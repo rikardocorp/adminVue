@@ -296,6 +296,21 @@ const actions = {
     })
     return promise
   },
+  validUser: ({ commit, state }, data) => {
+    commit('switchLoading', true)
+    console.log('validUser')
+    console.log(data)
+    let promise = new Promise((resolve, reject) => {
+      Vue.http.post(state.LOGIN_URL, data).then(response => {
+        commit('switchLoading', false)
+        resolve(response)
+      }).catch(error => {
+        commit('switchLoading', false)
+        resolve(false)
+      })
+    })
+    return promise
+  },
   redirectROLE: function () {
     /// alert('auth')
     const data = JSON.parse(localStorage.getItem('UserLog'))

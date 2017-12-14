@@ -72,7 +72,7 @@
 
                 </tab-content>
                 <tab-content title="Venta" icon="fa fa-check" :before-change="stage3">
-                  <form-success :item="data.payment.item" :data="data" :horizontal="true" :index="3" @paySale="paySale"></form-success>
+                  <form-success :item="data.payment.item" :data="data" :horizontal="true" :index="3" @paySale="paySale" @cancelSale="cancelSale" ></form-success>
                 </tab-content>
               </form-wizard>
 
@@ -702,12 +702,18 @@
         this.setFormFill('purchaser', false)
         this.setFormFill('pay', false)
       },
-      async CancelSale () {
-        let dataLocal = this.data.sale
-        let saleId = dataLocal.item.id
-        if (saleId !== undefined) {
-          let self = await this.$store.dispatch('dispatchHTTP', {type: 'DELETE', url: dataLocal.urlRest + '/' + dataLocal.item.id})
-          if (!self.status) return false
+      async cancelSale (type = true) {
+        if (type) {
+          let dataLocal = this.data.sale
+          let saleId = dataLocal.item.id
+          if (saleId !== undefined) {
+            let self = await this.$store.dispatch('dispatchHTTP', {type: 'DELETE', url: dataLocal.urlRest + '/' + dataLocal.item.id})
+            console.log(self)
+            if (!self.status) {
+              // if (self.content.status !== 200) return false
+              return false
+            }
+          }
         }
         this.setDefault()
         this.initData()
@@ -715,7 +721,7 @@
       },
       eventCancelSale () {
         this.$dialog.confirm('¿Desea cancelar esta venta en proceso?').then((dialog) => {
-          this.CancelSale()
+          this.cancelSale()
           dialog.close()
         }).catch(() => {
           console.log('Clicked on cancel')

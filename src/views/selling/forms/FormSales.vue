@@ -39,6 +39,10 @@
             <span class="badge badge-pill" style="background: #454545">&nbsp;&nbsp;</span>
             <span>Contrato vencido</span>
           </li>
+          <li class="list-group-item justify-content-between">
+            <span class="badge badge-pill" style="background: #A6A6A6">&nbsp;&nbsp;</span>
+            <span>Polizas anuladas</span>
+          </li>
           <!--<li class="list-group-item justify-content-between">-->
             <!--<span class="badge badge-default badge-pill">5</span>-->
             <!--Documento PDF asignado-->
@@ -103,8 +107,8 @@
                     calendar-class="myDatepicker-style" wrapper-class="myDatepicker-content"></datepicker>
 
         <div class="row pt-1">
-          <div class="col-sm-6 text-dark text-right"><span class="text-primary">Del: </span>{{item.dateFrom}}</div>
-          <div class="col-sm-6 text-dark"><span class="text-primary">Al: </span>{{item.dateTo}}</div>
+          <div class="col-sm-6 text-dark text-right"><span class="text-primary">Desde: </span>{{item.dateFrom}}</div>
+          <div class="col-sm-6 text-dark"><span class="text-primary">Hasta: </span>{{item.dateTo}}</div>
         </div>
         <div slot="footer" class="text-right d-md-none">
           <b-button class="float-left" @click="resetForm(name + nameForm)" :disabled="isLoading" size="sm" variant="outline-secondary"><i class="fa fa-ban"></i> {{$global.reset}}</b-button>
@@ -329,6 +333,9 @@
       }
       label:nth-child(8){
         background: #454545;
+      }
+      label:nth-child(9){
+        background: #A6A6A6;
       }
     }
     .myLegend{

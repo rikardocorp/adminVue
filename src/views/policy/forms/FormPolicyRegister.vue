@@ -5,7 +5,7 @@
     <!--</span>-->
     <div slot="header" class="text-center">
       <button @click="switchForm" title="Registro simple" class="btn btn-in-title-left"><i class="fa fa-tag" aria-hidden="true"></i></button>
-      <strong>Registrar</strong> Polizas
+      <strong>Registra</strong> Polizas
     </div>
     <b-form :id="name">
       <div class="text-center p-2 pb-3">

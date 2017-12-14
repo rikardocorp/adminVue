@@ -215,18 +215,19 @@
             console.log(data)
             if (data.status) {
               console.log(data.content)
+              let selectData = data.content.pop()
               if (data.content.length > 0) {
-                this.$set(this.item, 'razonSocial', data.content[0].razonSocial)
-                this.$set(this.item, 'address', data.content[0].address)
-                this.$set(this.item, 'phone', data.content[0].phone)
-                this.$set(this.item, 'cellPhone', data.content[0].cellPhone)
-                this.$set(this.item, 'typeDocument', data.content[0].typeDocument)
-                this.$set(this.item, 'departamento', data.content[0].departamento)
-                this.$set(this.item, 'provincia', data.content[0].provincia)
-                this.$set(this.item, 'distrito', data.content[0].distrito)
-                this.$set(this.item, 'birthDate', data.content[0].birthDate)
-                this.localidad = [data.content[0].departamento, data.content[0].provincia, data.content[0].distrito]
-                this.birthDate = data.content[0].birthDate ? this.getDateToDatepicker(data.content[0].birthDate) : ''
+                this.$set(this.item, 'razonSocial', selectData.razonSocial)
+                this.$set(this.item, 'address', selectData.address)
+                this.$set(this.item, 'phone', selectData.phone)
+                this.$set(this.item, 'cellPhone', selectData.cellPhone)
+                this.$set(this.item, 'typeDocument', selectData.typeDocument)
+                this.$set(this.item, 'departamento', selectData.departamento)
+                this.$set(this.item, 'provincia', selectData.provincia)
+                this.$set(this.item, 'distrito', selectData.distrito)
+                this.$set(this.item, 'birthDate', selectData.birthDate)
+                this.localidad = [selectData.departamento, selectData.provincia, selectData.distrito]
+                this.birthDate = selectData.birthDate ? this.getDateToDatepicker(selectData.birthDate) : ''
                 this.dniRUC()
                 console.log('Tiene duseño')
               } else {
@@ -258,7 +259,7 @@
         console.log(email)
         console.log(localEmail)
         if (email !== '') {
-          let url = 'users?email=' + email
+          let url = 'users/search?email=' + email
           let self = this.$store.dispatch('dispatchHTTP', {type: 'GET', url: url})
           self.then((data) => {
             console.log(data)

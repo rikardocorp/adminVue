@@ -90,7 +90,8 @@ export const DATA_FORM = {
         options: [],
         activate: false,
         loadData: true,
-        value: ''
+        value: '',
+        editDisable: true
       }
     },
     vehicleType: {
@@ -107,7 +108,8 @@ export const DATA_FORM = {
         options: [],
         activate: false,
         loadData: false,
-        value: ''
+        value: '',
+        editDisable: true
       }
     },
     vehicleClass: {
@@ -143,7 +145,7 @@ export const DATA_FORM = {
     seatNumber: {
       label: 'Asientos Desde',
       placeholder: 'Número de asientos',
-      type: 'number'
+      type: 'number',
     },
     seatNumberTo: {
       label: 'Asientos Hasta',

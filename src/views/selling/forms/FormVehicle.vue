@@ -54,7 +54,6 @@
     </b-form-group>
     <!--<pre>{{item}}</pre>-->
 
-
   </b-form>
 
 </template>
@@ -98,12 +97,12 @@
       }
     },
     validations () {
-      if (this.isClient) {
-        _vehicle.validate.item.seatNumber = {
-          required,
-          between: between(this.pickPolice.seatNumber, this.pickPolice.seatNumberTo)
-        }
-      }
+      // if (this.isClient) {
+      // _vehicle.validate.item.seatNumber = {
+      //   required,
+      //   between: between(this.pickPolice.seatNumber, this.pickPolice.seatNumberTo)
+      // }
+      // }
       return _vehicle.validate
     },
     methods: {
@@ -116,19 +115,19 @@
           self.then((data) => {
             console.log(data)
             if (data.status) {
-              console.log(data.content)
+              let selectData = data.content.pop()
               if (data.content.length > 0) {
                 this.owner = true
-                this.$set(this.item, 'manufacturingYear', data.content[0].manufacturingYear)
-                this.$set(this.item, 'seatNumber', data.content[0].seatNumber)
-                this.$set(this.item, 'engineNumber', data.content[0].engineNumber)
+                this.$set(this.item, 'manufacturingYear', selectData.manufacturingYear)
+                this.$set(this.item, 'seatNumber', selectData.seatNumber)
+                this.$set(this.item, 'engineNumber', selectData.engineNumber)
 //                this.$set(this.item, 'manufacturingYear', data.content.manufacturingYear)
 //                this.$emit('connection', this.name, data.content)
                 console.log('Tiene duseño')
               } else {
                 console.log('No tiene duseño')
                 this.owner = false
-                this.$emit('connection', this.name, null)
+                // this.$emit('connection', this.name, null)
               }
             } else {
               console.log('Error: ' + url)

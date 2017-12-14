@@ -1,15 +1,15 @@
 <template>
   <div id="contentDetailSale">
-    <div id="formDetailSale" class="col-md-11 col-sm-12 col-lg-9 col-xl-7 m-auto">
+    <div id="formDetailSale" :class="'col-md-11 col-sm-12 col-lg-9 col-xl-7 m-auto ' + (item2.state==-1?'state-anulado':'')">
       <b-card>
         <div slot="header" class="text-left">
           <button @click="returnMain" title="Regresar" class="btn btn-in-title-left bg-primary"><i class="fa fa-arrow-left"></i></button>
           <strong>Detalles de la Venta</strong> - Pagos
 
           <!-- POSITIVA ID=1 -->
-          <template v-if="item2.insurancePolicy.policyType!=='D'">
+          <template v-if="item2.insurancePolicy.policyType!=='D' && item2.state!==2">
             <div v-if="item2.insurancePolicy.insuranceCompany.id == 1" style="display: inline;">
-              <button @click="imprimir()" title="Imprimir" class="btn btn-in-title-right bg-info"><i class="fa fa-print"></i></button>
+              <button :disabled="isLoading" @click="imprimir()" title="Imprimir" class="btn btn-in-title-right bg-info"><i class="fa fa-print"></i></button>
               <!--<div v-show="optionPrint" class="btn-in-title-right" style="width: 68px;padding: 0;padding-right: 4px;">-->
                 <!--<button v-b-tooltip.bottom @click="imprimir()" title="Manual"  class="btn btn-in-title-right bg-danger"><i class="fa fa-adjust"></i></button>-->
                 <!--<button v-b-tooltip.bottom @click="imprimir()" title="Web" class="btn btn-in-title-right bg-success"><i class="fa fa-adjust fa-rotate-180"></i></button>-->
@@ -19,13 +19,13 @@
             <div v-else-if="item2.insurancePolicy.insuranceCompany.id == 6 || item2.insurancePolicy.insuranceCompany.id == 7" style="display: inline;">
               <button @click="optionPrint = !optionPrint" title="Imprimir" class="btn btn-in-title-right bg-info"><i class="fa fa-print"></i></button>
               <div v-show="optionPrint" class="btn-in-title-right" style="width: 68px;padding: 0;padding-right: 4px;">
-                <button v-b-tooltip.bottom @click="imprimir(true)" title="Centrado"  class="btn btn-in-title-right bg-danger"><i class="fa fa-adjust"></i></button>
-                <button v-b-tooltip.bottom @click="imprimir(false)" title="No centrado" class="btn btn-in-title-right bg-success"><i class="fa fa-adjust fa-rotate-180"></i></button>
+                <button :disabled="isLoading"  v-b-tooltip.bottom @click="imprimir(true)" title="Centrado"  class="btn btn-in-title-right bg-danger"><i class="fa fa-adjust"></i></button>
+                <button :disabled="isLoading"  v-b-tooltip.bottom @click="imprimir(false)" title="No centrado" class="btn btn-in-title-right bg-success"><i class="fa fa-adjust fa-rotate-180"></i></button>
               </div>
             </div>
             <!-- Diferent -->
             <div v-else="" style="display: inline;">
-              <button v-b-tooltip.bottom @click="imprimir()" title="Imprimir" class="btn btn-in-title-right bg-info"><i class="fa fa-print"></i></button>
+              <button :disabled="isLoading"  v-b-tooltip.bottom @click="imprimir()" title="Imprimir" class="btn btn-in-title-right bg-info"><i class="fa fa-print"></i></button>
             </div>
           </template>
         </div>
@@ -230,7 +230,7 @@
     </div>
 
     <!-- DELETE SALE -->
-    <div class="col-md-6 col-sm-12 col-lg-6 col-xl-5 m-auto pt-4">
+    <div v-if="item2.state !== -1 && item2.state !== 2" class="col-md-6 col-sm-12 col-lg-6 col-xl-5 m-auto pt-4">
       <b-input-group class="mb-3 passDelete">
         <b-input-group-addon class="bg-danger"><i class="fa fa-key"></i></b-input-group-addon>
         <b-form-input v-model="password"
@@ -239,7 +239,7 @@
                       placeholder="Introduce tu contraseña para eliminar la venta"
                       title="Password para eliminar"></b-form-input>
         <b-input-group-button>
-          <b-btn variant="danger" @click="deleteSale">{{$global.delete}}</b-btn>
+          <b-btn variant="danger" @click="anularSale">{{$global.delete}}</b-btn>
         </b-input-group-button>
       </b-input-group>
     </div>
@@ -298,6 +298,7 @@
     watch: {
       async item (newVal) {
         this.item2 = newVal
+        this.item2 = newVal
         this.listPayment = await this.getPayments(newVal.id)
         this.urlFile = 'sales/' + newVal.id + '/uploadpolicydocument'
         this.optionPrint = false
@@ -305,7 +306,7 @@
     },
     computed: {
       isLoading () {
-        return this.$store.state.isLoading
+        return this.$store.state.isLoading || (this.item2.state === -1)
       },
       path () {
         return this.$store.state.Login.IMAGES_URL
@@ -356,9 +357,26 @@
       }
     },
     methods: {
-      deleteSale () {
-        let saleId = this.item2.id
-        alert('DELETE ' + saleId)
+      async anularSale () {
+        if (this.password === '') {
+          this.$store.commit('sendNotification', {status: null, message: 'Debe ingresar su contraseña.'})
+          return false
+        }
+
+        let dataLocal = {
+          password: this.password,
+          saleId: this.item2.id,
+          state: -1
+        }
+        let self = await this.$store.dispatch('dispatchHTTP', {type: 'INSERT', url: 'sales/cancel', data: dataLocal})
+        console.log('RIKAEDOCORO ppppppppp')
+        console.log(self)
+        console.log('INSERT SALE?')
+        if (self.status) {
+          this.password = ''
+          this.item2.state = -1
+        }
+        return self
       },
       uploadCallBack (value) {
         this.item2.policy = value.policy
@@ -473,126 +491,12 @@
     background: #f86c6b !important;
   }
 
-  /*#saleDetail{*/
-    /*font-family: 'jmc';*/
-
-    /*.numberPolicy{*/
-      /*color: rgb(100, 193, 222);*/
-      /*padding-bottom: 0.4em;*/
-      /*text-decoration: underline;*/
-    /*}*/
-
-    /**/
-    /*.infoPolicy{*/
-      /*p{*/
-        /*margin: 0;*/
-        /*padding: 0;*/
-        /*font-size: 0.85em;*/
-        /*&.xsTitle{*/
-          /*color: #f26f36;*/
-          /*font-size: 1.2em;*/
-        /*}*/
-      /*}*/
-    /*}*/
-    /*p.title{*/
-      /*width: 100%;*/
-      /*text-align: center;*/
-      /*//color: #ef7b21;*/
-      /*font-weight: 500;*/
-      /*border: 1px solid;*/
-      /*background: #ffa501;*/
-      /*color: white;*/
-      /*border-radius: 0.5em;*/
-      /*font-size: 1.1em;*/
-    /*}*/
-    /*p{*/
-      /*margin: 0;*/
-      /*padding: 0;*/
-      /*text-align: center;*/
-      /*width: 100%;*/
-    /*}*/
-    /*.bolder{*/
-      /*font-weight: bold;*/
-    /*}*/
-
-    /*.subtitle{*/
-      /*span{*/
-        /*font-size: 0.9em;*/
-        /*color: #9c9c9c;*/
-        /*background: #f4f3ef;*/
-        /*padding: 0 0.5em;*/
-      /*}*/
-    /*}*/
-
-    /*.value{*/
-      /*text-align: right;*/
-      /*font-size: 1.1em;*/
-      /*color: #444444;*/
-      /*&.vigente{*/
-        /*margin-top: 10px;*/
-        /*font-size: 1.1em;*/
-        /*span{*/
-          /*background: #ef7b1f;*/
-          /*color: #ffffff;*/
-          /*padding: 0.2em 0.6em;*/
-          /*border-radius: 2em;*/
-        /*}*/
-        /*&.vencido{*/
-          /*font-size: 1.1em;*/
-          /*span{*/
-            /*background: red;*/
-            /*padding: 0.2em 0.6em;*/
-          /*}*/
-        /*}*/
-      /*}*/
-    /*}*/
-
-    /*.borderChild{*/
-      /*>.row{*/
-        /*>div{*/
-          /*border: 1px dashed rgba(244, 243, 239, 0.62);*/
-          /*padding: 0.3em 1em;*/
-        /*}*/
-      /*}*/
-    /*}*/
-
-    /*.detailPay{*/
-      /*.subtitle{*/
-        /*span{*/
-          /*color: white;*/
-          /*padding: 0.1em 0.4em;*/
-          /*border-radius: 1em;*/
-          /*font-size: 0.9em;*/
-          /*font-weight: 600;*/
-        /*}*/
-      /*}*/
-      /*.value{*/
-        /*font-size: 1.3em;*/
-        /*span{*/
-          /*color: #a8a8a7;*/
-          /*font-size: 0.8em;*/
-        /*}*/
-      /*}*/
-      /*.col-md-12{*/
-        /*overflow: hidden;*/
-      /*}*/
-    /*}*/
-
-    /*.formPay{*/
-      /*background: #ffa501;*/
-      /*padding: 0.5em 1em 1em;*/
-      /*border-radius: 0.51em;*/
-      /*div{*/
-        /*border: none !important;*/
-      /*}*/
-      /*.title{*/
-        /*color: white;*/
-        /*font-size: 1.4em;*/
-      /*}*/
-    /*}*/
-  /*},*/
-
   #contentDetailSale{
+
+    .state-anulado{
+      -webkit-filter: grayscale(1);
+      filter: grayscale(1);
+    }
 
     .dropbox {
       color: #546c79 !important;
