@@ -36,7 +36,7 @@
               <div class="col-md-5 text-center">
                 <avatar :username="item2.insurancePolicy.insuranceCompany.name" :rounded="true" :size="7.5" sizeUnid="em"
                 :src="path + '/' + item2.insurancePolicy.insuranceCompany.image" :alt="item2.insurancePolicy.insuranceCompany.name"
-                :border="true" colorBorder="#f4f3ef" color="#ecedef" :localSrc="false"
+                :border="true" colorBorder="#f4f3ef" color="#ecedef" :localSrc="false" :forceLoad="true"
                 backgroundColor="orange" :sizeBorder="0.5"></avatar>
               </div>
               <div class="col-md-7 text-center infoPolicy">
@@ -81,7 +81,7 @@
               </div>
               <div class="row">
                 <div class="col-md-12">
-                  <p class="subtitle text-left"><span>AMBITO DE APLICACION</span></p>
+                  <p class="subtitle text-left"><span>LOCALIDAD</span></p>
                   <p class="value">{{ item2.region.name }}</p>
                 </div>
               </div>
@@ -201,10 +201,10 @@
       <div v-for="(x, index) in listPayment" :key="x.id"  :class="{'ticket absolute cardWrap m-2 mb-3 hvr-bounce-in':true, 'pickOption': x.pick}">
         <div class="card-ticket cardLeft">
           <avatar v-if="x.paymentType==0" :username="x.amount|currency" :rounded="true" :size="6.2" sizeUnid="em"
-                  :border="true" colorBorder="#f4f3ef" color="#ecedef" :usernameComplete="true"
+                  :border="true" colorBorder="#f4f3ef" color="#ecedef" :usernameComplete="true" :forceLoad="true"
                   backgroundColor="#63c1de" :sizeBorder="0.3"></avatar>
           <avatar v-else="" :username="x.amount|currency" :rounded="true" :size="6.2" sizeUnid="em"
-                  :border="true" colorBorder="#f4f3ef" color="#ecedef" :usernameComplete="true"
+                  :border="true" colorBorder="#f4f3ef" color="#ecedef" :usernameComplete="true" :forceLoad="true"
                   backgroundColor="#4ebc75" :sizeBorder="0.4"></avatar>
         </div>
         <div class="card-ticket cardCenter dashed">
@@ -230,7 +230,7 @@
     </div>
 
     <!-- DELETE SALE -->
-    <div v-if="item2.state !== -1 && item2.state !== 2" class="col-md-6 col-sm-12 col-lg-6 col-xl-5 m-auto pt-4">
+    <div v-if="item2.state !== -1 && item2.state !== 2 && item2.cart==null" class="col-md-6 col-sm-12 col-lg-6 col-xl-5 m-auto pt-4">
       <b-input-group class="mb-3 passDelete">
         <b-input-group-addon class="bg-danger"><i class="fa fa-key"></i></b-input-group-addon>
         <b-form-input v-model="password"

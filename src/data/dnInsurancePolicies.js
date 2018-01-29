@@ -102,7 +102,7 @@ export const DATA_FORM = {
       type: 'text',
       input: 'multiselect',
       params: {
-        url: 'users',
+        url: 'users?system=1',
         key: 'user',
         label: 'email',
         options: [],

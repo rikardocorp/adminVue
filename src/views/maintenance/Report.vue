@@ -6,7 +6,7 @@
       <!--<pre>{{ $store.state.Login.LOAD_TABLE.regions }}</pre>-->
       <div class="col-md-7 col-xl-4 col-lg-6">
         <!--<app-form v-model="items" :item="item" :pickObject="pickObject" :horizontal="true" :urlRest="urlRest" @isSearching="isSearching"></app-form>-->
-        <app-form :item="item" nameForm="nameForm1" :horizontal="true"></app-form>
+        <app-form :ref="'report'" :item="item" nameForm="nameForm1" :horizontal="true"></app-form>
       </div>
 
       <div class="col-md-5 col-xl-4 col-lg-6 report-btn">
@@ -16,34 +16,44 @@
             <b-card class="bg-primary" :no-block="true" @click="report1">
               <div class="card-body">
                 <p class="m-0">Reporte</p>
-                <h4 class="mb-0">control de soat</h4>
+                <h4 class="mb-0">Control de Soat</h4>
               </div>
             </b-card>
           </div><!--/.col-->
-          <div class="col-sm-6 col-md-12 col-xl-12">
-            <b-card class="bg-info" :no-block="true" @click="report2">
-              <div class="card-body">
-                <p class="m-0">Reporte</p>
-                <h4 class="mb-0">Control de Certificados</h4>
-              </div>
-            </b-card>
-          </div><!--/.col-->
-          <div class="col-sm-6 col-md-12 col-xl-12">
-            <b-card class="bg-warning" :no-block="true" @click="report3">
-              <div class="card-body ">
-                <p class="m-0">Reporte</p>
-                <h4 class="mb-0">Venta Total - Puntos de Venta</h4>
-              </div>
-            </b-card>
-          </div><!--/.col-->
-          <div class="col-sm-6 col-md-12 col-xl-12">
-            <b-card class="bg-danger" :no-block="true" @click="report4">
-              <div class="card-body ">
-                <p class="m-0">Reporte</p>
-                <h4 class="mb-0">Ventas de Soat - Por Compañia</h4>
-              </div>
-            </b-card>
-          </div><!--/.col-->
+          <template v-if="!isVendedor">
+            <div class="col-sm-6 col-md-12 col-xl-12">
+              <b-card class="bg-info" :no-block="true" @click="report2">
+                <div class="card-body">
+                  <p class="m-0">Reporte</p>
+                  <h4 class="mb-0">Control de Certificados</h4>
+                </div>
+              </b-card>
+            </div><!--/.col-->
+            <div class="col-sm-6 col-md-12 col-xl-12">
+              <b-card class="bg-warning" :no-block="true" @click="report3">
+                <div class="card-body ">
+                  <p class="m-0">Reporte</p>
+                  <h4 class="mb-0">Venta Total - Puntos de Venta</h4>
+                </div>
+              </b-card>
+            </div><!--/.col-->
+            <div class="col-sm-6 col-md-12 col-xl-12">
+              <b-card class="bg-danger" :no-block="true" @click="report4">
+                <div class="card-body ">
+                  <p class="m-0">Reporte</p>
+                  <h4 class="mb-0">Ventas de Soat - Por Compañia</h4>
+                </div>
+              </b-card>
+            </div><!--/.col-->
+            <div class="col-sm-6 col-md-12 col-xl-12">
+              <b-card class="bg-success" :no-block="true" @click="report5">
+                <div class="card-body ">
+                  <p class="m-0">Reporte</p>
+                  <h4 class="mb-0">Diario</h4>
+                </div>
+              </b-card>
+            </div><!--/.col-->
+          </template>
         </div><!--/.row-->
       </div>
     </div>
@@ -65,54 +75,70 @@
         item: {
           dateFrom: '',
           dateTo: '',
-          insuranceCompany: ''
+          insuranceCompany: '',
+          user: ''
         }
       }
     },
     methods: {
       report1 () {
-        if (this.item.dateFrom !=='' && this.item.dateTo !== '') {
-          let url = 'reports/controlsoats?dateFrom=' + this.item.dateFrom + '&dateTo=' + this.item.dateTo
+        if (this.item.dateFrom !=='') {
+          let dateTo = this.item.dateTo !== '' ? this.item.dateTo : this.item.dateFrom
+          let userId = this.item.user.id === undefined ? '' : this.item.user.id
+          let url = 'reports/controlsoats?userId=' + userId + '&dateFrom=' + this.item.dateFrom + '&dateTo=' + dateTo
           this.imprimir(url)
         } else {
-          this.$store.commit('sendNotification', {status: false, message: 'Debe elegir un rango de fechas.'})
+          this.$store.commit('sendNotification', {status: false, message: 'Debe elegir un dia o un rango de fechas.'})
         }
       },
       report2 () {
-        if (this.item.dateFrom !=='' && this.item.dateTo !== '') {
+        if (this.item.dateFrom !=='') {
+          let dateTo = this.item.dateTo !== '' ? this.item.dateTo : this.item.dateFrom
           let companyId = this.item.insuranceCompany.id === undefined ? '' : this.item.insuranceCompany.id
-          let url = 'reports/controlcertificados?dateFrom=' + this.item.dateFrom + '&dateTo=' + this.item.dateTo + '&insuranceCompanyId=' + companyId
+          let url = 'reports/controlcertificados?dateFrom=' + this.item.dateFrom + '&dateTo=' + dateTo + '&insuranceCompanyId=' + companyId
           this.imprimir(url)
         } else {
           this.$store.commit('sendNotification', {status: false, message: 'Debe elegir un rango de fechas.'})
         }
       },
       report3 () {
-        if (this.item.dateFrom !=='' && this.item.dateTo !== '') {
+        if (this.item.dateFrom !=='') {
+          let dateTo = this.item.dateTo !== '' ? this.item.dateTo : this.item.dateFrom
           let companyId = this.item.insuranceCompany.id === undefined ? '' : this.item.insuranceCompany.id
-          let url = 'reports/puntosventa?dateFrom=' + this.item.dateFrom + '&dateTo=' + this.item.dateTo
+          let url = 'reports/puntosventa?dateFrom=' + this.item.dateFrom + '&dateTo=' + dateTo
           this.imprimir(url)
         } else {
           this.$store.commit('sendNotification', {status: false, message: 'Debe elegir un rango de fechas.'})
         }
       },
       report4 () {
-        console.log('this.item')
-        console.log(this.item)
-        if (this.item.dateFrom !=='' && this.item.dateTo !== '' && this.item.insuranceCompany !== '') {
+        if (this.item.dateFrom !== '' && this.item.insuranceCompany !== '') {
+          let dateTo = this.item.dateTo !== '' ? this.item.dateTo : this.item.dateFrom
           let companyId = this.item.insuranceCompany.id === undefined ? '' : this.item.insuranceCompany.id
-          let url = 'reports/planillas?dateFrom=' + this.item.dateFrom + '&dateTo=' + this.item.dateTo + '&insuranceCompanyId=' + companyId
+          let url = 'reports/planillas?dateFrom=' + this.item.dateFrom + '&dateTo=' + dateTo + '&insuranceCompanyId=' + companyId
           this.imprimir(url)
         } else {
           this.$store.commit('sendNotification', {status: false, message: 'Debe elegir un rango de fechas y elegir una compañia.'})
         }
       },
+      report5 () {
+        if (this.item.dateFrom !== '') {
+          let companyId = this.item.insuranceCompany.id === undefined ? '' : this.item.insuranceCompany.id
+          let userId = this.item.user.id === undefined ? '' : this.item.user.id
+          let url = 'reports/ventas?dateFrom=' + this.item.dateFrom + '&insuranceCompanyId=' + companyId + '&userId=' + userId
+          this.imprimir(url)
+        } else {
+          this.$store.commit('sendNotification', {status: false, message: 'Debe elegir una fecha valida.'})
+        }
+      },
       imprimir (url) {
-        console.log(url)
+        // console.log(url)
+        // console.log(this.$refs.report.datepicker.params.count)
         let self = this.$store.dispatch('dispatchHTTP', {type: 'LOAD_PDF', url: url})
         self.then((response) => {
           let data = response.content
           FileSaver.saveAs(data.body, 'reporte.xlsx')
+          this.$refs.report.datepicker.params.count = 0
         }).catch(error => {
           console.log('ERROR')
           console.log(error)
@@ -138,6 +164,12 @@
       },
       path () {
         return this.$store.state.Login.IMAGES_URL
+      },
+      isVendedor () {
+        return this.$store.state.user.role === 'ROLE_VENDEDOR'
+      },
+      userId () {
+        return this.$store.state.user.data.id
       }
     }
   }

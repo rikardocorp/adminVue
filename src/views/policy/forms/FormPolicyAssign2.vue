@@ -190,13 +190,18 @@
         this.$emit('defaulValue')
       },
       selectOption (selectedOption) {
+        // alert(selectedOption)
         let key = this.selectedKey
         let officeId = this.item.office ? this.item.office.id : ''
         let roleName = this.item.role ? this.item.role.name : ''
 
         if (!this.isPuntoVenta) {
+          if (selectedOption == null) {
+            this.resetForm(this.name + this.nameForm)
+          }
+
           if (officeId !== '' && roleName !== '' && key !== 'user') {
-            let url = 'users?role=' + roleName + '&officeId=' + officeId
+            let url = 'users?system=1&role=' + roleName + '&officeId=' + officeId
             this.getOption(url, 'user')
           }
         }

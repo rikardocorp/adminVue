@@ -26,7 +26,7 @@
               <!-- SALES LIST -->
               <div v-for="(x, index) in items" :key="x.id"
                    :class="{'state-1': x.state==1, 'state-2': x.state==2, 'state-3': x.state==3, 'state-4': x.state==4, 'state-5': x.state==5, 'state-anulado': x.state==-1}">
-                <!--{{rick(x)}}-->
+
                 <!-- SALES -->
                 <div v-if="x.insurancePolicy !== undefined && x.insurancePolicy !== null && x.state !== null"
                      :class="{'ticket cardWrap m-2 mb-3 hvr-bounce-in':true, 'pickOption': x.pick}" @click="selectedSale(x, true)">
@@ -79,7 +79,7 @@
                 </div>
                 <!-- CARTS -->
                 <div v-else-if="x.state !== null && x.insuranceCompany !== undefined && x.insuranceCompany !== null" :class="{'ticket cardWrap m-2 mb-3 hvr-bounce-in':true, 'pickOption': x.pick}" @click="selectedCart(x, false)">
-                  <i class="fa fa-cart-plus" aria-hidden="true"></i>
+                  <i class="fa fa-cart-plus icon-cart" aria-hidden="true"></i>
                   <div class="card-ticket cardLeft">
                     <avatar :username="x.insuranceCompany.name" :rounded="true" :size="6.4" sizeUnid="em"
                             :src="path + '/' + x.insuranceCompany.image" :alt="x.insuranceCompany.name"
@@ -309,6 +309,11 @@
         transform: rotate(0deg);
         font-size: 3em;
         left: 6.2em;
+      }
+      .state-1 {
+        .icon-cart{
+          color: #ffa502;
+        }
       }
       .state-5 {
         .icon-cart{

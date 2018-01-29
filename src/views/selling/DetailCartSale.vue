@@ -15,7 +15,7 @@
             <div class="row">
               <div class="col-md-5 text-center">
                 <avatar v-if="item2.insuranceCompany.id" :username="item2.insuranceCompany.name" :rounded="true" :size="7.5" sizeUnid="em"
-                        :src="path + '/' + item2.insuranceCompany.image" :alt="item2.insuranceCompany.name"
+                        :src="path + '/' + item2.insuranceCompany.image" :alt="item2.insuranceCompany.name" :forceLoad="true"
                         :border="true" colorBorder="#f4f3ef" color="#ecedef" :localSrc="false"
                         backgroundColor="orange" :sizeBorder="0.5"></avatar>
 
@@ -66,7 +66,7 @@
               </div>
               <div class="row">
                 <div class="col-md-12">
-                  <p class="subtitle text-left"><span>AMBITO DE APLICACION</span></p>
+                  <p class="subtitle text-left"><span>LOCALIDAD</span></p>
                   <p class="value">{{ item2.region.name }}</p>
                 </div>
               </div>

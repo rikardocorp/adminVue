@@ -65,6 +65,10 @@
       sizeBorder: {
         type: Number,
         default: 1
+      },
+      forceLoad: {
+        type: Boolean,
+        default: false
       }
     },
 
@@ -162,12 +166,21 @@
         }
 
         if (this.isImage) {
-          this.existImage(this.src).then((result) => {
-            let backgroundAndFontStyle = (result) ? imgBackgroundAndFontStyle : initialBackgroundAndFontStyle
+          if (this.forceLoad) {
+            // VERIFICAR EXISTENCIA DE IMAGEN
+            this.existImage(this.src).then((result) => {
+              let backgroundAndFontStyle = (result) ? imgBackgroundAndFontStyle : initialBackgroundAndFontStyle
+              Object.assign(style, backgroundAndFontStyle)
+              this.hasImage = result
+              this.localStyle = style
+            })
+          } else {
+            //  IMAGEN SIMPLE
+            let backgroundAndFontStyle = imgBackgroundAndFontStyle
             Object.assign(style, backgroundAndFontStyle)
-            this.hasImage = result
+            this.hasImage = true
             this.localStyle = style
-          })
+          }
         } else {
           let backgroundAndFontStyle = initialBackgroundAndFontStyle
           Object.assign(style, backgroundAndFontStyle)

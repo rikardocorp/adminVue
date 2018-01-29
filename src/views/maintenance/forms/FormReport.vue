@@ -6,6 +6,18 @@
     <b-form :id="name + nameForm" class="row">
       <div class="col-md-12">
         <!-- MULTISELECT -->
+        <template v-if="!isVendedor">
+          <multiselect :close-on-select="true" :hide-selected="true" :preserve-search="false" :taggable="false" select-label=""
+                       :placeholder="user.placeholder"
+                       :label="user.params.label" :track-by="user.params.label"
+                       :loading="!user.params.activate"
+                       :disabled="!user.params.activate || isLoading"
+                       :max-height="200"
+                       v-model="item.user"
+                       :options="user.params.options">
+          </multiselect>
+          <br>
+        </template>
         <multiselect :close-on-select="true" :hide-selected="true" :preserve-search="false" :taggable="false" select-label=""
                      :placeholder="insuranceCompany.placeholder"
                      :label="insuranceCompany.params.label" :track-by="insuranceCompany.params.label"
@@ -68,9 +80,25 @@
             count: 0
           }
         },
+        user: {
+          label: 'Usuarios',
+          placeholder: 'Usuarios',
+          type: 'text',
+          input: 'multiselect',
+          srOnly: true,
+          params: {
+            url: 'users?system=1',
+            key: 'user',
+            label: 'email',
+            options: [],
+            activate: false,
+            loadData: true,
+            value: ''
+          }
+        },
         insuranceCompany: {
           label: 'Aseguradora',
-          placeholder: 'Compañia de Seguro',
+          placeholder: 'Compañia (Solo para reporte por compañia)',
           type: 'text',
           input: 'multiselect',
           srOnly: true,
@@ -89,6 +117,9 @@
     computed: {
       isLoading () {
         return this.$store.state.isLoading
+      },
+      isVendedor () {
+        return this.$store.state.user.role === 'ROLE_VENDEDOR'
       }
     },
     methods: {
@@ -117,12 +148,12 @@
           }
         }
       },
-      getOption (urlRest) {
-        let self = this.$store.dispatch('dispatchHTTP', {type: 'GET', url: urlRest})
+      getOption (dataObject) {
+        let self = this.$store.dispatch('dispatchHTTP', {type: 'GET', url: dataObject.params.url})
         self.then((data) => {
           if (data.status) {
-            this.insuranceCompany.params.options = data.content
-            this.insuranceCompany.params.activate = true
+            dataObject.params.options = data.content
+            dataObject.params.activate = true
           }
         })
       },
@@ -136,12 +167,14 @@
         document.getElementById(formId).reset()
         this.resetDatepicker()
         this.item.insuranceCompany = null
+        this.item.user = null
         this.datepicker.params.count = 0
         this.datepicker.params.value = ''
       }
     },
     created () {
-      this.getOption(this.insuranceCompany.params.url)
+      this.getOption(this.insuranceCompany)
+      if (!this.isVendedor) this.getOption(this.user)
     }
   }
 </script>

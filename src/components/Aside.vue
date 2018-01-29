@@ -37,14 +37,14 @@
         <!--<pre>{{ userLocal}}</pre>-->
       </b-tab>
 
-      <b-tab v-if="!isClient && !isPuntoVenta" title="<i class='fa fa-car'></i>" @click="getSalesCart" class="tab-cars-sales">
+      <b-tab v-if="isAdmin" title="<i class='fa fa-car'></i>" @click="getSalesCart" class="tab-cars-sales">
         <!--<pre>{{ listSaleCart }}</pre>-->
         <Callout class="m-0 py-2 text-muted text-center bg-light text-uppercase">
-          <small><b>Solicitudes de Venta</b></small>
+          <small><i id="refresh" class="fa fa-refresh" @click="getSalesCart"></i><b>Solicitudes de Venta</b></small>
         </Callout>
         <hr class="transparent mx-3 my-0">
 
-        <div v-for="x in listSaleCart" @click="routerToSaleCart(x.id)" class="item-tab-car-sale">
+        <div v-for="x in listSaleCart" v-if="x.insuranceCompany" @click="routerToSaleCart(x.id)" class="item-tab-car-sale">
           <Callout variant="warning" class="m-0 py-3">
             <div class="avatar float-right">
               <img :src="path + '/' + x.insuranceCompany.image" class="img-avatar" :alt="x.insuranceCompany.name">
@@ -274,6 +274,9 @@
       },
       isPuntoVenta () {
         return this.$store.state.user.isPuntoVenta
+      },
+      isAdmin () {
+        return this.$store.state.user.role === 'ROLE_ADMIN'
       }
     },
     watch: {
@@ -287,7 +290,7 @@
       },
       routerToSaleCart (id) {
         this.$router.push({name: 'VentasId', params: { idSale: id, type: 0 }})
-//        this.$router.push('/polizas-vendidas/' + id + '/0')
+        // this.$router.push('/polizas-vendidas/' + id + '/0')
       },
       async getData (url) {
         console.log('GET SALE')
@@ -308,6 +311,15 @@
 </script>
 
 <style lang="scss">
+  #refresh{
+    padding: 0 10px;
+    font-size: 1.4em;
+    cursor: pointer;
+    &:hover {
+      color: #ef7b1f;
+    }
+  }
+
   .aside-menu{
     .tabs ul li {
       a{

@@ -19,7 +19,7 @@
             </b-nav-item-dropdown>
 
             <b-nav-item href="#" v-scroll-to="{ el: '#about',container: '#page-wraper' }" right>Nosotros</b-nav-item>
-            <b-nav-item href="#" v-scroll-to="{ el: '#contact-us',container: '#page-wraper' }" >Contactanos</b-nav-item>
+            <b-nav-item href="#" v-scroll-to="{ el: '#contact-us',container: '#page-wraper' }" >Contáctanos</b-nav-item>
             <b-nav-item href="#" v-scroll-to="{ el: '#map',container: '#page-wraper' }" >Ubícanos</b-nav-item>
 
           </b-navbar-nav>
@@ -61,7 +61,7 @@
                 <transition name="fade" mode="out-in">
                   <div v-if="form==0" key="div1" class="card-body text-dark ">
                     <h3 class="text-center" style="color:#F58634;">Cotiza tu
-                      <strong>SOAT Digital</strong> aqui</h3>
+                      <strong>SOAT Digital</strong> aquí</h3>
                     <p style="color:black;"></p>
 
                     <form id="login-form" role="form" autocomplete="off">
@@ -443,7 +443,7 @@
         </div>
       </section>
       <!-- Testimonials Section -->
-     
+
       <!-- Service Section -->
       <section id="service" class="section-padding bg-white">
         <div class="container text-center" style="min-height: 698px;">
@@ -465,7 +465,7 @@
                   <i class="icon-refresh"></i>
                 </div>
                 <h4 class="alt-title">Diseño limpio</h4>
-                <p>Limpio, rapido y simple, directo y sin demoras, tu Soat en 2 minutos.</p>
+                <p>Limpio, rápido y simple, directo y sin demoras, tu Soat en 2 minutos.</p>
               </div>
               <div class="content-box alt-right">
                 <div class="alt-icon-right">
@@ -479,7 +479,7 @@
                   <i class="icon-layers"></i>
                 </div>
                 <h4 class="alt-title">Mínimas pantallas</h4>
-                <p>Olvidate del papeleo, los documentos y las colas, compra tu Soat fácil.</p>
+                <p>Olvídate del papeleo, los documentos y las colas, compra tu Soat fácil.</p>
               </div>
             </div>
             </transition>
@@ -504,7 +504,7 @@
                   <i class="icon-tag"></i>
                 </div>
                 <h4 class="alt-title">Conectado con nuestros aliados</h4>
-                <p>Nuestros aliados son las mejores Aseguradoras del Pais, brindandote el mejor servicio</p>
+                <p>Nuestros aliados son las mejores Aseguradoras del Pais, brindándote el mejor servicio</p>
               </div>
               <div class="content-box alt-left">
                 <div class="alt-icon-left">
@@ -518,7 +518,7 @@
                   <i class="icon-bubbles"></i>
                 </div>
                 <h4 class="alt-title">Dispuestos a ayudarte</h4>
-                <p>Te ayudanos en lo que necesites de manera gratuita y en cualquier momento</p>
+                <p>Te ayudamos en lo que necesites de manera gratuita y en cualquier momento</p>
               </div>
             </div>
             </transition>
@@ -569,7 +569,7 @@
                 <i class="icon-direction"></i>
               </div>
               <h4 class="alt-title">Nuestra Misión</h4>
-              <p>Garantizar la mejor opción de seguro para nuestros clientes velando por la protección de sus bienes, familia y negocios, brindando un servicio óptimo, 
+              <p>Garantizar la mejor opción de seguro para nuestros clientes velando por la protección de sus bienes, familia y negocios, brindando un servicio óptimo,
                 profesional y personalizado en la atención integral del siniestro</p>
             </div>
             <div class="col-md-6 content-box mb-sm-85">

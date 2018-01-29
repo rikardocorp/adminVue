@@ -9,10 +9,10 @@ export default {
         text: 'NEW'
       }
     },
-    {
-      title: true,
-      name: 'POLIZA'
-    },
+    // {
+    //   title: true,
+    //   name: 'POLIZA'
+    // },
     // {
     //   name: 'Mis polizas',
     //   url: '/asignar-poliza',
@@ -40,11 +40,17 @@ export default {
       name: 'Venta en Proceso',
       url: '/nueva-venta',
       icon: 'fa fa-plus',
+      display: true
     },
     {
       name: 'Venta Especial',
       url: '/venta-especial',
       icon: 'fa fa-star-o',
+    },
+    {
+      name: 'Reportes',
+      url: '/reportes',
+      icon: 'fa fa-book'
     }
   ]
 }

@@ -274,7 +274,7 @@ const router = new Router({
           path: 'reportes',
           name: 'reportes',
           component: Report,
-          meta: {requiresAuth: true, ROLE_ADMIN: true}
+          meta: {requiresAuth: true, ROLE_ADMIN: true, ROLE_PUNTO_VENTA: true, ROLE_VENDEDOR: true}
         },
         {
           path: 'cliente',

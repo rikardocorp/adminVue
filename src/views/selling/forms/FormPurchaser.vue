@@ -246,7 +246,8 @@
             if (data.status) {
               console.log(data.content)
               let selectData = data.content.pop()
-              if (data.content.length > 0) {
+
+              if (selectData !== undefined) {
                 this.$set(this.item, 'razonSocial', selectData.razonSocial)
                 this.$set(this.item, 'address', selectData.address)
                 this.$set(this.item, 'phone', selectData.phone)
@@ -285,9 +286,9 @@
       searchUser (localEmail = null) {
         let email = (localEmail === null) ? this.item.email : localEmail
         // let email = this.item.email
-        console.log('EMAIL 33333#####')
-        console.log(email)
-        console.log(localEmail)
+        // console.log('EMAIL 33333#####')
+        // console.log(email)
+        // console.log(localEmail)
         if (email !== '') {
           let url = 'users/search?email=' + email
           let self = this.$store.dispatch('dispatchHTTP', {type: 'GET', url: url})
@@ -363,8 +364,10 @@
     }
   }
 
-  .vdp-datepicker{
-    width: 100%;
+  form{
+    .vdp-datepicker{
+      width: 100% !important;
+    }
   }
 
   /*.vdp-datepicker{*/

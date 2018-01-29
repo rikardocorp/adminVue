@@ -59,8 +59,8 @@
                          v-model="item.enabled" class="mr-2"></toggle-button>
         </div>
         <div class="col-6 text-left">
-          <toggle-button :labels="{checked: 'Gastos', unchecked: 'Sin Gastos'}" :color="{checked: 'rgb(239, 123, 34)', unchecked: 'rgb(181, 181, 181)'}"
-                         :disabled="isLoading" :width="90" :height="28" :sync="true"
+          <toggle-button :labels="{checked: 'Descuento', unchecked: 'Sin Descuento'}" :color="{checked: 'rgb(239, 123, 34)', unchecked: 'rgb(181, 181, 181)'}"
+                         :disabled="isLoading" :width="110" :height="28" :sync="true"
                          v-model="item.expense" class="mr-2"></toggle-button>
         </div>
       </div>

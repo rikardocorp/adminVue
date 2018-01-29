@@ -71,14 +71,16 @@ Vue.use(VueScroll)
 //   y: true
 // })
 
-// Peticiones al servidor
-// Vue.http.options.root = 'http://45.55.154.15:8080/jmc/rest/v1/'
-Vue.http.options.root = 'http://174.138.48.60:8080/jmc/rest/v1/'
+// Peticiones al servidor de Pruebas
+const appServer = 'http://174.138.48.60:8080'
+// Peticiones al servidor principal
+// const appServer = 'http://45.55.154.15:8080'
+
+Vue.http.options.root = appServer + '/jmc/rest/v1/'
 Vue.http.headers.common['Content-Type'] = 'application/json'
 
 // Login and SignUp
-// const API_URL = 'http://45.55.154.15:8080/jmc/'
-const API_URL = 'http://174.138.48.60:8080/jmc/'
+const API_URL = appServer + '/jmc/'
 const URL_LOG = {
   API_URL: API_URL,
   LOGIN_URL: API_URL + 'login',

@@ -70,7 +70,7 @@ export const DATA_FORM = {
       input: 'multiselect',
       srOnly: true,
       params: {
-        url: 'users',
+        url: 'users?system=1',
         key: 'user',
         label: 'email',
         options: [],

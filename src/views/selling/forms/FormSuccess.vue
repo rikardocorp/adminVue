@@ -56,14 +56,14 @@
           <div class="col-6">Precio s/.</div>
           <div class="col-6">{{ data.sale.item.amount | currency }}</div>
         </div>
+        <hr>
         <div class="row text-danger secundary">
           <div class="col-6">Descuento s/.</div>
           <div class="col-6">{{ data.sale.item.discount | currency }}</div>
         </div>
-        <hr>
       </div>
-      <div class="row text-info">
-        <div class="col-6">Costo Total s/.</div>
+      <div class="row text-info secundary">
+        <div class="col-6">Monto a Pagar s/.</div>
         <div class="col-6">{{ amountFinal | currency }}</div>
       </div>
       <div class="row text-warning secundary">
@@ -73,7 +73,7 @@
     </div>
     <div class="container abstractPrice pt-3 pb-3" style="background: #35a213">
       <div class="title text-center text-white">
-        <span class="fa-1x">Monto a Pagar s/.</span> <span class="h4">{{ data.pay.item.amount | currency }}</span>
+        <span class="fa-1x">Monto Cancelado s/.</span> <span class="h4">{{ data.pay.item.amount | currency }}</span>
       </div>
     </div>
     <b-button v-if="data.payment.item.id == undefined" @click="paySale" :pressed="false" variant="success"
