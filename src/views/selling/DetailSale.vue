@@ -157,7 +157,7 @@
                 <div class="formPay row">
                   <p class="title" style="border: none">
                     <span>Ingresar Pago</span>
-                    <toggle-button :labels="{checked: 'Ejectivo', unchecked: 'Tarjeta'}" :color="{checked: 'rgb(78, 188, 117)', unchecked: 'rgb(99, 193, 222)'}"
+                    <toggle-button :labels="{checked: 'Efectivo', unchecked: 'Tarjeta'}" :color="{checked: 'rgb(78, 188, 117)', unchecked: 'rgb(99, 193, 222)'}"
                                    :disabled="isLoading" :width="75" :height="25" :sync="true" v-model="payment.paymentType"
                                    class="ml-2 mt-2"></toggle-button>
                   </p>
@@ -236,10 +236,10 @@
         <b-form-input v-model="password"
                       type="password"
                       style="border: 1px solid #f86c6b;"
-                      placeholder="Introduce tu contraseña para eliminar la venta"
+                      placeholder="Introduce tu contraseña para anular la venta"
                       title="Password para eliminar"></b-form-input>
         <b-input-group-button>
-          <b-btn variant="danger" @click="anularSale">{{$global.delete}}</b-btn>
+          <b-btn variant="danger" @click="anularSale">Anular</b-btn>
         </b-input-group-button>
       </b-input-group>
     </div>

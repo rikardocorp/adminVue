@@ -423,15 +423,15 @@ export const DATA_PAY = {
       show: true
     },
     bodywork: {
-      label: 'Carrocería',
-      placeholder: 'Carroceria del vehiculo',
+      label: 'Clase',
+      placeholder: 'Clase opcional del vehículo',
       type: 'text',
       icon: 'fa fa-car',
       show: true
     },
     observation: {
       label: 'Observación',
-      placeholder: 'Observacion en la venta',
+      placeholder: 'Observación en la venta',
       type: 'text',
       icon: 'fa fa-user-o',
       input: 'textarea',

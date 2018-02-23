@@ -6,7 +6,6 @@
         <div class="col-md-8 col-lg-6 col-xl-5">
         <!--<div class="col-md-9">-->
           <div class="card-group mb-0">
-
             <div class="card p-4">
               <div v-if="!changePass" class="card-body">
                 <h1>JMC</h1>

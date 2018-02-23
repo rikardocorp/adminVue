@@ -4,6 +4,17 @@
     <div class="row d-flex justify-content-center">
 
       <!-- FORM SEARCH PRICES -->
+      <!--<div class="col-md-12">-->
+        <!--<section>-->
+          <!--<pre>-->
+            <!--{{ rdata }}-->
+          <!--</pre>-->
+          <!--<button @click="mostrarID">MOstrar IDS Tabla</button>-->
+          <!--<textarea name="" id="" cols="30" rows="10">-->
+            <!--{{rixip}}-->
+          <!--</textarea>-->
+        <!--</section>-->
+      <!--</div>-->
       <div class="col-md-4 col-lg-4 col-xl-3">
         <app-form :id="'formPrices'" :listCalendarPrices="listCalendarPrices"
                   :item="itemPrices" :horizontal="true" :disabled="copyDisabled"
@@ -33,6 +44,7 @@
         <!--<b-button v-if="btnForm.switchForm"  class="float-left ml-2" @click="saveTable" :disabled="isLoading" size="sm" variant="success"><i class="fa fa-ban"></i> Actualizar</b-button>-->
         <b-button class="float-left ml-2" @click="saveTable" :disabled="isLoading" size="sm" variant="primary"><i class="fa fa-ban"></i> Guardar</b-button>
         <b-button class="float-left ml-2" @click="copyPrices" :disabled="isLoading" size="sm" variant="info"><i class="fa fa-ban"></i> Copiar</b-button>
+        <!--<b-button class="float-left ml-2" @click="cleanPrices" :disabled="isLoading" size="sm" variant="info"><i class="fa fa-ban"></i> Limpiar BD</b-button>-->
       </div>
 
       <div class="col-md-5 ml-auto mb-3">
@@ -182,6 +194,8 @@
     mixins: [Mixin],
     data () {
       return {
+        rixip: '',
+        rdata: '',
         btnForm: {
           opc0: {
             icon: 'fa fa-plus',
@@ -419,46 +433,96 @@
           this.restrictedCalendarPrices = false
         }
       },
+      // cleanPrices () {
+      //   if (this.rixip === '') {
+      //     alert('no hay IDs')
+      //     return false
+      //   }
+      //
+      //   let data = {
+      //     priceCalendarId: this.item.priceCalendar.id,
+      //     insuranceCompanyId: this.item.insuranceCompany.id,
+      //     priceType: this.item.priceType,
+      //     useTypeId: this.item.useType.id,
+      //     vehicleClassId: this.item.vehicleClass.id,
+      //     vehicleCategoryId: this.item.vehicleCategory ? this.item.vehicleCategory.id : '',
+      //     validos: this.rixip.slice(0, -1)
+      //   }
+      //
+      //   this.rdata = data
+      //   console.log('---------------')
+      //   console.log(data)
+      //   let url = 'insuranceprices/delete'
+      //   let self = this.$store.dispatch('dispatchHTTP', {type: 'INSERT', url: url, data: data})
+      //   self.then((data) => {
+      //     console.log(data)
+      //     if (data.status) {
+      //       console.log('SUCCESS')
+      //       this.rixip = ''
+      //     } else {
+      //       console.log('ERROR')
+      //     }
+      //   }).catch(error => {
+      //     console.log('ERROR 2')
+      //   })
+      // },
       fillTable (prices, copy = false) {
         this.isFillTable = true
         let vm = this
         let id = 0
         let indexItems = 0
+        let count = 0
         if (!copy) {
           prices.forEach(function (item, index) {
+            console.log(count++)
             if (item.exception === 1) {
               let idaux = vm.generateVCCId(item)
-              vm.$refs['btn_' + idaux][0].click()
-              console.log(idaux)
+              if (vm.$refs['btn_' + idaux]) {
+                vm.$refs['btn_' + idaux][0].click()
+              }
             }
             id = vm.generateVCCId(item, item.exception)
             indexItems = vm.itemsIndex[id]
             if (indexItems !== undefined) {
-              let data = {
-                id: item.id,
-                price: item.price
+              if (vm.items[indexItems][item.region.id] === undefined) {
+                let data = {
+                  id: item.id,
+                  price: item.price
+                }
+                vm.$set(vm.items[indexItems], item.region.id, data)
+                vm.getDescription(indexItems, item.description, item.exception)
+                vm.rixip = vm.rixip + item.id + ','
               }
-              vm.$set(vm.items[indexItems], item.region.id, data)
-              vm.getDescription(indexItems, item.description, item.exception)
             }
           })
         } else {
           prices.forEach(function (item, index) {
+            // console.log(item, index)
 //            if (item.exception === 1) {
 //              vm.addException(item, false)
 //            }
             id = vm.generateVCCId(item, item.exception)
             indexItems = vm.itemsIndex[id]
-            let data = {
-              //id: item.id,
-              price: item.price
+
+            if (indexItems !== undefined) {
+              if (vm.items[indexItems][item.region.id].id !== undefined) {
+                // console.log(vm.items[indexItems][item.region.id])
+                let data = {
+                  // id: item.id,
+                  price: item.price
+                }
+                vm.$set(vm.items[indexItems], item.region.id, data)
+                vm.getDescription(indexItems, item.description, item.exception)
+                // Volver a registrar todos los precios
+                vm.itemPrice = item.price
+                vm.changeValue(id, item.region.id, item)
+                // count1++
+              }
             }
-            vm.$set(vm.items[indexItems], item.region.id, data)
-            vm.getDescription(indexItems, item.description, item.exception)
-            // Volver a registrar todos los precios
-            vm.itemPrice = item.price
-            vm.changeValue(id, item.region.id, item)
           })
+          console.log('COunt validos', this.rixip)
+          // console.log('COunt repetidos', count2)
+          // console.log('COunt fuera', count3)
         }
         this.isFillTable = false
       },

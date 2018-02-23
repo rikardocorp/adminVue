@@ -12,40 +12,8 @@
       <div class="col-md-5 col-xl-4 col-lg-6 report-btn">
         <div class="row">
           <!--<pre>{{ $store.state.user }}</pre>-->
-          <div class="col-sm-6 col-md-12 col-xl-12">
-            <b-card class="bg-primary" :no-block="true" @click="report1">
-              <div class="card-body">
-                <p class="m-0">Reporte</p>
-                <h4 class="mb-0">Control de Soat</h4>
-              </div>
-            </b-card>
-          </div><!--/.col-->
           <template v-if="!isVendedor">
-            <div class="col-sm-6 col-md-12 col-xl-12">
-              <b-card class="bg-info" :no-block="true" @click="report2">
-                <div class="card-body">
-                  <p class="m-0">Reporte</p>
-                  <h4 class="mb-0">Control de Certificados</h4>
-                </div>
-              </b-card>
-            </div><!--/.col-->
-            <div class="col-sm-6 col-md-12 col-xl-12">
-              <b-card class="bg-warning" :no-block="true" @click="report3">
-                <div class="card-body ">
-                  <p class="m-0">Reporte</p>
-                  <h4 class="mb-0">Venta Total - Puntos de Venta</h4>
-                </div>
-              </b-card>
-            </div><!--/.col-->
-            <div class="col-sm-6 col-md-12 col-xl-12">
-              <b-card class="bg-danger" :no-block="true" @click="report4">
-                <div class="card-body ">
-                  <p class="m-0">Reporte</p>
-                  <h4 class="mb-0">Ventas de Soat - Por Compañia</h4>
-                </div>
-              </b-card>
-            </div><!--/.col-->
-            <div class="col-sm-6 col-md-12 col-xl-12">
+            <div v-if="!isPuntoVenta" class="col-sm-6 col-md-12 col-xl-12">
               <b-card class="bg-success" :no-block="true" @click="report5">
                 <div class="card-body ">
                   <p class="m-0">Reporte</p>
@@ -53,7 +21,39 @@
                 </div>
               </b-card>
             </div><!--/.col-->
+            <div class="col-sm-6 col-md-12 col-xl-12">
+              <b-card class="bg-danger" :no-block="true" @click="report4">
+                <div class="card-body ">
+                  <p class="m-0">Reporte Integral</p>
+                  <h4 class="mb-0">Por Compañia</h4>
+                </div>
+              </b-card>
+            </div><!--/.col-->
+            <div class="col-sm-6 col-md-12 col-xl-12">
+              <b-card class="bg-warning" :no-block="true" @click="report3">
+                <div class="card-body ">
+                  <p class="m-0">Reporte Resumen</p>
+                  <h4 class="mb-0">Producción por Puntos de Venta</h4>
+                </div>
+              </b-card>
+            </div><!--/.col-->
+            <div class="col-sm-6 col-md-12 col-xl-12">
+              <b-card class="bg-info" :no-block="true" @click="report2">
+                <div class="card-body">
+                  <!--<p class="m-0">Reporte</p>-->
+                  <h4 class="mb-0">Control de Certificados</h4>
+                </div>
+              </b-card>
+            </div><!--/.col-->
           </template>
+          <div class="col-sm-6 col-md-12 col-xl-12">
+            <b-card class="bg-primary" :no-block="true" @click="report1">
+              <div class="card-body">
+                <!--<p class="m-0">Reporte</p>-->
+                <h4 class="mb-0">Control venta Soat</h4>
+              </div>
+            </b-card>
+          </div><!--/.col-->
         </div><!--/.row-->
       </div>
     </div>
@@ -167,6 +167,9 @@
       },
       isVendedor () {
         return this.$store.state.user.role === 'ROLE_VENDEDOR'
+      },
+      isPuntoVenta () {
+        return this.$store.state.user.role === 'ROLE_PUNTO_VENTA'
       },
       userId () {
         return this.$store.state.user.data.id
