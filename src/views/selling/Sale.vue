@@ -7,7 +7,7 @@
         </div>
 
         <div v-show="!isSale"  class="col-md-12 m-auto">
-          <detail-cart-sale :item="selectedItemCart" :urlRest="'sales'" @returnMain="returnMain"></detail-cart-sale>
+          <detail-cart-sale :show-delete="true" :item="selectedItemCart" :urlRest="'sales'" @returnMain="returnMain"></detail-cart-sale>
         </div>
       </div>
 
@@ -90,7 +90,8 @@
           if (this.$route.params.type == 0) {
             url = 'sales?cartId=' + this.$route.params.idSale
             data = await this.getData(url)
-            console.log(data[0])
+            console.log(url)
+            console.log(data)
             if (data[0].insurancePolicy == null) {
               data[0]['insuranceCompany'] = data[0].cart.insuranceCompany
               this.selectedItemCart = data[0]

@@ -201,6 +201,15 @@ export default {
       name: 'Venta Especial',
       url: '/venta-especial',
       icon: 'fa fa-star-o'
+    },
+    {
+      title: true,
+      name: 'MOVIL'
+    },
+    {
+      name: 'Cargos Culqi',
+      url: '/movil-devoluciones',
+      icon: 'fa fa-usd'
     }
     // {
     //   name: 'Venta Cliente',

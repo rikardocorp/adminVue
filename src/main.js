@@ -72,6 +72,7 @@ Vue.use(VueScroll)
 // })
 
 // Peticiones al servidor de Pruebas
+// const appServer = 'http://localhost:8080'
 const appServer = 'http://174.138.48.60:8080'
 // Peticiones al servidor principal
 // const appServer = 'http://45.55.154.15:8080'
@@ -95,7 +96,6 @@ store.commit('initLogin', URL_LOG)
 
 // Filter
 Vue.filter('currency', function (value) {
-  // alert(value)
   let decimal = ''
   let numero = value.toString().split('.')
   if (numero[1] !== undefined) {

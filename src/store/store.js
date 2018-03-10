@@ -91,13 +91,13 @@ export default new Vuex.Store({
             break
           case 'INSERT':
             inquiry = Vue.http.post(url, data)
-            notify.success = true
-            notify.error = true
+            // notify.success = true
+            // notify.error = true
             break
           case 'UPDATE':
             inquiry = Vue.http.patch(url, data)
-            notify.success = true
-            notify.error = true
+            // notify.success = true
+            // notify.error = true
             break
           case 'DELETE':
             console.log('DELETE')

@@ -43,6 +43,7 @@ import SellNewPoliceSpecial from '../views/selling/NewSaleSpecial.vue'
 import SellNewPoliceClient from '../views/selling/NewSaleClient.vue'
 import Cotizar from '../views/selling/Cotizar.vue'
 import SeguroVehicular from '../views/selling/SeguroVehicular.vue'
+import Devoluciones from '../views/selling/Devoluciones.vue'
 
 // Price
 // import Price from '../views/price/Price.vue'
@@ -281,6 +282,12 @@ const router = new Router({
           name: 'Cliente',
           component: Cliente,
           meta: {requiresAuth: true, ROLE_USUARIO: true}
+        },
+        {
+          path: 'movil-devoluciones',
+          name: 'Devoluciones',
+          component: Devoluciones,
+          meta: {requiresAuth: true, ROLE_ADMIN: true}
         }
       ]
     },

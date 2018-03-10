@@ -1,6 +1,6 @@
 <template>
   <div id="contentDetailSale">
-    <div class="col-md-11 col-sm-12 col-lg-10 col-xl-7 m-auto">
+    <div :class="'col-md-11 col-sm-12 col-lg-10 col-xl-7 m-auto ' + (item2.state==-1?'state-anulado':'') ">
       <!--<pre>{{item}}</pre>-->
       <!--<pre>{{itemCart}}</pre>-->
       <b-card>
@@ -159,6 +159,23 @@
         </div>
       </b-card>
     </div>
+
+    <!-- DELETE SALE -->
+    <div v-if="showDelete && item2.cart.state !== -1" class="col-md-6 col-sm-12 col-lg-6 col-xl-5 m-auto pt-4">
+      <b-input-group class="mb-3 passDelete">
+        <b-input-group-addon class="bg-danger"><i class="fa fa-key"></i></b-input-group-addon>
+        <b-form-input v-model="password"
+                      type="password"
+                      style="border: 1px solid #f86c6b;"
+                      placeholder="Introduce tu contraseña para anular la venta"
+                      title="Password para eliminar"></b-form-input>
+        <b-input-group-button>
+          <b-btn variant="danger" @click="anularSale">Anular</b-btn>
+        </b-input-group-button>
+      </b-input-group>
+    </div>
+    <!--<pre>{{ item }}</pre>-->
+
   </div>
 </template>
 
@@ -172,7 +189,11 @@
   // import {DATA_FORM_PAYMENT as _payment} from '../../data/dnSales'
 
   export default {
-    props: ['item', 'urlRest'],
+    props: {
+      item: {default: () => {}},
+      urlRest: {default: ''},
+      showDelete: {default: false}
+    },
     components: {
       ToggleButton,
       Avatar
@@ -180,6 +201,7 @@
     data () {
       return {
         item2: {
+          state: -1,
           user: {
             firstName: '',
             lastName: '',
@@ -198,13 +220,17 @@
               vehicleClass: {}
             }
           },
+          cart: {
+            state: -1
+          },
           amount: 0,
           discount: 0
         },
         today: '',
         numberPolicy: '',
         newSale: {},
-        itemCart: {}
+        itemCart: {},
+        password: ''
       }
     },
     watch: {
@@ -219,7 +245,7 @@
     },
     computed: {
       isLoading () {
-        return this.$store.state.isLoading
+        return this.$store.state.isLoading || this.item2.state === -1
       },
       path () {
         return this.$store.state.Login.IMAGES_URL
@@ -249,6 +275,48 @@
       }
     },
     methods: {
+      async anularSale () {
+        if (this.password === '') {
+          this.$store.commit('sendNotification', {status: null, message: 'Debe ingresar su contraseña.'})
+          return false
+        }
+
+        let dataLocal = {
+          password: this.password,
+          saleId: this.item.id,
+          state: -1
+        }
+
+        console.log(dataLocal)
+        let self = await this.$store.dispatch('dispatchHTTP', {type: 'INSERT', url: 'sales/cancel', data: dataLocal, notify: {success: false, error: true}})
+        console.log('RIKAEDOCORO ppppppppp')
+        console.log(self)
+        console.log('INSERT SALE?')
+        if (self.status) {
+          this.password = ''
+          this.item2.state = -1
+          this.anularCart()
+        }
+        return self
+      },
+      async anularCart () {
+        let cart = {...this.item2.cart}
+        let url = 'carts/' + cart.id
+        cart.state = -1
+
+        console.log(url)
+        console.log(cart)
+        let self = await this.$store.dispatch('dispatchHTTP', {type: 'UPDATE', url: url, data: cart, notify: {success: false, error: false}})
+        console.log('RIKAEDOCORO ppppppppp')
+        console.log(self)
+        console.log('INSERT SALE?')
+        if (self.status) {
+          this.item2.cart.state = -1
+          this.$store.commit('sendNotification', {status: true, message: 'La venta movil fue anulada.'})
+        } else {
+          this.$store.commit('sendNotification', {status: false, message: 'Ocurrio un problema inesperado, intente nuevamente.'})
+        }
+      },
       validityEnd (date) {
         let toDay = this.$moment(date, 'DD/MM/YYYY')
         let day = toDay.get('date')
@@ -513,7 +581,7 @@
         font-size: 1.4em;
       }
     }
-  },
+  }
 
   #contentDetailSale{
     .avatar{
