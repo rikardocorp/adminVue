@@ -71,6 +71,10 @@
   }
 }
 
+.overflow {
+  overflow: hidden;
+}
+
 // Text color
 .color-primary, .text-primary{
   color: $orange-dark
@@ -220,9 +224,19 @@ html{
     }
   }
 
-  .multiselect__tags{
-    border-radius: 0.55rem;
+  .multiselect {
+    .multiselect__single{
+      background: #f4f3ef;
+      font-size: 1em;
+    }
+    .multiselect__tags{
+      border-radius: 0.55rem;
+    }
+    .multiselect__element{
+      font-size: 0.85em;
+    }
   }
+
 
   .main{
     margin-top: 30px;

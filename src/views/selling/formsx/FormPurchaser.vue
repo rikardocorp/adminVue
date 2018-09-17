@@ -1,5 +1,7 @@
 <template>
-  <b-form :id="'forms-'+ urlRest" class="col-md-8 col-lg-7 col-xl-6 m-auto pt-3">
+  <b-form :id="'forms-'+ urlRest" class="col-md-9 col-lg-10 col-xl-7 m-auto pt-3">
+    <!--<pre>{{ itemU }}</pre>-->
+
     <div class="d-flex justify-content-center mb-2 mySwitch">
       <toggle-button :labels="{checked: 'DNI', unchecked: 'RUC'}" :color="{checked: 'rgb(239, 123, 34)', unchecked: 'rgb(181, 181, 181)'}"
                      :disabled="isLoading || restricted" :width="75" :height="28" :sync="true"
@@ -49,22 +51,22 @@
       </b-input-group>
 
       <b-input-group v-if="option.input=='input-dni'">
-          <b-input-group-addon class="bg-primary"><i :class="'fa ' + option.icon"></i></b-input-group-addon>
-          <b-form-input :disabled="isLoading || restricted" :type="option.type"
-                        v-model.trim="item[_index]"
-                        @blur.once.native="searchDNI"
-                        :placeholder="option.placeholder+'..'"></b-form-input>
-          <b-input-group-button v-if="option.input=='input-dni'">
-            <b-btn :disabled="isLoading || restricted" variant="primary" @click="searchDNI"><i class="fa fa-search"></i></b-btn>
-          </b-input-group-button>
+        <b-input-group-addon class="bg-primary"><i :class="'fa ' + option.icon"></i></b-input-group-addon>
+        <b-form-input :disabled="isLoading || restricted" :type="option.type"
+                      v-model.trim="item[_index]"
+                      @blur.once.native="searchDNI"
+                      :placeholder="option.placeholder+'..'"></b-form-input>
+        <b-input-group-button v-if="option.input=='input-dni'">
+          <b-btn :disabled="isLoading || restricted" variant="primary" @click="searchDNI"><i class="fa fa-search"></i></b-btn>
+        </b-input-group-button>
       </b-input-group>
 
       <b-input-group v-if="option.input=='onlyMultiSelect'">
         <b-input-group-addon class="bg-primary"><i :class="'fa ' + option.icon"></i></b-input-group-addon>
         <only-multi-select class="special_radius"
-                             :maxHeight="200" v-model="localidad" :optionList="option.params"
-                             :disabled="isLoading || restricted"
-                             :placeholderDefault="option.placeholder"></only-multi-select>
+                           :maxHeight="200" v-model="localidad" :optionList="option.params"
+                           :disabled="isLoading || restricted"
+                           :placeholderDefault="option.placeholder"></only-multi-select>
       </b-input-group>
 
       <b-input-group v-if="option.input=='datepicker'">
@@ -84,7 +86,7 @@
     </b-form-group>
 
     <!--<pre>-->
-      <!--{{ $v.item }}-->
+    <!--{{ $v.item }}-->
     <!--</pre>-->
 
 
@@ -93,12 +95,12 @@
       <!--<pre>{{ usernameWU }}</pre>-->
       <!--<pre>{{ itemU }}</pre>-->
       <!--<div v-if="!item.hasEmail" class="media owner-card" style="font-size: 0.6em;">-->
-        <!--<div class="d-flex align-self-center mr-3 rounded-circle">-->
-          <!--<i class="fa fa-question d-flex align-items-center m-auto fa-3x text-secondary"></i>-->
-        <!--</div>-->
-        <!--<div class="media-body">-->
-          <!--<p class="text-secondary fa-2x text-center pt-2">Vehiculo sin propietario</p>-->
-        <!--</div>-->
+      <!--<div class="d-flex align-self-center mr-3 rounded-circle">-->
+      <!--<i class="fa fa-question d-flex align-items-center m-auto fa-3x text-secondary"></i>-->
+      <!--</div>-->
+      <!--<div class="media-body">-->
+      <!--<p class="text-secondary fa-2x text-center pt-2">Vehiculo sin propietario</p>-->
+      <!--</div>-->
       <!--</div>-->
 
       <transition appear mode="out-in" name="custom-classes-transition" enter-active-class="animated pulse">
@@ -108,9 +110,9 @@
                     :size="5.5" sizeUnid="em" :localSrc="false" color="#ffffff" backgroundColor="orange" colorBorder="#ef7b1f"
                     :border="true" :sizeBorder="0.35" style="cursor: pointer;"></avatar>
             <!--<avatar :username="usernameWU"-->
-                    <!--:size="5" sizeUnid="em"-->
-                    <!--src="/static/img/avatars/5.jpg"-->
-                    <!--:border="true" colorBorder="#ef7b1f" :sizeBorder="0.35" style="cursor: pointer;"></avatar>-->
+            <!--:size="5" sizeUnid="em"-->
+            <!--src="/static/img/avatars/5.jpg"-->
+            <!--:border="true" colorBorder="#ef7b1f" :sizeBorder="0.35" style="cursor: pointer;"></avatar>-->
           </div>
           <div class="media-body">
             <h6 class="mt-1 mb-1 text-primary">{{ usernameU }}</h6>
@@ -139,7 +141,7 @@
   import {minLength, maxLength, required, numeric} from 'vuelidate/lib/validators'
 
   export default {
-    props: ['urlRest', 'item', 'itemU', 'update', 'horizontal', 'keyname', 'restricted', 'dispatch'],
+    props: ['name', 'urlRest', 'item', 'itemU', 'update', 'horizontal', 'keyname', 'restricted', 'dispatch'],
     mixins: [Mixin],
     components: {
       cSwitch,
@@ -171,7 +173,7 @@
         return this.$v.item.$invalid
       },
       usernameU () {
-        return this.itemU.firstName ? this.itemU.firstName + ' ' + this.itemU.lastName : this.itemU.email
+        return this.itemU.firstName ? this.itemU.firstName + ' ' + (this.itemU.lastName ? this.itemU.lastName : '') : this.itemU.email
       },
       isClient () {
         return this.$store.state.user.isClient
@@ -198,7 +200,7 @@
     },
     watch: {
       isInvalid (newVal) {
-        this.$emit('connection', 'isValid', newVal)
+        this.$emit('connection', this.name, 'isValid', newVal)
       },
       dispatch () {
         console.log('VALIDAAAAAAAAA')
@@ -236,7 +238,7 @@
           console.log('Email cliente')
           this.item.email = ''
           this.owner = null
-          this.$emit('connection', 'user', null)
+          this.$emit('connection', this.name, 'user', null)
         } else {
           console.log('Email vendedor')
           this.item.email = this.$store.state.user.data.email
@@ -304,10 +306,6 @@
       },
       searchUser (localEmail = null) {
         let email = (localEmail === null) ? this.item.email : localEmail
-        // let email = this.item.email
-        // console.log('EMAIL 33333#####')
-        // console.log(email)
-        // console.log(localEmail)
         if (email !== '') {
           let url = 'users/search?email=' + email
           let self = this.$store.dispatch('dispatchHTTP', {type: 'GET', url: url})
@@ -316,10 +314,10 @@
             if (data.status) {
               if (data.content.length > 0) {
                 this.owner = localEmail === null ? true : null
-                this.$emit('connection', 'user', data.content[0])
+                this.$emit('connection', this.name, 'user', data.content[0])
               } else {
                 this.owner = null
-                this.$emit('connection', 'user', null)
+                this.$emit('connection', this.name, 'user', null)
               }
             } else {
               console.log('Error: ' + url)
@@ -373,45 +371,4 @@
 </script>
 
 <style lang="scss">
-  .special_radius{
-    .multiselect__tags, input{
-      border-radius: 0 0.55em 0.55em 0 !important;
-    }
-  }
-
-  .mySwitch{
-    label {
-      /*width: 72px !important;*/
-      /*span.switch-handle{*/
-        /*left: 45px !important;*/
-      /*}*/
-      /*span.switch-label:after{*/
-        /*width: 60% !important;*/
-      /*}*/
-    }
-  }
-
-  form{
-    .vdp-datepicker{
-      width: 100% !important;
-    }
-  }
-
-  /*.vdp-datepicker{*/
-    /*.form-control[readonly]{*/
-      /*background: #f4f3ef;*/
-      /*border-right: 0;*/
-      /*z-index: inherit;*/
-    /*}*/
-    /*.input-group-addon{*/
-      /*padding: 0.2rem 0.7rem;*/
-      /*margin-bottom: 0;*/
-      /*font-size: 1.4rem;*/
-      /*color: #999999;*/
-      /*background-color: #f4f3ef;*/
-      /*border: 1px solid #e0e0e0;*/
-      /*border-radius: 0 0.55rem 0.55rem 0;*/
-      /*border-left: 0;*/
-    /*}*/
-  /*}*/
 </style>

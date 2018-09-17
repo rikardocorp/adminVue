@@ -98,7 +98,7 @@ export default {
         // },
         // {
         //   name: 'Registro Vehiculo',
-        //   url: '/vehiculo/vehiculos',
+        //   url: '/vehiculos/vehiculos',
         //   icon: 'fa fa-map-marker'
         // },
         // {
@@ -202,6 +202,11 @@ export default {
       url: '/venta-especial',
       icon: 'fa fa-star-o'
     },
+    // {
+    //   name: 'Venta Especial X',
+    //   url: '/venta-especialx',
+    //   icon: 'fa fa-star-o'
+    // },
     {
       title: true,
       name: 'MOVIL'

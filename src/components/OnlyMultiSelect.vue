@@ -1,5 +1,6 @@
 <template>
   <div style="width: 100%;">
+    <!--<pre>{{ localValue }}</pre>-->
     <multiselect :hideSelected="false" :multiple="true" :close-on-select="false" :ClearOnSelect="false"
                  :preserve-search="false" :internal-search="false" select-label=""
                  :loading="localIsloading"
@@ -50,7 +51,9 @@
         localDisabled: true,
         countLoad: 0,
         selectValue: '',
-        centinela: true
+        centinela: true,
+
+        xvalue: []
       }
     },
     methods: {
@@ -62,6 +65,7 @@
         this.optionList[index].options = self.content
       },
       initOption () {
+        // alert('initOption')
         this.indexSelect = 0
         let optionIndex = this.optionList[this.indexSelect]
         this.keySearch = optionIndex.keySearch
@@ -69,22 +73,52 @@
         this.optionsAux = optionIndex.options
       },
       pickOption (selectedOption) {
+        this.xvalue.push(selectedOption)
+        // alert('pickOption')
         this.centinela = false
         let optionIndex = this.optionList[this.indexSelect]
         optionIndex.pickID = JSON.parse(JSON.stringify(selectedOption))
         let optionPick = this.$lodash.filter(optionIndex.options, selectedOption)
-        optionPick[0]['color'] = optionIndex.colorClass
+
+        if (optionPick[0]) {
+          optionPick[0]['color'] = optionIndex.colorClass
+        }
+        // console.log('COLOR CORLO')
+        // console.log({...optionPick[0]})
+        // console.log(optionIndex)
+        // console.log('-----------')
+
         this.indexSelect++
         if (this.indexSelect < this.optionList.length) this.setOptions(this.indexSelect)
       },
       removeOption (removedOption) {
+        // console.log('REMOVE OPTION')
+        // console.log(removedOption)
+        // console.log('---------------')
         if (this.indexSelect > 0) {
+          // console.log('this.indexSelect', this.indexSelect)
           this.indexSelect--
           let optionIndex = this.optionList[this.indexSelect]
+          // console.log('optionIndex', optionIndex)
+
           let optionPick = this.$lodash.filter(optionIndex.options, removedOption)
+          // console.log('optionPick', optionPick)
           this.$delete(optionPick[0], 'color')
           this.setOptions(this.indexSelect)
+
+          // console.log(this.indexSelect)
+          let temp = this.localValue
+          // console.log('temp', temp)
+          temp.splice(this.indexSelect, 1)
+          this.$set(this, 'localValue', temp)
+          // this.value.splice(this.indexSelect, 1)
+          let aux = this.localValue
+          this.xvalue = aux
+          // console.log(this.localValue)
+          // console.log(aux)
+          // console.log('---------------')
         }
+        // this.$emit('input', [])
       },
       setOptions (indexSelect) {
         let opt
@@ -109,25 +143,53 @@
         })
       },
       emitValue (selectValue) {
+        // console.log('@@@@@ selectValue @@@@@')
+        // console.log(selectValue)
+        // console.log('------------------')
+        // let aux = {...this.localValue}
+        // let aux2 = {...this.value}
+        // console.log('localValue', aux)
+        // console.log('Value', aux2)
+        // console.log('XVALUE', this.xvalue)
+        // console.log('------------------')
         this.centinela = false
-        let localValue = JSON.parse(JSON.stringify(selectValue))
-        this.selectValue = selectValue
+        let localValue = JSON.parse(JSON.stringify(this.xvalue))
+        // console.log(localValue)
+        // this.selectValue = this.value
         let eValue = []
         for (let i = 0; i < localValue.length; i++) {
           this.$delete(localValue[i], 'color')
           eValue.push(localValue[i])
         }
+        // console.log('emitValue')
+        // console.log(eValue)
         this.$emit('input', eValue)
+        this.localValue = this.xvalue
+        // console.log([])
       },
       loadInitValue (initValue) {
-        if (!Array.isArray(initValue)) return false
+        console.log('@@@@@@  loadInitValue @@@@@@')
+        console.log(initValue)
+        if (!Array.isArray(initValue)) {
+          // eslo ultimo rikardocorp
+          this.xvalue = []
+          this.countLoad = 0
+          return false
+        }
 
         if (typeof initValue[0] !== 'object') {
           initValue = this.textToObject(initValue)
         }
         this.resetSelect()
         let optionIndex = ''
-        if (initValue[0] == undefined) return false
+        // console.log('loadInitValue')
+        if (initValue[0] == undefined) {
+          // eslo ultimo rikardocorp
+          this.xvalue = []
+          this.countLoad = 0
+          return false
+        }
+        // console.log('loadInitValue pass')
 
         let localValue = JSON.parse(JSON.stringify(initValue))
         let vm = this
@@ -161,6 +223,8 @@
     },
     watch: {
       countLoad (newVal, oldVal) {
+        console.log('countLoad')
+        console.log(newVal)
         if (newVal === this.optionList.length) {
           this.localIsloading = false
           this.localDisabled = false
@@ -169,6 +233,9 @@
         }
       },
       value (newVal, oldVal) {
+        console.log('value')
+        console.log(newVal)
+        console.log(this.centinela)
         if (this.centinela) {
 //          if (typeof newVal[0] !== 'object') {
 //            newVal = this.textToObject(newVal)

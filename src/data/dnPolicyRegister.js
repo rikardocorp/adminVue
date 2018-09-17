@@ -18,7 +18,7 @@ export const DATA_FORM = {
   input: {
     prefijo: {
       label: 'Prefijo',
-      placeholder: '[prefijo] #poliza',
+      placeholder: '[prefijo opcional] #poliza',
       type: 'text',
       icon: 'fa-car',
       input: 'input'
@@ -40,7 +40,7 @@ export const DATA_FORM = {
     },
     postfijo: {
       label: 'Postfijo',
-      placeholder: '#poliza [postfijo]',
+      placeholder: '#poliza [postfijo opcional]',
       type: 'text',
       icon: 'fa-car',
       input: 'input',
@@ -107,10 +107,10 @@ export const DATA_FORM = {
         required
       },
       prefijo: {
-        required
+        // required
       },
       postfijo: {
-        required
+        // required
       },
       policyType: {
         required

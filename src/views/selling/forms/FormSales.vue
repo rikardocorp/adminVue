@@ -168,7 +168,24 @@
       }
     },
     methods: {
+      isEmptyForm (data) {
+        const keys = Object.keys(data)
+        let result = true
+        keys.map(it => {
+          if (data[it] !== '' && data[it] !== null) {
+            result = false
+          }
+        })
+        return result
+      },
       async processData () {
+        console.log(this.item)
+        console.log('isEmptyForm', this.isEmptyForm(this.item))
+        if (this.isEmptyForm(this.item)) {
+          this.$store.commit('sendNotification', {status: null, message: 'Debe seleccionar alguna de las opciones de busqueda.'})
+          return false
+        }
+
         this.$set(this.params, 'isSearch', true)
         let idCompany = this.item.insuranceCompany ? this.item.insuranceCompany.id : ''
         let regionId = this.item.region ? this.item.region.id : ''

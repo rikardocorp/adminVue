@@ -36,32 +36,47 @@
               <p v-if="item2.insurancePolicy" class="fa-2x" style="padding-bottom: 0.4em; padding-top: 0.3em;"># <span class="numberPolicy"><router-link :to="'/polizas-vendidas/' + item2.id + '/1'">{{ item2.insurancePolicy.number }}</router-link></span></p>
               <p v-else="" class="fa-2x" style="padding-bottom: 0.4em; padding-top: 0.3em;"># <span class="numberPolicy">{{ 'Sin Asignar' }}</span></p>
 
-              <p class="subtitle value text-center"><span>DESDE:</span>  {{ today }}</p>
-              <p class="subtitle value text-center"><span>HASTA:</span>  {{ validityEnd(today) }}</p>
+              <p class="subtitle value text-center"><span>DESDE:</span>
+                <datepicker v-model="datepicker" format="dd/MM/yyyy" language="es" placeholder="Fecha Inicio"
+                            class="special_radius"
+                            :clear-button="false" :bootstrapStyling="true"
+                            :disabled="disabledPicker"
+                            :disabled-picker="isLoadingEdit"
+                            @input="selectDate"
+                            calendar-class="myDatepicker-style"
+                            wrapper-class="myDatepicker-content"></datepicker>
+              </p>
+              <p class="subtitle value text-center"><span>HASTA:</span>  {{ validityEnd }}</p>
               <p :class="{'subtitle value text-center vigente':true, 'vencido': daysContract < 0}"><span>{{ daysContract >= 0 ? daysContract + ' dias vigentes' : (daysContract*-1) + ' dias vencidos' }}</span></p>
             </div>
-            <div class="borderChild py-3">
+            <div class="borderChild py-3 detailPurchaserCart">
               <p class="title">DATOS DEL CONTRATANTE</p>
               <div class="row pt-2">
                 <div class="col-md-12 container-subtitle">
                   <p class="subtitle text-left"><span>NOMBRE COMPLETO O RAZON SOCIAL</span></p>
-                  <p class="value">{{ item2.purchaser.razonSocial }}</p>
+                  <!--<p class="value">{{ item2.purchaser.razonSocial }}</p>-->
+                  <p class="value"><input :disabled="isLoadingEdit" type="text" v-model="item2.purchaser.razonSocial" class="form-control"></p>
                 </div>
               </div>
               <div class="row">
                 <div class="col-md-6 container-subtitle">
                   <p class="subtitle text-left"><span>DNI / RUC</span></p>
-                  <p class="value">{{ item2.purchaser.dniRuc }}</p>
+                  <!--<p class="value">{{ item2.purchaser.dniRuc }}</p>-->
+                  <p class="value"><input :disabled="isLoadingEdit" type="text" v-model="item2.purchaser.dniRuc" class="form-control"></p>
+
                 </div>
                 <div class="col-md-6 container-subtitle">
                   <p class="subtitle text-left"><span>TELEFONO</span></p>
-                  <p class="value">{{ item2.purchaser.cellPhone }}</p>
+                  <!--<p class="value">{{ item2.purchaser.cellPhone }}</p>-->
+                  <p class="value"><input :disabled="isLoadingEdit" type="text" v-model="item2.purchaser.cellPhone" class="form-control"></p>
+
                 </div>
               </div>
               <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-12 container-subtitle">
                   <p class="subtitle text-left"><span>DIRECCION</span></p>
-                  <p class="value">{{ item2.purchaser.address }}</p>
+                  <!--<p class="value">{{ item2.purchaser.address }}</p>-->
+                  <p class="value"><input :disabled="isLoadingEdit" type="text" v-model="item2.purchaser.address" class="form-control"></p>
                 </div>
               </div>
               <div class="row">
@@ -166,11 +181,12 @@
         <b-input-group-addon class="bg-danger"><i class="fa fa-key"></i></b-input-group-addon>
         <b-form-input v-model="password"
                       type="password"
+                      :disabled="isLoading"
                       style="border: 1px solid #f86c6b;"
                       placeholder="Introduce tu contraseña para anular la venta"
                       title="Password para eliminar"></b-form-input>
         <b-input-group-button>
-          <b-btn variant="danger" @click="anularSale">Anular</b-btn>
+          <b-btn variant="danger" :disabled="isLoading" @click="anularSale">Anular</b-btn>
         </b-input-group-button>
       </b-input-group>
     </div>
@@ -185,6 +201,8 @@
   import Avatar from '../../components/Avatar.vue'
   //  import {DATA_PAYMENT as dataPay} from '../../data/dnSales'
   import FileSaver from 'file-saver'
+  import Datepicker from 'vuejs-datepicker'
+  import Mixin from '../../mixins'
 
   // import {DATA_FORM_PAYMENT as _payment} from '../../data/dnSales'
 
@@ -194,9 +212,11 @@
       urlRest: {default: ''},
       showDelete: {default: false}
     },
+    mixins: [Mixin],
     components: {
       ToggleButton,
-      Avatar
+      Avatar,
+      Datepicker
     },
     data () {
       return {
@@ -230,7 +250,12 @@
         numberPolicy: '',
         newSale: {},
         itemCart: {},
-        password: ''
+        password: '',
+
+        localValidityStar: '',
+        editDisabled: false,
+        datepicker: '',
+        disabledPicker: {}
       }
     },
     watch: {
@@ -239,11 +264,34 @@
         this.itemCart = newVal.cart
         if (!this.item2.user) this.item2.user = this.$store.state.user.data
         let date = this.$store.getters.getDateTime.date
-        this.today = this.$moment(date, 'DD/MM/YYYY').format('DD/MM/YYYY')
+        this.datepicker = this.item2.validityStart !== null ? this.getDateToDatepicker(this.item2.validityStart) : this.getDateToDatepicker(this.$moment(date, 'DD/MM/YYYY').format('DD/MM/YYYY'))
         this.numberPolicy = ''
+        // console.log('FECHAAAAA CHIPY')
+        // console.log(this.item2.validityStart)
+
+        let datenow = this.$store.getters.getDateTime.date
+        let toDay = this.$moment(datenow, 'DD/MM/YYYY')
+        let day = toDay.get('date')
+        let month = toDay.get('month')
+        let year = toDay.get('year')
+
+        this.disabledPicker = {
+          // from: new Date(year, month, day),
+          // to: new Date(year, month + 6, day)
+          ranges: [{ // Disable dates in given ranges (exclusive).
+            from: new Date(year - 30, month - 6, day),
+            to: new Date(year, month, day)
+          }, {
+            from: new Date(year, month + 6, day),
+            to: new Date(year + 30, month + 6, day)
+          }]
+        }
       }
     },
     computed: {
+      isLoadingEdit () {
+        return this.isLoading || this.editDisabled
+      },
       isLoading () {
         return this.$store.state.isLoading || this.item2.state === -1
       },
@@ -253,11 +301,18 @@
       date () {
         return this.$store.state.user.date
       },
+      validityEnd () {
+        // Date
+        let date = this.datepicker
+        let toDay = this.$moment(date, 'DD/MM/YYYY')
+        let day = toDay.get('date')
+        let month = toDay.get('month')
+        let year = toDay.get('year')
+        let newDate = new Date(year + 1, month, day)
+        return this.$moment(newDate).format('DD/MM/YYYY')
+      },
       daysContract () {
         let date = this.$store.getters.getDateTime.date
-        console.log('FECHA PRUEBA DIFFF')
-        console.log(date)
-        console.log(this.item.validityStart)
         let toDay = this.$moment(date, 'DD/MM/YYYY')
         let day = toDay.get('date')
         let month = toDay.get('month')
@@ -275,6 +330,21 @@
       }
     },
     methods: {
+      getDateToDatepicker (date) {
+        let toDay = this.$moment(date, 'DD/MM/YYYY')
+        let day = toDay.get('date')
+        let month = toDay.get('month')
+        let year = toDay.get('year')
+        return new Date(year, month, day)
+      },
+      selectDate (pickDate) {
+        let newDate = ''
+        if (pickDate) {
+          newDate = this.tranformDateToFormat(pickDate, '/')
+        }
+        // this.birthDate = newDate
+        this.localValidityStar = newDate
+      },
       async anularSale () {
         if (this.password === '') {
           this.$store.commit('sendNotification', {status: null, message: 'Debe ingresar su contraseña.'})
@@ -287,11 +357,7 @@
           state: -1
         }
 
-        console.log(dataLocal)
         let self = await this.$store.dispatch('dispatchHTTP', {type: 'INSERT', url: 'sales/cancel', data: dataLocal, notify: {success: false, error: true}})
-        console.log('RIKAEDOCORO ppppppppp')
-        console.log(self)
-        console.log('INSERT SALE?')
         if (self.status) {
           this.password = ''
           this.item2.state = -1
@@ -304,12 +370,7 @@
         let url = 'carts/' + cart.id
         cart.state = -1
 
-        console.log(url)
-        console.log(cart)
         let self = await this.$store.dispatch('dispatchHTTP', {type: 'UPDATE', url: url, data: cart, notify: {success: false, error: false}})
-        console.log('RIKAEDOCORO ppppppppp')
-        console.log(self)
-        console.log('INSERT SALE?')
         if (self.status) {
           this.item2.cart.state = -1
           this.$store.commit('sendNotification', {status: true, message: 'La venta movil fue anulada.'})
@@ -317,26 +378,31 @@
           this.$store.commit('sendNotification', {status: false, message: 'Ocurrio un problema inesperado, intente nuevamente.'})
         }
       },
-      validityEnd (date) {
-        let toDay = this.$moment(date, 'DD/MM/YYYY')
-        let day = toDay.get('date')
-        let month = toDay.get('month')
-        let year = toDay.get('year')
-        let newDate = new Date(year + 1, month, day)
-        return this.$moment(newDate).format('DD/MM/YYYY')
+      // validityEnd (date) {
+      //   let toDay = this.$moment(date, 'DD/MM/YYYY')
+      //   let day = toDay.get('date')
+      //   let month = toDay.get('month')
+      //   let year = toDay.get('year')
+      //   let newDate = new Date(year + 1, month, day)
+      //   return this.$moment(newDate).format('DD/MM/YYYY')
+      // },
+      async updateDataPurchaser () {
+        let data = this.item2.purchaser
+        let ID = this.item2.purchaser.id
+        let url = 'purchasers/' + ID
+        let self = await this.$store.dispatch('dispatchHTTP', {
+          type: 'UPDATE',
+          url: url,
+          data: data, notify : {success: true, error: true}})
+        return self
       },
       async updateSale () {
         let state = 0
         let saleID = this.item.id
-        console.log('Estados:::::')
-        console.log(state, this.item.state)
         if (this.item.state === state) return false
 
         this.item.state = state
-        console.log('UPDATE SALE')
         let self = await this.$store.dispatch('dispatchHTTP', {type: 'UPDATE', url: this.urlRest + '/' + saleID, data: this.item})
-        console.log('RIKAEDOCORO ppppppppp')
-        console.log(self)
         return self
       },
       async getPayments (idSale) {
@@ -362,28 +428,29 @@
           let self3 = await this.updateCart()
           if (!self3.status) return false
           this.$set(this.item, 'state', self3.content.state)
-          console.log('UPDATE CART')
           this.$store.commit('sendNotification', {status: null, message: 'Esta venta ya fue procesada, realizar la busqueda en Poliza Vendida.'})
           this.$router.push('/polizas-vendidas/' + this.item.id + '/1')
           return false
         }
 
-        let newSale = {
-          amount: this.item.amount,
-          active: '',
-          discount: 0,
-          numFactura: '',
-          observation: this.item.observation,
-          state: 4, // estado totalmente pagado
-          currency: this.item.currency,
-          region: this.item.region,
-          vehicle: {id: this.item.vehicle.id},
-          purchaser: {id: this.item.purchaser.id},
-          seatNumber: this.item.seatNumber,
-          cart: {id: this.item.id},
-          validityStart: this.today,
-          insurancePolicy: null,
-        }
+        // let newSale = {
+        //   amount: this.item.amount,
+        //   active: '',
+        //   discount: 0,
+        //   numFactura: '',
+        //   observation: this.item.observation,
+        //   state: 4, // estado totalmente pagado
+        //   currency: this.item.currency,
+        //   region: this.item.region,
+        //   vehicle: {id: this.item.vehicle.id},
+        //   purchaser: {id: this.item.purchaser.id},
+        //   seatNumber: this.item.seatNumber,
+        //   cart: {id: this.item.id},
+        //   validityStart: this.datepicker,
+        //   insurancePolicy: null
+        // }
+        let self0 = await this.updateDataPurchaser()
+        if (!self0.status) return false
 
         let policy = {
           number: this.numberPolicy,
@@ -391,31 +458,25 @@
           policyType: 'D',
           user: {id: this.item2.user.id}
         }
-        this.newSale = newSale
-        console.log('INSERT SALE')
+        // this.newSale = newSale
         // INSERT POLICY
         let self1 = await this.insertPolicy(policy)
-        console.log(self1)
         if (!self1.status) return false
-        console.log('INSERT POLICY')
-        newSale.insurancePolicy = {id: self1.content.id}
+        // newSale.insurancePolicy = {id: self1.content.id}
 
         // UPDATE SALE
         this.item.insurancePolicy = {id: self1.content.id}
         this.item.state = 4
         this.item.active = 1
-        this.item.validityStart = this.date
+        this.item.validityStart = this.localValidityStar
         let self2 = await this.updateSaleCart(this.item)
-        console.log(self2)
         if (!self2.status) return false
         let idSale = self2.content.id
-        console.log('UPDATE SALE')
 
         // UPDATE CART
         let self3 = await this.updateCart()
         if (!self3.status) return false
         this.$set(this.item, 'state', self3.content.state)
-        console.log('UPDATE CART')
 
         this.$router.push('/polizas-vendidas/' + idSale + '/1')
       },
@@ -426,8 +487,6 @@
         return self
       },
       async updateSaleCart (sale) {
-        console.log('SALES')
-        console.log(sale)
         let url = 'sales' + '/' + sale.id
         let dataLocal = sale
         let self = await this.$store.dispatch('dispatchHTTP', {type: 'UPDATE', url: url, data: dataLocal})
@@ -624,6 +683,18 @@
           top: 8px;
         }
       }
+    }
+  }
+
+  .detailPurchaserCart{
+    .container-subtitle{
+      p.value{
+        input{
+          font-size: 1em !important;
+          border-bottom: 1px dashed #ef7b1f !important;
+        }
+      }
+
     }
   }
 

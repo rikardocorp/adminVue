@@ -278,7 +278,8 @@ const actions = {
       date: data.date,
       time: data.time,
       isClient: data.authorities[0].authority === 'ROLE_USUARIO',
-      isPuntoVenta: data.authorities[0].authority === 'ROLE_PUNTO_VENTA'
+      isPuntoVenta: data.authorities[0].authority === 'ROLE_PUNTO_VENTA',
+      isAdmin: data.authorities[0].authority === 'ROLE_ADMIN'
     }
     console.log(user)
     commit('setUser', user)

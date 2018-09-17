@@ -75,6 +75,7 @@
 </template>
 
 <script>
+  import Parallax from 'vue-parallaxy'
   //  import auth from '../auth'
 //  import {mapActions} from 'vuex'
 

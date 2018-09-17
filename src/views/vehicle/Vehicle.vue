@@ -83,8 +83,11 @@
         this.indexSelected = null
       },
       getData () {
+        console.log('rikardocorp !!!!!')
+        console.log('URL', this.urlRest)
         let self = this.$store.dispatch('dispatchHTTP', {type: 'GET', url: this.urlRest})
         self.then((data) => {
+          console.log('WWWWWWWWWWWWCCA AAAAAA')
           console.log(data)
           this.items = data.status ? data.content : []
           this.totalRows = this.items.length
@@ -94,7 +97,7 @@
         let self = this.$store.dispatch('dispatchHTTP', {type: 'DELETE', url: this.urlRest + '/' + this.items[this.indexSelected].id})
         self.then((data) => {
           console.log(data.content)
-          if (data.status) {
+          if (data.content.success) {
             this.items.splice(this.indexSelected, 1)
             this.toggleDialog()
             this.initData()
@@ -126,6 +129,7 @@
       }
     },
     mounted () {
+      console.log('vvvvvvvvvvvvvvvvvvvv')
       this.getData()
     }
   }

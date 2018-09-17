@@ -829,7 +829,6 @@
         // GET PAY
         let pay = JSON.parse(localStorage.getItem('pay'))
         if (pay) {
-//          alert('pay')
           this.data.pay.item = pay
           this.data.pay.validate = true
         } else {
@@ -849,16 +848,12 @@
       }
     },
     created () {
-      //localStorage.setItem('seller', this.$store.state.user.data.id)
-      // localStorage.setItem('typeSell', 1)
       let oldSellerId = localStorage.getItem('seller')
       let newSellerId = JSON.parse(localStorage.getItem('UserLog')).user.id
       let notification = {}
       let typeSell = localStorage.getItem('typeSell')
       let sale = JSON.parse(localStorage.getItem('sale'))
-      console.log('QWERTYYYYYY ')
-      console.log(typeSell)
-      console.log(sale)
+
       if (sale !== null && typeSell == 0) {
         this.mySwitch = true
         notification.data = {message: 'Existe una nueva venta en proceso', status: '', success: null, url: ''}
@@ -872,11 +867,8 @@
         } else {
           this.setDefault()
           localStorage.removeItem('insurance')
-          //localStorage.removeItem('vehicleType')
-          //localStorage.removeItem('pickPolice')
         }
       }
-      // delete this.data.vehicle.defaultItem.licensePlate
     },
     mounted () {
     }

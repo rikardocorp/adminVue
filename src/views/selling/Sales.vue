@@ -26,7 +26,7 @@
               <!-- SALES LIST -->
               <div v-for="(x, index) in items" :key="x.id"
                    :class="{'state-1': x.state==1, 'state-2': x.state==2, 'state-3': x.state==3, 'state-4': x.state==4, 'state-5': x.state==5, 'state-anulado': x.state==-1}">
-
+                <!--<pre>{{ x }}</pre>-->
                 <!-- SALES -->
                 <div v-if="x.insurancePolicy !== undefined && x.insurancePolicy !== null && x.state !== null"
                      :class="{'ticket cardWrap m-2 mb-3 hvr-bounce-in':true, 'pickOption': x.pick}" @click="selectedSale(x, true)">
@@ -48,7 +48,7 @@
 
                   <div class="card-ticket cardCenter dashed">
                     <div :class="{'xtitle': true, 'bg-danger': x.state==1, 'bg-primary': x.state==2, 'bg-info': x.state==3, 'bg-success': x.state==4, 'bg-blue': x.state==5}">
-                      Placa: {{ x.vehicle ? x.vehicle.licensePlate : 'S/N' }}
+                      POLIZA: {{ x.insurancePolicy ? x.insurancePolicy.number : 'S/N' }}
                       <button v-if="(x.insurancePolicy.user.id == $store.state.user.data.id || $store.state.user.role=='ROLE_ADMIN') && (x.state==1 || x.state==2)" @click.stop="deleteSale(x)" class="btn btn-danger"><i class="fa fa-trash"></i></button>
                       <!--<button class="btn btn-danger"><i class="fa fa-trash"></i></button>-->
                     </div>
@@ -88,7 +88,8 @@
                   </div>
                   <div class="card-ticket cardCenter dashed">
                     <div :class="{'xtitle': true, 'bg-cart': true}">
-                      Placa: {{ x.vehicle.licensePlate }}
+                      <!--Placa: {{ x.vehicle.licensePlate }}-->
+                      POLIZA: {{ x.insurancePolicy ? x.insurancePolicy.number : 'S/N' }}
                       <!--<button class="btn btn-danger"><i class="fa fa-trash"></i></button>-->
                     </div>
                     <div class="xcontent">
@@ -176,12 +177,33 @@
       }
     },
     methods: {
-      rick(x) {
-        console.log(x)
+      async deletePay (payID) {
+        let url = 'payments/' + payID
+        let self = await this.$store.dispatch('dispatchHTTP', {type: 'DELETE', url: url})
+        if (!self.status) return false
+        return true
       },
       async deleteSale (item) {
         let url = 'sales/' + item.id
+        console.log('DELETE SALE')
         console.log(url)
+        console.log(item)
+        console.log('--------')
+        if (item.vehicle === null && item.purchaser === null) {
+          console.log('SALE VACIO')
+          let urlPayment = 'payments?saleId=' + item.id
+          let selfPayment = await this.$store.dispatch('dispatchHTTP', {type: 'GET', url: urlPayment})
+          if (!selfPayment.status) return false
+          else {
+            console.log('SALE PAYMENTS')
+            const payments = selfPayment.content
+            payments.map(async it => {
+              await this.deletePay(it.id)
+            })
+            console.log(payments)
+          }
+        }
+
         let self = await this.$store.dispatch('dispatchHTTP', {type: 'DELETE', url: url})
         console.log(self)
         if (!self.status) return false
@@ -223,6 +245,11 @@
         console.log('item.state')
         console.log(item)
         if (item.state === 1 || item.state === 0 || item.state === null) return false
+
+        if (item.state === -1 && (item.purchaser === null || item.vehicle === null)) {
+          this.$store.commit('sendNotification', {status: null, message: 'La venta anulada no cuenta con detalles de venta.'})
+          return false
+        }
 
         if (isSale) {
           // alert('sale')

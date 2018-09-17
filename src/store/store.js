@@ -24,18 +24,25 @@ export default new Vuex.Store({
       date: '',
       time: '',
       isClient: false,
-      isPuntoVenta: false
+      isPuntoVenta: false,
+      isAdmin: false
     },
+    dateNow: '',
     logOut: false
   },
   getters: {
     arrayToObject: (state, getters) => (value) => {
-      console.log('Array To OBJECT')
+      // console.log('Array To OBJECT')
       let newArray = []
       value.forEach(function (value, index) {
         newArray.push({id: index, name: value})
       })
       return newArray
+    },
+    getDateNow: () => {
+      return {
+        'date': localStorage.getItem('dateNow'),
+      }
     }
   },
   mutations: {
@@ -45,12 +52,15 @@ export default new Vuex.Store({
     setUser: (state, value) => {
       Vue.set(state, 'user', value)
     },
+    setDate: (state, value) => {
+      Vue.set(state, 'dateNow', value)
+    },
     switchLoading: (state, value) => {
-      console.log('SWITCH LOADING')
+      // console.log('SWITCH LOADING')
       Vue.set(state, 'isLoading', value)
     },
     pushNotification: (state, value) => {
-      console.log('PUSH NOTIFICATION')
+      // console.log('PUSH NOTIFICATION')
       let data = {
         count: state.notification.count + 1,
         content: value
@@ -72,8 +82,21 @@ export default new Vuex.Store({
     }
   },
   actions: {
+    setUpdateDate: ({ commit, state }, newDate) => {
+      console.log('===  setUpdateDate ===')
+      console.log(state)
+      console.log(newDate)
+      const newUser = {
+        ...state.user,
+        date: newDate
+      }
+      console.log('===  setUpdateDate ===')
+      console.log('===  ============= ===')
+      localStorage.setItem('dateNow', newDate)
+      commit('setDate', newUser)
+    },
     dispatchHTTP: ({commit, state, getters}, {type, url, data, notify = {success: false, error: false}}) => {
-      console.log(type, url, data, notify)
+      // console.log(type, url, data, notify)
       commit('switchLoading', true)
       let inquiry = ''
       let message = {}
@@ -92,7 +115,7 @@ export default new Vuex.Store({
           case 'INSERT':
             inquiry = Vue.http.post(url, data)
             // notify.success = true
-            // notify.error = true
+            notify.error = true
             break
           case 'UPDATE':
             inquiry = Vue.http.patch(url, data)
@@ -100,9 +123,9 @@ export default new Vuex.Store({
             // notify.error = true
             break
           case 'DELETE':
-            console.log('DELETE')
-            console.log(url)
-            console.log(data)
+            // console.log('DELETE')
+            // console.log(url)
+            // console.log(data)
             inquiry = Vue.http.delete(url, {body: data})
             notify.success = true
             notify.error = true
@@ -119,7 +142,7 @@ export default new Vuex.Store({
             notify = {success: false, error: false}
             let dataTable = state.Login.LOAD_TABLE[data.key]
             if (dataTable === undefined) {
-              console.log('http')
+              // console.log('http')
               inquiry = Vue.http.get(url)
             } else {
               if (dataTable.data.length > 0) {
@@ -148,24 +171,28 @@ export default new Vuex.Store({
 
         // SUCCSESS
         inquiry.then(response => {
-          console.log('SUCCESSSSSSSSS 2424342434423')
-          console.log(response)
+          // console.log('SUCCESSSSSSSSS 2424342434423')
+          // console.log(response)
           message.status = response.data.success
           message.data = {message: response.data.message, status: response.status, success: response.data.success, url: response.url}
 
           keyStatus = response.data.success ? 'success' : 'error'
+          // console.log(keyStatus)
+          // console.log('notify: ', notify[keyStatus])
+          // console.log(message)
           if (notify[keyStatus]) {
             commit('pushNotification', message)
           }
           result.status = response.data.success
           result.content = response.body.data ? response.body.data : response
+          // console.log('result: ', result)
           resolve(result)
         })
 
         // ERROR
         inquiry.catch(error => {
-          console.log('ERRRRRORRRRRR')
-          console.log(error)
+          // console.log('ERRRRRORRRRRR')
+          // console.log(error)
           message.status = false
           message.data = {message: 'Ocurrio un problema inesperado, intenta nuevamente', status: error.status, success: false, url: error.url}
           if (notify.error) {

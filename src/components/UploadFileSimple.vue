@@ -37,7 +37,7 @@
       <p class="text-center">
         <a href="javascript:void(0)" @click="reset()">Volver a intentar</a>
       </p>
-      <pre>{{ uploadError }}</pre>
+      <!--<pre>{{ uploadError }}</pre>-->
     </div>
   </div>
 </template>

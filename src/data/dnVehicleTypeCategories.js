@@ -1,7 +1,7 @@
 import { required, minLength, maxLength, between, numeric, email, sameAs, minValue } from 'vuelidate/lib/validators'
 
 export const DATA = {
-  name: 'vehicletypecategories?type=',
+  name: 'vehicletypecategories?type=0',
   post: {
     brand: '',
     vehicleType: null,

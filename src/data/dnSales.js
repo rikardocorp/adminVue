@@ -267,7 +267,7 @@ export const DATA_FORM_FILTER = {
     dniRuc: {
       label: 'DNI/RUC',
       placeholder: '#Documento de Identidad',
-      type: 'number',
+      type: 'text',
       srOnly: true
     },
     user: {

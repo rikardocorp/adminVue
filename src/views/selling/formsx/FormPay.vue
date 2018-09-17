@@ -1,14 +1,10 @@
 <template>
   <b-form :id="'forms-'+ urlRest" class="col-md-8 col-lg-8 col-xl-6 m-auto pt-3">
+    <!--<pre>{{ data.pickPolice.item }}</pre>-->
     <div class="col-md-9 m-auto pb-2 myPoliza">
-      <!--<div class="d-flex justify-content-center mb-1">-->
-        <!--<div class="img bg-primary d-flex align-items-center ">-->
-          <!--<img :src="'static/img/company/' + data.pickPolice.item.insuranceCompanyId + '.png'" alt="">-->
-        <!--</div>-->
-      <!--</div>-->
       <div class="title text-center mb-1 mt-2" style="color: #2ca710;">
         <p class="mb-0">Total</p>
-        <span class="fa-1x">s/.</span> <span class="h3">{{ data.pickPolice.item.price | currency }}</span>
+        <span class="fa-1x">s/.</span> <span class="h3">{{ price | currency }}</span>
       </div>
     </div>
 
@@ -56,81 +52,6 @@
       <!-- ERROR MESSAGE-->
       <form-error :data="$v.item[_index]? $v.item[_index] : {} " :async="true"></form-error>
     </b-form-group>
-
-    <!--<pre>{{ item }}</pre>-->
-
-    <!--<div class="col-md-9 m-auto pt-3 pb-4 myPoliza">-->
-      <!--<div class="title text-center h3 mb-3 text-primary">-->
-        <!--Seguro {{ data.pickPolice.item.insuranceTypeName }}-->
-      <!--</div>-->
-
-      <!--<div class="d-flex justify-content-center mb-3">-->
-        <!--<div class="img bg-primary d-flex align-items-center ">-->
-          <!--&lt;!&ndash;<span class="align-self-center">{{ altError(pickPolice.insuranceCompanyName) }}</span>&ndash;&gt;-->
-          <!--<img :src="'static/img/company/' + data.pickPolice.item.insuranceCompanyId + '.png'" alt="">-->
-        <!--</div>-->
-      <!--</div>-->
-
-      <!--<b-form-group class="text-right"-->
-                    <!--label="Contratante:"-->
-                    <!--:horizontal="horizontal" :label-cols="lCols">-->
-        <!--<p class="p-icon"><i class="fa fa-user text-primary"></i></p>-->
-        <!--<p class="p-text">{{ data.purchaser.item.razonSocial }}</p>-->
-      <!--</b-form-group>-->
-
-      <!--<b-form-group class="text-right"-->
-                    <!--label="Numero Poliza:"-->
-                    <!--:horizontal="horizontal" :label-cols="lCols">-->
-        <!--<p class="p-icon"><i class="fa fa-hashtag text-primary"></i></p>-->
-        <!--<p class="p-text">{{ data.sale.item.insurancePolicy ? data.sale.item.insurancePolicy.number : '???' }}</p>-->
-      <!--</b-form-group>-->
-
-      <!--<b-form-group class="text-right"-->
-                    <!--label="Fecha:"-->
-                    <!--:horizontal="horizontal" :label-cols="lCols">-->
-        <!--<p class="p-icon"><i class="fa fa-calendar-check-o text-primary"></i></p>-->
-        <!--<p class="p-text">{{ nowDate }} {{ nowTime }}</p>-->
-      <!--</b-form-group>-->
-
-      <!--<b-form-group class="text-right"-->
-                    <!--label="Vehiculo:"-->
-                    <!--:horizontal="horizontal" :label-cols="lCols">-->
-        <!--<p class="p-icon"><i class="fa fa-car text-primary"></i></p>-->
-        <!--<p class="p-text">{{ data.vehicle.item.licensePlate }}</p>-->
-      <!--</b-form-group>-->
-
-      <!--<div class="title text-center mb-1 mt-4" style="color: #2ca710;">-->
-        <!--<span class="fa-1x">Total: s/.</span> <span class="h2">{{ data.pickPolice.item.price | currency }}</span>-->
-      <!--</div>-->
-
-      <!--&lt;!&ndash; formulario &ndash;&gt;-->
-      <!--<div class="dropbox  mt-4">-->
-        <!--<b-form-group class="text-right mb-3 mt-2"-->
-                      <!--label="Descuento:"-->
-                      <!--:horizontal="horizontal" :label-cols="lCols">-->
-          <!--<b-form-input :disabled="isLoading" type="text"-->
-                        <!--v-model.trim="item.discount"-->
-                        <!--placeholder="Descuento de venta..."></b-form-input>-->
-        <!--</b-form-group>-->
-
-        <!--<b-form-group class="text-right mb-3"-->
-                      <!--label="Metodo de Pago:"-->
-                      <!--:horizontal="horizontal" :label-cols="lCols">-->
-          <!--<b-form-input :disabled="isLoading" type="text"-->
-                        <!--v-model.trim="item.currency"-->
-                        <!--placeholder="Metodo de pago..."></b-form-input>-->
-        <!--</b-form-group>-->
-
-        <!--<b-form-group class="text-right mb-3"-->
-                      <!--label="Observacion:"-->
-                      <!--:horizontal="horizontal" :label-cols="lCols">-->
-          <!--<b-form-textarea :disabled="isLoading"-->
-                           <!--v-model.trim="item.observation"-->
-                           <!--placeholder="Observacion opcional..."-->
-                           <!--:rows="3" :max-rows="6"></b-form-textarea>-->
-        <!--</b-form-group>-->
-      <!--</div>-->
-    <!--</div>-->
   </b-form>
 </template>
 
@@ -143,7 +64,7 @@
   import Mixin from '../../../mixins'
 
   export default {
-    props: ['horizontal', 'data', 'item', 'urlRest', 'restricted', 'dispatch'],
+    props: ['name', 'horizontal', 'data', 'item', 'urlRest', 'restricted', 'dispatch', 'price'],
     mixins: [Mixin],
     components: {
       FormError,
@@ -171,7 +92,7 @@
         between: between(0, this.newPrice)
       }
       _pay.validate.item.discount = {
-        between: between(0, this.data.pickPolice.item.price)
+        between: between(0, this.price)
       }
       return _pay.validate
     },
@@ -186,12 +107,12 @@
         return this.$store.state.user.data.expense
       },
       newPrice () {
-        return this.data.pickPolice.item.price - this.item.discount
+        return this.price - this.item.discount
       }
     },
     watch: {
       isInvalid (newVal) {
-        this.$emit('connection', 'isValid', newVal)
+        this.$emit('connection', this.name, 'isValid', newVal)
       },
       dispatch () {
         console.log('VALIDAAAAAAAAA')
@@ -210,7 +131,6 @@
         if (pickDate) {
           newDate = this.tranformDateToFormat(pickDate, '/')
         }
-        // this.birthDate = newDate
         this.item['validityStart'] = newDate
       },
       getDateToDatepicker (date) {
@@ -278,36 +198,5 @@
       height: 70px;
       border-radius: 1em;
     }
-
-    /*img {*/
-      /*position: absolute;*/
-    /*}*/
-
-    /*.img span{*/
-      /*display: block;*/
-      /*width: 100%;*/
-      /*font-size: 2em;*/
-      /*text-align: center;*/
-    /*}*/
-
-    /*p{*/
-      /*text-align: left;*/
-      /*margin-top: 0.4em;*/
-      /*margin-bottom: 0;*/
-      /*float: left;*/
-
-      /*&.p-icon{*/
-        /*width: 10%;*/
-      /*}*/
-      /*&.p-text{*/
-        /*width: 90%;*/
-        /*float: left;*/
-        /*line-height: 1.3em;*/
-      /*}*/
-    /*}*/
-
-    /*.form-group{*/
-      /*margin: 0;*/
-    /*}*/
   }
 </style>

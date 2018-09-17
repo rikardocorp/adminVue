@@ -107,7 +107,6 @@
                             @change.native="changeValue(data.item._vehicle.id, f.key, data.item._vehicle)"
                             placeholder="Precio.." :autofocus="true">
               </b-form-input>
-
             </div>
           </template>
 

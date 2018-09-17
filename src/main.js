@@ -72,16 +72,18 @@ Vue.use(VueScroll)
 // })
 
 // Peticiones al servidor de Pruebas
-// const appServer = 'http://localhost:8080'
-const appServer = 'http://174.138.48.60:8080'
+// const appServer = 'http://localhost:8080/'
+const appServer = 'http://174.138.48.60:8080/jmc/'
+// const appServer = 'http://174.138.48.60:8080/jmc_pruebas/'
 // Peticiones al servidor principal
-// const appServer = 'http://45.55.154.15:8080'
+// const appServer = 'http://45.55.154.15:8080/jmc/'
+// const appServer = 'https://jmc.devaqpgroup.com/'
 
-Vue.http.options.root = appServer + '/jmc/rest/v1/'
+Vue.http.options.root = appServer + 'rest/v1/'
 Vue.http.headers.common['Content-Type'] = 'application/json'
 
 // Login and SignUp
-const API_URL = appServer + '/jmc/'
+const API_URL = appServer
 const URL_LOG = {
   API_URL: API_URL,
   LOGIN_URL: API_URL + 'login',

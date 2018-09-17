@@ -90,7 +90,7 @@ export const DATA_FORM = {
         label: 'vehicleClass',
         options: [],
         activate: false,
-        loadData: true,
+        loadData: false,
         value: ''
       }
     },
@@ -105,7 +105,7 @@ export const DATA_FORM = {
         label: 'razonSocial',
         options: [],
         activate: false,
-        loadData: true,
+        loadData: false,
         value: ''
       }
     }

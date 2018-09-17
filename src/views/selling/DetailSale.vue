@@ -1,6 +1,6 @@
 <template>
   <div id="contentDetailSale">
-    <!--<pre>{{item}}</pre>-->
+    <!--<pre>{{item2}}</pre>-->
     <div id="formDetailSale" :class="'col-md-11 col-sm-12 col-lg-10 col-xl-7 m-auto ' + (item2.state==-1?'state-anulado':'')">
       <b-card>
         <div slot="header" class="text-left">
@@ -55,7 +55,19 @@
             <div class="py-2">
               <p class="title">INFORMACION DEL CERTIFICADO</p>
               <p class="fa-2x" style="padding-bottom: 0.4em; padding-top: 0.3em;"># <span class="numberPolicy">{{ item2.insurancePolicy.number }}</span></p>
-              <p class="subtitle value text-center"><span>DESDE:</span>  {{ item2.validityStart }}</p>
+              <!--<p class="subtitle value text-center"><span>DESDE:</span>  {{ item2.validityStart }}</p>-->
+              <p class="subtitle value text-center"><span>DESDE:</span>
+                <!--<input :disabled="isLoadingEdit" type="text" v-model="item2.validityStart" class="form-control">-->
+                <datepicker v-model="datepicker" format="dd/MM/yyyy" language="es" placeholder="Fecha Inicio"
+                            class="special_radius"
+                            :clear-button="false" :bootstrapStyling="true"
+                            :disabled="disabledPicker"
+                            :disabled-picker="isLoadingEdit"
+                            @input="selectDate"
+                            calendar-class="myDatepicker-style"
+                            wrapper-class="myDatepicker-content"></datepicker>
+              </p>
+
               <p class="subtitle value text-center"><span>HASTA:</span>  {{ validityEnd }}</p>
               <p :class="{'subtitle value text-center vigente':true, 'vencido': daysContract < 0}"><span>{{ daysContract >= 0 ? daysContract + ' dias vigentes' : (daysContract*-1) + ' dias vencidos' }}</span></p>
             </div>
@@ -82,7 +94,7 @@
                 </div>
               </div>
               <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-12 container-subtitle">
                   <p class="subtitle text-left"><span>DIRECCION</span></p>
                   <!--<p class="value">{{ item2.purchaser.address }}</p>-->
                   <p class="value"><input :disabled="isLoadingEdit" type="text" v-model="item2.purchaser.address" class="form-control"></p>
@@ -92,7 +104,7 @@
               <div class="row">
                 <div class="col-md-12">
                   <p class="subtitle text-left"><span>LOCALIDAD</span></p>
-                  <p class="value">{{ item2.region.name }}</p>
+                  <p class="value">{{ item2.region ? item2.region.name : '' }}</p>
                 </div>
               </div>
               <div class="row" v-if="!editDisabled">
@@ -245,16 +257,18 @@
     </div>
 
     <!-- DELETE SALE -->
-    <div v-if="item2.state !== -1 && item2.state !== 2 " class="col-md-6 col-sm-12 col-lg-6 col-xl-5 m-auto pt-4">
+    <!--<div v-if="item2.state !== -1 && item2.state !== 2 " class="col-md-6 col-sm-12 col-lg-6 col-xl-5 m-auto pt-4">-->
+    <div v-if="item2.state !== -1" class="col-md-6 col-sm-12 col-lg-6 col-xl-5 m-auto pt-4">
       <b-input-group class="mb-3 passDelete">
         <b-input-group-addon class="bg-danger"><i class="fa fa-key"></i></b-input-group-addon>
         <b-form-input v-model="password"
                       type="password"
+                      :disabled="isLoading"
                       style="border: 1px solid #f86c6b;"
                       placeholder="Introduce tu contraseña para anular la venta"
                       title="Password para eliminar"></b-form-input>
         <b-input-group-button>
-          <b-btn variant="danger" @click="anularSale">Anular</b-btn>
+          <b-btn variant="danger" :disabled="isLoading" @click="anularSale">Anular</b-btn>
         </b-input-group-button>
       </b-input-group>
     </div>
@@ -270,15 +284,19 @@
   import {DATA_PAYMENT as dataPay} from '../../data/dnSales'
   import FileSaver from 'file-saver'
   import UploadSimple from '../../components/UploadFileSimple.vue'
+  import Datepicker from 'vuejs-datepicker'
+  import Mixin from '../../mixins'
 
   // import {DATA_FORM_PAYMENT as _payment} from '../../data/dnSales'
 
   export default {
     props: ['item', 'urlRest'],
+    mixins: [Mixin],
     components: {
       ToggleButton,
       Avatar,
-      UploadSimple
+      UploadSimple,
+      Datepicker
     },
     data () {
       return {
@@ -289,7 +307,12 @@
             },
             user: {}
           },
-          purchaser: {},
+          purchaser: {
+            razonSocial: '',
+            dniRUC: '',
+            cellPhone: '',
+            address: ''
+          },
           region: {},
           vehicle: {
             useType: {},
@@ -308,16 +331,48 @@
         urlFile: '',
         optionPrint: false,
         password: '',
-        editDisabled: true
+        editDisabled: true,
+        localValidityStar: '',
+        datepicker: '',
+        disabledPicker: {}
       }
     },
     watch: {
       async item (newVal) {
         // this.item2 = newVal
+        console.log('RIKARDOCORP PICK SALE')
+        console.log(newVal)
         this.item2 = newVal
         this.listPayment = await this.getPayments(newVal.id)
         this.urlFile = 'sales/' + newVal.id + '/uploadpolicydocument'
         this.optionPrint = false
+        let date = this.item2.validityStart
+        if (date) {
+          this.datepicker = this.getDateToDatepicker(date)
+        } else {
+          this.datepicker = null
+        }
+
+        let datenow = this.$store.getters.getDateTime.date
+        let toDay = this.$moment(datenow, 'DD/MM/YYYY')
+        let day = toDay.get('date')
+        let month = toDay.get('month')
+        let year = toDay.get('year')
+
+        // console.log('fecha RICARDOCORP')
+        // console.log(datenow, day, month, year)
+
+        this.disabledPicker = {
+          // to: new Date(year, month - 6, day)
+          ranges: [{ // Disable dates in given ranges (exclusive).
+            from: new Date(year - 30, month - 6, day),
+            to: new Date(year, month, day)
+          }, {
+            from: new Date(year, month + 6, day),
+            to: new Date(year + 30, month + 6, day)
+          }]
+          // from: new Date(year, month - 2, day)
+        }
       }
     },
     computed: {
@@ -335,7 +390,7 @@
       },
       validityEnd () {
         // Date
-        let date = this.item.validityStart
+        let date = this.datepicker
         let toDay = this.$moment(date, 'DD/MM/YYYY')
         let day = toDay.get('date')
         let month = toDay.get('month')
@@ -344,7 +399,7 @@
         return this.$moment(newDate).format('DD/MM/YYYY')
       },
       countTotal () {
-        console.log('PAYMENT TOTAL')
+        // console.log('PAYMENT TOTAL')
         let total = 0
         this.listPayment.forEach(function (value) {
           total = total + value.amount
@@ -356,26 +411,47 @@
       },
       daysContract () {
         let date = this.$store.getters.getDateTime.date
-        console.log('FECHA PRUEBA DIFFF')
-        console.log(date)
-        console.log(this.item.validityStart)
+        // console.log('FECHA PRUEBA DIFFF')
+        // console.log(date)
+        // console.log(this.datepicker)
         let toDay = this.$moment(date, 'DD/MM/YYYY')
         let day = toDay.get('date')
         let month = toDay.get('month')
         let year = toDay.get('year')
         let A = this.$moment([year, month, day])
         // let toDay = vm.$moment('12/11/1988', 'DD/MM/YYYY').subtract(7, 'days').subtract(1, 'months').subtract(2, 'years')
-        toDay = this.$moment(this.item.validityStart, 'DD/MM/YYYY')
-        day = toDay.get('date')
-        month = toDay.get('month')
-        year = toDay.get('year')
-        let B = this.$moment([year + 1, month, day])
 
-        let C = B.diff(A, 'days')
-        return C
+        let toDayStart = this.$moment(this.datepicker, 'DD/MM/YYYY')
+
+        if (toDay > toDayStart) {
+          day = toDayStart.get('date')
+          month = toDayStart.get('month')
+          year = toDayStart.get('year')
+          let B = this.$moment([year + 1, month, day])
+
+          let C = B.diff(A, 'days')
+          return C
+        } else {
+          return 365
+        }
       }
     },
     methods: {
+      selectDate (pickDate) {
+        let newDate = ''
+        if (pickDate) {
+          newDate = this.tranformDateToFormat(pickDate, '/')
+        }
+        // this.birthDate = newDate
+        this.localValidityStar = newDate
+      },
+      getDateToDatepicker (date) {
+        let toDay = this.$moment(date, 'DD/MM/YYYY')
+        let day = toDay.get('date')
+        let month = toDay.get('month')
+        let year = toDay.get('year')
+        return new Date(year, month, day)
+      },
       async anularSale () {
         if (this.password === '') {
           this.$store.commit('sendNotification', {status: null, message: 'Debe ingresar su contraseña.'})
@@ -388,9 +464,9 @@
           state: -1
         }
         let self = await this.$store.dispatch('dispatchHTTP', {type: 'INSERT', url: 'sales/cancel', data: dataLocal})
-        console.log('RIKAEDOCORO ppppppppp')
-        console.log(self)
-        console.log('INSERT SALE?')
+        // console.log('RIKAEDOCORO ppppppppp')
+        // console.log(self)
+        // console.log('INSERT SALE?')
         if (self.status) {
           this.password = ''
           this.item2.state = -1
@@ -401,35 +477,56 @@
         this.item2.policy = value.policy
       },
       async updateDataSale () {
+        // let data2 = {...this.item2}
+        // data2.validityStart = this.localValidityStar
+        // console.log('FECHAAAAAAAAA pensa')
+        // console.log(data2)
+        // return false
         let data = this.item2.purchaser
         let ID = this.item2.purchaser.id
         let url = 'purchasers/' + ID
-        console.log('CORONADO   PEREZ')
-        console.log(url)
-        console.log(data)
-        console.log(ID)
+        // console.log('CORONADO   PEREZ')
+        // console.log(url)
+        // console.log(data)
+        // console.log(ID)
+        // console.log('SALE DETAIL')
+        // console.log(this.item2)
         let self = await this.$store.dispatch('dispatchHTTP', {
           type: 'UPDATE',
           url: url,
           data: data, notify : {success: true, error: true}})
-        console.log('rikardocorp')
-        console.log(self)
+        // console.log('rikardocorp')
+        // console.log(self)
         if (self.status) {
           this.editDisabled = true
         }
+
+        data = {}
+        data = this.item2
+        this.item2.validityStart = this.localValidityStar
+        data = this.item2
+
+        // console.log('ITEM 2 FECHA')
+        // console.log(data)
+        ID = this.item2.id
+        url = 'sales/' + ID
+        self = await this.$store.dispatch('dispatchHTTP', {
+          type: 'UPDATE',
+          url: url,
+          data: data, notify : {success: true, error: true}})
       },
       async updateSale () {
         let state = this.countCredito > 0 ? 3 : 4
         let saleID = this.item.id
-        console.log('Estados:::::')
-        console.log(state, this.item.state)
+        // console.log('Estados:::::')
+        // console.log(state, this.item.state)
         if (this.item.state === state) return false
 
         this.item.state = state
-        console.log('UPDATE SALE')
+        // console.log('UPDATE SALE')
         let self = await this.$store.dispatch('dispatchHTTP', {type: 'UPDATE', url: this.urlRest + '/' + saleID, data: this.item})
-        console.log('RIKAEDOCORO ppppppppp')
-        console.log(self)
+        // console.log('RIKAEDOCORO ppppppppp')
+        // console.log(self)
         return self
       },
       async getPayments (idSale) {
@@ -445,12 +542,12 @@
             id: this.item.id
           }
           let self = await this.$store.dispatch('dispatchHTTP', {type: 'INSERT', url: this.urlPayment, data: this.payment})
-          console.log(self)
+          // console.log(self)
           if (!self.status) return false
           else {
-            console.log('Success')
+            // console.log('Success')
             this.listPayment.push(self.content)
-            console.log(self.content)
+            // console.log(self.content)
             this.payment = {
               amount: 0,
               numFactura: '',
@@ -460,21 +557,21 @@
             await this.updateSale()
           }
         } else {
-          console.log('Error')
+          // console.log('Error')
           this.$store.commit('sendNotification', {status: null, message: 'El monto debe estar entre 1 y ' + this.countCredito + ' soles.'})
         }
       },
       async deletePay (item) {
         let url = this.urlPayment + '/' + item.id
-        console.log(url)
+        // console.log(url)
         let self = await this.$store.dispatch('dispatchHTTP', {type: 'DELETE', url: url})
-        console.log(self)
+        // console.log(self)
         if (!self.status) return false
         else {
           let indexSelected = this.$lodash.findIndex(this.listPayment, item)
           this.listPayment.splice(indexSelected, 1)
           await this.updateSale()
-          console.log('Success')
+          // console.log('Success')
         }
       },
       getUrlPrint (idCompany, idSale, typePrint) {
@@ -498,13 +595,13 @@
         if (type !== null) {
           typePrint = type
         }
-//        console.log(idSale)
-//        console.log(idCompany)
-        console.log(this.item.insurancePolicy.policyType)
+        // console.log(idSale)
+        // console.log(idCompany)
+        // console.log(this.item.insurancePolicy.policyType)
 
         let url = this.getUrlPrint(idCompany, idSale, typePrint)
-//        console.log(idSale, idCompany)
-//        console.log(url)
+        // console.log(idSale, idCompany)
+        // console.log(url)
 
         let self = this.$store.dispatch('dispatchHTTP', {type: 'LOAD_PDF', url: url})
         self.then((response) => {
@@ -596,21 +693,57 @@
         }
       }
     }
+
+    p.subtitle input{
+      display: inline-block;
+      width: 80px;
+      text-align: left !important;
+      font-size: 1em !important;
+    }
+
+    p.value{
+      .vdp-datepicker{
+        display: inline-block;
+      }
+    }
+
+    p.value{
+      .vdp-datepicker input,
+      input.form-control{
+        padding: 0em 0.2em 0 0;
+        background: white !important;
+        border: none;
+        border-radius: 0;
+        height: 2.7em;
+        text-align: right;
+        color: #ef7b1f;
+        font-size: 0.84em;
+        box-shadow: none;
+      }
+    }
   }
 </style>
 
 <style scoped lang="scss">
-  p.value{
-    input.form-control{
-      padding: 0em 0.2em 0 0;
-      background: white !important;
-      border: none;
-      border-radius: 0;
-      height: 3.7em;
-      text-align: right;
-      color: #ef7b1f;
-      font-size: 0.84em;
-      box-shadow: none;
-    }
-  }
+  /*p.subtitle input{*/
+    /*display: inline-block;*/
+    /*width: 80px;*/
+    /*text-align: left !important;*/
+    /*font-size: 1em !important;*/
+  /*}*/
+
+  /*p.value{*/
+    /*.vdp-datepicker input,*/
+    /*input.form-control{*/
+      /*padding: 0em 0.2em 0 0;*/
+      /*background: white !important;*/
+      /*border: none;*/
+      /*border-radius: 0;*/
+      /*height: 2.7em;*/
+      /*text-align: right;*/
+      /*color: #ef7b1f;*/
+      /*font-size: 0.84em;*/
+      /*box-shadow: none;*/
+    /*}*/
+  /*}*/
 </style>

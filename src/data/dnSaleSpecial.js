@@ -1,19 +1,86 @@
 import { required, minLength, maxLength, between, numeric, email, alphaNum } from 'vuelidate/lib/validators'
 
-export const DATA_VEHICLE = {
-  name: 'vehicles',
+export const DATA_INSURANCEPRICES = {
+  name: 'insuranceprices',
+  url: 'insuranceprices',
   post: {
-    policyType: 1,
+    name: '',
+    price: '',
+    vehicleTypeId: '',
+    insuranceCompanyId: '',
+    insuranceTypeId: '',
+    regionId: '',
+    useTypeId: '',
+    validityDate: ''
+  },
+  fieldsTable: {
+    name: {label: 'Nombre', sortable: true, 'class': 'text-center'},
+    price: {label: 'Precio', sortable: true, 'class': 'text-center'},
+    insuranceCompanyId: {label: 'Aseguradora', sortable: true, 'class': 'text-center'},
+    insuranceTypeId: {label: 'Tipo de Seguro', sortable: true, 'class': 'text-center'},
+    regionId: {label: 'Ciudad', sortable: true, 'class': 'text-center'},
+    useTypeId: {label: 'Tipo de Uso', sortable: true, 'class': 'text-center'},
+    validityDate: {label: 'Fecha Valida', sortable: true, 'class': 'text-center'},
+    actions: {label: '', thStyle: 'width:75px'}
+  }
+}
+
+export const DATA_VEHICLETYPE = {
+  name: 'vehicletypecategories',
+  url: 'vehicletypecategories',
+  post: {
+    insuranceCompany: null,
+    policyType: null,
     insurancePolicy: null,
-    licensePlate: '',
-    manufacturingYear: '',
-    seatNumber: '',
-    useType: '',
-    engineNumber: '',
-    vehicleTypeCategory: '',
-    user: ''
+    insuranceType: {id: 1},
+    useType: null,
+    brand: '',
+    vehicleType: null,
+    vehicleClass: null,
+    vehicleCategory: null,
+    price: ''
   },
   input: {
+    _line1: {
+      label: 'Datos de la Póliza',
+      input: 'separator',
+      srOnly: false
+    },
+    insuranceCompany: {
+      label: 'Aseguradora',
+      placeholder: 'Compañia de Seguro',
+      type: 'text',
+      icon: 'fa fa-ticket',
+      input: 'multiselect',
+      params: {
+        url: 'insurancecompanies',
+        key: 'insuranceCompany',
+        label: 'name',
+        options: [],
+        activate: false,
+        loadData: true,
+        value: ''
+      }
+    },
+    policyType: {
+      label: 'Tipo de Póliza',
+      placeholder: 'Tipo de la Póliza',
+      type: 'text',
+      icon: 'fa fa-file-text',
+      input: 'multiselect',
+      params: {
+        url: 'policyTypes',
+        key: 'policyType',
+        label: 'name',
+        options: [
+          {id: 'W', name: 'WEB'},
+          {id: 'M', name: 'Manual'}
+        ],
+        activate: true,
+        loadData: false,
+        value: ''
+      }
+    },
     insurancePolicy: {
       label: 'Póliza',
       placeholder: 'Pólizas disponibles',
@@ -30,73 +97,165 @@ export const DATA_VEHICLE = {
         value: ''
       }
     },
-    licensePlate: {
-      label: 'Placa',
-      placeholder: 'Ingrese su placa',
+    // insuranceType: {
+    //   label: 'Tipo seguro',
+    //   placeholder: 'Tipo de seguro',
+    //   type: 'text',
+    //   icon: 'fa fa-tag',
+    //   input: 'multiselect',
+    //   params: {
+    //     url: 'insurancetypes',
+    //     key: 'insuranceTypeId',
+    //     label: 'name',
+    //     options: [],
+    //     activate: false,
+    //     loadData: true,
+    //     value: ''
+    //   }
+    // },
+    useType: {
+      label: 'Tipo de uso',
+      placeholder: 'Tipo de uso',
       type: 'text',
-      icon: 'fa fa-hashtag',
-      input: 'input-search'
+      icon: 'fa fa-tag',
+      input: 'multiselect',
+      params: {
+        url: 'usetypes',
+        key: 'useType',
+        label: 'name',
+        options: [],
+        activate: false,
+        loadData: true,
+        value: ''
+      }
     },
-    engineNumber: {
-      label: 'Nro. de Serie',
-      placeholder: 'Ingrese numero de serie',
+    price: {
+      label: 'Precio',
+      placeholder: 'Precio de la Póliza',
+      type: 'number',
+      icon: 'fa fa-money'
+    },
+    _line2: {
+      label: 'Datos del Vehículo',
+      input: 'separator',
+      srOnly: false
+    },
+    brand: {
+      label: 'Marca',
+      placeholder: 'Marca de vehículo',
       type: 'text',
-      icon: 'fa fa-hashtag'
+      icon: 'fa fa-bookmark',
+      input: 'multiselect-tag',
+      params: {
+        url: 'vehicletypes?type=1',
+        key: 'brand',
+        keyValue: 'vehicleBrand',
+        objectKey: 'vehicleType',
+        label: 'vehicleBrand',
+        options: [],
+        activate: false,
+        loadData: true,
+        value: ''
+      }
     },
-    seatNumber: {
-      label: 'Nro. Asientos',
-      placeholder: 'Ingrese numero de asientos',
-      type: 'number',
-      icon: 'fa fa-hashtag'
+    vehicleType: {
+      label: 'Modelo',
+      placeholder: 'Modelo de vehículo',
+      type: 'text',
+      icon: 'fa fa-car',
+      input: 'multiselect-tag',
+      params: {
+        url: 'vehicletypes?type=0&vehicleBrand=',
+        key: 'vehicleType',
+        keyValue: 'vehicleModel',
+        objectKey: 'vehicleType',
+        label: 'vehicleModel',
+        options: [],
+        activate: false,
+        loadData: false,
+        value: ''
+      }
     },
-    manufacturingYear: {
-      label: 'Año de Fabricación',
-      placeholder: 'Ingrese año de fabricación',
-      type: 'number',
-      icon: 'fa fa-calendar-o'
+    vehicleClass: {
+      label: 'Clase',
+      placeholder: 'Clase de vehículo',
+      type: 'text',
+      icon: 'fa fa-tag',
+      input: 'multiselect',
+      params: {
+        url: 'vehicleclasses',
+        key: 'vehicleClass',
+        label: 'description',
+        options: [],
+        activate: false,
+        loadData: true,
+        value: ''
+      }
+    },
+    vehicleCategory: {
+      label: 'Categoría',
+      placeholder: 'Categoría de vehículo',
+      type: 'text',
+      icon: 'fa fa-tag',
+      input: 'multiselect',
+      params: {
+        url: 'vehiclecategories',
+        key: 'vehicleCategory',
+        label: 'description',
+        options: [],
+        activate: false,
+        loadData: true,
+        value: ''
+      }
     }
   },
   validate: {
     item: {
+      price: {
+        required
+      },
+      insuranceCompany: {
+        required
+      },
+      policyType: {
+        required
+      },
       insurancePolicy: {
         required
       },
-      licensePlate: {
-        required
-      },
-      manufacturingYear: {
-        required,
-        numeric,
-        maxLength: maxLength(4)
-      },
-      seatNumber: {
-        required,
-        numeric,
-        maxLength: maxLength(3)
-      },
-      // useType: {
+      // insuranceType: {
       //   required
       // },
-      engineNumber: {
+      useType: {
+        required
+      },
+      brand: {
+        required
+      },
+      vehicleType: {
+        required
+      },
+      vehicleClass: {
+        required
+      },
+      vehicleCategory: {
         required
       }
-      // vehicleTypeCategory: {
-      //   required
-      // }
     }
   }
 }
 
-export const DATA_VEHICLE2 = {
+export const DATA_VEHICLE = {
   name: 'vehicles',
+  url: 'vehicles',
   post: {
     licensePlate: '',
     manufacturingYear: '',
     seatNumber: '',
-    useType: '',
     engineNumber: '',
-    vehicleTypeCategory: '',
-    user: ''
+    useType: null,
+    vehicleTypeCategory: null,
+    user: null
   },
   input: {
     licensePlate: {
@@ -153,30 +312,32 @@ export const DATA_VEHICLE2 = {
   }
 }
 
-export const DATA_USER = {
-  name: 'users',
+export const DATA_SALE = {
+  name: 'sales',
+  url: 'sales',
   post: {
-    dniRuc: '',
-    razonSocial: '',
-    firstName: '',
-    lastName: '',
-    address: '',
-    distrito: '',
-    departamento: '',
-    provincia: '',
-    cellPhone: '',
-    phone: '',
-    email: '',
-    password: '',
-    role: {
-      email: '',
-      role: 'ROLE_USUARIO'
-    }
+    date: '',
+    validityStart: '',
+    amount: 0,
+    active: '',
+    discount: 0,
+    invoiceNumber: '',
+    observation: '',
+    state: '',
+    currency: 'Soles',
+    region: null,
+    vehicle: null,
+    insurancePolicy: null,
+    purchaser: null,
+    cart: null,
+    seatNumber: '',
+    bodywork: ''
   }
 }
 
 export const DATA_PURCHASER = {
   name: 'purchasers',
+  url: 'purchasers',
   post: {
     razonSocial: '',
     firstName: '',
@@ -191,7 +352,7 @@ export const DATA_PURCHASER = {
     cellPhone: '',
     typeDocument: 1,
     birthDate: '',
-    hasEmail: true
+    hasEmail: false
   },
   input: {
     email: {
@@ -347,35 +508,38 @@ export const DATA_PURCHASER = {
   }
 }
 
-export const DATA_SALE = {
-  name: 'sales',
+export const DATA_USER = {
+  name: 'users',
+  url: 'users',
   post: {
-    date: '',
-    validityStart: '',
-    amount: 0,
-    active: '',
-    discount: 0,
-    invoiceNumber: '',
-    observation: '',
-    state: '',
-    currency: 'Soles',
-    region: null,
-    vehicle: null,
-    insurancePolicy: null,
-    purchaser: null,
-    cart: null,
-    seatNumber: '',
-    bodywork: ''
+    dniRuc: '',
+    razonSocial: '',
+    firstName: '',
+    lastName: '',
+    address: '',
+    distrito: '',
+    departamento: '',
+    provincia: '',
+    cellPhone: '',
+    phone: '',
+    email: '',
+    password: '',
+    role: {
+      email: '',
+      role: 'ROLE_USUARIO'
+    }
   }
 }
 
 export const DATA_PAY = {
   name: 'pay',
+  url: 'pay',
   post: {
     discount: 0,
     amount: 0,
     validityStart: '',
-    invoiceNumber: '',
+    date: '',
+    numFactura: '',
     observation: '',
     paymentType: 1,
     bodywork: ''
@@ -394,6 +558,22 @@ export const DATA_PAY = {
       type: 'number',
       icon: 'fa fa-money',
       show: true
+    },
+    date: {
+      label: 'Fecha de Venta',
+      placeholder: 'Fecha de Venta',
+      type: 'text',
+      icon: 'fa fa-calendar',
+      input: 'datepicker2',
+      params: {
+        key: 'date',
+        disabled: {
+          to: new Date(2017, 8, 19),
+          from: new Date(2019, 6, 1)
+        },
+        format: 'dd/MM/yyyy',
+        value: ''
+      }
     },
     validityStart: {
       label: 'Fecha de Inicio',
@@ -416,7 +596,7 @@ export const DATA_PAY = {
       input: 'separator',
       srOnly: false
     },
-    invoiceNumber: {
+    numFactura: {
       label: 'Comprobante',
       placeholder: '#comprobante de pago',
       type: 'text',
@@ -444,6 +624,9 @@ export const DATA_PAY = {
       validityStart: {
         required
       },
+      date: {
+        required
+      },
       discount: {
         between: between(0, 30),
         numeric
@@ -461,232 +644,11 @@ export const DATA_PAY = {
 
 export const DATA_PAYMENT = {
   name: 'payments',
+  url: 'payments',
   post: {
     amount: 0,
     paymentType: 1,
     numFactura: '',
     sale: null
-  }
-}
-
-// SPECIAL SALE
-
-export const DATA_VEHICLETYPE = {
-  name: 'vehicletypecategories',
-  post: {
-    insuranceCompany: null,
-    policyType: null,
-    insurancePolicy: null,
-    // insuranceType: null,
-    insuranceType: {id: 1},
-    useType: null,
-    brand: '',
-    vehicleType: null,
-    vehicleClass: null,
-    vehicleCategory: null,
-    amount: ''
-  },
-  input: {
-    _line1: {
-      label: 'Datos de la Póliza',
-      input: 'separator',
-      srOnly: false
-    },
-    insuranceCompany: {
-      label: 'Aseguradora',
-      placeholder: 'Compañia de Seguro',
-      type: 'text',
-      icon: 'fa fa-ticket',
-      input: 'multiselect',
-      params: {
-        url: 'insurancecompanies',
-        key: 'insuranceCompany',
-        label: 'name',
-        options: [],
-        activate: false,
-        loadData: true,
-        value: ''
-      }
-    },
-    policyType: {
-      label: 'Tipo de Póliza',
-      placeholder: 'Tipo de la Póliza',
-      type: 'text',
-      icon: 'fa fa-file-text',
-      input: 'multiselect',
-      params: {
-        url: 'policyTypes',
-        key: 'policyType',
-        label: 'name',
-        options: [
-          {id: 'W', name: 'WEB'},
-          {id: 'M', name: 'Manual'}
-        ],
-        activate: true,
-        loadData: false,
-        value: ''
-      }
-    },
-    insurancePolicy: {
-      label: 'Póliza',
-      placeholder: 'Pólizas disponibles',
-      type: 'text',
-      icon: 'fa fa-hashtag',
-      input: 'multiselect',
-      params: {
-        url: 'insurancepolicies',
-        key: 'insurancePolicy',
-        label: 'number',
-        options: [],
-        activate: false,
-        loadData: false,
-        value: ''
-      }
-    },
-    // insuranceType: {
-    //   label: 'Tipo seguro',
-    //   placeholder: 'Tipo de seguro',
-    //   type: 'text',
-    //   icon: 'fa fa-tag',
-    //   input: 'multiselect',
-    //   params: {
-    //     url: 'insurancetypes',
-    //     key: 'insuranceTypeId',
-    //     label: 'name',
-    //     options: [],
-    //     activate: false,
-    //     loadData: true,
-    //     value: ''
-    //   }
-    // },
-    useType: {
-      label: 'Tipo de uso',
-      placeholder: 'Tipo de uso',
-      type: 'text',
-      icon: 'fa fa-tag',
-      input: 'multiselect',
-      params: {
-        url: 'usetypes',
-        key: 'useType',
-        label: 'name',
-        options: [],
-        activate: false,
-        loadData: true,
-        value: ''
-      }
-    },
-    amount: {
-      label: 'Precio',
-      placeholder: 'Precio de la Póliza',
-      type: 'text',
-      icon: 'fa fa-money'
-    },
-    _line2: {
-      label: 'Datos del Vehículo',
-      input: 'separator',
-      srOnly: false
-    },
-    brand: {
-      label: 'Marca',
-      placeholder: 'Marca de vehículo',
-      type: 'text',
-      icon: 'fa fa-bookmark',
-      input: 'multiselect-tag',
-      params: {
-        url: 'vehicletypes?type=1',
-        key: 'brand',
-        keyValue: 'vehicleBrand',
-        objectKey: 'vehicleType',
-        label: 'vehicleBrand',
-        options: [],
-        activate: false,
-        loadData: true,
-        value: ''
-      }
-    },
-    vehicleType: {
-      label: 'Modelo',
-      placeholder: 'Modelo de vehículo',
-      type: 'text',
-      icon: 'fa fa-car',
-      input: 'multiselect-tag',
-      params: {
-        url: 'vehicletypes?type=0&vehicleBrand=',
-        key: 'vehicleType',
-        keyValue: 'vehicleModel',
-        objectKey: 'vehicleType',
-        label: 'vehicleModel',
-        options: [],
-        activate: false,
-        loadData: false,
-        value: ''
-      }
-    },
-    vehicleClass: {
-      label: 'Clase',
-      placeholder: 'Clase de vehículo',
-      type: 'text',
-      icon: 'fa fa-tag',
-      input: 'multiselect',
-      params: {
-        url: 'vehicleclasses',
-        key: 'vehicleClass',
-        label: 'description',
-        options: [],
-        activate: false,
-        loadData: true,
-        value: ''
-      }
-    },
-    vehicleCategory: {
-      label: 'Categoría',
-      placeholder: 'Categoría de vehículo',
-      type: 'text',
-      icon: 'fa fa-tag',
-      input: 'multiselect',
-      params: {
-        url: 'vehiclecategories',
-        key: 'vehicleCategory',
-        label: 'description',
-        options: [],
-        activate: false,
-        loadData: true,
-        value: ''
-      }
-    }
-  },
-  validate: {
-    item: {
-      amount: {
-        required
-      },
-      insuranceCompany: {
-        required
-      },
-      policyType: {
-        required
-      },
-      insurancePolicy: {
-        required
-      },
-      // insuranceType: {
-      //   required
-      // },
-      useType: {
-        required
-      },
-      brand: {
-        required
-      },
-      vehicleType: {
-        required
-      },
-      vehicleClass: {
-        required
-      },
-      vehicleCategory: {
-        required
-      }
-    }
   }
 }

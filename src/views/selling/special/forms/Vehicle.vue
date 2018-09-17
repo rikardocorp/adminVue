@@ -1,20 +1,18 @@
 <template>
-
-  <b-form class="col-md-8 col-lg-6 col-xl-5 m-auto pt-3 pb-4" :id="'form' + index">
+  <b-form class="col-md-9 col-lg-9 col-xl-6 m-auto pt-3 pb-4" :id="'form' + index">
+    <!--<pre>this.insurancePolicy {{insurancePolicy == null ? 'rikardocorp': insurancePolicy}}</pre>-->
+    <!--<div class="d-flex justify-content-center mb-2 mySwitch">-->
+    <!--<toggle-button :labels="{checked: 'Web', unchecked: 'Manual'}" :color="{checked: 'rgb(239, 123, 34)', unchecked: 'rgb(99, 193, 222)'}"-->
+    <!--:disabled="isLoading || restricted" :width="85" :height="28" :sync="true"-->
+    <!--v-model="item.policyType" @change="changePolicy" class="mr-2">-->
+    <!--</toggle-button>-->
+    <!--</div>-->
 
     <b-form-group v-for="(option, _index) in optInput" :key="_index"
                   :class="{ 'form-group--error': $v.item[_index]? $v.item[_index].$error : false, 'text-left': true}"
                   :label-cols="lCols"
                   :label="option.label + ':'"
                   :horizontal="horizontal">
-
-      <!--<b-form-group class=""-->
-                    <!--label="Color:"-->
-                    <!--feedback="feedback"-->
-                    <!--:state="null"-->
-                    <!--:horizontal="horizontal" :label-cols="lCols" >-->
-        <!--<picker-color :disabled="isLoading || owner" v-model="item.color" :options="options" :size="1.2" :iconShow="true"></picker-color>-->
-      <!--</b-form-group>-->
 
       <!-- INPUT -->
       <b-input-group v-if="option.input==undefined || option.input=='input'">
@@ -26,24 +24,24 @@
       </b-input-group>
 
       <!-- MULTISELECT -->
-      <!--<b-input-group v-else-if="option.input=='multiselect'">-->
-        <!--<b-input-group-addon class="bg-primary"><i :class="'fa ' + option.icon"></i></b-input-group-addon>-->
-        <!--<multiselect :close-on-select="true" :hide-selected="true" :preserve-search="false" :taggable="false" select-label=""-->
-                     <!--:placeholder="option.placeholder"  class="special_radius"-->
-                     <!--:label="option.params.label" :track-by="option.params.label"-->
-                     <!--:loading="!option.params.activate"-->
-                     <!--:disabled="!option.params.activate || isLoading || restricted"-->
-                     <!--v-model="item[_index]"-->
-                     <!--:options="option.params.options"-->
-                     <!--@blur.native="$v.item[_index]? $v.item[_index].$touch(): false"></multiselect>-->
-      <!--</b-input-group>-->
+      <b-input-group v-else-if="option.input=='multiselect'">
+        <b-input-group-addon class="bg-primary"><i :class="'fa ' + option.icon"></i></b-input-group-addon>
+        <multiselect :close-on-select="true" :hide-selected="true" :preserve-search="false" :taggable="false" select-label=""
+                     :placeholder="option.placeholder"  class="special_radius"
+                     :label="option.params.label" :track-by="option.params.label"
+                     :loading="!option.params.activate"
+                     :disabled="!option.params.activate || isLoading || restricted"
+                     v-model="item[_index]"
+                     :options="option.params.options"
+                     @blur.native="$v.item[_index]? $v.item[_index].$touch(): false"></multiselect>
+      </b-input-group>
 
       <!-- INPUT-SEARCH -->
       <b-input-group v-if="option.input=='input-search'">
         <b-input-group-addon class="bg-primary"><i :class="'fa ' + option.icon  "></i></b-input-group-addon>
         <b-form-input :disabled="isLoading || restricted" :type="option.type"
                       v-model.trim="item[_index]"
-                      @blur.once.native="searchPlate"
+                      @blur.native="searchPlate"
                       :placeholder="option.placeholder+'..'"></b-form-input>
         <b-input-group-button>
           <b-btn :disabled="isLoading || restricted" variant="primary" @click="searchPlate"><i class="fa fa-search"></i></b-btn>
@@ -52,7 +50,6 @@
       <!-- ERROR MESSAGE-->
       <form-error :data="$v.item[_index]? $v.item[_index] : {} "></form-error>
     </b-form-group>
-    <!--<pre>{{item}}</pre>-->
 
   </b-form>
 
@@ -61,19 +58,21 @@
 <script>
   import Datepicker from 'vuejs-datepicker'
   import Multiselect from 'vue-multiselect'
-  import FormError from '../../../components/FormError.vue'
-  import Avatar from '../../../components/Avatar.vue'
-  import {DATA_VEHICLE2 as _vehicle} from '../../../data/dnNewSales'
-  import { required,between } from 'vuelidate/lib/validators'
+  import FormError from '../../../../components/FormError.vue'
+  import ToggleButton from '../../../../components/ToggleButton.vue'
+  import Avatar from '../../../../components/Avatar.vue'
+  import {DATA_VEHICLE as _vehicle} from '../../../../data/dnSaleSpecial'
 
   export default {
+    name: 'Vehicle',
     components: {
       Datepicker,
       Multiselect,
       FormError,
-      Avatar
+      Avatar,
+      ToggleButton
     },
-    props: ['urlRest', 'item', 'pickPolice', 'update', 'horizontal', 'index', 'keyname', 'restricted', 'dispatch'],
+    props: ['name', 'urlRest', 'item', 'pickPolice', 'insurancePolicy', 'horizontal', 'index', 'keyname', 'restricted'],
     data () {
       return {
         optInput: _vehicle.input,
@@ -82,7 +81,8 @@
         value: [],
         color: '',
         selectedKey: '',
-        multiselectKeys: []
+        multiselectKeys: [],
+        policyType: ''
       }
     },
     computed: {
@@ -97,36 +97,33 @@
       }
     },
     validations () {
-      // if (this.isClient) {
-      // _vehicle.validate.item.seatNumber = {
-      //   required,
-      //   between: between(this.pickPolice.seatNumber, this.pickPolice.seatNumberTo)
-      // }
-      // }
       return _vehicle.validate
     },
     methods: {
       searchPlate () {
         let plate = this.item.licensePlate
         if (plate !== '') {
-          let url = 'vehicles/filter?licensePlate=' + plate + '&strict=0'
+          let url = 'vehicles/filter?licensePlate=' + plate + '&strict=1'
           let self = this.$store.dispatch('dispatchHTTP', {type: 'GET', url: url})
           self.then((data) => {
             console.log(data)
             if (data.status) {
               let selectData = data.content.pop()
-              if (data.content.length > 0) {
+              if (selectData) {
                 this.owner = true
                 this.$set(this.item, 'manufacturingYear', selectData.manufacturingYear)
                 this.$set(this.item, 'seatNumber', selectData.seatNumber)
                 this.$set(this.item, 'engineNumber', selectData.engineNumber)
-//                this.$set(this.item, 'manufacturingYear', data.content.manufacturingYear)
-//                this.$emit('connection', this.name, data.content)
                 console.log('Tiene duseño')
               } else {
-                console.log('No tiene duseño')
+                // let policy = {...this.item.insurancePolicy}
+                let licensePlate = this.item.licensePlate
+                this.$emit('connection', this.name, this.name, null)
+                // this.$emit('connection', this.name, 'insurancePolicy', policy)
+                this.$emit('connection', this.name, 'licensePlate', licensePlate)
+
+                this.$v.item.$reset()
                 this.owner = false
-                // this.$emit('connection', this.name, null)
               }
             } else {
               console.log('Error: ' + url)
@@ -137,33 +134,16 @@
       }
     },
     watch: {
-      isInvalid (newVal) {
-        this.$emit('connection', 'isValid', newVal)
-      },
-      dispatch () {
-        console.log('VALIDAAAAAAAAA')
-        console.log(this.isInvalid + ' ffweffw')
-        this.$v.item.$touch()
-      }
+
     },
-    created () {
-      console.log('this.pickPolice')
-      console.log(this.pickPolice)
-    }
+    // mounted () {
+    //   this.loadOptionsPolicy(this.item.insurancePolicy)
+    // }
 
   }
 </script>
 
 <style lang="scss">
-
-  /*.optionColor{*/
-    /*position: absolute;*/
-    /*right: 0;*/
-    /*top: 0;*/
-    /*height: 40px;*/
-    /*width: 100%;*/
-  /*}*/
-
   .owner-card{
     border-radius: 3.2em 0.5em 0.5em 3.2em;
     background: #f5f5f5;
@@ -199,3 +179,4 @@
 
   }
 </style>
+

@@ -31,15 +31,16 @@ import VehicleClass from '../views/vehicle/VehicleClass.vue'
 import VehicleTypeCategory from '../views/vehicle/VehicleTypeCategory.vue'
 // import NewSale from '../views/vehicle/NewSale.vue'
 // import WebUser from '../views/vehicle/WebUser.vue'
-// import Vehicle from '../views/vehicle/Vehicle.vue'
+import Vehicle from '../views/vehicle/Vehicle.vue'
 // import Purchaser from '../views/vehicle/Purchaser.vue'
 
 // Selling
 import Sales from '../views/selling/Sales.vue'
 import CartClient from '../views/selling/CartClient.vue'
 import Sale from '../views/selling/Sale.vue'
-import SellNewPolice from '../views/selling/NewSale.vue'
-import SellNewPoliceSpecial from '../views/selling/NewSaleSpecial.vue'
+import SellNewPolice from '../views/selling/NewSaleX.vue'
+import SellNewPoliceSpecial from '../views/selling/NewSaleSpecialX.vue'
+import SaleSpecial from '../views/selling/special/SaleSpecial.vue'
 import SellNewPoliceClient from '../views/selling/NewSaleClient.vue'
 import Cotizar from '../views/selling/Cotizar.vue'
 import SeguroVehicular from '../views/selling/SeguroVehicular.vue'
@@ -67,8 +68,8 @@ const roles = {
 
 const preFijo = '/'
 const router = new Router({
-  // mode: 'hash',
-  mode: 'history',
+  mode: 'hash',
+  // mode: 'history',
   linkActiveClass: 'open active',
   scrollBehavior: () => ({ y: 0 }),
   routes: [
@@ -185,7 +186,7 @@ const router = new Router({
               name: 'Tabla de Precios Poliza',
               component: PriceFull,
               meta: {requiresAuth: true, ROLE_ADMIN: true}
-            }
+            },
             // {
             //   path: 'precio-poliza-full2',
             //   name: 'Tabla de Precios Poliza 2',
@@ -262,9 +263,21 @@ const router = new Router({
         {
           path: 'venta-especial',
           name: 'Venta Especial',
-          component: SellNewPoliceSpecial,
+          component: SaleSpecial,
           meta: {requiresAuth: true, ROLE_ADMIN: true, ROLE_PUNTO_VENTA: true, ROLE_VENDEDOR: true}
         },
+        // {
+        //   path: 'venta-especial',
+        //   name: 'Venta Especial',
+        //   component: SellNewPoliceSpecial,
+        //   meta: {requiresAuth: true, ROLE_ADMIN: true, ROLE_PUNTO_VENTA: true, ROLE_VENDEDOR: true}
+        // },
+        // {
+        //   path: 'venta-especialx',
+        //   name: 'Venta EspecialX',
+        //   component: SaleSpecial,
+        //   meta: {requiresAuth: true, ROLE_ADMIN: true, ROLE_PUNTO_VENTA: true, ROLE_VENDEDOR: true}
+        // },
         {
           path: 'venta-cliente',
           name: 'Venta Cliente',
